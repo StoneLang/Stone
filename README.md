@@ -1,2 +1,1 @@
-# stone
-The stone programming language
+# The Stone Programming Language
