@@ -1,0 +1,12 @@
+module Stone.Syntax 
+
+
+public interface I0 {
+
+	fun Do(int* data) -> void; 
+}
+public struct S0 : I0  {
+
+}
+
+

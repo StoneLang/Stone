@@ -1,0 +1,13 @@
+// Main does not require module 
+
+fun Main() -> int {
+	i32[] items = new i32[5] { 10, 20, 30, 40, 50 };
+	// Pin object on heap so that it doesn't move while using interior pointers.
+	pin(int* item = &items[0]){
+
+	}
+}
+
+fun PinArray(pin int[]& v) -> auto {
+
+}

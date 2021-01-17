@@ -1,0 +1,230 @@
+/// TOKEN(name)
+///   Expands by default for every token kind.
+#ifndef TOKEN
+#define TOKEN(name)
+#endif
+
+/// KEYWORD(kw)
+///   Expands by default for every keyword, such as
+///   'if', 'else', etc. If you only want to use Swift keywords
+#ifndef KEYWORD
+#define KEYWORD(kw, S) TOKEN(kw_##kw)
+#endif
+
+/// DECL_KEYWORD(kw)
+///   Expands for every keyword that can be used in a declaration.
+#ifndef DECL_KEYWORD
+#define DECL_KEYWORD(kw, S) KEYWORD(kw, S)
+#endif
+
+/// STMT_KEYWORD(kw)
+///   Expands for every keyword used in statement grammar.
+#ifndef STMT_KEYWORD
+#define STMT_KEYWORD(kw, S) KEYWORD(kw, S)
+#endif
+
+/// EXPR_KEYWORD(kw)
+///   Expands for every stone keyword used in an expression, such as 'true',
+///   'false', and 'as'
+#ifndef EXPR_KEYWORD
+#define EXPR_KEYWORD(kw, S) KEYWORD(kw, S)
+#endif
+
+/// PAT_KEYWORD(kw)
+///   Expands for every stone keyword used in a pattern, which is currently
+///   limited to '_'
+#ifndef PAT_KEYWORD
+#define PAT_KEYWORD(kw, S) KEYWORD(kw, S)
+#endif
+
+/// POUND_KEYWORD(kw)
+///   Every keyword prefixed with a '#'.
+#ifndef POUND_KEYWORD
+#define POUND_KEYWORD(kw) TOKEN(pound_##kw)
+#endif
+
+/// POUND_CONFIG(kw)
+///   Every keyword prefixed with a '#' representing a configuration.
+#ifndef POUND_CONFIG
+#define POUND_CONFIG(kw) POUND_KEYWORD(kw)
+#endif
+
+/// POUND_DIRECTIVE_KEYWORD(kw)
+///   Every keyword prefixed with a '#' that is a compiler control directive.
+#ifndef POUND_DIRECTIVE_KEYWORD
+#define POUND_DIRECTIVE_KEYWORD(kw) POUND_KEYWORD(kw)
+#endif
+
+/// POUND_COND_DIRECTIVE_KEYWORD(kw)
+///   Every keyword prefixed with a '#' that is part of conditional compilation
+///   control.
+#ifndef POUND_COND_DIRECTIVE_KEYWORD
+#define POUND_COND_DIRECTIVE_KEYWORD(kw) POUND_DIRECTIVE_KEYWORD(kw)
+#endif
+
+/// PUNCTUATOR(name, str)
+///   Expands for every punctuator.
+///   \param name  The symbolic name of the punctuator, such as
+///                'l_paren' or 'arrow'.
+///   \param str   A string literal containing the spelling of the punctuator,
+///                such as '"("' or '"->"'.
+#ifndef PUNCTUATOR
+#define PUNCTUATOR(name, str) TOKEN(name)
+#endif
+
+/// LITERAL(name)
+///   Tokens representing literal values, e.g. 'integer_literal'.
+#ifndef LITERAL
+#define LITERAL(name) TOKEN(name)
+#endif
+
+/// MISC(name)
+///   Miscellaneous tokens, e.g. 'eof' and 'unknown'.
+#ifndef MISC
+#define MISC(name) TOKEN(name)
+#endif
+
+// Miscellaneous tokens. TODO: replace with TOK
+TOKEN(eof)
+// unknown token
+TOKEN(unk)
+TOKEN(code_complete)
+TOKEN(identifier)
+TOKEN(oper_binary_unspaced) // "x+y"
+TOKEN(oper_binary_spaced)   // "x + y"
+TOKEN(oper_postfix)
+TOKEN(oper_prefix)
+TOKEN(comment)
+TOKEN(string_quote)
+TOKEN(multiline_string_quote)
+TOKEN(string_segment)
+
+// Single-token literals
+LITERAL(integer_literal)
+LITERAL(floating_literal)
+LITERAL(string_literal)
+LITERAL(imaginary_literal)
+
+// STATUS FLAGS : TOKON, TOKOFF, TOKRSV
+// Keywords that start decls.
+DECL_KEYWORD(class, TOKON)
+DECL_KEYWORD(interface, TOKON)
+DECL_KEYWORD(enum, TOKON)
+DECL_KEYWORD(error, TOKON)
+DECL_KEYWORD(module, TOKON)
+DECL_KEYWORD(auto, TOKON)
+DECL_KEYWORD(struct, TOKON)
+DECL_KEYWORD(private, TOKON)
+DECL_KEYWORD(internal, TOKRSV)
+DECL_KEYWORD(public, TOKON)
+DECL_KEYWORD(static, TOKON)
+DECL_KEYWORD(space, TOKON)
+DECL_KEYWORD(inline, TOKRSV)
+DECL_KEYWORD(new, TOKON)
+DECL_KEYWORD(const, TOKON)
+DECL_KEYWORD(own, TOKRSV)
+DECL_KEYWORD(fun, TOKON)
+DECL_KEYWORD(i8, TOKON)
+DECL_KEYWORD(i16, TOKON)
+DECL_KEYWORD(i32, TOKON)
+DECL_KEYWORD(i64, TOKON)
+DECL_KEYWORD(u8, TOKON)
+DECL_KEYWORD(u16, TOKON)
+DECL_KEYWORD(u32, TOKON)
+DECL_KEYWORD(u64, TOKON)
+DECL_KEYWORD(f32, TOKON)
+DECL_KEYWORD(f64, TOKON)
+DECL_KEYWORD(string, TOKON)
+DECL_KEYWORD(type, TOKON)
+DECL_KEYWORD(use, TOKON)
+DECL_KEYWORD(int, TOKON)
+DECL_KEYWORD(unsigned, TOKON)
+DECL_KEYWORD(object, TOKRSV)
+
+// Statement keywords.
+STMT_KEYWORD(defer, TOKON)
+STMT_KEYWORD(if, TOKON)
+STMT_KEYWORD(do, TOKON)
+STMT_KEYWORD(loop, TOKON)
+STMT_KEYWORD(else, TOKON)
+STMT_KEYWORD(for, TOKON)
+STMT_KEYWORD(in, TOKON)
+STMT_KEYWORD(while, TOKON)
+STMT_KEYWORD(return, TOKON)
+STMT_KEYWORD(break, TOKON)
+STMT_KEYWORD(continue, TOKON)
+STMT_KEYWORD(next, TOKON)
+STMT_KEYWORD(match, TOKON)
+STMT_KEYWORD(case, TOKON)
+STMT_KEYWORD(default, TOKON)
+STMT_KEYWORD(where, TOKON)
+STMT_KEYWORD(pin, TOKON)
+
+// Expression keywords.
+EXPR_KEYWORD(as, TOKON)
+EXPR_KEYWORD(false, TOKON)
+EXPR_KEYWORD(is, TOKON)
+EXPR_KEYWORD(null, TOKON)
+EXPR_KEYWORD(this, TOKON)
+EXPR_KEYWORD(true, TOKON)
+
+// Pattern keywords.
+PAT_KEYWORD(_, TOKON)
+
+// Punctuators.
+PUNCTUATOR(l_paren, "(")
+PUNCTUATOR(r_paren, ")")
+PUNCTUATOR(l_brace, "{")
+PUNCTUATOR(r_brace, "}")
+PUNCTUATOR(l_square, "[")
+PUNCTUATOR(r_square, "]")
+PUNCTUATOR(l_angle, "<")
+PUNCTUATOR(r_angle, ">")
+
+PUNCTUATOR(period, ".")
+PUNCTUATOR(star, "*")
+PUNCTUATOR(period_prefix, ".")
+PUNCTUATOR(comma, ",")
+PUNCTUATOR(colon, ":")
+PUNCTUATOR(semi, ";")
+PUNCTUATOR(equal, "=")
+PUNCTUATOR(at_sign, "@")
+PUNCTUATOR(pound, "#")
+
+PUNCTUATOR(amp_prefix, "&")
+PUNCTUATOR(arrow, "->")
+
+PUNCTUATOR(backtick, "`")
+
+PUNCTUATOR(backslash, "\\")
+
+PUNCTUATOR(exclaim_postfix, "!") // if left-bound
+
+PUNCTUATOR(question_postfix, "?") // if left-bound
+PUNCTUATOR(question_infix, "?")   // if not left-bound
+
+// Keywords prefixed with a '#'.  "if" becomes "tok::pound_if".
+POUND_KEYWORD(if)
+POUND_KEYWORD(else)
+POUND_KEYWORD(elseif)
+POUND_KEYWORD(endif)
+POUND_KEYWORD(file)
+
+// Keywords prefixed with a '#' that are build configurations.
+POUND_CONFIG(available)
+
+#undef TOKEN
+#undef KEYWORD
+#undef DECL_KEYWORD
+#undef STMT_KEYWORD
+#undef EXPR_KEYWORD
+#undef PAT_KEYWORD
+#undef SIL_KEYWORD
+#undef POUND_KEYWORD
+#undef POUND_OBJECT_LITERAL
+#undef POUND_CONFIG
+#undef POUND_DIRECTIVE_KEYWORD
+#undef POUND_COND_DIRECTIVE_KEYWORD
+#undef PUNCTUATOR
+#undef LITERAL
+#undef MISC

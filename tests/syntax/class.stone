@@ -1,0 +1,11 @@
+module Stone.Syntax 
+
+class C0 {	
+}
+
+C0::this() { 
+}
+C0::defer() { 
+	
+}
+

@@ -1,0 +1,18 @@
+module Stone.Physics; 
+
+
+space Stone.Physics.Mechanics {
+	public fun Fire(const Projectile* projectile = null) -> bool {
+		return true; 
+	}
+}
+
+space Stone.Physics.Quantum {
+	public fun Fire(const Particle* particle) -> auto {
+		int* result = null; 
+		return true; 
+	}
+
+}
+
+

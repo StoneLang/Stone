@@ -1,0 +1,13 @@
+// Input types
+// We are using cpp for the time being
+//
+FILE_TYPE("stone",		Stone,      "stone", "")
+FILE_TYPE("image",	  Image,      "out",   "")
+FILE_TYPE("object",   Object,     "o",    "")
+FILE_TYPE("assembly", Assembly,   "s", "")
+FILE_TYPE("llvm-ir",  IR,         "ir", "")
+FILE_TYPE("llvm-bc",  BC,         "bc", "")
+FILE_TYPE("stonem",   Module,     "stonem","")
+FILE_TYPE("none",			None, "",   "")
+
+#undef FILE_TYPE

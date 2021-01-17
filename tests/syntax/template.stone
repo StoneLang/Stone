@@ -1,0 +1,14 @@
+
+any<T> interface Collection {
+}
+
+any<T: Comparable> struct Array<T> : Collection<T> {
+
+}
+
+
+interface Collection<T> {
+}
+
+
+

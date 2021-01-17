@@ -1,1 +1,1 @@
-# The Stone Programming Language
+# Stone Compiler

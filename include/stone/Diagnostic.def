@@ -1,0 +1,11 @@
+#ifndef DIAGNOSTIC
+#define DIAGNOSTIC(NAME, VALUE, START, END)
+
+#DO NOT CHANGE-- altering these values will negatively impact diagnostics.
+DIAGNOSTIC(SYSTEM, 1, 1, 300)
+DIAGNOSTIC(LEXER, 2, 301, 500)
+DIAGNOSTIC(PARSER, 3, 501, 700)
+DIAGNOSTIC(CHECKER, 4, 701, 800)
+DIAGNOSTIC(GEN, 5, 801, 1000)
+
+#endif

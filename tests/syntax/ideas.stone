@@ -1,0 +1,83 @@
+use System; 
+use Math; 
+
+module Ideas; 
+
+space Ideas.Testing {
+
+interface CI {
+	fun Print() -> void; 
+}
+class C0 :  CI {
+	Options* options = null; 
+	public i32 counter = 0; 
+	public System* system = null;  
+}
+
+C0::new(Options* options, Context* context) {
+
+	this.options = options;
+	this.context = context; 
+	this.system = new System(); 
+}
+C0::defer(){ 
+	free system;
+	free options; 
+}
+
+
+// Leaning this way
+init C0::Init(Options* options, Context* context) {
+	this.options = options;
+	this.context = context; 
+	this.system = new System(); 
+}
+[test]
+defer C0::Defer() { 
+	free system;
+	free options; 
+}
+
+
+
+module Physics; 
+
+space Physics.Device {
+
+
+	interface Accelerator<T> {
+			Fire(const T* particle != null) -> bool;
+	}
+
+	class LinearAccelerator : Accelerator<LinearAccelerator> {
+		public string name = "some name";  
+	}
+
+	init fun LinearAccelerator::Init() {
+
+	}
+
+	defer fun LinearAccelerator::Defer() {
+
+	}
+
+	struct Particle {
+		public bool fired = false; 
+	}
+
+	fun LinearAcellerator::Fire(const Particle* particle) -> bool {
+		particle.fired = true; 
+		return true; 
+	}
+
+	fun Main() -> void {
+
+		auto p = new Particle();
+		auto a = new LinearAcceleartor(); 
+		a.Fire(a);
+
+		free p; 
+		free a;
+
+	}
+}
