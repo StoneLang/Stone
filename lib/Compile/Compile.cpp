@@ -14,9 +14,21 @@ using namespace stone::syntax;
 using namespace stone::analysis;
 using namespace stone::backend;
 
+class CompileImplementation {
+ public:
+  CompileImplementation(Compiler &compiler);
+
+ public:
+  void Parse();
+  void Check();
+  void EmitIR();
+  void EmitObject();
+};
+
 int stone::Compile(llvm::ArrayRef<const char *> args, const char *arg0,
                    void *mainAddr, CompilePipeline *pipeline) {
   Compiler compiler(pipeline);
+
   if (compiler.Build(args)) {
     assert(compiler.GetMode().IsCompileOnly() && "Not a compile mode");
     compiler.Run();

@@ -149,6 +149,8 @@ class Session : public Context {
 
   virtual ModeKind GetDefaultModeKind() = 0;
 
+  std::string ComputeWorkingDir();
+
   void Purge();
 };
 

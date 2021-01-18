@@ -10,8 +10,6 @@ set( LLVM_LINK_COMPONENTS
   )
 
 set(stone_driver_sources
-
-	Build.cpp
 	Compilation.cpp
 	DarwinToolChain.cpp
 	Driver.cpp

@@ -17,4 +17,4 @@ Module *Analysis::GetMainModule() const {
   return mainModule;
 }
 
-void Analysis::SetMainModule(Module *moduleDecl) {}
+void Analysis::SetMainModule(Module *m) {}
