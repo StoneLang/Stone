@@ -20,6 +20,7 @@ set(stone_compile_sources
 	Optimize.cpp
 	Parse.cpp
 	Parser.cpp
+	System.cpp
 	Transformer.cpp
 	
 	LINK_LIBS

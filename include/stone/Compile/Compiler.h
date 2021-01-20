@@ -34,10 +34,6 @@ class Compiler final : public Session {
   FileMgr fm;
   CompilePipeline *pipeline = nullptr;
   std::unique_ptr<Analysis> analysis;
-
-  /// Current inputs in the system
-  std::vector<InputFile *> inputs;
-
   /*
           /// Identifies the set of input buffers in the SrcMgr that are
     /// considered main source files.
@@ -53,6 +49,9 @@ class Compiler final : public Session {
     void RecordPrimaryInputBuffer(SrcID fileID);
   */
  public:
+  /// Current inputs in the system
+  std::vector<InputFile *> inputs;
+
   CompileOptions compileOpts;
 
  public:
