@@ -27,12 +27,18 @@ class CompileImplementation {
 
 int stone::Compile(llvm::ArrayRef<const char *> args, const char *arg0,
                    void *mainAddr, CompilePipeline *pipeline) {
+
+
   Compiler compiler(pipeline);
+
+	STONE_DEFER{
+		compiler.Finish();
+	};
+
 
   if (compiler.Build(args)) {
     assert(compiler.GetMode().IsCompileOnly() && "Not a compile mode");
     compiler.Run();
-    compiler.Finish();
     if (compiler.GetDiagEngine().HasError()) {
       return ret::err;
     }
