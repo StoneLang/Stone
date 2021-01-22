@@ -1,7 +1,6 @@
 #include "stone/Compile/Compiler.h"
 
 #include "stone/Compile/Analysis.h"
-#include "stone/Compile/Frontend.h"
 #include "stone/Core/Ret.h"
 
 using namespace stone;
@@ -52,31 +51,5 @@ int Compiler::Run() {
   if (compileOpts.showHelp) {
     // PrintHelp();
   }
-  if (GetMode().GetKind() == ModeKind::Parse) {
-    Parse();
-  } else {
-    Check();
-  }
-  return 0;
+	return 0;
 }
-
-void Compiler::Parse() { Parse(false); }
-
-void Compiler::Parse(bool check) {
-  for (auto input : inputs) {
-    // stone::analysis::Parse
-    if (check) {
-      if (!compileOpts.analysisOpts.wholeModuleCheck) {
-        CheckSourceUnit();
-      }
-    }
-  }
-  if (check && compileOpts.analysisOpts.wholeModuleCheck) {
-    CheckModule();
-  }
-}
-void Compiler::Check() { Parse(true); }
-
-void Compiler::CheckSourceUnit() {}
-
-void Compiler::CheckModule() {}

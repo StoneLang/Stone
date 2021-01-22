@@ -5,8 +5,7 @@
 using namespace stone;
 using namespace stone::analysis;
 
-Parser::Parser(Analysis &analysis, CompilePipeline *pipeline)
-    : analysis(analysis), pipeline(pipeline), stats(*this) {}
+Parser::Parser(CompilePipeline *pipeline) : pipeline(pipeline), stats(*this) {}
 
 //===----------------------------------------------------------------------===//
 // Decl

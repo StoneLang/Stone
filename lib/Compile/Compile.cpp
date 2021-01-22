@@ -1,5 +1,4 @@
 #include "stone/Compile/Compile.h"
-
 #include "stone/Compile/Compiler.h"
 #include "stone/Compile/System.h"
 #include "stone/Core/Defer.h"

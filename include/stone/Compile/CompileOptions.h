@@ -55,6 +55,9 @@ class CompileOptions final : public SessionOptions {
   SearchPathOptions spOpts;
   FileSystemOptions fsOpts;
 
+	/// Current inputs in the system
+  std::vector<InputFile *> inputs;
+
  public:
   CompileOptions() {}
 };

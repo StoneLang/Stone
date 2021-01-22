@@ -14,18 +14,17 @@ using namespace stone::syntax;
 using namespace stone::analysis;
 
 int System::Parse(bool check) {
-  for (auto input : compiler.inputs) {
+  for (auto input : compiler.GetCompileOptions().inputs) {
     // stone::analysis::Parse
     if (check) {
       if (!compiler.GetCompileOptions().analysisOpts.wholeModuleCheck) {
-			//	stone::CheckSourceUnit();
+        //	stone::CheckSourceUnit();
       }
     }
   }
   if (check && compiler.GetCompileOptions().analysisOpts.wholeModuleCheck) {
     // stone::CheckWholeModule();
   }
-
   return ret::ok;
 }
 
@@ -46,4 +45,3 @@ int System::EmitObject() {
                        compiler.GetAnalysis().GetASTContext(), /*TODO*/ {});
   return ret::ok;
 }
-

@@ -5,6 +5,7 @@
 
 #include "stone/Compile/Analysis.h"
 #include "stone/Compile/AnalysisOptions.h"
+#include "stone/Compile/Lexer.h"
 #include "stone/Compile/ParserDiagnostic.h"
 #include "stone/Core/ASTContext.h"
 #include "stone/Core/Context.h"
@@ -28,12 +29,12 @@ class ParserStats final : public Stats {
 
 class Parser final {
   friend ParserStats;
-  Analysis &analysis;
   ParserStats stats;
   CompilePipeline *pipeline;
+  std::unique_ptr<Lexer> lexer;
 
  public:
-  Parser(Analysis &analysis, CompilePipeline *pipeline = nullptr);
+  Parser(CompilePipeline *pipeline = nullptr);
 
  public:
   // Decl

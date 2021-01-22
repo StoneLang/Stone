@@ -14,6 +14,9 @@
 namespace stone {
 class CompilePipeline;
 
+namespace syntax {
+class SourceUnit;
+}
 namespace analysis {
 class Checker;
 
@@ -27,13 +30,13 @@ class CheckerStats final : public Stats {
 
 class Checker final {
   friend CheckerStats;
-  Analysis &analysis;
+  SourceUnit &su;
   CheckerStats stats;
   CompilePipeline *pipeline;
 
  public:
-  // TODO: Pass CompileUnit
-  Checker(Analysis &analysis, CompilePipeline *pipeline = nullptr);
+  // TODO: CompileUnit
+  Checker(SourceUnit &su, CompilePipeline *pipeline = nullptr);
 
  public:
   void CheckDecl();

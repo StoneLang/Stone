@@ -48,10 +48,7 @@ class Compiler final : public Session {
     /// If \p BufID is already in the set, do nothing.
     void RecordPrimaryInputBuffer(SrcID fileID);
   */
- public:
-  /// Current inputs in the system
-  std::vector<InputFile *> inputs;
-
+ public: 
   CompileOptions compileOpts;
 
  public:
@@ -87,14 +84,6 @@ class Compiler final : public Session {
   // TranslateInputArgs(const llvm::opt::InputArgList &args) override const;
   //
  private:
-  void Parse();
-  void Parse(bool check);
-
-  void Check();
-
-  void CheckSourceUnit();
-  void CheckModule();
-
   void BuildInputs();
 
  public:

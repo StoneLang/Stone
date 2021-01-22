@@ -26,8 +26,8 @@ std::unique_ptr<llvm::TargetMachine> CreateTargetMachine(const GenOptions &Opts,
                                                          ASTContext &astCtx);
 
 /// May want to pass Module instead
-llvm::Module *GenIR(stone::syntax::Module *moduleDecl,
-                    const stone::Context &ctx, const GenOptions &genOpts,
+llvm::Module *GenIR(syntax::Module *moduleDecl, const stone::Context &ctx,
+                    const GenOptions &genOpts,
                     llvm::StringRef outputModulename);
 
 bool GenObject(llvm::Module *llvmModule, const GenOptions &genOpts,

@@ -2,20 +2,18 @@
 
 #include "stone/Compile/Analysis.h"
 #include "stone/Compile/Checker.h"
+#include "stone/Compile/Parser.h"
 #include "stone/Core/Ret.h"
 #include "stone/Public.h"
 
 using namespace stone::syntax;
 
-int stone::ParseSourceUnit(SourceUnit &su, CompilePipeline *pipeline) {
-  return ret::ok;
+void stone::ParseSourceUnit(SourceUnit &su, CompilePipeline *pipeline) {
+  // Parser parser(pipeline);
 }
 
-int stone::CheckSourceUnit(SourceUnit &su, CompilePipeline *pipeline) {
-  return ret::ok;
+void stone::CheckSourceUnit(SourceUnit &su, CompilePipeline *pipeline) {
+  // Checker checker(su, pipeline);
 }
 
-int stone::CheckWholeModule(SourceUnit &su, CompilePipeline *pipeline) {
-  // Checker checker;
-  return ret::ok;
-}
+void stone::CheckWholeModule(SourceUnit &su, CompilePipeline *pipeline) {}

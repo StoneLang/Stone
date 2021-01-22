@@ -8,13 +8,13 @@ class CompilePipeline;
 class SourceUnit;
 
 /// Parse a source file
-int ParseSourceUnit(SourceUnit &su, CompilePipeline *pipeline = nullptr);
+void ParseSourceUnit(SourceUnit &su, CompilePipeline *pipeline = nullptr);
 
 /// Perform type checking
-int CheckSourceUnit(SourceUnit &su, CompilePipeline *pipeline = nullptr);
+void CheckSourceUnit(SourceUnit &su, CompilePipeline *pipeline = nullptr);
 
 /// Perform type checking
-int CheckWholeModule(SourceUnit &su, CompilePipeline *pipeline = nullptr);
+void CheckWholeModule(SourceUnit &su, CompilePipeline *pipeline = nullptr);
 
 }  // namespace stone
 #endif
