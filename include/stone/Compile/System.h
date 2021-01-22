@@ -23,8 +23,6 @@ class System final {
 
  private:
   int Parse(bool check);
-  int CheckSourceUnit(syntax::SourceUnit *su);
-  int CheckModule(syntax::Module *m);
 
  public:
   int Parse();

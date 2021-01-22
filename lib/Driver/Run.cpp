@@ -1,3 +1,4 @@
+
 #include "stone/Driver/Run.h"
 
 #include <memory>
@@ -18,6 +19,7 @@
 #include "llvm/Support/Signals.h"
 #include "llvm/Support/StringSaver.h"
 #include "llvm/Support/TargetSelect.h"
+#include "stone/Core/Defer.h"
 #include "stone/Core/LLVM.h"
 #include "stone/Core/Ret.h"
 #include "stone/Driver/Compilation.h"
@@ -63,16 +65,16 @@ int stone::Run(llvm::ArrayRef<const char *> args, const char *arg0,
 
   Driver driver(driverPath, driverName);
 
-  bool canonicalPrefixes = false;
+  STONE_DEFER { driver.Finish(); };
 
+  bool canonicalPrefixes = false;
   SetInstallDir(args, driver, canonicalPrefixes);
 
   if (driver.Build(args)) {
-    driver.Run();
-    driver.Finish();
     if (driver.GetDiagEngine().HasError()) {
       return ret::err;
     }
+    driver.Run();
   }
   return ret::ok;
 }

@@ -22,12 +22,15 @@ class GenOptions;
 namespace syntax {
 class ASTContext;
 }
-namespace backend {
 std::unique_ptr<llvm::TargetMachine> CreateTargetMachine(const GenOptions &Opts,
                                                          ASTContext &astCtx);
 
+/// May want to pass Module instead
+llvm::Module *GenIR(stone::syntax::Module *moduleDecl,
+                    const stone::Context &ctx, const GenOptions &genOpts,
+                    llvm::StringRef outputModulename);
+
 bool GenObject(llvm::Module *llvmModule, const GenOptions &genOpts,
                ASTContext &astCtx, llvm::StringRef outputFilename);
-}  // namespace backend
 }  // namespace stone
 #endif

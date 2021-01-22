@@ -4,11 +4,14 @@
 #include "stone/Compile/System.h"
 #include "stone/Core/Defer.h"
 #include "stone/Core/Ret.h"
+#include "stone/Session/ExecutablePath.h"
 
 using namespace stone;
 
 int stone::Compile(llvm::ArrayRef<const char *> args, const char *arg0,
                    void *mainAddr, CompilePipeline *pipeline) {
+  auto executablePath = stone::GetExecutablePath(arg0);
+
   Compiler compiler(pipeline);
 
   STONE_DEFER { compiler.Finish(); };

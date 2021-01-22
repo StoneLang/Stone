@@ -10,15 +10,13 @@ set( LLVM_LINK_COMPONENTS
   )
 set(stone_compile_sources
 	Analysis.cpp
-	Backend.cpp
-	Check.cpp
+	Analyze.cpp
 	Checker.cpp
 	Compile.cpp
 	Compiler.cpp
 	Gen.cpp
 	Lexer.cpp
 	Optimize.cpp
-	Parse.cpp
 	Parser.cpp
 	System.cpp
 	Transformer.cpp
