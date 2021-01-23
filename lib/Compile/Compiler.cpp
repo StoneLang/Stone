@@ -1,5 +1,8 @@
 #include "stone/Compile/Compiler.h"
 
+#include <algorithm>
+#include <memory>
+
 #include "stone/Core/Ret.h"
 
 using namespace stone;
@@ -27,6 +30,7 @@ void Compiler::SetMainModule(Module *m) {}
 
 bool Compiler::Build(llvm::ArrayRef<const char *> args) {
   excludedFlagsBitmask = opts::NoCompileOption;
+
   auto argList = BuildArgList(args);
 
   std::unique_ptr<llvm::opt::DerivedArgList> dArgList(
@@ -37,25 +41,17 @@ bool Compiler::Build(llvm::ArrayRef<const char *> args) {
   BuildInputs();
 
   // Setup the main module
-  // if (!mainModule) {
-  //  Identifier moduleName =
-  //  astCtx->GetIdentifier(GetInvocation().GetModuleName()); mainModule =
-  //  Module::Create(moduleName, *Context);
-  //}
+  if (!mainModule) {
+    // Identifier moduleName = ac->GetIdentifier(GetModuleName());
+    // mainModule = Module::Create(moduleName, *Context);
+  }
 
   return true;
 }
 void Compiler::BuildInputs() {}
+
 ModeKind Compiler::GetDefaultModeKind() { return ModeKind::EmitObject; }
 
 void Compiler::PrintLifecycle() {}
 
 void Compiler::PrintHelp(bool showHidden) {}
-
-int Compiler::Run() {
-  // Perform a quick help check
-  if (compileOpts.showHelp) {
-    // PrintHelp();
-  }
-  return 0;
-}

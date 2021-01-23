@@ -109,6 +109,8 @@ class Session : public Context {
   ///
   virtual void PrintHelp(bool showHidden) = 0;
 
+  // virtual void PrintVersion() = 0;
+
   void SetTargetTriple(const llvm::Triple &triple);
 
   void SetTargetTriple(llvm::StringRef triple);

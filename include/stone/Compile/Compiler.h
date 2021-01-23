@@ -35,6 +35,10 @@ class Compiler final : public Session {
   mutable Module *mainModule = nullptr;
   std::unique_ptr<ASTContext> ac;
 
+ private:
+  class Implementation;
+  Implementation &GetImpl();
+
   /*
           /// Identifies the set of input buffers in the SrcMgr that are
     /// considered main source files.
@@ -102,7 +106,7 @@ class Compiler final : public Session {
   void BuildInputs();
 
   // TODO:
-  void BuildCompileUnits();
+  // void BuildCompileUnits();
 
  public:
   void *Allocate(size_t size, unsigned align) const {

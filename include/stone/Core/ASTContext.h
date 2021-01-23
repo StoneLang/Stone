@@ -99,13 +99,13 @@ class ASTContext final {
   ASTContext &operator=(const ASTContext &) = delete;
 
  public:
-  //
+  ///
   Identifier &GetIdentifier(llvm::StringRef name);
-  //
+  ///
   Builtin &GetBuiltin() const;
   //
   const stone::Context &GetContext() const { return ctx; }
-  //
+  ///
   LangABI *GetLangABI() const;
   //
   SrcMgr &GetSrcMgr() { return sm; }

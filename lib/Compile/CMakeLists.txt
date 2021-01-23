@@ -17,7 +17,6 @@ set(stone_compile_sources
 	Lexer.cpp
 	Optimize.cpp
 	Parser.cpp
-	System.cpp
 	Transformer.cpp
 	
 	LINK_LIBS
