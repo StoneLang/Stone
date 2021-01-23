@@ -15,7 +15,7 @@ class Token;
 class LangOptions;
 class CompilePipeline;
 
-namespace analysis {
+namespace syntax {
 class Token;
 
 enum class TriviaRetentionMode {
@@ -117,6 +117,6 @@ class Lexer final {
 
   SrcID GetSrcID() { return srcID; }
 };
-}  // namespace analysis
+}  // namespace syntax
 }  // namespace stone
 #endif

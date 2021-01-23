@@ -6,7 +6,7 @@
 #include "stone/Core/TokenKind.h"
 
 namespace stone {
-namespace analysis {
+namespace syntax {
 class Token final {
   /// kind - The actual flavor of token this is.
   ///
@@ -217,14 +217,14 @@ class Token final {
            "custom string delimiter length > 255");
   }
 };
-}  // namespace analysis
+}  // namespace syntax
 }  // namespace stone
 
 namespace llvm {
 template <typename T>
 struct isPodLike;
 template <>
-struct isPodLike<stone::analysis::Token> {
+struct isPodLike<stone::syntax::Token> {
   static const bool value = true;
 };
 }  // end namespace llvm

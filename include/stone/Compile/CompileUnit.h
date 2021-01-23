@@ -10,8 +10,10 @@
 #include "stone/Session/SessionOptions.h"
 
 namespace stone {
-namespace analysis {
+namespace syntax {
 class SourceUnit;
+}
+
 class CompileUnit final {
   SourceUnit &su;
   OutputFile *outputFile = nullptr;
@@ -22,8 +24,7 @@ class CompileUnit final {
   enum class Stage { Parsed, Checked };
 
  public:
-  CompileUnit(SourceUnit &su, Compiler &compiler);
+  CompileUnit(syntax::SourceUnit &su, Compiler &compiler);
 };
-}  // namespace analysis
 }  // namespace stone
 #endif

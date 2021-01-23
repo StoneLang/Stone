@@ -1,6 +1,5 @@
 #include "stone/Compile/System.h"
 
-#include "stone/Compile/Analysis.h"
 #include "stone/Compile/Analyze.h"
 #include "stone/Compile/Compiler.h"
 #include "stone/Compile/Gen.h"
@@ -11,18 +10,17 @@
 
 using namespace stone;
 using namespace stone::syntax;
-using namespace stone::analysis;
 
 int System::Parse(bool check) {
   for (auto input : compiler.GetCompileOptions().inputs) {
     // stone::analysis::Parse
     if (check) {
-      if (!compiler.GetCompileOptions().analysisOpts.wholeModuleCheck) {
+      if (!compiler.GetCompileOptions().wholeModuleCheck) {
         //	stone::CheckSourceUnit();
       }
     }
   }
-  if (check && compiler.GetCompileOptions().analysisOpts.wholeModuleCheck) {
+  if (check && compiler.GetCompileOptions().wholeModuleCheck) {
     // stone::CheckWholeModule();
   }
   return ret::ok;
@@ -33,7 +31,7 @@ int System::Check() { return Parse(true); }
 
 int System::EmitIR() {
   Check();
-  llvmModule = stone::GenIR(compiler.GetAnalysis().GetMainModule(), compiler,
+  llvmModule = stone::GenIR(compiler.GetMainModule(), compiler,
                             compiler.compileOpts.genOpts, /*TODO*/ {});
 
   return ret::ok;
@@ -42,6 +40,6 @@ int System::EmitObject() {
   EmitIR();
   bool status =
       stone::GenObject(llvmModule, compiler.GetCompileOptions().genOpts,
-                       compiler.GetAnalysis().GetASTContext(), /*TODO*/ {});
+                       compiler.GetASTContext(), /*TODO*/ {});
   return ret::ok;
 }

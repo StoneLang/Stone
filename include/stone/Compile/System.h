@@ -1,13 +1,9 @@
 #ifndef STONE_COMPILE_SYSTEM_H
 #define STONE_COMPILE_SYSTEM_H
 
-#include "stone/Compile/Analysis.h"
 #include "stone/Compile/CompileOptions.h"
 #include "stone/Core/SearchPathOptions.h"
 #include "stone/Session/Session.h"
-
-using namespace stone::syntax;
-using namespace stone::analysis;
 
 namespace llvm {
 class Module;

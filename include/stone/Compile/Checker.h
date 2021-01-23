@@ -3,13 +3,13 @@
 
 #include <memory>
 
-#include "stone/Compile/Analysis.h"
-#include "stone/Compile/AnalysisOptions.h"
 #include "stone/Compile/CheckerDiagnostic.h"
 #include "stone/Core/ASTContext.h"
 #include "stone/Core/Context.h"
 #include "stone/Core/Module.h"
 #include "stone/Core/Stats.h"
+
+using namespace stone::syntax;
 
 namespace stone {
 class CompilePipeline;
@@ -17,7 +17,7 @@ class CompilePipeline;
 namespace syntax {
 class SourceUnit;
 }
-namespace analysis {
+namespace semantics {
 class Checker;
 
 class CheckerStats final : public Stats {
@@ -30,13 +30,13 @@ class CheckerStats final : public Stats {
 
 class Checker final {
   friend CheckerStats;
-  SourceUnit &su;
+  syntax::SourceUnit &su;
   CheckerStats stats;
   CompilePipeline *pipeline;
 
  public:
   // TODO: CompileUnit
-  Checker(SourceUnit &su, CompilePipeline *pipeline = nullptr);
+  Checker(syntax::SourceUnit &su, CompilePipeline *pipeline = nullptr);
 
  public:
   void CheckDecl();
@@ -47,6 +47,6 @@ class Checker final {
  public:
   void CheckExpr();
 };
-}  // namespace analysis
+}  // namespace semantics
 }  // namespace stone
 #endif

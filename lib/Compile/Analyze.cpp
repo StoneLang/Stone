@@ -1,6 +1,5 @@
 #include "stone/Compile/Analyze.h"
 
-#include "stone/Compile/Analysis.h"
 #include "stone/Compile/Checker.h"
 #include "stone/Compile/Parser.h"
 #include "stone/Core/Ret.h"

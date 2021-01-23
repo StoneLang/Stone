@@ -1,8 +1,9 @@
 #ifndef STONE_COMPILE_COMPILER_H
 #define STONE_COMPILE_COMPILER_H
 
-#include "stone/Compile/Analysis.h"
 #include "stone/Compile/CompileOptions.h"
+#include "stone/Core/ASTContext.h"
+#include "stone/Core/Module.h"
 #include "stone/Core/SearchPathOptions.h"
 #include "stone/Session/Session.h"
 
@@ -10,8 +11,6 @@ using namespace stone::syntax;
 
 namespace stone {
 class CompilePipeline;
-
-namespace analysis {
 
 struct CompileInputProfile final {};
 struct CompileOutputProfile final {};
@@ -33,7 +32,9 @@ class Compiler final : public Session {
   SrcMgr sm;
   FileMgr fm;
   CompilePipeline *pipeline = nullptr;
-  std::unique_ptr<Analysis> analysis;
+  mutable Module *mainModule = nullptr;
+  std::unique_ptr<ASTContext> ac;
+
   /*
           /// Identifies the set of input buffers in the SrcMgr that are
     /// considered main source files.
@@ -48,12 +49,18 @@ class Compiler final : public Session {
     /// If \p BufID is already in the set, do nothing.
     void RecordPrimaryInputBuffer(SrcID fileID);
   */
- public: 
+ public:
   CompileOptions compileOpts;
 
  public:
+  Compiler(const Compiler &) = delete;
+  Compiler(Compiler &&) = delete;
+  Compiler &operator=(const Compiler &) = delete;
+  Compiler &operator=(Compiler &&) = delete;
+
   Compiler(CompilePipeline *pipeline = nullptr);
 
+ public:
   /// Parse the given list of strings into an InputArgList.
   bool Build(llvm::ArrayRef<const char *> args) override;
 
@@ -61,9 +68,6 @@ class Compiler final : public Session {
   /// Parse the given list of strings into an InputArgList.
   void PrintLifecycle() override;
   void PrintHelp(bool showHidden) override;
-
- public:
-  Analysis &GetAnalysis() { return *analysis.get(); }
 
   SearchPathOptions &GetSearchPathOptions() { return compileOpts.spOpts; }
   const SearchPathOptions &GetSearchPathOptions() const {
@@ -75,8 +79,19 @@ class Compiler final : public Session {
 
   SrcMgr &GetSrcMgr() { return sm; }
 
+  ASTContext &GetASTContext() { return *ac.get(); }
+  // stone::syntax::Module &GetModule() { return *md.get(); }
+  //
+  /// Retrieve the main module containing the files being compiled.
+  Module *GetMainModule() const;
+
+  /// Replace the current main module with a new one. This is used for top-level
+  /// cached code completion.
+  void SetMainModule(Module *moduleDecl);
+
  protected:
   void ComputeMode(const llvm::opt::DerivedArgList &args) override;
+
   ModeKind GetDefaultModeKind() override;
   /// TranslateInputArgs - Create a new derived argument list from the input
   /// arguments, after applying the standard argument translations.
@@ -85,6 +100,9 @@ class Compiler final : public Session {
   //
  private:
   void BuildInputs();
+
+  // TODO:
+  void BuildCompileUnits();
 
  public:
   void *Allocate(size_t size, unsigned align) const {
@@ -105,6 +123,5 @@ class Compiler final : public Session {
     return (void *)alloc.Allocate(baseSize, alignof(InputFileTy));
   }
 };
-}  // namespace analysis
 }  // namespace stone
 #endif

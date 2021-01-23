@@ -3,7 +3,7 @@
 #include "stone/Core/Ret.h"
 
 using namespace stone;
-using namespace stone::analysis;
+using namespace stone::syntax;
 
 Parser::Parser(CompilePipeline *pipeline) : pipeline(pipeline), stats(*this) {}
 

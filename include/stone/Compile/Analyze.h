@@ -5,16 +5,22 @@
 
 namespace stone {
 class CompilePipeline;
+
+namespace syntax {
 class SourceUnit;
+}
 
 /// Parse a source file
-void ParseSourceUnit(SourceUnit &su, CompilePipeline *pipeline = nullptr);
+void ParseSourceUnit(syntax::SourceUnit &su,
+                     CompilePipeline *pipeline = nullptr);
 
 /// Perform type checking
-void CheckSourceUnit(SourceUnit &su, CompilePipeline *pipeline = nullptr);
+void CheckSourceUnit(syntax::SourceUnit &su,
+                     CompilePipeline *pipeline = nullptr);
 
 /// Perform type checking
-void CheckWholeModule(SourceUnit &su, CompilePipeline *pipeline = nullptr);
+void CheckWholeModule(syntax::SourceUnit &su,
+                      CompilePipeline *pipeline = nullptr);
 
 }  // namespace stone
 #endif

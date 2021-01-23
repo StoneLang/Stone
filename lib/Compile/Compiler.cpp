@@ -1,23 +1,29 @@
 #include "stone/Compile/Compiler.h"
 
-#include "stone/Compile/Analysis.h"
 #include "stone/Core/Ret.h"
 
 using namespace stone;
 using namespace stone::opts;
-using namespace stone::analysis;
+using namespace stone::syntax;
 
 Compiler::Compiler(CompilePipeline *pipeline)
     : Session(compileOpts),
       pipeline(pipeline),
       fm(compileOpts.fsOpts),
       sm(GetDiagEngine(), fm) {
-  analysis.reset(new Analysis(*this, compileOpts, GetSrcMgr()));
+  ac.reset(new ASTContext(*this, compileOpts.spOpts, sm));
 }
 
 void Compiler::ComputeMode(const llvm::opt::DerivedArgList &args) {
   Session::ComputeMode(args);
 }
+
+Module *Compiler::GetMainModule() const {
+  assert(mainModule && "Null Main Module.");
+  return mainModule;
+}
+
+void Compiler::SetMainModule(Module *m) {}
 
 bool Compiler::Build(llvm::ArrayRef<const char *> args) {
   excludedFlagsBitmask = opts::NoCompileOption;
@@ -51,5 +57,5 @@ int Compiler::Run() {
   if (compileOpts.showHelp) {
     // PrintHelp();
   }
-	return 0;
+  return 0;
 }

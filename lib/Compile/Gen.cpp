@@ -1,7 +1,6 @@
 #include "stone/Compile/Gen.h"
 
 #include "llvm/IR/Module.h"
-#include "stone/Compile/Analysis.h"
 #include "stone/Compile/GenOptions.h"
 #include "stone/Compile/Transformer.h"
 #include "stone/Core/ASTContext.h"
@@ -11,7 +10,6 @@
 
 using namespace stone;
 using namespace stone::syntax;
-using namespace stone::analysis;
 
 llvm::Module *stone::GenIR(syntax::Module *moduleDecl, const Context &ctx,
                            const GenOptions &genOpts,

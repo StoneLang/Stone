@@ -3,7 +3,7 @@
 #include "stone/Core/Ret.h"
 
 using namespace stone;
-using namespace stone::analysis;
+using namespace stone::semantics;
 using namespace stone::syntax;
 
 Checker::Checker(SourceUnit &su, CompilePipeline *pipeline)

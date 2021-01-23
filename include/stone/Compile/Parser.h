@@ -3,8 +3,6 @@
 
 #include <memory>
 
-#include "stone/Compile/Analysis.h"
-#include "stone/Compile/AnalysisOptions.h"
 #include "stone/Compile/Lexer.h"
 #include "stone/Compile/ParserDiagnostic.h"
 #include "stone/Core/ASTContext.h"
@@ -13,9 +11,8 @@
 #include "stone/Core/Stats.h"
 
 namespace stone {
-
 class CompilePipeline;
-namespace analysis {
+namespace syntax {
 class Parser;
 class ParserStats final : public Stats {
   const Parser &parser;
@@ -53,6 +50,6 @@ class Parser final {
   // Expr
   void ParseExpr();
 };
-}  // namespace analysis
+}  // namespace syntax
 }  // namespace stone
 #endif

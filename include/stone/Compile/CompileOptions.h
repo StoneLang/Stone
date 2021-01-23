@@ -1,7 +1,6 @@
 #ifndef STONE_COMPILE_COMPILEOPTIONS_H
 #define STONE_COMPILE_COMPILEOPTIONS_H
 
-#include "stone/Compile/AnalysisOptions.h"
 #include "stone/Compile/GenOptions.h"
 #include "stone/Core/FileSystemOptions.h"
 #include "stone/Core/SearchPathOptions.h"
@@ -9,16 +8,17 @@
 #include "stone/Session/SessionOptions.h"
 
 namespace stone {
-namespace analysis {
-
+namespace syntax {
 class SourceUnit;
+}
+
 class CompileScope;
 class Compiler;
 class OutputFile;
 
 // TODO: Replace with CompileUnit
 class alignas(8) InputFile final {
-  SourceUnit *su = nullptr;
+  syntax::SourceUnit *su = nullptr;
   OutputFile *outputFile = nullptr;
   CompileScope *scope = nullptr;
   Compiler &compiler;
@@ -51,16 +51,17 @@ class OutputFile final {};
 class CompileOptions final : public SessionOptions {
  public:
   GenOptions genOpts;
-  AnalysisOptions analysisOpts;
   SearchPathOptions spOpts;
   FileSystemOptions fsOpts;
 
-	/// Current inputs in the system
+  /// Current inputs in the system
   std::vector<InputFile *> inputs;
+
+  bool wholeModuleCheck = false;
 
  public:
   CompileOptions() {}
 };
-}  // namespace analysis
+
 }  // namespace stone
 #endif
