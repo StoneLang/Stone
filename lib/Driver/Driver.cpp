@@ -20,7 +20,10 @@ Driver::Driver(llvm::StringRef stoneExecutable, std::string driverName)
 /// Parse the given list of strings into an InputArgList.
 bool Driver::Build(llvm::ArrayRef<const char *> args) {
   excludedFlagsBitmask = opts::NoDriverOption;
+
   originalArgs = BuildArgList(args);
+
+  // Check for errors
   toolChain = BuildToolChain(*originalArgs);
   compilation = BuildCompilation(*toolChain, *originalArgs);
 

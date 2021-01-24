@@ -2,6 +2,7 @@
 #define STONE_SESSION_SESSIONOPTIONS_H
 
 #include "stone/Core/LangOptions.h"
+#include "stone/Session/ModeKind.h"
 #include "stone/Session/Options.h"
 
 namespace stone {
@@ -14,6 +15,8 @@ class SessionOptions {
   bool showHidden = false;
   bool showVersion = false;
   bool showLifecycle = false;
+
+  ModeKind modeKind = ModeKind::None;
 
  public:
   SessionOptions() : optTable(stone::CreateOptTable()) {}

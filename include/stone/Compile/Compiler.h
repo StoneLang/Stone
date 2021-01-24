@@ -1,7 +1,7 @@
 #ifndef STONE_COMPILE_COMPILER_H
 #define STONE_COMPILE_COMPILER_H
 
-#include "stone/Compile/CompileOptions.h"
+#include "stone/Compile/CompilerOptions.h"
 #include "stone/Core/ASTContext.h"
 #include "stone/Core/Module.h"
 #include "stone/Core/SearchPathOptions.h"
@@ -12,21 +12,8 @@ using namespace stone::syntax;
 namespace stone {
 class CompilePipeline;
 
-struct CompileInputProfile final {};
-struct CompileOutputProfile final {};
-
-class CompileScope final {
-  CompileScope(const CompileScope &) = delete;
-  void operator=(const CompileScope &) = delete;
-
- public:
-  CompileScope();
-  ~CompileScope();
-
- public:
-  void Enter();
-  void Exit();
-};
+// struct CompileInputProfile final {};
+// struct CompileOutputProfile final {};
 
 class Compiler final : public Session {
   SrcMgr sm;
@@ -53,7 +40,7 @@ class Compiler final : public Session {
     void RecordPrimaryInputBuffer(SrcID fileID);
   */
  public:
-  CompileOptions compileOpts;
+  CompilerOptions compilerOpts;
 
  public:
   Compiler(const Compiler &) = delete;
@@ -72,13 +59,13 @@ class Compiler final : public Session {
   void PrintLifecycle() override;
   void PrintHelp(bool showHidden) override;
 
-  SearchPathOptions &GetSearchPathOptions() { return compileOpts.spOpts; }
+  SearchPathOptions &GetSearchPathOptions() { return compilerOpts.spOpts; }
   const SearchPathOptions &GetSearchPathOptions() const {
-    return compileOpts.spOpts;
+    return compilerOpts.spOpts;
   }
 
-  CompileOptions &GetCompileOptions() { return compileOpts; }
-  const CompileOptions &GetCompileOptions() const { return compileOpts; }
+  CompilerOptions &GetCompilerOptions() { return compilerOpts; }
+  const CompilerOptions &GetCompilerOptions() const { return compilerOpts; }
 
   SrcMgr &GetSrcMgr() { return sm; }
 

@@ -13,6 +13,8 @@ set(stone_compile_sources
 	Checker.cpp
 	Compile.cpp
 	Compiler.cpp
+	CompilerScope.cpp
+	CompilerUnit.cpp
 	Gen.cpp
 	Lexer.cpp
 	Optimize.cpp

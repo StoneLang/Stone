@@ -18,6 +18,9 @@ Session::~Session() {}
 
 std::unique_ptr<llvm::opt::InputArgList> Session::BuildArgList(
     llvm::ArrayRef<const char *> args) {
+  if (args.size() == 0) {
+  }
+
   std::unique_ptr<llvm::opt::InputArgList> argList =
       llvm::make_unique<llvm::opt::InputArgList>(
           sessionOpts.GetOpts().ParseArgs(args, missingArgIndex,

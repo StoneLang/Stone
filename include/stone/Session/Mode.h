@@ -1,20 +1,9 @@
 #ifndef STONE_SESSION_MODE_H
 #define STONE_SESSION_MODE_H
 
-namespace stone {
+#include "stone/Session/ModeKind.h"
 
-enum class ModeKind {
-  None,
-  Parse,
-  Check,
-  EmitIR,
-  EmitBC,
-  EmitObject,
-  EmitLibrary,
-  EmitModuleOnly,
-  EmitAssembly,
-  EmitExecutable
-};
+namespace stone {
 
 class Mode final {
   friend class Session;

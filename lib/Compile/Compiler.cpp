@@ -10,11 +10,11 @@ using namespace stone::opts;
 using namespace stone::syntax;
 
 Compiler::Compiler(CompilePipeline *pipeline)
-    : Session(compileOpts),
+    : Session(compilerOpts),
       pipeline(pipeline),
-      fm(compileOpts.fsOpts),
+      fm(compilerOpts.fsOpts),
       sm(GetDiagEngine(), fm) {
-  ac.reset(new ASTContext(*this, compileOpts.spOpts, sm));
+  ac.reset(new ASTContext(*this, compilerOpts.spOpts, sm));
 }
 
 void Compiler::ComputeMode(const llvm::opt::DerivedArgList &args) {
@@ -58,9 +58,9 @@ void Compiler::PrintHelp(bool showHidden) {}
 
 int Compiler::Run() {
   // Perform a quick help check
-  if (compileOpts.showHelp) {
-    PrintHelp(compileOpts.showHidden);
-  } else if (compileOpts.showVersion) {
+  if (compilerOpts.showHelp) {
+    PrintHelp(compilerOpts.showHidden);
+  } else if (compilerOpts.showVersion) {
     PrintVersion();
   } else {
     return Compiler::Run(*this);

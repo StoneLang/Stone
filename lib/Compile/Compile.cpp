@@ -26,15 +26,15 @@ class Compiler::Implementation final {
 };
 
 int Compiler::Implementation::Parse(bool check) {
-  for (auto input : compiler.GetCompileOptions().inputs) {
+  for (auto input : compiler.GetCompilerOptions().inputs) {
     // stone::analysis::Parse
     if (check) {
-      if (!compiler.GetCompileOptions().wholeModuleCheck) {
+      if (!compiler.GetCompilerOptions().wholeModuleCheck) {
         //	stone::CheckSourceUnit();
       }
     }
   }
-  if (check && compiler.GetCompileOptions().wholeModuleCheck) {
+  if (check && compiler.GetCompilerOptions().wholeModuleCheck) {
     // stone::CheckWholeModule();
   }
   return ret::ok;
@@ -48,7 +48,7 @@ int Compiler::Implementation::EmitIR() {
     return ret::err;
   }
   llvmModule = stone::GenIR(compiler.GetMainModule(), compiler,
-                            compiler.compileOpts.genOpts, /*TODO*/ {});
+                            compiler.compilerOpts.genOpts, /*TODO*/ {});
   return ret::ok;
 }
 int Compiler::Implementation::EmitObject() {
@@ -56,7 +56,7 @@ int Compiler::Implementation::EmitObject() {
     return ret::err;
   }
   bool status =
-      stone::GenObject(llvmModule, compiler.GetCompileOptions().genOpts,
+      stone::GenObject(llvmModule, compiler.GetCompilerOptions().genOpts,
                        compiler.GetASTContext(), /*TODO*/ {});
   return ret::ok;
 }

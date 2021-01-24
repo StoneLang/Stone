@@ -12,7 +12,7 @@ namespace syntax {
 class SourceUnit;
 }
 
-class CompileScope;
+class CompilerScope;
 class Compiler;
 class OutputFile;
 
@@ -20,7 +20,7 @@ class OutputFile;
 class alignas(8) InputFile final {
   syntax::SourceUnit *su = nullptr;
   OutputFile *outputFile = nullptr;
-  CompileScope *scope = nullptr;
+  CompilerScope *scope = nullptr;
   Compiler &compiler;
 
   SrcID sid;
@@ -48,7 +48,7 @@ class alignas(8) InputFile final {
 
 class OutputFile final {};
 
-class CompileOptions final : public SessionOptions {
+class CompilerOptions final : public SessionOptions {
  public:
   GenOptions genOpts;
   SearchPathOptions spOpts;
@@ -60,7 +60,7 @@ class CompileOptions final : public SessionOptions {
   bool wholeModuleCheck = false;
 
  public:
-  CompileOptions() {}
+  CompilerOptions() {}
 };
 
 }  // namespace stone
