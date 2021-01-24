@@ -134,3 +134,5 @@ void Session::Finish() {
 }
 void Session::PrintDiagnostics() {}
 void Session::PrintStatistics() {}
+
+void Session::PrintVersion() {}

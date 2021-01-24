@@ -11,6 +11,7 @@ class SessionOptions {
 
  public:
   bool showHelp = false;
+  bool showHidden = false;
   bool showVersion = false;
   bool showLifecycle = false;
 

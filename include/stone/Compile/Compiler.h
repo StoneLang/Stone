@@ -100,7 +100,8 @@ class Compiler final : public Session {
   /// arguments, after applying the standard argument translations.
   // llvm::opt::DerivedArgList *
   // TranslateInputArgs(const llvm::opt::InputArgList &args) override const;
-  //
+  static std::unique_ptr<Compiler> Create();
+
  private:
   void BuildInputs();
 

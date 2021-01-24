@@ -91,7 +91,6 @@ int stone::Compile(llvm::ArrayRef<const char *> args, const char *arg0,
       return ret::err;
     }
     assert(compiler.GetMode().IsCompileOnly() && "Not a compile mode");
-    return compiler.Run();
   }
-  return ret::ok;
+  return compiler.Run();
 }

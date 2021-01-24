@@ -108,8 +108,8 @@ class Session : public Context {
   virtual void PrintLifecycle() = 0;
   ///
   virtual void PrintHelp(bool showHidden) = 0;
-
-  // virtual void PrintVersion() = 0;
+  ///
+  void PrintVersion();
 
   void SetTargetTriple(const llvm::Triple &triple);
 

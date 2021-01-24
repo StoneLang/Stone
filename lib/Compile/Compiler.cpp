@@ -59,10 +59,19 @@ void Compiler::PrintHelp(bool showHidden) {}
 int Compiler::Run() {
   // Perform a quick help check
   if (compileOpts.showHelp) {
-    // return PrintHelp();
+    PrintHelp(compileOpts.showHidden);
+  } else if (compileOpts.showVersion) {
+    PrintVersion();
+  } else {
+    return Compiler::Run(*this);
   }
-  if (compileOpts.showVersion) {
-    // return ShowVersion();
-  }
-  return Compiler::Run(*this);
+  return ret::ok;
 }
+
+/* TODO:
+std::unique_ptr<Compiler> Compiler::Create() {
+        std::unique_ptr<Compiler> compiler (new Compiler()):
+
+}
+
+*/
