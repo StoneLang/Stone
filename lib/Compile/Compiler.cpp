@@ -55,3 +55,14 @@ ModeKind Compiler::GetDefaultModeKind() { return ModeKind::EmitObject; }
 void Compiler::PrintLifecycle() {}
 
 void Compiler::PrintHelp(bool showHidden) {}
+
+int Compiler::Run() {
+  // Perform a quick help check
+  if (compileOpts.showHelp) {
+    // return PrintHelp();
+  }
+  if (compileOpts.showVersion) {
+    // return ShowVersion();
+  }
+  return Compiler::Run(*this);
+}

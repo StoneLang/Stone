@@ -17,9 +17,6 @@ class Compiler::Implementation final {
   ~Implementation() {}
 
  public:
-  int Run();
-
- public:
   int Parse();
   int Parse(bool check);
   int Check();
@@ -27,37 +24,7 @@ class Compiler::Implementation final {
   int EmitObject();
   int EmitAssembly();
 };
-inline Compiler::Implementation &Compiler::GetImpl() {
-  auto offset =
-      llvm::alignAddr((void *)sizeof(*this), alignof(Compiler::Implementation));
 
-  return *reinterpret_cast<Compiler::Implementation *>(offset);
-}
-int Compiler::Implementation::Run() {
-  switch (compiler.GetMode().GetKind()) {
-    case ModeKind::Parse:
-      return Parse();
-    case ModeKind::Check:
-      return Check();
-    case ModeKind::EmitIR:
-      return EmitIR();
-    case ModeKind::EmitObject:
-      return EmitObject();
-    default:
-      break;
-  }
-  return ret::ok;
-}
-int Compiler::Run() {
-  // Perform a quick help check
-  if (compileOpts.showHelp) {
-    // return PrintHelp();
-  }
-  if (compileOpts.showVersion) {
-    // return ShowVersion();
-  }
-  return GetImpl().Run();
-}
 int Compiler::Implementation::Parse(bool check) {
   for (auto input : compiler.GetCompileOptions().inputs) {
     // stone::analysis::Parse
@@ -91,6 +58,23 @@ int Compiler::Implementation::EmitObject() {
   bool status =
       stone::GenObject(llvmModule, compiler.GetCompileOptions().genOpts,
                        compiler.GetASTContext(), /*TODO*/ {});
+  return ret::ok;
+}
+int Compiler::Run(Compiler &compiler) {
+  auto implementation = llvm::make_unique<Compiler::Implementation>(compiler);
+
+  switch (compiler.GetMode().GetKind()) {
+    case ModeKind::Parse:
+      return implementation->Parse();
+    case ModeKind::Check:
+      return implementation->Check();
+    case ModeKind::EmitIR:
+      return implementation->EmitIR();
+    case ModeKind::EmitObject:
+      return implementation->EmitObject();
+    default:
+      break;
+  }
   return ret::ok;
 }
 

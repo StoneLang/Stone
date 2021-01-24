@@ -37,8 +37,7 @@ class Compiler final : public Session {
 
  private:
   class Implementation;
-  Implementation &GetImpl();
-
+  static int Run(Compiler &compiler);
   /*
           /// Identifies the set of input buffers in the SrcMgr that are
     /// considered main source files.
