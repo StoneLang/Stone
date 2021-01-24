@@ -74,6 +74,8 @@ class Session : public Context {
   /// Object that stores strings read from configuration file.
   llvm::StringSaver strSaver;
 
+  InputFiles inputFiles;
+
  public:
   void SetFS(llvm::IntrusiveRefCntPtr<llvm::vfs::FileSystem> fs) {
     fileSystem = fs;
@@ -136,6 +138,8 @@ class Session : public Context {
 
   // TODO: You want to say
   void AddFile();
+
+  InputFiles &GetInputFiles() { return inputFiles; }
 
   /// Return the total amount of physical memory allocated
   /// for representing CompileInstances

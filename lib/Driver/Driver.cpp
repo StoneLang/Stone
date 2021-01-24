@@ -88,7 +88,7 @@ std::unique_ptr<Compilation> Driver::BuildCompilation(
 
   // Start here - BuildActivities(*args, inputs);
 
-  BuildInputs(tc, *dArgList, profile.inputFiles);
+  BuildInputs(tc, *dArgList, GetInputFiles());
 
   if (de.HasError()) return nullptr;
 
@@ -207,7 +207,7 @@ void Driver::BuildCompileActivities(Compilation &compilation,
                                     CompilationActivity *le) {
   // Go through the files and build the compile activities
 
-  for (const InputPair &input : profile.inputFiles) {
+  for (const InputPair &input : inputFiles) {
     // BuildCompileActivity(input);
     file::FileType inputType = input.first;
     const llvm::opt::Arg *inputArg = input.second;

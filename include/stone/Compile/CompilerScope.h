@@ -4,7 +4,9 @@
 namespace stone {
 class CompilerScope final {
   CompilerScope(const CompilerScope &) = delete;
-  void operator=(const CompilerScope &) = delete;
+  CompilerScope(CompilerScope &&) = delete;
+  CompilerScope &operator=(const CompilerScope &) = delete;
+  CompilerScope &operator=(CompilerScope &&) = delete;
 
  public:
   CompilerScope();

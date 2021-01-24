@@ -50,13 +50,12 @@ enum class LTOKind { None, Full, Thin, Unknown };
 class BuildProfile final {
  public:
   /// All of the input files that have been created
-  InputFiles inputFiles;
-
+  //
   /// The Activitys which were used to build the Jobs.
   llvm::SmallVector<std::unique_ptr<const Activity>, 32> activities;
 
   /// The Jobes which will be executed by this compilation.
-  llvm::SmallVector<std::unique_ptr<const Job>, 32> procs;
+  llvm::SmallVector<std::unique_ptr<const Job>, 32> jobs;
 
   /// The inputs for the linker -- may not need this there
   llvm::SmallVector<const Activity *, 2> linkerInputs;
