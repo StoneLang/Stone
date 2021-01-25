@@ -241,6 +241,8 @@ class Driver final : public Session {
 
   Compilation &GetCompilation() { return *compilation.get(); }
 
+  DriverOptions &GetDriverOptions() { return driverOpts; }
+
  protected:
   void ComputeMode(const llvm::opt::DerivedArgList &args) override;
   ModeKind GetDefaultModeKind() override;

@@ -9,9 +9,6 @@
 
 using namespace stone;
 
-// struct CompilerInput final {};
-// struct CompilerOutput final {};
-
 class Compiler::Implementation final {
   Compiler &compiler;
   llvm::Module *llvmModule = nullptr;
@@ -52,7 +49,7 @@ Compiler::Implementation::~Implementation() {}
 void Compiler::Implementation::Build() {}
 
 int Compiler::Implementation::Parse(bool check) {
-  for (auto input : compiler.GetCompilerOptions().inputs) {
+  for (const auto input : compiler.GetCompilerOptions().inputs) {
     // stone::Parse::ParseSourceUnit(su, compiler.GetPipeline());
     if (check) {
       if (!compiler.GetCompilerOptions().wholeModuleCheck) {

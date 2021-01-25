@@ -33,12 +33,6 @@
 
 namespace stone {
 
-/// An input argument from the command line and its inferred type.
-using InputPair = std::pair<file::FileType, const llvm::opt::Arg *>;
-
-/// Type used for a list of input arguments.
-using InputFiles = llvm::SmallVector<InputPair, 16>;
-
 enum class SessionKind { Compiler, Driver };
 
 class Session : public Context {

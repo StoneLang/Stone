@@ -119,7 +119,7 @@ class CompileActivity final : public CompilationActivity {
  public:
   // class State {};
  public:
-	CompileActivity(Activity *input, OutputFileType outputType)
+  CompileActivity(Activity *input, OutputFileType outputType)
       : CompilationActivity(Activity::Kind::Compile, input, outputType) {}
 
   static bool classof(const Activity *e) {

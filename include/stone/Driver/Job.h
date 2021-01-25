@@ -18,7 +18,7 @@ class Job {
   friend class Compilation;
   Driver &driver;
   CompilationActivity &trigger;
-  
+
  public:
   Job(CompilationActivity &trigger, Driver &driver)
       : trigger(trigger), driver(driver) {}
@@ -39,7 +39,7 @@ class Job {
       std::string *errMsg, bool *failed) const;
 
  public:
-  // llvm::SmallVector<Job *, 10> deps;  
+  // llvm::SmallVector<Job *, 10> deps;
 };
 
 /*

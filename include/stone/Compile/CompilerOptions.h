@@ -14,6 +14,8 @@ class SourceUnit;
 
 class CompilerScope;
 class Compiler;
+
+/*
 class OutputFile;
 
 // TODO: Replace with CompileUnit
@@ -47,6 +49,7 @@ class alignas(8) InputFile final {
 };
 
 class OutputFile final {};
+*/
 
 class CompilerOptions final : public SessionOptions {
  public:
@@ -55,7 +58,7 @@ class CompilerOptions final : public SessionOptions {
   FileSystemOptions fsOpts;
 
   /// Current inputs in the system
-  std::vector<InputFile *> inputs;
+  // std::vector<InputFile *> inputs;
 
   bool wholeModuleCheck = false;
 

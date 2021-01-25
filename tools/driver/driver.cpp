@@ -29,9 +29,7 @@ enum class JobType {
 
 using OutputFileType = file::FileType;
 
-class CrashCondition {
-
-};
+class CrashCondition {};
 
 class Job {
  public:
@@ -84,7 +82,6 @@ class Job {
       std::string *errMsg, bool *failed) const;
 };
 
-
 /*
 class CompileJob final : public Job {
  public:
@@ -105,6 +102,5 @@ class StaticLinkJob final : public Job {
         linkType(linkType) {}
 };
 */
-
 
 int main() { return 0; }

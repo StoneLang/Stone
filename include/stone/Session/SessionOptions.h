@@ -8,6 +8,11 @@
 
 namespace stone {
 
+/// An input argument from the command line and its inferred type.
+using InputFile = std::pair<file::FileType, const llvm::opt::Arg *>;
+/// Type used for a list of input arguments.
+using InputFiles = llvm::SmallVector<InputFile, 16>;
+
 class SessionOptions {
   std::unique_ptr<llvm::opt::OptTable> optTable;
 
@@ -16,12 +21,16 @@ class SessionOptions {
   bool showHelpHidden = false;
   bool showVersion = false;
   bool showLifecycle = false;
+
+  /// The default mode
   ModeKind modeKind = ModeKind::None;
   /// The name of the module
   llvm::StringRef moduleName;
 
   /// The file input kind
-  file::FileType inputFileType = file::FileType::Stone;
+  file::FileType inputFileType = file::FileType::None;
+
+  InputFiles inputs;
 
  public:
   SessionOptions() : optTable(stone::CreateOptTable()) {}
