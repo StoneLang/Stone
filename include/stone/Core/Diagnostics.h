@@ -118,6 +118,8 @@ class DiagnosticEngine final {
   // void AddDiagnosticListener(std::unique_ptr<DiagnosticListener> diagnostic);
   //
   bool HasError();
+
+  void Print();
 };
 
 class DiagnosticBuilder final {

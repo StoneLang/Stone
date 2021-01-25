@@ -18,3 +18,5 @@ void DiagnosticEngine::AddDiagnostics(
   // diagnostics->diagnosticID  = de.size() + 1;
   // entries.insert(diagnostics->diagnosticID, std::move(diagnostics));
 }
+
+void DiagnosticEngine::Print() {}

@@ -13,7 +13,8 @@ Compiler::Compiler(Pipeline *pipeline)
     : Session(compilerOpts),
       pipeline(pipeline),
       fm(compilerOpts.fsOpts),
-      sm(GetDiagEngine(), fm) {
+      sm(GetDiagEngine(), fm),
+      stats(*this) {
   ac.reset(new ASTContext(*this, compilerOpts.spOpts, sm));
 }
 
@@ -75,3 +76,5 @@ std::unique_ptr<Compiler> Compiler::Create() {
 }
 
 */
+
+void CompilerStats::Print() const {}

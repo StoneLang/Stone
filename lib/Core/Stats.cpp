@@ -3,6 +3,7 @@
 using namespace stone;
 
 StatEngine::StatEngine() {}
+StatEngine::~StatEngine() {}
 
 void StatEngine::Print() {}
 /*

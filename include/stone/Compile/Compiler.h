@@ -1,14 +1,12 @@
 #ifndef STONE_COMPILE_COMPILER_H
 #define STONE_COMPILE_COMPILER_H
 
-#include "stone/Compile/CompilerOptions.h"
-#include "stone/Compile/CompilerUnit.h"
 #include "stone/Compile/CompilerAlloc.h"
-
-
+#include "stone/Compile/CompilerOptions.h"
 #include "stone/Core/ASTContext.h"
 #include "stone/Core/Module.h"
 #include "stone/Core/SearchPathOptions.h"
+#include "stone/Core/Stats.h"
 #include "stone/Session/Session.h"
 
 using namespace stone::syntax;
@@ -16,12 +14,24 @@ using namespace stone::syntax;
 namespace stone {
 class Pipeline;
 
+class Compiler;
+class CompilerStats final : public Stats {
+  const Compiler &compiler;
+
+ public:
+  CompilerStats(const Compiler &compiler) : compiler(compiler) {}
+  void Print() const override;
+};
+
 class Compiler final : public Session {
   SrcMgr sm;
   FileMgr fm;
   Pipeline *pipeline = nullptr;
   mutable Module *mainModule = nullptr;
   std::unique_ptr<ASTContext> ac;
+
+  friend CompilerStats;
+  CompilerStats stats;
 
  private:
   class Implementation;
@@ -88,6 +98,8 @@ class Compiler final : public Session {
     return compilerOpts.moduleName;
   }
 
+  CompilerStats &GetStats() { return stats; }
+
  protected:
   void ComputeMode(const llvm::opt::DerivedArgList &args) override;
 
@@ -100,6 +112,7 @@ class Compiler final : public Session {
 
  private:
   void BuildInputs();
+
  public:
   void *Allocate(size_t size, unsigned align) const {
     return bumpAlloc.Allocate(size, align);
@@ -172,7 +185,8 @@ inline void *operator new[](size_t bytes, const stone::Compiler &compiler,
 /// invoking it directly; see the new[] operator for more details. This operator
 /// is called implicitly by the compiler if a placement new[] expression using
 /// the CompilationInvocation throws in the object constructor.
-inline void operator delete[](void *Ptr, const stone::Compiler &compiler, size_t alignment) {
+inline void operator delete[](void *Ptr, const stone::Compiler &compiler,
+                              size_t alignment) {
   compiler.Deallocate(Ptr);
 }
 #endif

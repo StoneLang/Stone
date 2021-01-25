@@ -135,7 +135,7 @@ void Session::Finish() {
   PrintDiagnostics();
   PrintStatistics();
 }
-void Session::PrintDiagnostics() {}
-void Session::PrintStatistics() {}
+void Session::PrintDiagnostics() { GetDiagEngine().Print(); }
+void Session::PrintStatistics() { GetStatEngine().Print(); }
 
 void Session::PrintVersion() {}

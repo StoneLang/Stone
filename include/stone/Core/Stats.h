@@ -7,6 +7,9 @@
 
 namespace stone {
 
+class StatsPrinter {};
+class StatsListener {};
+
 class Stats {
  protected:
   llvm::raw_ostream &os;
@@ -19,11 +22,13 @@ class Stats {
   virtual void Print() const = 0;
 };
 
-class StatEngine {
+class StatEngine final {
  public:
   StatEngine();
+  ~StatEngine();
+
   /// Owns the Stats
-  void AddStats(std::unique_ptr<Stats> stats);
+  void Add(std::unique_ptr<Stats> stats);
   ///
   void Print();
 };

@@ -14,6 +14,7 @@ namespace stone {
 class Pipeline;
 namespace syntax {
 class Parser;
+
 class ParserStats final : public Stats {
   const Parser &parser;
 
@@ -32,6 +33,10 @@ class Parser final {
 
  public:
   Parser(Pipeline *pipeline = nullptr);
+  ~Parser();
+
+ public:
+  ParserStats &GetStats() { return stats; }
 
  public:
   // Decl
