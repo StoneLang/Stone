@@ -14,11 +14,18 @@ namespace stone {
 namespace driver {
 
 class Driver;
+// class JobOutput {
+//};
+
 class Job {
   friend class Compilation;
+
   Driver &driver;
   CompilationActivity &trigger;
-  
+  /// The input file list in case we need to emit a file list instead of a
+  /// proper response file
+  llvm::opt::ArgStringList inputFiles;
+
  public:
   Job(CompilationActivity &trigger, Driver &driver)
       : trigger(trigger), driver(driver) {}
@@ -39,10 +46,20 @@ class Job {
       std::string *errMsg, bool *failed) const;
 
  public:
-  // llvm::SmallVector<Job *, 10> deps;  
+  // llvm::SmallVector<Job *, 10> deps;
+  //
+  /// Set an input file list, necessary if you specified an RF_FileList response
+  /// file support.
+  void SetInputFiles(llvm::opt::ArgStringList files) {
+    inputFiles = std::move(files);
+  }
 };
 
 /*
+CompilationUnit
+class CompilationJob : public Job {
+
+}
 //TODO: This may just be better than creating the activities
 class CompileJob  : public CompilationJob {
 
@@ -51,12 +68,13 @@ class CompileJob  : public CompilationJob {
 class LinkJob : public CompilationJob {
 
 };
-*/
 
 class JobList final : public List<Job> {
  public:
   void Print() const;
 };
+
+*/
 
 }  // namespace driver
 }  // namespace stone

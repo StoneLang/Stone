@@ -25,8 +25,13 @@ class Arg;
 namespace stone {
 namespace driver {
 
+using OutputFileType = file::FileType;
 class Activity {
+  // TODO: ActivityKind
   unsigned kind : 4;
+
+  // TODO: FileType
+  // This could be any file-type -- input or output
   unsigned ty : 28;
 
  public:
@@ -64,8 +69,8 @@ class InputActivity : public Activity {
   const llvm::opt::Arg &input;
 
  public:
-  InputActivity(const llvm::opt::Arg &intput, file::FileType ty)
-      : Activity(Activity::Kind::Input, ty), input(input) {}
+  InputActivity(const llvm::opt::Arg &intput, file::FileType inputType)
+      : Activity(Activity::Kind::Input, inputType), input(input) {}
 
   const llvm::opt::Arg &GetInput() const { return input; }
 
@@ -77,15 +82,14 @@ class InputActivity : public Activity {
 class CompilationActivity : public Activity {
   bool isAsync = false;
   bool isTopLevel = false;
-
-  // A list of user activities
+  // A list of input activities
   llvm::TinyPtrVector<const Activity *> inputs;
 
  public:
   CompilationActivity(Activity::Kind kind,
                       llvm::ArrayRef<const Activity *> inputs,
-                      file::FileType ty)
-      : Activity(kind, ty), inputs(inputs) {}
+                      OutputFileType outputType)
+      : Activity(kind, outputType), inputs(inputs) {}
 
  public:
   llvm::ArrayRef<const Activity *> GetInputs() const { return inputs; }
@@ -113,13 +117,9 @@ class CompilationActivity : public Activity {
 
 class CompileActivity final : public CompilationActivity {
  public:
-  class State {};
-
+  // class State {};
  public:
-  CompileActivity(file::FileType outputType)
-      : CompilationActivity(Activity::Kind::Compile, llvm::None, outputType) {}
-
-  CompileActivity(Activity *input, file::FileType outputType)
+	CompileActivity(Activity *input, OutputFileType outputType)
       : CompilationActivity(Activity::Kind::Compile, input, outputType) {}
 
   static bool classof(const Activity *e) {
@@ -128,14 +128,14 @@ class CompileActivity final : public CompilationActivity {
 
   /// Return a *single* FileType::stone InputActivity, if one exists;
   /// if 0 or >1 such inputs exist, return nullptr.
-  const InputActivity *FindSingleInput(file::FileType ty) const {
+  const InputActivity *FindSingleInput(file::FileType inputTy) const {
     auto inputs = GetInputs();
-    const InputActivity *e = nullptr;
+    const InputActivity *activity = nullptr;
     for (auto const *input : inputs) {
       if (auto const *s = dyn_cast<InputActivity>(input)) {
-        if (s->GetType() == ty) {
-          if (e == nullptr) {
-            e = s;
+        if (s->GetType() == inputTy) {
+          if (activity == nullptr) {
+            activity = s;
           } else {
             // Already found one, two is too many.
             return nullptr;
@@ -143,7 +143,7 @@ class CompileActivity final : public CompilationActivity {
         }
       }
     }
-    return e;
+    return activity;
   }
 };
 class BackendActivity final : public CompilationActivity {
@@ -154,7 +154,7 @@ class BackendActivity final : public CompilationActivity {
   size_t inputIndex;
 
  public:
-  BackendActivity(const Activity *input, file::FileType outputType,
+  BackendActivity(const Activity *input, OutputFileType outputType,
                   size_t inputIndex)
       : CompilationActivity(Activity::Kind::Backend, input, outputType),
         inputIndex(inputIndex) {}
@@ -182,8 +182,8 @@ class DynamicLinkActivity final : public CompilationActivity {
   LinkType GetLinkType() const { return linkType; }
   bool ShouldPerformLTO() const { return shouldPerformLTO; }
 
-  static bool classof(const Activity *e) {
-    return e->GetKind() == Activity::Kind::DynamicLink;
+  static bool classof(const Activity *a) {
+    return a->GetKind() == Activity::Kind::DynamicLink;
   }
 };
 
@@ -197,14 +197,14 @@ class StaticLinkActivity : public CompilationActivity {
         linkType(linkType) {
     assert(linkType == LinkType::StaticLibrary);
   }
-  static bool classof(const Activity *e) {
-    return e->GetKind() == Activity::Kind::StaticLink;
+  static bool classof(const Activity *a) {
+    return a->GetKind() == Activity::Kind::StaticLink;
   }
 };
 
 class AssembleActivity final : public CompilationActivity {
  public:
-  AssembleActivity(const Activity *input, file::FileType outputType)
+  AssembleActivity(const Activity *input, OutputFileType outputType)
       : CompilationActivity(Activity::Kind::Assemble, input, outputType) {}
 
   static bool classof(const Activity *e) {

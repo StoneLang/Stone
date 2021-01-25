@@ -60,8 +60,9 @@ class DriverProfile final {
   /// The inputs for the linker -- may not need this there
   llvm::SmallVector<const Activity *, 2> linkerInputs;
 
-  /// Default compile type
-  CompilerInvocationMode compilerInvocationMode = CompilerInvocationMode::None;
+  /// Default compiler invocation mode -- one file per CompileJob
+  CompilerInvocationMode compilerInvocationMode =
+      CompilerInvocationMode::Multiple;
 
   LTOKind ltoVariant = LTOKind::None;
 
@@ -101,7 +102,7 @@ class DriverCache final {
  public:
   /// A map for caching Jobs for a given Activity/ToolChain pair
   llvm::DenseMap<std::pair<const Activity *, const ToolChain *>, Job *>
-      procChacheMap;
+      jobChacheMap;
   /// Cache of all the ToolChains in use by the driver.
   ///
   /// This maps from the string representation of a triple to a ToolChain
@@ -247,25 +248,27 @@ class Driver final : public Session {
   /// TranslateInputArgs - Create a new derived argument list from the input
   /// arguments, after applying the standard argument translations.
   // llvm::opt::DerivedArgList *
-  // TranslateInputArgs(const llvm::opt::InputArgList &args) override const;
+  // TranslateInputArgs(const llvm::opt::InputArgList &args) override;
  private:
-  // Build Activitys
+  /// Build all the compile activities
   void BuildCompileActivities(Compilation &compilation,
                               CompilationActivity *le = nullptr);
+
+  /// Build a single compile activity
   void BuildCompileActivity(Compilation &compilation, InputActivity *ie,
                             CompilationActivity *le = nullptr);
 
+  /// Build all the jobs for a activity.
   void BuildJobsForCompileActivity(Compilation &compilation,
                                    const CompileActivity *ce);
 
-  //
-  void BuildLinkActivity();
+  void BuildLinkActivity(Compilation &compilation);
+
   void BuildStaticLinkActivity();
-  void BuildStaticLinkActivity(
-      CompilationActivity &event);  // Calls BuildProcForActivity
+  void BuildStaticLinkActivity(CompilationActivity &activity);
 
   void BuildDynamicLinkActivity();
-  void BuildDynamicLinkActivity(CompilationActivity &event);
+  void BuildDynamicLinkActivity(CompilationActivity &activity);
 
   void BuildBackendActivity();
   void BuildAssemblyActivity();

@@ -214,48 +214,58 @@ void Driver::BuildActivities() {
   if (mode.IsCompileOnly()) {
     BuildCompileActivities(*compilation.get());
   } else {
-    BuildLinkActivity();
+    BuildLinkActivity(*compilation.get());
   }
 }
 void Driver::BuildCompileActivities(Compilation &compilation,
-                                    CompilationActivity *le) {
+                                    CompilationActivity *linkActivity) {
   // Go through the files and build the compile activities
 
   for (const InputPair &input : inputFiles) {
     // BuildCompileActivity(input);
     file::FileType inputType = input.first;
     const llvm::opt::Arg *inputArg = input.second;
-    auto ie = compilation.CreateActivity<InputActivity>(*inputArg, inputType);
+    auto inputActivity =
+        compilation.CreateActivity<InputActivity>(*inputArg, inputType);
 
     switch (inputType) {
       case file::FileType::Stone: {
         assert(file::IsPartOfCompilation(inputType));
-        BuildCompileActivity(compilation, ie, le);
+        BuildCompileActivity(compilation, inputActivity, linkActivity);
       }
       default:
         break;
     }
   }
 }
-void Driver::BuildCompileActivity(Compilation &compilation, InputActivity *ie,
-                                  CompilationActivity *le) {
+void Driver::BuildCompileActivity(Compilation &compilation,
+                                  InputActivity *inputActivity,
+                                  CompilationActivity *linkActivity) {
   if (profile.compilerInvocationMode == CompilerInvocationMode::Multiple) {
     // TODO:
   } else if (profile.compilerInvocationMode == CompilerInvocationMode::Single) {
     // TODO:
   }
-  auto ce = compilation.CreateActivity<CompileActivity>(
-      ie, profile.compilerOutputFileType);
+  auto compileActivity = compilation.CreateActivity<CompileActivity>(
+      inputActivity, profile.compilerOutputFileType);
 
+  // TODO: May just want build BuildJobsForActivity
+  //
   // Since we are here, let us build the jobs.
-  BuildJobsForCompileActivity(compilation, ce);
+  BuildJobsForCompileActivity(compilation, compileActivity);
 }
 
 void Driver::BuildJobsForCompileActivity(Compilation &compilation,
-                                         const CompileActivity *ce) {}
+                                         const CompileActivity *activity) {}
 
-void Driver::BuildLinkActivity() {
-  // BuildCompileActivitys();
+void Driver::BuildLinkActivity(Compilation &compilation) {
+  // BuildCompileActivities();
+
+  /// NOTE: Defaulting to static link
+  auto linkActivity = compilation.CreateActivity<StaticLinkActivity>(
+      nullptr, driver::LinkType::Executable);
+
+  BuildCompileActivities(compilation, linkActivity);
 }
 static void BuildJob(Driver &driver) {}
 void Driver::BuildJobs() {}
