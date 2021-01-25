@@ -175,8 +175,7 @@ class Driver final : public Session {
 
   /// This uses a std::unique_ptr instead of returning a toolchain by value
   /// because ToolChain has virtual methods.
-  std::unique_ptr<ToolChain> BuildToolChain(
-      const llvm::opt::InputArgList &args);
+  void BuildToolChain(const llvm::opt::InputArgList &args);
 
   void BuildInputFiles(const ToolChain &tc, const DerivedArgList &args,
                        InputFiles &inputFiles);

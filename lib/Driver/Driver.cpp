@@ -24,7 +24,7 @@ bool Driver::Build(llvm::ArrayRef<const char *> args) {
   originalArgs = BuildArgList(args);
   // TODO: Check for errors
 
-  toolChain = BuildToolChain(*originalArgs);
+  BuildToolChain(*originalArgs);
   // TODO: Check for errors
 
   BuildCompilation(*toolChain, *originalArgs);
@@ -36,8 +36,7 @@ bool Driver::Build(llvm::ArrayRef<const char *> args) {
   return true;
 }
 
-std::unique_ptr<ToolChain> Driver::BuildToolChain(
-    const llvm::opt::InputArgList &argList) {
+void Driver::BuildToolChain(const llvm::opt::InputArgList &argList) {
   if (const llvm::opt::Arg *arg = argList.getLastArg(opts::Target)) {
     targetTriple = llvm::Triple::normalize(arg->getValue());
   }
@@ -50,7 +49,9 @@ std::unique_ptr<ToolChain> Driver::BuildToolChain(
       if (const llvm::opt::Arg *A = argList.getLastArg(opts::TargetVariant)) {
         targetVariant = llvm::Triple(llvm::Triple::normalize(A->getValue()));
       }
-      return llvm::make_unique<DarwinToolChain>(*this, target, targetVariant);
+      toolChain =
+          llvm::make_unique<DarwinToolChain>(*this, target, targetVariant);
+      break;
     }
       /*
         case llvm::Triple::Linux:
@@ -64,9 +65,9 @@ std::unique_ptr<ToolChain> Driver::BuildToolChain(
       */
 
     default:
-      os << "D(SourceLoc(),"
-         << "msg::error_unknown_target,"
-         << "ArgList.getLastArg(options::OPT_target)->getValue());" << '\n';
+      Out() << "D(SourceLoc(),"
+            << "msg::error_unknown_target,"
+            << "ArgList.getLastArg(opts::Target)->getValue());" << '\n';
       break;
   }
 }
@@ -117,9 +118,9 @@ void Driver::BuildCompilation(const ToolChain &tc,
 
   // driverOpts.showLifecycle = argList.hasArg(opts::ShowLifecycle);
 
-  compilation.reset(new Compilation(*this));
+  compilation = llvm::make_unique<Compilation>(*this);
 
-  // BuildActivities();
+  BuildActivities();
 }
 
 bool Driver::CutOff(const ArgList &args, const ToolChain &tc) {
