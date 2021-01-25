@@ -6,15 +6,12 @@
 namespace stone {
 namespace driver {
 
-class InputFile final {};
-
-class OutputFile final {};
-
 class DriverOptions final : public SessionOptions {
+	public:
+		bool showActivities = false; 
+		bool showJobs	= false; 
  public:
   DriverOptions() {}
-
- public:
 };
 }  // namespace driver
 }  // namespace stone

@@ -47,15 +47,15 @@ enum class CompilerInvocationMode {
 };
 enum class LTOKind { None, Full, Thin, Unknown };
 
-class BuildProfile final {
+class DriverProfile final {
  public:
   /// All of the input files that have been created
   //
   /// The Activitys which were used to build the Jobs.
-  llvm::SmallVector<std::unique_ptr<const Activity>, 32> activities;
+  // llvm::SmallVector<std::unique_ptr<const Activity>, 32> activities;
 
   /// The Jobes which will be executed by this compilation.
-  llvm::SmallVector<std::unique_ptr<const Job>, 32> jobs;
+  // llvm::SmallVector<std::unique_ptr<const Job>, 32> jobs;
 
   /// The inputs for the linker -- may not need this there
   llvm::SmallVector<const Activity *, 2> linkerInputs;
@@ -114,7 +114,7 @@ class Driver final : public Session {
   DriverCache cache;
   std::unique_ptr<ToolChain> toolChain;
   std::unique_ptr<Compilation> compilation;
-  BuildProfile profile;
+  DriverProfile profile;
 
  public:
   /// The options for the driver
@@ -198,7 +198,7 @@ class Driver final : public Session {
   void BuildOutputs(const ToolChain &toolChain,
                     const llvm::opt::DerivedArgList &args, const bool batchMode,
                     const InputFiles &inputs /*TODO: DriverInputs*/,
-                    BuildProfile &profile) const;
+                    DriverProfile &profile) const;
 
   std::unique_ptr<Compilation> BuildCompilation(
       const ToolChain &toolChain, const llvm::opt::InputArgList &argList);
@@ -233,8 +233,8 @@ class Driver final : public Session {
   const ToolChain &GetToolChain() const { return *toolChain.get(); }
   ToolChain &GetToolChain() { return *toolChain.get(); }
 
-  const BuildProfile &GetProfile() const { return profile; }
-  BuildProfile &GetProfile() { return profile; }
+  const DriverProfile &GetProfile() const { return profile; }
+  DriverProfile &GetProfile() { return profile; }
 
   const DriverCache &GetCache() const { return cache; }
   DriverCache &GetCache() { return cache; }

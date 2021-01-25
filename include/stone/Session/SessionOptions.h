@@ -13,7 +13,7 @@ class SessionOptions {
 
  public:
   bool showHelp = false;
-  bool showHidden = false;
+  bool showHelpHidden = false;
   bool showVersion = false;
   bool showLifecycle = false;
   ModeKind modeKind = ModeKind::None;

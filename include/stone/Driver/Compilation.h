@@ -63,9 +63,9 @@ class Compilation final {
   /// The new Activity is *not* added to the list returned by GetActivitys().
   template <typename T, typename... Args>
   T *CreateActivity(Args &&...arg) {
-    auto event = new T(std::forward<Args>(arg)...);
-    activities.Add(std::unique_ptr<stone::driver::Activity>(event));
-    return event;
+    auto activity = new T(std::forward<Args>(arg)...);
+    activities.Add(std::unique_ptr<stone::driver::Activity>(activity));
+    return activity;
   }
 
   ActivityList &GetActivitys() { return activities; }

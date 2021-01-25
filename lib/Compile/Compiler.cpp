@@ -60,7 +60,7 @@ void Compiler::PrintHelp(bool showHidden) {}
 int Compiler::Run() {
   // Perform a quick help check
   if (compilerOpts.showHelp) {
-    PrintHelp(compilerOpts.showHidden);
+    PrintHelp(compilerOpts.showHelpHidden);
   } else if (compilerOpts.showVersion) {
     PrintVersion();
   } else {

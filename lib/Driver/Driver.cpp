@@ -24,8 +24,8 @@ bool Driver::Build(llvm::ArrayRef<const char *> args) {
   originalArgs = BuildArgList(args);
 
   // Check for errors
-  toolChain = BuildToolChain(*originalArgs);
-  compilation = BuildCompilation(*toolChain, *originalArgs);
+  //toolChain = BuildToolChain(*originalArgs);
+  //compilation = BuildCompilation(*toolChain, *originalArgs);
 
   return true;
 }
@@ -186,7 +186,7 @@ void Driver::BuildInputs(const ToolChain &tc, const DerivedArgList &args,
 void Driver::BuildOutputs(const ToolChain &toolChain,
                           const llvm::opt::DerivedArgList &args,
                           const bool batchMode, const InputFiles &inputs,
-                          BuildProfile &profile) const {}
+                          DriverProfile &profile) const {}
 
 ModeKind Driver::GetDefaultModeKind() { return ModeKind::EmitExecutable; }
 

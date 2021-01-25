@@ -31,12 +31,11 @@ using namespace stone::driver;
 
 using namespace llvm::opt;
 
-static void SetInstallDir(llvm::ArrayRef<const char *> &argv, Driver &driver,
-                          bool canonicalPrefixes) {
+static void SetInstallDir(const char *arg0, Driver &driver, bool canonicalPrefixes) {
   // Attempt to find the original path used to invoke the driver, to determine
   // the installed path. We do this manually, because we want to support that
   // path being a symlink.
-  llvm::SmallString<128> InstalledPath(argv[0]);
+  llvm::SmallString<128> InstalledPath(arg0);
 
   // Do a PATH lookup, if there are no directory components.
   if (llvm::sys::path::filename(InstalledPath) == InstalledPath) {
@@ -68,7 +67,7 @@ int stone::Run(llvm::ArrayRef<const char *> args, const char *arg0,
   STONE_DEFER { driver.Finish(); };
 
   bool canonicalPrefixes = false;
-  SetInstallDir(args, driver, canonicalPrefixes);
+  SetInstallDir(arg0, driver, canonicalPrefixes);
 
   if (driver.Build(args)) {
     if (driver.GetDiagEngine().HasError()) {
