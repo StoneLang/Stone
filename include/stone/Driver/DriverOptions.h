@@ -7,9 +7,10 @@ namespace stone {
 namespace driver {
 
 class DriverOptions final : public SessionOptions {
-	public:
-		bool showActivities = false; 
-		bool showJobs	= false; 
+ public:
+  bool showActivities = false;
+  bool showJobs = false;
+
  public:
   DriverOptions() {}
 };

@@ -31,7 +31,8 @@ using namespace stone::driver;
 
 using namespace llvm::opt;
 
-static void SetInstallDir(const char *arg0, Driver &driver, bool canonicalPrefixes) {
+static void SetInstallDir(const char *arg0, Driver &driver,
+                          bool canonicalPrefixes) {
   // Attempt to find the original path used to invoke the driver, to determine
   // the installed path. We do this manually, because we want to support that
   // path being a symlink.

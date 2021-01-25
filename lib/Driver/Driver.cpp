@@ -22,10 +22,16 @@ bool Driver::Build(llvm::ArrayRef<const char *> args) {
   excludedFlagsBitmask = opts::NoDriverOption;
 
   originalArgs = BuildArgList(args);
+  // TODO: Check for errors
 
-  // Check for errors
-  //toolChain = BuildToolChain(*originalArgs);
-  //compilation = BuildCompilation(*toolChain, *originalArgs);
+  toolChain = BuildToolChain(*originalArgs);
+  // TODO: Check for errors
+
+  BuildCompilation(*toolChain, *originalArgs);
+
+  if (de.HasError()) {
+    return false;
+  }
 
   return true;
 }
@@ -64,14 +70,15 @@ std::unique_ptr<ToolChain> Driver::BuildToolChain(
       break;
   }
 }
-std::unique_ptr<Compilation> Driver::BuildCompilation(
-    const ToolChain &tc, const llvm::opt::InputArgList &argList) {
+void Driver::BuildCompilation(const ToolChain &tc,
+                              const llvm::opt::InputArgList &argList) {
   llvm::PrettyStackTraceString CrashInfo("Compilation construction");
 
   // TODO:
   // workingDir = ComputeWorkingDir(argList.get());
 
-  std::unique_ptr<DerivedArgList> dArgList(TranslateInputArgs(argList));
+  // NOTE: Session manages this object
+  auto dArgList = TranslateInputArgs(argList);
 
   // Computer the compiler mode.
   ComputeMode(*dArgList);
@@ -80,17 +87,20 @@ std::unique_ptr<Compilation> Driver::BuildCompilation(
   // toolChain.ValidateArguments(de, *dArgList, targetTriple);
   //
   if (de.HasError()) {
-    return nullptr;
+    return;
   }
-  if (!HandleImmediateArgs(*dArgList, tc)) {
-    return nullptr;
+  if (CutOff(*dArgList, tc)) {
+    return;
   }
 
-  // Start here - BuildActivities(*args, inputs);
+  BuildInputFiles(tc, *dArgList, GetInputFiles());
 
-  BuildInputs(tc, *dArgList, GetInputFiles());
+  if (GetInputFiles().size() == 0) {
+    Out() << "msg::driver_error_no_input_files" << '\n';
+    return;
+  }
 
-  if (de.HasError()) return nullptr;
+  if (de.HasError()) return;
 
   // TODO: ComputeCompileMod()
   //
@@ -105,19 +115,22 @@ std::unique_ptr<Compilation> Driver::BuildCompilation(
   // const bool ContinueBuildingAfterErrors =
   //    computeContinueBuildingAfterErrors(BatchMode, ArgList.get());
 
-  driverOpts.showLifecycle = argList.hasArg(opts::ShowLifecycle);
+  // driverOpts.showLifecycle = argList.hasArg(opts::ShowLifecycle);
 
   compilation.reset(new Compilation(*this));
 
-  BuildActivities();
+  // BuildActivities();
 }
 
-bool Driver::HandleImmediateArgs(const ArgList &args, const ToolChain &tc) {
+bool Driver::CutOff(const ArgList &args, const ToolChain &tc) {
   if (args.hasArg(opts::Help)) {
     PrintHelp(false);
-    return false;
+    return true;
+  } else if (args.hasArg(opts::Version)) {
+    PrintVersion();
+    return true;
   }
-  return true;
+  return false;
 }
 
 /// Check that the file referenced by \p Input exists. If it doesn't,
@@ -140,8 +153,8 @@ static bool DoesInputExist(Driver &driver, const DerivedArgList &args,
   return false;
 }
 // TODO: May move to session
-void Driver::BuildInputs(const ToolChain &tc, const DerivedArgList &args,
-                         InputFiles &inputs) {
+void Driver::BuildInputFiles(const ToolChain &tc, const DerivedArgList &args,
+                             InputFiles &inputs) {
   llvm::DenseMap<llvm::StringRef, llvm::StringRef> seenSourceFiles;
 
   for (Arg *arg : args) {
@@ -183,10 +196,10 @@ void Driver::BuildInputs(const ToolChain &tc, const DerivedArgList &args,
   }
 }
 
-void Driver::BuildOutputs(const ToolChain &toolChain,
-                          const llvm::opt::DerivedArgList &args,
-                          const bool batchMode, const InputFiles &inputs,
-                          DriverProfile &profile) const {}
+void Driver::BuildOutputFiles(const ToolChain &toolChain,
+                              const llvm::opt::DerivedArgList &args,
+                              const bool batchMode, const InputFiles &inputs,
+                              DriverProfile &profile) const {}
 
 ModeKind Driver::GetDefaultModeKind() { return ModeKind::EmitExecutable; }
 

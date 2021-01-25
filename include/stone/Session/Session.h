@@ -151,7 +151,7 @@ class Session : public Context {
   /// TranslateInputArgs - Create a new derived argument list from the input
   /// arguments, after applying the standard argument translations.
   virtual llvm::opt::DerivedArgList *TranslateInputArgs(
-      const llvm::opt::InputArgList &args) const;
+      const llvm::opt::InputArgList &args);
 
   virtual ModeKind GetDefaultModeKind() = 0;
 

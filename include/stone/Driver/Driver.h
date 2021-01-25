@@ -176,14 +176,13 @@ class Driver final : public Session {
   /// This uses a std::unique_ptr instead of returning a toolchain by value
   /// because ToolChain has virtual methods.
   std::unique_ptr<ToolChain> BuildToolChain(
-      const llvm::opt::InputArgList &argList);
+      const llvm::opt::InputArgList &args);
 
-  void BuildInputs(const ToolChain &tc, const DerivedArgList &args,
-                   InputFiles &inputs);
+  void BuildInputFiles(const ToolChain &tc, const DerivedArgList &args,
+                       InputFiles &inputFiles);
 
-  // std::unique_ptr<DriverInputInstance>
-  // BuildInputInstance(const ToolChain &tc, const DerivedArgList &args,
-  //                   InputFiles &inputs);
+  /// TODO: A CompilationUnit consists of an InputFile and an OutputFile
+  void BuildCompilationUnits(const ToolChain &tc, const DerivedArgList &args);
 
   /// Construct the OutputInfo for the driver from the given arguments.
   ///
@@ -195,15 +194,16 @@ class Driver final : public Session {
   /// \param[out] OI The OutputInfo in which to store the resulting output
   /// information.
 
-  void BuildOutputs(const ToolChain &toolChain,
-                    const llvm::opt::DerivedArgList &args, const bool batchMode,
-                    const InputFiles &inputs /*TODO: DriverInputs*/,
-                    DriverProfile &profile) const;
+  void BuildOutputFiles(const ToolChain &toolChain,
+                        const llvm::opt::DerivedArgList &args,
+                        const bool batchMode,
+                        const InputFiles &inputs /*TODO: DriverInputs*/,
+                        DriverProfile &profile) const;
 
-  std::unique_ptr<Compilation> BuildCompilation(
-      const ToolChain &toolChain, const llvm::opt::InputArgList &argList);
+  void BuildCompilation(const ToolChain &tc,
+                        const llvm::opt::InputArgList &args);
 
-  bool HandleImmediateArgs(const ArgList &args, const ToolChain &tc);
+  bool CutOff(const ArgList &args, const ToolChain &tc);
 
  public:
   Driver(llvm::StringRef executablePath, std::string driverName);

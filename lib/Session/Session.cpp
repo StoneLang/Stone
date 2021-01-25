@@ -18,9 +18,6 @@ Session::~Session() {}
 
 std::unique_ptr<llvm::opt::InputArgList> Session::BuildArgList(
     llvm::ArrayRef<const char *> args) {
-  if (args.size() == 0) {
-  }
-
   std::unique_ptr<llvm::opt::InputArgList> argList =
       llvm::make_unique<llvm::opt::InputArgList>(
           sessionOpts.GetOpts().ParseArgs(args, missingArgIndex,
@@ -92,12 +89,13 @@ void Session::ComputeMode(const llvm::opt::DerivedArgList &args) {
   }
 }
 llvm::opt::DerivedArgList *Session::TranslateInputArgs(
-    const llvm::opt::InputArgList &args) const {
-  DerivedArgList *dArgList = new DerivedArgList(args);
+    const llvm::opt::InputArgList &args) {
+  translatedArgs.reset(new DerivedArgList(args));
+
   for (Arg *arg : args) {
-    dArgList->append(arg);
+    translatedArgs->append(arg);
   }
-  return dArgList;
+  return translatedArgs.get();
 }
 
 Mode &Session::GetMode() { return mode; }
