@@ -3,6 +3,9 @@
 
 #include "stone/Compile/CompilerOptions.h"
 #include "stone/Compile/CompilerUnit.h"
+#include "stone/Compile/CompilerAlloc.h"
+
+
 #include "stone/Core/ASTContext.h"
 #include "stone/Core/Module.h"
 #include "stone/Core/SearchPathOptions.h"
@@ -12,9 +15,6 @@ using namespace stone::syntax;
 
 namespace stone {
 class Pipeline;
-
-// struct CompileInputProfile final {};
-// struct CompileOutputProfile final {};
 
 class Compiler final : public Session {
   SrcMgr sm;
@@ -100,10 +100,6 @@ class Compiler final : public Session {
 
  private:
   void BuildInputs();
-
-  // TODO:
-  // void BuildCompileUnits();
-
  public:
   void *Allocate(size_t size, unsigned align) const {
     return bumpAlloc.Allocate(size, align);
@@ -115,13 +111,68 @@ class Compiler final : public Session {
   void Deallocate(void *ptr) const {}
 
  public:
-  template <typename InputFileTy, typename AllocatorTy>
+  template <typename UnitTy, typename AllocatorTy>
   static void *Allocate(AllocatorTy &alloc, size_t baseSize) {
-    static_assert(alignof(InputFileTy) >= sizeof(void *),
+    static_assert(alignof(UnitTy) >= sizeof(void *),
                   "A pointer must fit in the alignment of the InputFile!");
 
-    return (void *)alloc.Allocate(baseSize, alignof(InputFileTy));
+    return (void *)alloc.Allocate(baseSize, alignof(UnitTy));
   }
 };
 }  // namespace stone
+
+inline void *operator new(size_t bytes, const stone::Compiler &compiler,
+                          size_t alignment) {
+  return compiler.Allocate(bytes, alignment);
+}
+
+/// Placement delete companion to the new above.
+///
+/// This operator is just a companion to the new above. There is no way of
+/// invoking it directly; see the new operator for more details. This operator
+/// is called implicitly by the compiler if a placement new expression using
+/// the CompilationInvocation throws in the object constructor.
+inline void operator delete(void *Ptr, const stone::Compiler &compiler,
+                            size_t) {
+  compiler.Deallocate(Ptr);
+}
+
+/// This placement form of operator new[] uses the CompilerInstance's
+/// allocator for obtaining memory.
+///
+/// We intentionally avoid using a nothrow specification here so that the calls
+/// to this operator will not perform a null check on the result -- the
+/// underlying allocator never returns null pointers.
+///
+/// Usage looks like this (assuming there's an CompilationInvocation
+/// 'Invocation' in scope):
+/// @code
+/// // Default alignment (8)
+/// char *data = new (Invocation) char[10];
+/// // Specific alignment
+/// char *data = new (Invocation, 4) char[10];
+/// @endcode
+/// Memory allocated through this placement new[] operator does not need to be
+/// explicitly freed, as CompilationInvocation will free all of this memory when
+/// it gets destroyed. Please note that you cannot use delete on the pointer.
+///
+/// @param Bytes The number of bytes to allocate. Calculated by the compiler.
+/// @param C The CompilationInvocation that provides the allocator.
+/// @param Alignment The alignment of the allocated memory (if the underlying
+///                  allocator supports it).
+/// @return The allocated memory. Could be nullptr.
+inline void *operator new[](size_t bytes, const stone::Compiler &compiler,
+                            size_t alignment) {
+  return compiler.Allocate(bytes, alignment);
+}
+
+/// Placement delete[] companion to the new[] above.
+///
+/// This operator is just a companion to the new[] above. There is no way of
+/// invoking it directly; see the new[] operator for more details. This operator
+/// is called implicitly by the compiler if a placement new[] expression using
+/// the CompilationInvocation throws in the object constructor.
+inline void operator delete[](void *Ptr, const stone::Compiler &compiler, size_t alignment) {
+  compiler.Deallocate(Ptr);
+}
 #endif

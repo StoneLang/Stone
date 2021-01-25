@@ -20,7 +20,16 @@ class CompilerUnit final {
   syntax::SourceUnit &su;
   Compiler &compiler;
   CompilerScope &scope;
+
+  // Input *input;
+  // Output *output;
+
+  // InputFile *inptFile = nullptr;
   // OutputFile *outputFile = nullptr;
+
+ public:
+  struct Input {};
+  struct Output {};
 
  public:
   enum class Stage { Parsed, Checked };

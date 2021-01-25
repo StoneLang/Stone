@@ -9,6 +9,9 @@
 
 using namespace stone;
 
+// struct CompilerInput final {};
+// struct CompilerOutput final {};
+
 class Compiler::Implementation final {
   Compiler &compiler;
   llvm::Module *llvmModule = nullptr;
