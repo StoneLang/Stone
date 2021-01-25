@@ -340,7 +340,7 @@ static bool IsIdentifier(const signed char ch) {
 }
 
 Lexer::Lexer(const SrcID srcID, SrcMgr &sm, const stone::Context &ctx,
-             CompilePipeline *pipeline)
+             Pipeline *pipeline)
     : srcID(srcID), sm(sm), ctx(ctx) {
   bool invalid = false;
   auto memBuffer = sm.getBuffer(srcID, SrcLoc(), &invalid /*true means error*/);

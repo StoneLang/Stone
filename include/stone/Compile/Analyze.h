@@ -4,23 +4,20 @@
 #include "llvm/ADT/ArrayRef.h"
 
 namespace stone {
-class CompilePipeline;
+class Pipeline;
 
 namespace syntax {
 class SourceUnit;
 }
 
 /// Parse a source file
-void ParseSourceUnit(syntax::SourceUnit &su,
-                     CompilePipeline *pipeline = nullptr);
+void ParseSourceUnit(syntax::SourceUnit &su, Pipeline *pipeline = nullptr);
 
 /// Perform type checking
-void CheckSourceUnit(syntax::SourceUnit &su,
-                     CompilePipeline *pipeline = nullptr);
+void CheckSourceUnit(syntax::SourceUnit &su, Pipeline *pipeline = nullptr);
 
 /// Perform type checking
-void CheckWholeModule(syntax::SourceUnit &su,
-                      CompilePipeline *pipeline = nullptr);
+void CheckWholeModule(syntax::SourceUnit &su, Pipeline *pipeline = nullptr);
 
 }  // namespace stone
 #endif

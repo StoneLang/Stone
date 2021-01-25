@@ -11,7 +11,7 @@
 #include "stone/Core/Stats.h"
 
 namespace stone {
-class CompilePipeline;
+class Pipeline;
 namespace syntax {
 class Parser;
 class ParserStats final : public Stats {
@@ -27,11 +27,11 @@ class ParserStats final : public Stats {
 class Parser final {
   friend ParserStats;
   ParserStats stats;
-  CompilePipeline *pipeline;
+  Pipeline *pipeline;
   std::unique_ptr<Lexer> lexer;
 
  public:
-  Parser(CompilePipeline *pipeline = nullptr);
+  Parser(Pipeline *pipeline = nullptr);
 
  public:
   // Decl

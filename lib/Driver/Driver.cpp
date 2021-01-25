@@ -225,12 +225,11 @@ void Driver::BuildCompileActivities(Compilation &compilation,
 }
 void Driver::BuildCompileActivity(Compilation &compilation, InputActivity *ie,
                                   CompilationActivity *le) {
-  /*
-          if (profile.compileType == CompileType::MultipleInvocation) {
-       } else if (profile.compileType == CompileType::SingleInvocation) {
-          }
-  */
-
+  if (profile.compilerInvocationMode == CompilerInvocationMode::Multiple) {
+    // TODO:
+  } else if (profile.compilerInvocationMode == CompilerInvocationMode::Single) {
+    // TODO:
+  }
   auto ce = compilation.CreateActivity<CompileActivity>(
       ie, profile.compilerOutputFileType);
 
@@ -264,5 +263,5 @@ int Driver::Run() {
   if (driverOpts.showHelp) {
     // PrintHelp();
   }
-  return 0;
+  return GetCompilation().Run();
 }

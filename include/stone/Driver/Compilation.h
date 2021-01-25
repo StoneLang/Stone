@@ -111,6 +111,9 @@ class Compilation final {
   void ExecuteJobs(
       const JobList &jobss,
       llvm::SmallVectorImpl<std::pair<int, const Job *>> &fallBackProcs) const;
+
+ public:
+  int Run();
 };
 }  // namespace driver
 }  // namespace stone

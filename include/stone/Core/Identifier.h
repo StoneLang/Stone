@@ -338,6 +338,8 @@ class alignas(IdentifierAlignment) Identifier {
                             IsKeywordReserved() || isOutOfDate() ||
                             isModulesImport();
   }
+
+  bool static IsIdentifier(llvm::StringRef identifier);
 };
 
 /// An RAII object for [un]poisoning an identifier within a scope.

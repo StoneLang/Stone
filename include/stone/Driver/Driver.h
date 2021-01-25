@@ -36,14 +36,14 @@ class Job;
 class Compilation;
 class ToolChain;
 
-enum class CompileType {
+enum class CompilerInvocationMode {
   None,
   /// Multiple compile invocations and -main-file.
-  MultipleInvocation,
+  Multiple,
   /// A compilation using a single compile invocation without -main-file.
-  SingleInvocation,
+  Single,
   /// Compile and execute the inputs immediately
-  ImmediateInvocation,
+  Immediate,
 };
 enum class LTOKind { None, Full, Thin, Unknown };
 
@@ -61,7 +61,7 @@ class BuildProfile final {
   llvm::SmallVector<const Activity *, 2> linkerInputs;
 
   /// Default compile type
-  CompileType compileType = CompileType::None;
+  CompilerInvocationMode compilerInvocationMode = CompilerInvocationMode::None;
 
   LTOKind ltoVariant = LTOKind::None;
 
@@ -238,6 +238,8 @@ class Driver final : public Session {
 
   const DriverCache &GetCache() const { return cache; }
   DriverCache &GetCache() { return cache; }
+
+  Compilation &GetCompilation() { return *compilation.get(); }
 
  protected:
   void ComputeMode(const llvm::opt::DerivedArgList &args) override;

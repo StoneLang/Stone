@@ -2,6 +2,7 @@
 #define STONE_COMPILE_COMPILER_H
 
 #include "stone/Compile/CompilerOptions.h"
+#include "stone/Compile/CompilerUnit.h"
 #include "stone/Core/ASTContext.h"
 #include "stone/Core/Module.h"
 #include "stone/Core/SearchPathOptions.h"
@@ -10,7 +11,7 @@
 using namespace stone::syntax;
 
 namespace stone {
-class CompilePipeline;
+class Pipeline;
 
 // struct CompileInputProfile final {};
 // struct CompileOutputProfile final {};
@@ -18,7 +19,7 @@ class CompilePipeline;
 class Compiler final : public Session {
   SrcMgr sm;
   FileMgr fm;
-  CompilePipeline *pipeline = nullptr;
+  Pipeline *pipeline = nullptr;
   mutable Module *mainModule = nullptr;
   std::unique_ptr<ASTContext> ac;
 
@@ -48,7 +49,7 @@ class Compiler final : public Session {
   Compiler &operator=(const Compiler &) = delete;
   Compiler &operator=(Compiler &&) = delete;
 
-  Compiler(CompilePipeline *pipeline = nullptr);
+  Compiler(Pipeline *pipeline = nullptr);
 
  public:
   /// Parse the given list of strings into an InputArgList.
@@ -78,6 +79,14 @@ class Compiler final : public Session {
   /// Replace the current main module with a new one. This is used for top-level
   /// cached code completion.
   void SetMainModule(Module *moduleDecl);
+
+  void SetInputType(file::FileType ty) { compilerOpts.inputFileType = ty; }
+  file::FileType GetInputKind() const { return compilerOpts.inputFileType; }
+
+  void SetModuleName(llvm::StringRef name) { compilerOpts.moduleName = name; }
+  const llvm::StringRef GetModuleName() const {
+    return compilerOpts.moduleName;
+  }
 
  protected:
   void ComputeMode(const llvm::opt::DerivedArgList &args) override;

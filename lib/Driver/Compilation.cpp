@@ -36,3 +36,5 @@ using namespace llvm::opt;
 Compilation::Compilation(Driver &driver) : driver(driver) {}
 
 Compilation::~Compilation() {}
+
+int Compilation::Run() { return 0; }

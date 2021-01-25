@@ -9,7 +9,7 @@ using namespace stone;
 using namespace stone::opts;
 using namespace stone::syntax;
 
-Compiler::Compiler(CompilePipeline *pipeline)
+Compiler::Compiler(Pipeline *pipeline)
     : Session(compilerOpts),
       pipeline(pipeline),
       fm(compilerOpts.fsOpts),

@@ -12,7 +12,7 @@
 using namespace stone::syntax;
 
 namespace stone {
-class CompilePipeline;
+class Pipeline;
 
 namespace syntax {
 class SourceUnit;
@@ -32,11 +32,11 @@ class Checker final {
   friend CheckerStats;
   syntax::SourceUnit &su;
   CheckerStats stats;
-  CompilePipeline *pipeline;
+  Pipeline *pipeline;
 
  public:
   // TODO: CompileUnit
-  Checker(syntax::SourceUnit &su, CompilePipeline *pipeline = nullptr);
+  Checker(syntax::SourceUnit &su, Pipeline *pipeline = nullptr);
 
  public:
   void CheckDecl();

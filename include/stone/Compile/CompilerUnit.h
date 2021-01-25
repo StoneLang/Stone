@@ -10,20 +10,24 @@
 
 namespace stone {
 class Compiler;
+class CompilerScope;
+
 namespace syntax {
 class SourceUnit;
 }
 
 class CompilerUnit final {
   syntax::SourceUnit &su;
-  // OutputFile *outputFile = nullptr;
   Compiler &compiler;
+  CompilerScope &scope;
+  // OutputFile *outputFile = nullptr;
 
  public:
   enum class Stage { Parsed, Checked };
 
  public:
-  CompilerUnit(syntax::SourceUnit &su, Compiler &compiler);
+  CompilerUnit(Compiler &compiler, syntax::SourceUnit &su,
+               CompilerScope &scope);
 };
 }  // namespace stone
 #endif

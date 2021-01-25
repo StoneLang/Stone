@@ -5,7 +5,7 @@
 using namespace stone;
 using namespace stone::syntax;
 
-Parser::Parser(CompilePipeline *pipeline) : pipeline(pipeline), stats(*this) {}
+Parser::Parser(Pipeline *pipeline) : pipeline(pipeline), stats(*this) {}
 
 //===----------------------------------------------------------------------===//
 // Decl

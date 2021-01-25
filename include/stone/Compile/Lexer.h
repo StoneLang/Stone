@@ -13,7 +13,7 @@ class SrcID;
 class SrcMgr;
 class Token;
 class LangOptions;
-class CompilePipeline;
+class Pipeline;
 
 namespace syntax {
 class Token;
@@ -96,7 +96,7 @@ class Lexer final {
 
  public:
   Lexer(const SrcID srcID, SrcMgr &sm, const Context &ctx,
-        CompilePipeline *pipeline = nullptr);
+        Pipeline *pipeline = nullptr);
 
  public:
   void Lex(Token &result) {

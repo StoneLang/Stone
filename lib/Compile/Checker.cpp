@@ -6,7 +6,7 @@ using namespace stone;
 using namespace stone::semantics;
 using namespace stone::syntax;
 
-Checker::Checker(SourceUnit &su, CompilePipeline *pipeline)
+Checker::Checker(SourceUnit &su, Pipeline *pipeline)
     : su(su), pipeline(pipeline), stats(*this) {}
 
 // Decl

@@ -49,6 +49,9 @@ bool Identifier::IsKeyword(const LangOptions &langOpts) const {
   }
 }
 
+// TODO:
+bool Identifier::IsIdentifier(llvm::StringRef identifier) { return false; }
+
 IdentifierTable::IdentifierTable(const LangOptions &langOpts)
     : langOpts(langOpts) {
   AddKeywords(langOpts);

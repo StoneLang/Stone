@@ -2,60 +2,59 @@
 #define STONE_PUBLIC_H
 
 namespace stone {
-
+class Compiler;
 namespace syntax {
 class SourceUnit;
 }
-namespace analysis {
+namespace syntax {
 class Token;
-class Compiler;
-}  // namespace analysis
+}
 
-class CompilePipeline {
-  CompilePipeline() = default;
-  virtual ~CompilePipeline() = default;
-
- public:
-  virtual void OnCompilerConfigured(const analysis::Compiler &compiler);
+class Pipeline {
+  Pipeline() = default;
+  virtual ~Pipeline() = default;
 
  public:
-  virtual void OnCompileStarted(const analysis::Compiler &compiler);
-  virtual void OnCompileFinished(const analysis::Compiler &compiler);
+  virtual void CompilerConfigured(const Compiler &compiler) = 0;
 
  public:
-  ///
-  virtual void OnParseStarted(const analysis::Compiler &compiler);
-  ///
-  virtual void OnParseStopped(const analysis::Compiler &compiler);
-  ///
-  virtual void OnParseFinished(const analysis::Compiler &compiler);
-
-  virtual void OnToken(const analysis::Token &token);
-  virtual void OnSourceFile(const syntax::SourceUnit &unit);
+  virtual void CompileStarted(const Compiler &compiler) = 0;
+  virtual void CompileFinished(const Compiler &compiler) = 0;
 
  public:
   ///
-  virtual void OnCheckStarted(const analysis::Compiler &compiler);
+  virtual void ParseStarted(const Compiler &compiler) = 0;
   ///
-  virtual void OnCheckStopped(const analysis::Compiler &compiler);
+  virtual void ParseStopped(const Compiler &compiler) = 0;
   ///
-  virtual void OnCheckFinished(const analysis::Compiler &compiler);
+  virtual void ParseFinished(const Compiler &compiler) = 0;
+
+  // virtual void OnToken(const syntax::Token &token);
+  // virtual void OnSourceFile(const syntax::SourceUnit &unit);
 
  public:
   ///
-  virtual void OnGenIRStarted(const analysis::Compiler &compiler);
+  virtual void CheckStarted(const Compiler &compiler) = 0;
   ///
-  virtual void OnGenIRStopped(const analysis::Compiler &compiler);
+  virtual void CheckStopped(const Compiler &compiler) = 0;
   ///
-  virtual void OnGenIRFinished(const analysis::Compiler &compiler);
+  virtual void CheckFinished(const Compiler &compiler) = 0;
 
  public:
   ///
-  virtual void OnGenObjectStarted(const analysis::Compiler &compiler);
+  virtual void GenIRStarted(const Compiler &compiler) = 0;
   ///
-  virtual void OnGenObjectStopped(const analysis::Compiler &compiler);
+  virtual void GenIRStopped(const Compiler &compiler) = 0;
   ///
-  virtual void OnGenObjectFinished(const analysis::Compiler &compiler);
+  virtual void GenIRFinished(const Compiler &compiler) = 0;
+
+ public:
+  ///
+  virtual void GenObjectStarted(const Compiler &compiler);
+  ///
+  virtual void GenObjectStopped(const Compiler &compiler);
+  ///
+  virtual void GenObjectFinished(const Compiler &compiler);
 };
 }  // namespace stone
 #endif

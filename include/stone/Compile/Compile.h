@@ -4,9 +4,9 @@
 #include "llvm/ADT/ArrayRef.h"
 
 namespace stone {
-class CompilePipeline;
+class Pipeline;
 
 int Compile(llvm::ArrayRef<const char *> args, const char *arg0, void *mainAddr,
-            CompilePipeline *pipeline = nullptr);
+            Pipeline *pipeline = nullptr);
 }  // namespace stone
 #endif

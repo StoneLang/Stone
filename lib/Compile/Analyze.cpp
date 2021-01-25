@@ -7,12 +7,12 @@
 
 using namespace stone::syntax;
 
-void stone::ParseSourceUnit(SourceUnit &su, CompilePipeline *pipeline) {
+void stone::ParseSourceUnit(SourceUnit &su, Pipeline *pipeline) {
   // Parser parser(pipeline);
 }
 
-void stone::CheckSourceUnit(SourceUnit &su, CompilePipeline *pipeline) {
+void stone::CheckSourceUnit(SourceUnit &su, Pipeline *pipeline) {
   // Checker checker(su, pipeline);
 }
 
-void stone::CheckWholeModule(SourceUnit &su, CompilePipeline *pipeline) {}
+void stone::CheckWholeModule(SourceUnit &su, Pipeline *pipeline) {}
