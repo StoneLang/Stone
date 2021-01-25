@@ -219,7 +219,6 @@ void Driver::BuildActivities() {
 }
 void Driver::BuildCompileActivities(Compilation &compilation,
                                     CompilationActivity *linkActivity) {
-
   for (const auto &input : GetDriverOptions().inputs) {
     auto inputActivity = compilation.CreateActivity<InputActivity>(input);
     switch (input.first) {

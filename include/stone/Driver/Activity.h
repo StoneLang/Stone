@@ -25,8 +25,11 @@ class Arg;
 
 namespace stone {
 namespace driver {
+class Activity; 
 
-using OutputFileType = file::FileType;
+using OutputFileType	= file::FileType;
+using Activities			=  llvm::ArrayRef<const Activity *>;
+
 class Activity {
   // TODO: ActivityKind
   unsigned kind : 4;
@@ -36,9 +39,9 @@ class Activity {
   unsigned ty : 28;
 
  public:
-  using size_type = llvm::ArrayRef<const Activity *>::size_type;
-  using iterator = llvm::ArrayRef<const Activity *>::iterator;
-  using const_iterator = llvm::ArrayRef<const Activity *>::const_iterator;
+  using size_type = Activities::size_type;
+  using iterator = Activities::iterator;
+  using const_iterator = Activities::const_iterator;
 
   enum class Kind : unsigned {
     Input = 0,
@@ -87,12 +90,12 @@ class CompilationActivity : public Activity {
 
  public:
   CompilationActivity(Activity::Kind kind,
-                      llvm::ArrayRef<const Activity *> inputs,
+                      Activities inputs,
                       OutputFileType outputType)
       : Activity(kind, outputType), inputs(inputs) {}
 
  public:
-  llvm::ArrayRef<const Activity *> GetInputs() const { return inputs; }
+  Activities GetInputs() const { return inputs; }
   void AddInput(const Activity *input) { inputs.push_back(input); }
 
   size_type Size() const { return inputs.size(); }
@@ -170,8 +173,7 @@ class DynamicLinkActivity final : public CompilationActivity {
   bool shouldPerformLTO;
 
  public:
-  DynamicLinkActivity(llvm::ArrayRef<const Activity *> inputs,
-                      LinkType linkType, bool shouldPerformLTO)
+  DynamicLinkActivity(Activities inputs, LinkType linkType, bool shouldPerformLTO)
       : CompilationActivity(Activity::Kind::DynamicLink, inputs,
                             file::FileType::Image),
         linkType(linkType),
@@ -191,7 +193,7 @@ class StaticLinkActivity : public CompilationActivity {
   LinkType linkType;
 
  public:
-  StaticLinkActivity(llvm::ArrayRef<const Activity *> inputs, LinkType linkType)
+  StaticLinkActivity(Activities inputs, LinkType linkType)
       : CompilationActivity(Activity::Kind::StaticLink, inputs,
                             file::FileType::Image),
         linkType(linkType) {
