@@ -178,7 +178,7 @@ void Driver::BuildInputFiles(const ToolChain &tc, const DerivedArgList &args,
       }
 
       if (DoesInputExist(*this, args, de, argValue)) {
-        GetDriverOptions().inputs.push_back(std::make_pair(ft, arg));
+        GetDriverOptions().inputs.push_back(std::make_pair(ft, argValue));
       }
 
       if (ft == file::FileType::Stone) {
@@ -221,17 +221,14 @@ void Driver::BuildCompileActivities(Compilation &compilation,
                                     CompilationActivity *linkActivity) {
   // Go through the files and build the compile activities
 
-  for (const auto input : GetDriverOptions().inputs) {
-    // BuildCompileActivity(input);
-    file::FileType inputType = input.first;
-    const llvm::opt::Arg *inputArg = input.second;
+  for (const auto &input : GetDriverOptions().inputs) {
     auto inputActivity =
-        compilation.CreateActivity<InputActivity>(*inputArg, inputType);
-
-    switch (inputType) {
+        compilation.CreateActivity<InputActivity>(input.second, input.first);
+    switch (input.first) {
       case file::FileType::Stone: {
-        assert(file::IsPartOfCompilation(inputType));
+        assert(file::IsPartOfCompilation(input.first));
         BuildCompileActivity(compilation, inputActivity, linkActivity);
+        break;
       }
       default:
         break;

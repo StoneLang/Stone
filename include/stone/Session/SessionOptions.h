@@ -9,7 +9,7 @@
 namespace stone {
 
 /// An input argument from the command line and its inferred type.
-using InputFile = std::pair<file::FileType, const llvm::opt::Arg *>;
+using InputFile = std::pair<file::FileType, const llvm::StringRef>;
 /// Type used for a list of input arguments.
 using InputFiles = llvm::SmallVector<InputFile, 16>;
 

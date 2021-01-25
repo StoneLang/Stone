@@ -66,13 +66,13 @@ class Activity {
 
 // An event that represents and input file
 class InputActivity : public Activity {
-  const llvm::opt::Arg &input;
+  const llvm::StringRef inputFile;
 
  public:
-  InputActivity(const llvm::opt::Arg &intput, file::FileType inputType)
-      : Activity(Activity::Kind::Input, inputType), input(input) {}
+  InputActivity(const llvm::StringRef inputFile, file::FileType inputType)
+      : Activity(Activity::Kind::Input, inputType), inputFile(inputFile) {}
 
-  const llvm::opt::Arg &GetInput() const { return input; }
+  const llvm::StringRef &GetInput() const { return inputFile; }
 
   static bool classof(const Activity *e) {
     return e->GetKind() == Activity::Kind::Input;
