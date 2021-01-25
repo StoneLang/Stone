@@ -12,6 +12,7 @@
 #include "stone/Core/List.h"
 #include "stone/Driver/LinkType.h"
 #include "stone/Session/FileType.h"
+#include "stone/Session/SessionOptions.h"
 
 using namespace stone;
 using namespace stone::driver;
@@ -31,43 +32,41 @@ using OutputFileType = file::FileType;
 
 class CrashCondition {};
 
+class Job;
+class Jobs final : public List<Job> {
+ public:
+  void Print() const;
+};
+
 class Job {
- public:
-  using size_type = llvm::ArrayRef<const Job *>::size_type;
-  using iterator = llvm::ArrayRef<const Job *>::iterator;
-  using const_iterator = llvm::ArrayRef<const Job *>::const_iterator;
-
- public:
-  struct Input {
-    llvm::StringRef inputFile;
-    file::FileType inputType;
-  };
-
  private:
   // TODO: Mode
+  //
   JobType jobType;
-  llvm::ArrayRef<const Job *> deps;
-  llvm::ArrayRef<const Job::Input *> inputs;
-  // Object, Executable, etc.
+  Jobs deps;
+  InputFiles inputs;
   OutputFileType output;
 
   bool isAsync;
 
  public:
   // Some job depend on other jobs -- For example, LinkJob
-  Job(JobType jobType, llvm::ArrayRef<const Job::Input *> inputs,
-      OutputFileType output)
-      : jobType(jobType), inputs(inputs), output(output) {}
+  // Job(JobType jobType, InputFiles inputs, OutputFileType output)
+  //    : jobType(jobType), inputs(inputs), output(output) {}
 
-  // Some jobs only consume inputs -- For example, LinkJob
-  Job(JobType jobType, llvm::ArrayRef<const Job *> deps, OutputFileType output)
-      : jobType(jobType), deps(deps), output(output) {}
+  /*
+    // Some jobs only consume inputs -- For example, LinkJob
+    Job(JobType jobType, Jobs deps, OutputFileType output)
+        : jobType(jobType), deps(deps), output(output) {}
 
-  JobType GetType() const { return jobType; }
-  llvm::ArrayRef<const Job *> GetDeps() { return deps; }
-  llvm::ArrayRef<const Job::Input *> GetInputs() { return inputs; }
-  OutputFileType GetOutputFileType() { return output; }
-  bool IsAsync() { return isAsync; }
+
+          /*
+    JobType GetType() const { return jobType; }
+    llvm::ArrayRef<const Job *> GetDeps() { return deps; }
+    llvm::ArrayRef<const InputFile *> GetInputs() { return inputs; }
+    OutputFileType GetOutputFileType() { return output; }
+    bool IsAsync() { return isAsync; }
+          */
 
  public:
   virtual void Print(llvm::raw_ostream &os, const char *terminator, bool quote,

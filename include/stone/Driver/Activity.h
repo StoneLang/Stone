@@ -15,6 +15,7 @@
 #include "stone/Core/List.h"
 #include "stone/Driver/LinkType.h"
 #include "stone/Session/FileType.h"
+#include "stone/Session/SessionOptions.h"
 
 namespace llvm {
 namespace opt {
@@ -66,13 +67,13 @@ class Activity {
 
 // An event that represents and input file
 class InputActivity : public Activity {
-  const llvm::StringRef inputFile;
+  const InputFile input;
 
  public:
-  InputActivity(const llvm::StringRef inputFile, file::FileType inputType)
-      : Activity(Activity::Kind::Input, inputType), inputFile(inputFile) {}
+  InputActivity(const InputFile input)
+      : Activity(Activity::Kind::Input, input.first), input(input) {}
 
-  const llvm::StringRef &GetInput() const { return inputFile; }
+  const InputFile &GetInput() const { return input; }
 
   static bool classof(const Activity *e) {
     return e->GetKind() == Activity::Kind::Input;
@@ -82,7 +83,6 @@ class InputActivity : public Activity {
 class CompilationActivity : public Activity {
   bool isAsync = false;
   bool isTopLevel = false;
-  // A list of input activities
   llvm::TinyPtrVector<const Activity *> inputs;
 
  public:
@@ -191,7 +191,7 @@ class StaticLinkActivity : public CompilationActivity {
   LinkType linkType;
 
  public:
-  StaticLinkActivity(ArrayRef<const Activity *> inputs, LinkType linkType)
+  StaticLinkActivity(llvm::ArrayRef<const Activity *> inputs, LinkType linkType)
       : CompilationActivity(Activity::Kind::StaticLink, inputs,
                             file::FileType::Image),
         linkType(linkType) {

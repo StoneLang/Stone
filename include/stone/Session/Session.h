@@ -87,7 +87,7 @@ class Session : public Context {
 
  public:
   Session(SessionOptions &sessionOpts);
-  ~Session();
+  virtual ~Session();
 
  protected:
   std::unique_ptr<llvm::opt::InputArgList> BuildArgList(

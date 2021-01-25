@@ -219,11 +219,9 @@ void Driver::BuildActivities() {
 }
 void Driver::BuildCompileActivities(Compilation &compilation,
                                     CompilationActivity *linkActivity) {
-  // Go through the files and build the compile activities
 
   for (const auto &input : GetDriverOptions().inputs) {
-    auto inputActivity =
-        compilation.CreateActivity<InputActivity>(input.second, input.first);
+    auto inputActivity = compilation.CreateActivity<InputActivity>(input);
     switch (input.first) {
       case file::FileType::Stone: {
         assert(file::IsPartOfCompilation(input.first));
