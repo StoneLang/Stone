@@ -249,6 +249,8 @@ class Driver final : public Session {
 
   DriverOptions &GetDriverOptions() { return driverOpts; }
 
+  void ComputeModuleOutputPath();
+
  protected:
   void ComputeMode(const llvm::opt::DerivedArgList &args) override;
   ModeKind GetDefaultModeKind() override;
@@ -277,6 +279,9 @@ class Driver final : public Session {
 
   void BuildBackendActivity();
   void BuildAssemblyActivity();
+
+ private:
+  void PrintActivities();
 };
 }  // namespace driver
 }  // namespace stone

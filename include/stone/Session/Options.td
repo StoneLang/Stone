@@ -31,6 +31,7 @@ Group<InternalGroup>, HelpText<"DEBUG/DEVELOPMENT OPTIONS">;
 class InternalDebugOpt : Group<InternalDebugGroup>,
 Flags<[HelpHidden]>;
 
+
 //COMPILE ACTIONS
 
 def Parse: Flag<["-"], "parse">,
@@ -115,29 +116,30 @@ HelpText<"Generate code for a particular CPU variant">;
 
 // DEV OPTIONS 
 
-def SyncProc : Flag<["-"], "sync-proc">,
+def SyncJob : Flag<["-"], "sync-job">,
 Flags<[DebugOption]>,
-HelpText<"Run procs synchronously -- default is asynchronous">;
+HelpText<"Run jobs synchronously -- default is asynchronous">;
 
-def ShowMode : Flag<["-"], "show-action">,
+def PrintMode : Flag<["-"], "print-mode">,
 Flags<[DebugOption]>,
-HelpText<"Show every step in the lifecycle of the actions">;
+HelpText<"Print the current 'Compiler' or 'Driver' mode">;
 
-def ShowTasks : Flag<["-"], "show-tasks">,
+def PrintTime : Flag<["-"], "print-time">,
 Flags<[DebugOption]>,
-HelpText<"Show every step in the lifecycle of the actions">;
+HelpText<"Print the time of the 'Compiler' or 'Driver' lifecycle">;
 
-def ShowTime : Flag<["-"], "show-time">,
+def PrintDriverActivities : Flag<["-"], "driver-print-activities">,
 Flags<[DebugOption]>,
-HelpText<"Show time in the lifecycle of actions and jobs">;
+HelpText<"Print the list of activities to run">;
 
-def ShowProcs : Flag<["-"], "show-procs">,
-Flags<[DebugOption]>,
-HelpText<"Show procs">;
 
-def ShowLifecycle : Flag<["-"], "show-lifecycle">,
+def PrintDriverJobs : Flag<["-"], "driver-print-jobs">,
 Flags<[DebugOption]>,
-HelpText<"Show lifecycle of steps and procs">;
+HelpText<"Print the list of jobs to be executed">;
+
+def PrintDriverLifecycle : Flag<["-"], "driver-print-lifecycle">,
+Flags<[DebugOption]>,
+HelpText<"Print the lifecycle of activities and jobs">;
 
 
 def MainFile : Separate<["-"], "main-file">,

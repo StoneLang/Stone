@@ -28,7 +28,7 @@ enum OptID : unsigned {
 #define OPTION(PREFIX, NAME, ID, KIND, GROUP, ALIAS, ALIASARGS, FLAGS, PARAM, \
                HELPTEXT, METAVAR, VALUES)                                     \
   ID,
-#include "stone/System/Options.inc"
+#include "stone/Session/Options.inc"
   LAST
 #undef OPTION
 };

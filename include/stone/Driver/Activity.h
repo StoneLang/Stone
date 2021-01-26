@@ -60,7 +60,9 @@ class Activity {
  public:
   Activity::Kind GetKind() const { return static_cast<Activity::Kind>(kind); }
   file::FileType GetType() const { return static_cast<file::FileType>(ty); }
-  const char *GetName(Activity::Kind kind);
+
+ public:
+  static const char *GetName(Activity::Kind kind);
 
  private:
   friend class Compilation;

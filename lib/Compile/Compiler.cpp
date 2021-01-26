@@ -59,9 +59,9 @@ void Compiler::PrintHelp(bool showHidden) {}
 
 int Compiler::Run() {
   // Perform a quick help check
-  if (compilerOpts.showHelp) {
-    PrintHelp(compilerOpts.showHelpHidden);
-  } else if (compilerOpts.showVersion) {
+  if (compilerOpts.printHelp) {
+    PrintHelp(compilerOpts.printHelpHidden);
+  } else if (compilerOpts.printVersion) {
     PrintVersion();
   } else {
     return Compiler::Run(*this);

@@ -120,22 +120,51 @@ void Driver::BuildCompilation(const ToolChain &tc,
   //
   // About to move argument list, so capture some flags that will be needed
   // later.
-  // const bool driverPrintActions =
-  //    ArgList->hasArg(opts::DriverPrintActions);
-
-  // const bool DriverPrintDerivedOutputFileMap =
-  //    ArgList->hasArg(options::OPT_driver_print_derived_output_file_map);
-
-  // const bool ContinueBuildingAfterErrors =
-  //    computeContinueBuildingAfterErrors(BatchMode, ArgList.get());
-
-  // driverOpts.showLifecycle = argList.hasArg(opts::ShowLifecycle);
+  driverOpts.printActivities = dArgList->hasArg(opts::PrintDriverActivities);
+  driverOpts.printLifecycle = dArgList->hasArg(opts::PrintDriverLifecycle);
 
   compilation = llvm::make_unique<Compilation>(*this);
 
   BuildActivities();
+  if (driverOpts.printActivities) {
+    PrintActivities();
+    return;
+  }
 }
 
+static void PrintActivity(const Activity &activity, Driver &driver) {
+  std::string str;
+
+  driver.Out() << Activity::GetName(activity.GetKind()) << ", ";
+
+  // if (const auto *IA = dyn_cast<InputActivity>(activity)) {
+  //  os << "\"" << IA->getInputArg().getValue() << "\"";
+  //}
+
+  /*
+          else {
+      os << "{";
+      llvm::interleave(
+          *cast<JobAction>(A),
+          [&](const Action *Input) { os << printActions(Input, Ids); },
+          [&] { os << ", "; });
+      os << "}";
+    }
+
+    unsigned Id = Ids.size();
+    Ids[A] = Id;
+    llvm::errs() << Id << ": " << os.str() << ", "
+                 << file_types::getTypeName(A->getType()) << "\n";
+
+    return Id;
+
+  */
+}
+void Driver::PrintActivities() {
+  for (const auto &activity : GetCompilation().GetActivities()) {
+    PrintActivity(activity, *this);
+  }
+}
 bool Driver::CutOff(const ArgList &args, const ToolChain &tc) {
   if (args.hasArg(opts::Help)) {
     PrintHelp(false);
@@ -300,9 +329,11 @@ void Driver::PrintHelp(bool showHidden) {
                                  /*ShowAllAliases*/ false);
 }
 
+void Driver::ComputeModuleOutputPath() {}
+
 int Driver::Run() {
   // Perform a quick help check
-  if (driverOpts.showHelp) {
+  if (driverOpts.printHelp) {
     // PrintHelp();
   }
   return GetCompilation().Run();

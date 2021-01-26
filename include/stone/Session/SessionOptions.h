@@ -17,10 +17,11 @@ class SessionOptions {
   std::unique_ptr<llvm::opt::OptTable> optTable;
 
  public:
-  bool showHelp = false;
-  bool showHelpHidden = false;
-  bool showVersion = false;
-  bool showLifecycle = false;
+  bool printHelp = false;
+  bool printHelpHidden = false;
+  bool printVersion = false;
+  bool printLifecycle = false;
+  bool printStats = false;
 
   /// The default mode
   ModeKind modeKind = ModeKind::None;
