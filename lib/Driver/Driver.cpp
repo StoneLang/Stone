@@ -214,6 +214,7 @@ void Driver::BuildOutputs(const ToolChain &toolChain,
                           const llvm::opt::DerivedArgList &args,
                           const bool batchMode, const InputFiles &inputs,
                           DriverRuntime &runtime) const {
+  // Basic for the time being
   switch (mode.GetKind()) {
     case ModeKind::EmitExecutable:
       runtime.linkType = LinkType::Executable;
@@ -233,18 +234,18 @@ void Driver::BuildActivities() {
   llvm::PrettyStackTraceString CrashInfo("Building compilation activities");
 
   if (mode.IsCompileOnly()) {
-    BuildCompileActivities(*compilation.get());
+    BuildCompileActivities();
   } else {
-    BuildLinkActivity(*compilation.get());
+    BuildLinkActivity();
   }
 }
-void Driver::BuildCompileActivities(Compilation &compilation) {
+void Driver::BuildCompileActivities() {
   for (const auto &input : GetDriverOptions().inputs) {
-    auto inputActivity = compilation.CreateActivity<InputActivity>(input);
+    auto inputActivity = GetCompilation().CreateActivity<InputActivity>(input);
     switch (input.first) {
       case file::FileType::Stone: {
         assert(file::IsPartOfCompilation(input.first));
-        BuildCompileActivity(compilation, inputActivity);
+        BuildCompileActivity(inputActivity);
         break;
       }
       default:
@@ -252,18 +253,17 @@ void Driver::BuildCompileActivities(Compilation &compilation) {
     }
   }
 }
-void Driver::BuildCompileActivity(Compilation &compilation,
-                                  InputActivity *inputActivity) {
+void Driver::BuildCompileActivity(InputActivity *inputActivity) {
   if (runtime.compilerInvocationMode == CompilerInvocationMode::Multiple) {
-    auto compileActivity = compilation.CreateActivity<CompileActivity>(
+    auto compileActivity = GetCompilation().CreateActivity<CompileActivity>(
         inputActivity, runtime.compilerOutputFileType);
 
     runtime.AddModuleInput(compileActivity);
-    // BuildJobsForActivity();
-
     if (runtime.ShouldLink()) {
       runtime.AddLinkerInput(compileActivity);
     }
+    BuildJobsForActivity(compileActivity);
+
   } else if (runtime.compilerInvocationMode == CompilerInvocationMode::Single) {
     // TODO:
   }
@@ -271,18 +271,16 @@ void Driver::BuildCompileActivity(Compilation &compilation,
   // TODO: May just want build BuildJobsForActivity
   //
   // Since we are here, let us build the jobs.
-  // BuildJobsForActivity(compilation, compileActivity);
 }
 
-void Driver::BuildJobsForActivity(Compilation &compilation,
-                                  const CompilationActivity *activity) {}
+void Driver::BuildJobsForActivity(const CompilationActivity *activity) {}
 
-void Driver::BuildLinkActivity(Compilation &compilation) {
+void Driver::BuildLinkActivity() {
   // First, build all the compile activities
-  BuildCompileActivities(compilation);
+  BuildCompileActivities();
 
   /// NOTE: Defaulting to static link
-  auto linkActivity = compilation.CreateActivity<StaticLinkActivity>(
+  auto linkActivity = GetCompilation().CreateActivity<StaticLinkActivity>(
       runtime.GetLinkerInputs(), driver::LinkType::Executable);
 
   // BuildJobForActivity()

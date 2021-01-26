@@ -259,16 +259,15 @@ class Driver final : public Session {
   // TranslateInputArgs(const llvm::opt::InputArgList &args) override;
  private:
   /// Build all the compile activities
-  void BuildCompileActivities(Compilation &compilation);
+  void BuildCompileActivities();
 
   /// Build a single compile activity
-  void BuildCompileActivity(Compilation &compilation, InputActivity *ie);
+  void BuildCompileActivity(InputActivity *activity);
 
   /// Build all the jobs for a activity.
-  void BuildJobsForActivity(Compilation &compilation,
-                            const CompilationActivity *ca);
+  void BuildJobsForActivity(const CompilationActivity *activity);
 
-  void BuildLinkActivity(Compilation &compilation);
+  void BuildLinkActivity();
 
   void BuildStaticLinkActivity();
   void BuildStaticLinkActivity(CompilationActivity &activity);
