@@ -7,50 +7,94 @@
 #include "llvm/Option/ArgList.h"
 #include "llvm/Support/StringSaver.h"
 #include "stone/Core/List.h"
-#include "stone/Driver/Activity.h"
-#include "stone/Driver/CrashCondition.h"
+#include "stone/Driver/JobOptions.h"
+#include "stone/Driver/JobType.h"
+#include "stone/Driver/LinkType.h"
+#include "stone/Session/SessionOptions.h"
 
 namespace stone {
 namespace driver {
 
+class Job;
 class Driver;
 
+using OutputFileType = file::FileType;
+using Jobs = llvm::SmallVector<const Job*, 4>;
+
 class Job {
-  friend class Compilation;
-  Driver &driver;
-  CompilationActivity &trigger;
-
-  /// The executable to run.
-  const char *exec;
-
-  /// The list of other Jobs which are inputs to this Job.
-  llvm::SmallVector<const Job *, 4> deps;
-
-  /// These argument strings must be kept alive as long as the Job is alive.
-  llvm::opt::ArgStringList arguments;
+  Jobs deps;
+  JobType jobType;
+  InputFiles* inputs;
+  OutputFileType output;
+  JobOptions& jobOpts;
 
  public:
-  Job(CompilationActivity &trigger, llvm::SmallVector<const Job *, 4> deps,
-      Driver &driver)
-      : trigger(trigger), driver(driver) {}
-  virtual ~Job();
+  // Some job depend on other jobs -- For example, LinkJob
+  Job(JobType jobType, JobOptions& jobOpts, InputFiles* inputs,
+      OutputFileType output)
+      : jobType(jobType), jobOpts(jobOpts), inputs(inputs), output(output) {}
+
+  // Some jobs only consume inputs -- For example, LinkJob
+  Job(JobType jobType, JobOptions& jobOpts, Jobs deps, OutputFileType output)
+      : jobType(jobType), jobOpts(jobOpts), deps(deps), output(output) {}
+
+  JobType GetType() const { return jobType; }
+  Jobs& GetDeps() { return deps; }
+  InputFiles& GetInputs() { return *inputs; }
+  OutputFileType GetOutputFileType() { return output; }
+
+  JobOptions& GetJobOptions() { return jobOpts; }
+  const JobOptions& GetJobOptions() const { return jobOpts; }
+};
+
+class CompileJob final : public Job {
+ public:
+  // Some job depend on other jobs -- For example, LinkJob
+  CompileJob(JobOptions& jobOpts, InputFiles* inputs, OutputFileType output)
+      : Job(JobType::Compile, jobOpts, inputs, output) {}
+};
+
+class LinkJob : public Job {
+  LinkType linkType;
 
  public:
-  CompilationActivity &GetTrigger() { return trigger; }
+  // Some jobs only consume inputs -- For example, LinkJob
+  LinkJob(JobType jobType, JobOptions& jobOpts, InputFiles* inputs,
+          LinkType linkType, OutputFileType output)
+      : Job(jobType, jobOpts, inputs, output), linkType(linkType) {}
 
-  virtual void Print(llvm::raw_ostream &os, const char *terminator, bool quote,
-                     CrashCondition *crash = nullptr) const;
-
-  virtual int AsyncExecute(
-      llvm::ArrayRef<llvm::Optional<llvm::StringRef>> redirects,
-      std::string *errMsg, bool *failed) const;
-
-  virtual int SyncExecute(
-      llvm::ArrayRef<llvm::Optional<llvm::StringRef>> redirects,
-      std::string *errMsg, bool *failed) const;
+  // Some jobs only consume inputs -- For example, LinkJob
+  LinkJob(JobType jobType, JobOptions& jobOpts, Jobs deps, LinkType linkType,
+          OutputFileType output)
+      : Job(JobType::StaticLink, jobOpts, deps, output), linkType(linkType) {}
 
  public:
-  // llvm::SmallVector<Job *, 10> deps;
+  LinkType GetLinkType() { return linkType; }
+};
+class StaticLinkJob final : public LinkJob {
+ public:
+  // Some jobs only consume inputs -- For example, LinkJob
+  StaticLinkJob(JobOptions& jobOpts, InputFiles* inputs, LinkType linkType,
+                OutputFileType output)
+      : LinkJob(JobType::StaticLink, jobOpts, inputs, linkType, output) {}
+
+  // Some jobs only consume inputs -- For example, LinkJob
+  StaticLinkJob(JobOptions& jobOpts, Jobs deps, LinkType linkType,
+                OutputFileType output)
+      : LinkJob(JobType::StaticLink, jobOpts, deps, linkType, output) {}
+};
+
+class DynamicLinkJob final : public LinkJob {
+ public:
+  // Some jobs only consume inputs -- For example, LinkJob
+  DynamicLinkJob(JobOptions& jobOpts, InputFiles* inputs, LinkType linkType,
+                 OutputFileType output)
+      : LinkJob(JobType::DynamicLink, jobOpts, inputs, linkType, output) {}
+
+  // Some jobs only consume inputs -- For example, LinkJob
+  DynamicLinkJob(JobOptions& jobOpts, Jobs deps, LinkType linkType,
+                 OutputFileType output)
+      : LinkJob(JobType::DynamicLink, jobOpts, deps, linkType, output) {}
 };
 
 // This is used in compilation where they are stored and shared

@@ -196,7 +196,8 @@ class StaticLinkActivity : public CompilationActivity {
 
  public:
   StaticLinkActivity(Activities inputs, LinkType linkType)
-      : CompilationActivity(Activity::Kind::StaticLink, inputs, file::FileType::Image),
+      : CompilationActivity(Activity::Kind::StaticLink, inputs,
+                            file::FileType::Image),
         linkType(linkType) {
     assert(linkType == LinkType::StaticLibrary);
   }

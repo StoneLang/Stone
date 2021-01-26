@@ -3,6 +3,13 @@
 using namespace stone;
 using namespace stone::driver;
 
+/*
+const char *Job::GetName(JobType jobType) {
+}
+
+*/
+
+/*
 Job::~Job() {}
 
 void Job::Print(llvm::raw_ostream &os, const char *terminator, bool quote,
@@ -17,3 +24,5 @@ int Job::SyncExecute(llvm::ArrayRef<llvm::Optional<llvm::StringRef>> redirects,
                      std::string *errMsg, bool *failed) const {
   return 0;
 }
+
+*/

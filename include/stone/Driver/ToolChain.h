@@ -18,6 +18,7 @@
 #include "llvm/Target/TargetOptions.h"
 #include "stone/Core/LLVM.h"
 #include "stone/Core/Mem.h"
+#include "stone/Driver/Activity.h"
 #include "stone/Driver/Job.h"
 #include "stone/Session/FileType.h"
 #include "stone/Session/Mode.h"

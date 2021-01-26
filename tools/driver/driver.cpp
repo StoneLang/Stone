@@ -42,8 +42,8 @@ using Jobs = llvm::SmallVector<const Job*, 4>;
 using PID = int64_t;
 
 class Job {
-	Jobs deps;
-	JobType jobType;
+  Jobs deps;
+  JobType jobType;
   InputFiles* inputs;
   OutputFileType output;
 
@@ -68,10 +68,9 @@ class CompileJob final : public Job {
   CompileJob(InputFiles* inputs, OutputFileType output)
       : Job(JobType::Compile, inputs, output) {}
 
-	// Some job depend on other jobs -- For example, LinkJob
-  //CompileJob(Jobs deps, OutputFileType output)
+  // Some job depend on other jobs -- For example, LinkJob
+  // CompileJob(Jobs deps, OutputFileType output)
   //    : Job(JobType::Compile, inputs, output) {}
-
 };
 
 class LinkJob : public Job {
@@ -100,7 +99,6 @@ class StaticLinkJob final : public LinkJob {
   StaticLinkJob(Jobs deps, LinkType linkType, OutputFileType output)
       : LinkJob(JobType::StaticLink, deps, linkType, output) {}
 };
-
 
 class DynamicLinkJob final : public LinkJob {
  public:
