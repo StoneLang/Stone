@@ -47,18 +47,29 @@ enum class CompilerInvocationMode {
 };
 enum class LTOKind { None, Full, Thin, Unknown };
 
-class DriverProfile final {
+class DriverCache final {
  public:
+  /// A map for caching Jobs for a given Activity/ToolChain pair
+  llvm::DenseMap<std::pair<const Activity *, const ToolChain *>, Job *>
+      jobChacheMap;
+  /// Cache of all the ToolChains in use by the driver.
+  ///
+  /// This maps from the string representation of a triple to a ToolChain
+  /// created targeting that triple. The driver owns all the ToolChain objects
+  /// stored in it, and will clean them up when torn down.
+  mutable llvm::StringMap<std::unique_ptr<ToolChain>> toolChainCache;
+};
+
+class DriverRuntime final {
+ public:
+  /// Pointers to the activities created by Compilation -- Compilation manages
+  /// the activities.
+  llvm::SmallVector<const Activity *, 2> moduleActivities;
+
+  /// Pointers to the jobs created
+  llvm::SmallVector<const Activity *, 2> linkerActivities;
+
   /// All of the input files that have been created
-  //
-  /// The Activitys which were used to build the Jobs.
-  // llvm::SmallVector<std::unique_ptr<const Activity>, 32> activities;
-
-  /// The Jobes which will be executed by this compilation.
-  // llvm::SmallVector<std::unique_ptr<const Job>, 32> jobs;
-
-  /// The inputs for the linker -- may not need this there
-  llvm::SmallVector<const Activity *, 2> linkerInputs;
 
   /// Default compiler invocation mode -- one file per CompileJob
   CompilerInvocationMode compilerInvocationMode =
@@ -87,35 +98,35 @@ class DriverProfile final {
   /// The output type which should be used for the compiler
   file::FileType compilerOutputFileType = file::FileType::INVALID;
 
- public:
-  class ModuleInputs final {
-   private:
-    llvm::SmallVector<const Activity *, 2> inputs;
-  };
-  class LinkerInputs final {
-   private:
-    llvm::SmallVector<const Activity *, 2> inputs;
-  };
-};
+  /// Whether or not the driver should generate a module.
+  bool shouldGenerateModule = false;
 
-class DriverCache final {
+  DriverCache cache;
+
  public:
-  /// A map for caching Jobs for a given Activity/ToolChain pair
-  llvm::DenseMap<std::pair<const Activity *, const ToolChain *>, Job *>
-      jobChacheMap;
-  /// Cache of all the ToolChains in use by the driver.
-  ///
-  /// This maps from the string representation of a triple to a ToolChain
-  /// created targeting that triple. The driver owns all the ToolChain objects
-  /// stored in it, and will clean them up when torn down.
-  mutable llvm::StringMap<std::unique_ptr<ToolChain>> toolChainCache;
+  void AddModuleInput(const Activity *activity) {
+    moduleActivities.push_back(activity);
+  }
+
+  llvm::SmallVector<const Activity *, 2> GetModuleInputs() {
+    return moduleActivities;
+  }
+
+  void AddLinkerInput(const Activity *activity) {
+    linkerActivities.push_back(activity);
+  }
+  llvm::SmallVector<const Activity *, 2> GetLinkerInputs() {
+    return linkerActivities;
+  }
+
+  const DriverCache &GetCache() const { return cache; }
+  DriverCache &GetCache() { return cache; }
 };
 
 class Driver final : public Session {
-  DriverCache cache;
   std::unique_ptr<ToolChain> toolChain;
   std::unique_ptr<Compilation> compilation;
-  DriverProfile profile;
+  DriverRuntime runtime;
 
  public:
   /// The options for the driver
@@ -194,11 +205,9 @@ class Driver final : public Session {
   /// \param[out] OI The OutputInfo in which to store the resulting output
   /// information.
 
-  void BuildOutputFiles(const ToolChain &toolChain,
-                        const llvm::opt::DerivedArgList &args,
-                        const bool batchMode,
-                        const InputFiles &inputs /*TODO: DriverInputs*/,
-                        DriverProfile &profile) const;
+  void BuildOutputs(const ToolChain &toolChain,
+                    const llvm::opt::DerivedArgList &args, const bool batchMode,
+                    const InputFiles &inputs, DriverRuntime &runtime) const;
 
   void BuildCompilation(const ToolChain &tc,
                         const llvm::opt::InputArgList &args);
@@ -233,11 +242,8 @@ class Driver final : public Session {
   const ToolChain &GetToolChain() const { return *toolChain.get(); }
   ToolChain &GetToolChain() { return *toolChain.get(); }
 
-  const DriverProfile &GetProfile() const { return profile; }
-  DriverProfile &GetProfile() { return profile; }
-
-  const DriverCache &GetCache() const { return cache; }
-  DriverCache &GetCache() { return cache; }
+  const DriverRuntime &GetRuntime() const { return runtime; }
+  DriverRuntime &GetRuntime() { return runtime; }
 
   Compilation &GetCompilation() { return *compilation.get(); }
 
@@ -253,16 +259,14 @@ class Driver final : public Session {
   // TranslateInputArgs(const llvm::opt::InputArgList &args) override;
  private:
   /// Build all the compile activities
-  void BuildCompileActivities(Compilation &compilation,
-                              CompilationActivity *le = nullptr);
+  void BuildCompileActivities(Compilation &compilation);
 
   /// Build a single compile activity
-  void BuildCompileActivity(Compilation &compilation, InputActivity *ie,
-                            CompilationActivity *le = nullptr);
+  void BuildCompileActivity(Compilation &compilation, InputActivity *ie);
 
   /// Build all the jobs for a activity.
-  void BuildJobsForCompileActivity(Compilation &compilation,
-                                   const CompileActivity *ce);
+  void BuildJobsForActivity(Compilation &compilation,
+                            const CompilationActivity *ca);
 
   void BuildLinkActivity(Compilation &compilation);
 

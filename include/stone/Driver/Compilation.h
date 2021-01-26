@@ -13,6 +13,8 @@
 #include "llvm/ADT/Optional.h"
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Option/Option.h"
+//#include "llvm/Option/ArgString.h"
+
 #include "stone/Core/LLVM.h"
 #include "stone/Driver/Activity.h"
 #include "stone/Driver/JobQueue.h"
@@ -47,11 +49,11 @@ class Compilation final {
   /// only be removed if we crash.
   // ArgStringMap failureResultFiles;
 
-  /// A list of all of the activities
-  ActivityList activities;
+  /// A list of all of the managed activities created
+  SafeActivities safeActivities;
 
-  /// A list of all the procs
-  JobList jobs;
+  /// A list of all the managed jobs created
+  SafeJobs safeJobs;
 
  public:
   Compilation(Driver &driver);
@@ -64,17 +66,17 @@ class Compilation final {
   template <typename T, typename... Args>
   T *CreateActivity(Args &&...arg) {
     auto activity = new T(std::forward<Args>(arg)...);
-    activities.Add(std::unique_ptr<stone::driver::Activity>(activity));
+    safeActivities.Add(std::unique_ptr<stone::driver::Activity>(activity));
     return activity;
   }
 
-  ActivityList &GetActivitys() { return activities; }
-  const ActivityList &GetActivitys() const { return activities; }
+  SafeActivities &GetActivities() { return safeActivities; }
+  const SafeActivities &GetActivities() const { return safeActivities; }
 
-  JobList &GetJobs() { return jobs; }
-  const JobList &GetJobs() const { return jobs; }
+  SafeJobs &GetJobs() { return safeJobs; }
+  const SafeJobs &GetJobs() const { return safeJobs; }
 
-  void AddJob(std::unique_ptr<Job> job) { jobs.Add(std::move(job)); }
+  void AddJob(std::unique_ptr<Job> job) { safeJobs.Add(std::move(job)); }
 
   /// addTempFile - Add a file to remove on exit, and returns its
   /// argument.
@@ -109,8 +111,8 @@ class Compilation final {
   /// \param fallBackProc - For non-zero results, this will be a vector of
   /// failing commands and their associated result code.
   void ExecuteJobs(
-      const JobList &jobss,
-      llvm::SmallVectorImpl<std::pair<int, const Job *>> &fallBackProcs) const;
+      const SafeJobs &jobs,
+      llvm::SmallVectorImpl<std::pair<int, const Job *>> &fallBackJob) const;
 
  public:
   int Run();

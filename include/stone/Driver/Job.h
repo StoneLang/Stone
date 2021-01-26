@@ -42,18 +42,8 @@ class Job {
   // llvm::SmallVector<Job *, 10> deps;
 };
 
-/*
-//TODO: This may just be better than creating the activities
-class CompileJob  : public CompilationJob {
-
-};
-
-class LinkJob : public CompilationJob {
-
-};
-*/
-
-class JobList final : public List<Job> {
+// This is used in compilation where they are stored and shared
+class SafeJobs final : public List<Job> {
  public:
   void Print() const;
 };

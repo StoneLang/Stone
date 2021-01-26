@@ -25,10 +25,10 @@ class Arg;
 
 namespace stone {
 namespace driver {
-class Activity; 
+class Activity;
 
-using OutputFileType	= file::FileType;
-using Activities			=  llvm::ArrayRef<const Activity *>;
+using OutputFileType = file::FileType;
+using Activities = llvm::ArrayRef<const Activity *>;
 
 class Activity {
   // TODO: ActivityKind
@@ -89,8 +89,7 @@ class CompilationActivity : public Activity {
   llvm::TinyPtrVector<const Activity *> inputs;
 
  public:
-  CompilationActivity(Activity::Kind kind,
-                      Activities inputs,
+  CompilationActivity(Activity::Kind kind, Activities inputs,
                       OutputFileType outputType)
       : Activity(kind, outputType), inputs(inputs) {}
 
@@ -173,7 +172,8 @@ class DynamicLinkActivity final : public CompilationActivity {
   bool shouldPerformLTO;
 
  public:
-  DynamicLinkActivity(Activities inputs, LinkType linkType, bool shouldPerformLTO)
+  DynamicLinkActivity(Activities inputs, LinkType linkType,
+                      bool shouldPerformLTO)
       : CompilationActivity(Activity::Kind::DynamicLink, inputs,
                             file::FileType::Image),
         linkType(linkType),
@@ -214,10 +214,12 @@ class AssembleActivity final : public CompilationActivity {
   }
 };
 
-class ActivityList final : public List<Activity> {
+// This is used in compilation where they are stored but shared
+class SafeActivities final : public List<Activity> {
  public:
   void Print() const;
 };
+
 }  // namespace driver
 }  // namespace stone
 #endif

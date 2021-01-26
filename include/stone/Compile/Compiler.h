@@ -23,6 +23,8 @@ class CompilerStats final : public Stats {
   void Print() const override;
 };
 
+class OutputProfile final {};
+
 class Compiler final : public Session {
   SrcMgr sm;
   FileMgr fm;

@@ -14,7 +14,7 @@ class Mode final {
   void SetName(llvm::StringRef v) { name = v; }
 
  public:
-  ModeKind GetKind() { return kind; }
+  ModeKind GetKind() const { return kind; }
   llvm::StringRef GetName() const { return name; }
 
   bool IsOutput() {

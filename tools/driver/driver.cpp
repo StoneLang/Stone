@@ -29,14 +29,11 @@ enum class JobType {
 };
 
 using OutputFileType = file::FileType;
-
 class CrashCondition {};
 
 class Job;
-class Jobs final : public List<Job> {
- public:
-  void Print() const;
-};
+using Jobs = llvm::ArrayRef<const Job *>;
+using Inputs = llvm::ArrayRef<const InputFile *>;
 
 class Job {
  private:
@@ -44,41 +41,27 @@ class Job {
   //
   JobType jobType;
   Jobs deps;
-  InputFiles inputs;
+  Inputs inputs;
   OutputFileType output;
 
   bool isAsync;
 
  public:
   // Some job depend on other jobs -- For example, LinkJob
-  // Job(JobType jobType, InputFiles inputs, OutputFileType output)
-  //    : jobType(jobType), inputs(inputs), output(output) {}
+  Job(JobType jobType, Inputs inputs, OutputFileType output)
+      : jobType(jobType), inputs(inputs), output(output) {}
+
+  // Some jobs only consume inputs -- For example, LinkJob
+  Job(JobType jobType, Jobs deps, OutputFileType output)
+      : jobType(jobType), deps(deps), output(output) {}
 
   /*
-    // Some jobs only consume inputs -- For example, LinkJob
-    Job(JobType jobType, Jobs deps, OutputFileType output)
-        : jobType(jobType), deps(deps), output(output) {}
-
-
-          /*
-    JobType GetType() const { return jobType; }
-    llvm::ArrayRef<const Job *> GetDeps() { return deps; }
-    llvm::ArrayRef<const InputFile *> GetInputs() { return inputs; }
-    OutputFileType GetOutputFileType() { return output; }
-    bool IsAsync() { return isAsync; }
-          */
-
- public:
-  virtual void Print(llvm::raw_ostream &os, const char *terminator, bool quote,
-                     CrashCondition *crash = nullptr) const;
-
-  virtual int AsyncExecute(
-      llvm::ArrayRef<llvm::Optional<llvm::StringRef>> redirects,
-      std::string *errMsg, bool *failed) const;
-
-  virtual int SyncExecute(
-      llvm::ArrayRef<llvm::Optional<llvm::StringRef>> redirects,
-      std::string *errMsg, bool *failed) const;
+JobType GetType() const { return jobType; }
+llvm::ArrayRef<const Job *> GetDeps() { return deps; }
+llvm::ArrayRef<const InputFile *> GetInputs() { return inputs; }
+OutputFileType GetOutputFileType() { return output; }
+bool IsAsync() { return isAsync; }
+  */
 };
 
 /*
