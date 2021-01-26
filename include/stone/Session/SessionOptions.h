@@ -37,6 +37,10 @@ class SessionOptions {
 
  public:
   llvm::opt::OptTable &GetOpts() const { return *optTable.get(); }
+
+  void AddInput(file::FileType ty, llvm::StringRef name) {
+    inputs.push_back(std::make_pair(ty, name));
+  }
 };
 }  // namespace stone
 

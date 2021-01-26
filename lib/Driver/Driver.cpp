@@ -55,16 +55,19 @@ void Driver::BuildToolChain(const llvm::opt::InputArgList &argList) {
       break;
     }
       /*
-        case llvm::Triple::Linux:
-          return llvm::make_unique<stone::Linux>(*this, target);
-        case llvm::Triple::FreeBSD:
-          return llvm::make_unique<stone::FreeBSD>(*this, target);
-        case llvm::Triple::OpenBSD:
-          return llvm::make_unique<stone::OpenBSD>(*this, target);
-        case llvm::Triple::Win32:
-          return llvm::make_unique<stone::Win>(*this, target);
+          case llvm::Triple::Linux:
+            toolChain = llvm::make_unique<stone::Linux>(*this, target);
+            break;
+          case llvm::Triple::FreeBSD:
+            toolChain = llvm::make_unique<stone::FreeBSD>(*this, target);
+            break;
+          case llvm::Triple::OpenBSD:
+            toolChain = llvm::make_unique<stone::OpenBSD>(*this, target);
+            break;
+          case llvm::Triple::Win32:
+            toolChain = llvm::make_unique<stone::Win>(*this, target);
+            break;
       */
-
     default:
       Out() << "D(SourceLoc(),"
             << "msg::error_unknown_target,"
@@ -188,7 +191,7 @@ void Driver::BuildInputFiles(const ToolChain &tc, const DerivedArgList &args,
       }
 
       if (DoesInputExist(*this, args, de, argValue)) {
-        GetDriverOptions().inputs.push_back(std::make_pair(ft, argValue));
+        driverOpts.AddInput(ft, argValue);
       }
 
       if (ft == file::FileType::Stone) {
@@ -211,7 +214,6 @@ void Driver::BuildOutputs(const ToolChain &toolChain,
                           const llvm::opt::DerivedArgList &args,
                           const bool batchMode, const InputFiles &inputs,
                           DriverRuntime &runtime) const {
-
   switch (mode.GetKind()) {
     case ModeKind::EmitExecutable:
       runtime.linkType = LinkType::Executable;

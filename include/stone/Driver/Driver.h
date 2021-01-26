@@ -124,9 +124,9 @@ class DriverRuntime final {
 };
 
 class Driver final : public Session {
+  DriverRuntime runtime;
   std::unique_ptr<ToolChain> toolChain;
   std::unique_ptr<Compilation> compilation;
-  DriverRuntime runtime;
 
  public:
   /// The options for the driver
