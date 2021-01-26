@@ -132,28 +132,29 @@ void Driver::BuildCompilation(const ToolChain &tc,
   }
 }
 
-static void PrintActivity(const Activity &activity, Driver &driver) {
+static void PrintActivity(const Activity *activity, Driver &driver) {
   std::string str;
 
-  driver.Out() << Activity::GetName(activity.GetKind()) << ", ";
+  driver.Out() << Activity::GetName(activity->GetKind()) << "," << '\n';
 
-  // if (const auto *IA = dyn_cast<InputActivity>(activity)) {
-  //  os << "\"" << IA->getInputArg().getValue() << "\"";
-  //}
+  if (activity->GetKind() == Activity::Kind::Input) {
+    const auto *input = dyn_cast<InputActivity>(activity);
+    driver.Out() << "\"" << input->GetInput().second << "\"";
+  }
 
   /*
           else {
       os << "{";
       llvm::interleave(
           *cast<JobAction>(A),
-          [&](const Action *Input) { os << printActions(Input, Ids); },
+          [&](const Action *Input) { os << PrintActions(Input, Ids); },
           [&] { os << ", "; });
       os << "}";
     }
 
     unsigned Id = Ids.size();
     Ids[A] = Id;
-    llvm::errs() << Id << ": " << os.str() << ", "
+    driver.Out() << Id << ": " << os.str() << ", "
                  << file_types::getTypeName(A->getType()) << "\n";
 
     return Id;
@@ -162,7 +163,7 @@ static void PrintActivity(const Activity &activity, Driver &driver) {
 }
 void Driver::PrintActivities() {
   for (const auto &activity : GetCompilation().GetActivities()) {
-    PrintActivity(activity, *this);
+    PrintActivity(&activity, *this);
   }
 }
 bool Driver::CutOff(const ArgList &args, const ToolChain &tc) {
@@ -291,7 +292,7 @@ void Driver::BuildCompileActivity(InputActivity *inputActivity) {
     if (runtime.ShouldLink()) {
       runtime.AddLinkerInput(compileActivity);
     }
-    BuildJobsForActivity(compileActivity);
+    // BuildJobsForActivity(compileActivity);
 
   } else if (runtime.compilerInvocationMode == CompilerInvocationMode::Single) {
     // TODO:
@@ -308,10 +309,18 @@ void Driver::BuildLinkActivity() {
   // First, build all the compile activities
   BuildCompileActivities();
 
-  /// NOTE: Defaulting to static link
-  auto linkActivity = GetCompilation().CreateActivity<StaticLinkActivity>(
-      runtime.GetLinkerInputs(), driver::LinkType::Executable);
-
+  if (runtime.ShouldLink() && !runtime.linkerActivities.empty()) {
+    Activity *linkActivity = nullptr;
+    if (runtime.linkType == LinkType::StaticLibrary) {
+      linkActivity = GetCompilation().CreateActivity<StaticLinkActivity>(
+          runtime.linkerActivities, runtime.linkType);
+    } else {
+      linkActivity = GetCompilation().CreateActivity<DynamicLinkActivity>(
+          runtime.linkerActivities, runtime.linkType,
+          runtime.ShouldPerformLTO());
+    }
+    runtime.AddTopLevelActivity(linkActivity);
+  }
   // BuildJobForActivity()
 }
 static void BuildJob(Driver &driver) {}

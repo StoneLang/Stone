@@ -51,7 +51,7 @@ class DriverCache final {
  public:
   /// A map for caching Jobs for a given Activity/ToolChain pair
   llvm::DenseMap<std::pair<const Activity *, const ToolChain *>, Job *>
-      jobChacheMap;
+      jobCache;
   /// Cache of all the ToolChains in use by the driver.
   ///
   /// This maps from the string representation of a triple to a ToolChain
@@ -68,6 +68,9 @@ class DriverRuntime final {
 
   /// Pointers to the jobs created
   llvm::SmallVector<const Activity *, 2> linkerActivities;
+
+  /// Pointers to the jobs created
+  llvm::SmallVector<const Activity *, 2> topLevelActivities;
 
   /// All of the input files that have been created
 
@@ -93,8 +96,6 @@ class DriverRuntime final {
   /// Default linking kind
   LinkType linkType = LinkType::None;
 
-  bool ShouldLink() { return linkType != LinkType::None; }
-
   /// The output type which should be used for the compiler
   file::FileType compilerOutputFileType = file::FileType::INVALID;
 
@@ -119,8 +120,19 @@ class DriverRuntime final {
     return linkerActivities;
   }
 
+  void AddTopLevelActivity(const Activity *activity) {
+    topLevelActivities.push_back(activity);
+  }
+  llvm::SmallVector<const Activity *, 2> GetTopLevelActivities() {
+    return topLevelActivities;
+  }
+
   const DriverCache &GetCache() const { return cache; }
   DriverCache &GetCache() { return cache; }
+
+  bool ShouldPerformLTO() { return ltoVariant != LTOKind::None; }
+
+  bool ShouldLink() { return linkType != LinkType::None; }
 };
 
 class Driver final : public Session {

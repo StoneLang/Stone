@@ -114,8 +114,8 @@ class CompilationActivity : public Activity {
   bool IsTopLevel() { return isTopLevel; }
   bool IsAsync() { return isAsync; }
 
-  static bool classof(const Activity *e) {
-    return (e->GetKind() >= Kind::First && e->GetKind() <= Kind::Last);
+  static bool classof(const Activity *a) {
+    return (a->GetKind() >= Kind::First && a->GetKind() <= Kind::Last);
   }
 };
 
@@ -196,8 +196,7 @@ class StaticLinkActivity : public CompilationActivity {
 
  public:
   StaticLinkActivity(Activities inputs, LinkType linkType)
-      : CompilationActivity(Activity::Kind::StaticLink, inputs,
-                            file::FileType::Image),
+      : CompilationActivity(Activity::Kind::StaticLink, inputs, file::FileType::Image),
         linkType(linkType) {
     assert(linkType == LinkType::StaticLibrary);
   }

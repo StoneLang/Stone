@@ -12,6 +12,7 @@
 #include "stone/Core/List.h"
 #include "stone/Driver/LinkType.h"
 #include "stone/Session/FileType.h"
+#include "stone/Session/Mode.h"
 #include "stone/Session/SessionOptions.h"
 
 using namespace stone;
@@ -32,57 +33,84 @@ using OutputFileType = file::FileType;
 class CrashCondition {};
 
 class Job;
-using Jobs = llvm::ArrayRef<const Job *>;
-using Inputs = llvm::ArrayRef<const InputFile *>;
+using Jobs = llvm::SmallVector<const Job*, 4>;
+
+/// If positive, contains llvm::ProcessID for a real Job on the host OS. If
+/// negative, contains a quasi-PID, which identifies a Job that's a member of
+/// a BatchJob _without_ denoting an operating system process.
+
+using PID = int64_t;
 
 class Job {
- private:
-  // TODO: Mode
-  //
-  JobType jobType;
-  Jobs deps;
-  Inputs inputs;
+	Jobs deps;
+	JobType jobType;
+  InputFiles* inputs;
   OutputFileType output;
-
-  bool isAsync;
 
  public:
   // Some job depend on other jobs -- For example, LinkJob
-  Job(JobType jobType, Inputs inputs, OutputFileType output)
+  Job(JobType jobType, InputFiles* inputs, OutputFileType output)
       : jobType(jobType), inputs(inputs), output(output) {}
 
   // Some jobs only consume inputs -- For example, LinkJob
   Job(JobType jobType, Jobs deps, OutputFileType output)
       : jobType(jobType), deps(deps), output(output) {}
 
-  /*
-JobType GetType() const { return jobType; }
-llvm::ArrayRef<const Job *> GetDeps() { return deps; }
-llvm::ArrayRef<const InputFile *> GetInputs() { return inputs; }
-OutputFileType GetOutputFileType() { return output; }
-bool IsAsync() { return isAsync; }
-  */
+  JobType GetType() const { return jobType; }
+  Jobs& GetDeps() { return deps; }
+  InputFiles& GetInputs() { return *inputs; }
+  OutputFileType GetOutputFileType() { return output; }
 };
 
-/*
 class CompileJob final : public Job {
  public:
-  CompileJob(Job::Input *input, OutputFileType output)
-      : Job(JobType::Compile, input, output) {}
+  // Some job depend on other jobs -- For example, LinkJob
+  CompileJob(InputFiles* inputs, OutputFileType output)
+      : Job(JobType::Compile, inputs, output) {}
+
+	// Some job depend on other jobs -- For example, LinkJob
+  //CompileJob(Jobs deps, OutputFileType output)
+  //    : Job(JobType::Compile, inputs, output) {}
+
 };
 
-class StaticLinkJob final : public Job {
+class LinkJob : public Job {
   LinkType linkType;
 
  public:
-  StaticLinkJob(llvm::ArrayRef<const Job *> deps, LinkType linkType)
-      : Job(JobType::StaticLink, deps, file::FileType::Image),
-        linkType(linkType) {}
+  // Some jobs only consume inputs -- For example, LinkJob
+  LinkJob(JobType jobType, InputFiles* inputs, LinkType linkType,
+          OutputFileType output)
+      : Job(jobType, inputs, output), linkType(linkType) {}
 
-  StaticLinkJob(llvm::ArrayRef<const Job::Input *> inputs, LinkType linkType)
-      : Job(JobType::StaticLink, inputs, file::FileType::Image),
-        linkType(linkType) {}
+  // Some jobs only consume inputs -- For example, LinkJob
+  LinkJob(JobType jobType, Jobs deps, LinkType linkType, OutputFileType output)
+      : Job(JobType::StaticLink, deps, output), linkType(linkType) {}
+
+ public:
+  LinkType GetLinkType() { return linkType; }
 };
-*/
+class StaticLinkJob final : public LinkJob {
+ public:
+  // Some jobs only consume inputs -- For example, LinkJob
+  StaticLinkJob(InputFiles* inputs, LinkType linkType, OutputFileType output)
+      : LinkJob(JobType::StaticLink, inputs, linkType, output) {}
+
+  // Some jobs only consume inputs -- For example, LinkJob
+  StaticLinkJob(Jobs deps, LinkType linkType, OutputFileType output)
+      : LinkJob(JobType::StaticLink, deps, linkType, output) {}
+};
+
+
+class DynamicLinkJob final : public LinkJob {
+ public:
+  // Some jobs only consume inputs -- For example, LinkJob
+  DynamicLinkJob(InputFiles* inputs, LinkType linkType, OutputFileType output)
+      : LinkJob(JobType::DynamicLink, inputs, linkType, output) {}
+
+  // Some jobs only consume inputs -- For example, LinkJob
+  DynamicLinkJob(Jobs deps, LinkType linkType, OutputFileType output)
+      : LinkJob(JobType::DynamicLink, deps, linkType, output) {}
+};
 
 int main() { return 0; }

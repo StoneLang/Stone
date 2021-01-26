@@ -14,13 +14,24 @@ namespace stone {
 namespace driver {
 
 class Driver;
+
 class Job {
   friend class Compilation;
   Driver &driver;
   CompilationActivity &trigger;
 
+  /// The executable to run.
+  const char *exec;
+
+  /// The list of other Jobs which are inputs to this Job.
+  llvm::SmallVector<const Job *, 4> deps;
+
+  /// These argument strings must be kept alive as long as the Job is alive.
+  llvm::opt::ArgStringList arguments;
+
  public:
-  Job(CompilationActivity &trigger, Driver &driver)
+  Job(CompilationActivity &trigger, llvm::SmallVector<const Job *, 4> deps,
+      Driver &driver)
       : trigger(trigger), driver(driver) {}
   virtual ~Job();
 
