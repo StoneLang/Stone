@@ -10,6 +10,7 @@
 #include "stone/Driver/Activity.h"
 #include "stone/Driver/Compilation.h"
 #include "stone/Driver/DriverOptions.h"
+#include "stone/Driver/DriverStats.h"
 #include "stone/Driver/ToolChain.h"
 #include "stone/Session/Session.h"
 
@@ -140,6 +141,7 @@ class DriverRuntime final {
 
 class Driver final : public Session {
   DriverRuntime runtime;
+  DriverStats stats;
   std::unique_ptr<ToolChain> toolChain;
   std::unique_ptr<Compilation> compilation;
 
@@ -260,6 +262,8 @@ class Driver final : public Session {
   Compilation &GetCompilation() { return *compilation.get(); }
 
   DriverOptions &GetDriverOptions() { return driverOpts; }
+
+  DriverStats &GetDriverStats() { return stats; }
 
   void ComputeModuleOutputPath();
   void ComputeMainOutput();

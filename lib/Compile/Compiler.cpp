@@ -49,6 +49,8 @@ bool Compiler::Build(llvm::ArrayRef<const char *> args) {
 
   return true;
 }
+
+// TODO: Belongs in session
 void Compiler::BuildInputs() {}
 
 ModeKind Compiler::GetDefaultModeKind() { return ModeKind::EmitObject; }

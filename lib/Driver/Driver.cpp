@@ -18,7 +18,8 @@ Driver::Driver(llvm::StringRef stoneExecutable, std::string driverName)
       driverName(driverName),
       /*sysRoot(DEFAULT_SYSROOT),*/
       driverTitle("Stone Compiler"),
-      checkInputFilesExist(true) {}
+      checkInputFilesExist(true),
+      stats(*this) {}
 /// Parse the given list of strings into an InputArgList.
 bool Driver::Build(llvm::ArrayRef<const char *> args) {
   excludedFlagsBitmask = opts::NoDriverOption;
