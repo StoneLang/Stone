@@ -17,6 +17,7 @@
 
 #include "stone/Core/LLVM.h"
 #include "stone/Driver/Activity.h"
+#include "stone/Driver/Job.h"
 #include "stone/Driver/JobQueue.h"
 
 namespace llvm {
@@ -68,6 +69,15 @@ class Compilation final {
     auto activity = new T(std::forward<Args>(arg)...);
     safeActivities.Add(std::unique_ptr<stone::driver::Activity>(activity));
     return activity;
+  }
+
+  /// Creates a new Job owned by this Compilation
+  // Create jobs here instead of using the ToolChain
+  template <typename T, typename... Args>
+  T *CreateJob(Args &&...arg) {
+    auto job = new T(std::forward<Args>(arg)...);
+    safeJobs.Add(std::unique_ptr<stone::driver::Job>(job));
+    return job;
   }
 
   SafeActivities &GetActivities() { return safeActivities; }

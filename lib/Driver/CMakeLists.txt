@@ -10,12 +10,16 @@ set( LLVM_LINK_COMPONENTS
   )
 
 set(stone_driver_sources
+	AssembleJob.cpp
+	BackendJob.cpp
 	Compilation.cpp
+	CompileJob.cpp
 	DarwinToolChain.cpp
 	Driver.cpp
 	Activity.cpp
 	Job.cpp
 	JobQueue.cpp
+	LinkJob.cpp
 	Run.cpp
 	ToolChain.cpp
 	UnixToolChain.cpp

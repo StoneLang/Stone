@@ -72,6 +72,9 @@ class DriverRuntime final {
   /// Pointers to the jobs created
   llvm::SmallVector<const Activity *, 2> topLevelActivities;
 
+  /// Pointers to the jobs created
+  llvm::SmallVector<const Job *, 2> topLevelJobs;
+
   /// All of the input files that have been created
 
   /// Default compiler invocation mode -- one file per CompileJob
@@ -126,6 +129,8 @@ class DriverRuntime final {
   llvm::SmallVector<const Activity *, 2> GetTopLevelActivities() {
     return topLevelActivities;
   }
+
+  void AddTopLevelJob(const Job *job) { topLevelJobs.push_back(job); }
 
   const DriverCache &GetCache() const { return cache; }
   DriverCache &GetCache() { return cache; }
@@ -194,6 +199,7 @@ class Driver final : public Session {
 
  private:
   void BuildActivities();
+
   void BuildJobs();
   void BuildQueue();
 

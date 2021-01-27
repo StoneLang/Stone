@@ -26,3 +26,5 @@ int Job::SyncExecute(llvm::ArrayRef<llvm::Optional<llvm::StringRef>> redirects,
 }
 
 */
+
+void SafeJobs::Print() const {}

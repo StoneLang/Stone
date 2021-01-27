@@ -125,11 +125,15 @@ void Driver::BuildCompilation(const ToolChain &tc,
 
   compilation = llvm::make_unique<Compilation>(*this);
 
-  BuildActivities();
-  if (driverOpts.printActivities) {
-    PrintActivities();
-    return;
-  }
+  BuildJobs();
+
+  /*
+BuildActivities();
+if (driverOpts.printActivities) {
+PrintActivities();
+return;
+}
+  */
 }
 
 static void PrintActivity(const Activity *activity, Driver &driver) {
@@ -260,6 +264,23 @@ void Driver::ComputeMode(const llvm::opt::DerivedArgList &args) {
   Session::ComputeMode(args);
 }
 
+static void BuildJob() {}
+void Driver::BuildJobs() {
+  llvm::PrettyStackTraceString CrashInfo("Building compilation jobs.");
+
+  for (const auto &input : GetDriverOptions().inputs) {
+    switch (input.first) {
+      case file::FileType::Stone: {
+        assert(file::IsPartOfCompilation(input.first));
+
+        break;
+      }
+      default:
+        break;
+    }
+  }
+}
+
 void Driver::BuildActivities() {
   llvm::PrettyStackTraceString CrashInfo("Building compilation activities");
 
@@ -323,9 +344,6 @@ void Driver::BuildLinkActivity() {
   }
   // BuildJobForActivity()
 }
-static void BuildJob(Driver &driver) {}
-void Driver::BuildJobs() {}
-
 void Driver::PrintLifecycle() {}
 
 void Driver::PrintHelp(bool showHidden) {
