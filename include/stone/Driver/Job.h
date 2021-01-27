@@ -6,8 +6,8 @@
 #include "llvm/Option/Arg.h"
 #include "llvm/Option/ArgList.h"
 #include "llvm/Support/StringSaver.h"
-#include "stone/Core/List.h"
 #include "stone/Core/Context.h"
+#include "stone/Core/List.h"
 #include "stone/Driver/JobOptions.h"
 #include "stone/Driver/JobType.h"
 #include "stone/Driver/LinkType.h"
@@ -19,11 +19,11 @@ namespace driver {
 class Job;
 class Driver;
 
-
 class Job {
   JobType jobType;
   JobOptions jobOpts;
   Context& ctx;
+
  public:
   Job(JobType jobType, Context& ctx);
 
@@ -31,6 +31,7 @@ class Job {
   JobType GetType() const { return jobType; }
   Jobs& GetDeps() { return jobOpts.deps; }
 
+  void AddInput(const InputFile input);
   void AddDep(const Job* job);
 
   const JobOptions& GetJobOptions() const { return jobOpts; }
@@ -46,6 +47,7 @@ class CompileJob final : public Job {
  public:
   // Some job depend on other jobs -- For example, LinkJob
   CompileJob(Context& ctx) : Job(JobType::Compile, ctx) {}
+
  public:
   static bool classof(const Job* j) { return j->GetType() == JobType::Compile; }
 };
@@ -56,9 +58,10 @@ class LinkJob : public Job {
  public:
   // Some jobs only consume inputs -- For example, LinkJob
   LinkJob(JobType jobType, Context& ctx, LinkType linkType)
-      : Job(jobType, ctx),linkType(linkType) {}
-	public:
-		LinkType GetLinkType() { return linkType; }
+      : Job(jobType, ctx), linkType(linkType) {}
+
+ public:
+  LinkType GetLinkType() { return linkType; }
 };
 class StaticLinkJob final : public LinkJob {
  public:
@@ -73,7 +76,7 @@ class StaticLinkJob final : public LinkJob {
 };
 
 class DynamicLinkJob final : public LinkJob {
- public: 
+ public:
   // Some jobs only consume inputs -- For example, LinkJob
   DynamicLinkJob(Context& ctx, LinkType linkType)
       : LinkJob(JobType::DynamicLink, ctx, linkType) {}

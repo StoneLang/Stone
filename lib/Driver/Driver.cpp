@@ -7,6 +7,7 @@
 #include "stone/Session/ModeKind.h"
 
 using namespace stone;
+using namespace stone::file;
 using namespace stone::driver;
 
 using namespace llvm::opt;
@@ -98,9 +99,9 @@ void Driver::BuildCompilation(const ToolChain &tc,
     return;
   }
 
-  BuildInputFiles(tc, *dArgList, GetInputFiles());
+  BuildInputs(tc, *dArgList, GetInputs());
 
-  if (GetInputFiles().size() == 0) {
+  if (GetInputs().size() == 0) {
     Out() << "msg::driver_error_no_input_files" << '\n';
     return;
   }
@@ -165,11 +166,15 @@ static void PrintActivity(const Activity *activity, Driver &driver) {
 
   */
 }
+
+/*
 void Driver::PrintActivities() {
   for (const auto &activity : GetCompilation().GetActivities()) {
     PrintActivity(&activity, *this);
   }
 }
+*/
+
 bool Driver::CutOff(const ArgList &args, const ToolChain &tc) {
   if (args.hasArg(opts::Help)) {
     PrintHelp(false);
@@ -201,7 +206,7 @@ static bool DoesInputExist(Driver &driver, const DerivedArgList &args,
   return false;
 }
 // TODO: May move to session
-void Driver::BuildInputFiles(const ToolChain &tc, const DerivedArgList &args,
+void Driver::BuildInputs(const ToolChain &tc, const DerivedArgList &args,
                              InputFiles &inputs) {
   llvm::DenseMap<llvm::StringRef, llvm::StringRef> seenSourceFiles;
 
@@ -228,7 +233,7 @@ void Driver::BuildInputFiles(const ToolChain &tc, const DerivedArgList &args,
         driverOpts.AddInput(ft, argValue);
       }
 
-      if (ft == file::FileType::Stone) {
+      if (ft == FileType::Stone) {
         auto basename = llvm::sys::path::filename(argValue);
         if (!seenSourceFiles.insert({basename, argValue}).second) {
           Out() << "de.D(SourceLoc(),"
@@ -264,14 +269,27 @@ void Driver::ComputeMode(const llvm::opt::DerivedArgList &args) {
   Session::ComputeMode(args);
 }
 
-static void BuildJob() {}
-
-static void BuildJobsForMultipleInvocation(Driver &driver) {
+void Driver::BuildJobsForMultipleCompile(Driver &driver) {
+  for (const auto &input : driver.GetDriverOptions().inputs) {
+    switch (input.first) {
+      case FileType::Stone: {
+        assert(file::IsPartOfCompilation(input.first));
+        auto job = driver.GetCompilation().CreateJob<CompileJob>(driver);
+        job->AddInput(input);
+        break;
+      }
+      case FileType::Object:
+        break;
+      default:
+        break;
+    }
+  }
+}
+void Driver::BuildJobsForSingleCompile(Driver &driver) {
   for (const auto &input : driver.GetDriverOptions().inputs) {
     switch (input.first) {
       case file::FileType::Stone: {
         assert(file::IsPartOfCompilation(input.first));
-				auto job = driver.GetCompilation().CreateJob<CompileJob>(driver);
         break;
       }
       default:
@@ -279,20 +297,7 @@ static void BuildJobsForMultipleInvocation(Driver &driver) {
     }
   }
 }
-
-static void BuildJobsForSingleInvocation(Driver &driver) {
-  for (const auto &input : driver.GetDriverOptions().inputs) {
-    switch (input.first) {
-      case file::FileType::Stone: {
-        assert(file::IsPartOfCompilation(input.first));
-        break;
-      }
-      default:
-        break;
-    }
-  }
-}
-static void BuildJobsForImmediateInvocation(Driver &driver) {
+void Driver::BuildJobsForImmediateCompile(Driver &driver) {
   for (const auto &input : driver.GetDriverOptions().inputs) {
     switch (input.first) {
       case file::FileType::Stone: {
@@ -306,18 +311,42 @@ static void BuildJobsForImmediateInvocation(Driver &driver) {
 }
 void Driver::BuildJobs() {
   llvm::PrettyStackTraceString CrashInfo("Building compilation jobs.");
+
+  if (GetDriverOptions().inputs.empty()) {
+    Out() << "D(SrcLoc(), msg::error_no_input_files)" << '\n';
+    return;
+  }
   switch (runtime.compilerInvocationMode) {
     case CompilerInvocationMode::Multiple:
-      return BuildJobsForMultipleInvocation(*this);
+      BuildJobsForMultipleCompile(*this);
+      break;
     case CompilerInvocationMode::Single:
-      return BuildJobsForSingleInvocation(*this);
+      BuildJobsForSingleCompile(*this);
+      break;
     case CompilerInvocationMode::Immediate:
-      return BuildJobsForImmediateInvocation(*this);
+      BuildJobsForImmediateCompile(*this);
+      break;
     default:
-      return;
+      break;
   }
+
+  /*
+  if (runtime.ShouldLink() && !runtime.linkerJobs.empty()) {
+Activity *linkActivity = nullptr;
+if (runtime.linkType == LinkType::StaticLibrary) {
+linkActivity = GetCompilation().CreateActivity<StaticLinkJob>(
+    runtime.linkerActivities, runtime.linkType);
+} else {
+linkActivity = GetCompilation().CreateActivity<DynamicLinkJob>(
+    runtime.linkerActivities, runtime.linkType,
+    runtime.ShouldPerformLTO());
+}
+runtime.AddTopLevelActivity(linkActivity);
+}
+  */
 }
 
+/*
 void Driver::BuildActivities() {
   llvm::PrettyStackTraceString CrashInfo("Building compilation activities");
 
@@ -381,6 +410,10 @@ void Driver::BuildLinkActivity() {
   }
   // BuildJobForActivity()
 }
+
+*/
+
+
 void Driver::PrintLifecycle() {}
 
 void Driver::PrintHelp(bool showHidden) {
@@ -393,7 +426,11 @@ void Driver::PrintHelp(bool showHidden) {
                                  /*ShowAllAliases*/ false);
 }
 
+
 void Driver::ComputeModuleOutputPath() {}
+
+
+void Driver::ComputeMainOutput() {}
 
 int Driver::Run() {
   // Perform a quick help check

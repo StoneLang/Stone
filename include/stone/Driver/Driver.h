@@ -198,17 +198,13 @@ class Driver final : public Session {
   std::unique_ptr<llvm::opt::InputArgList> cfgOpts;
 
  private:
-  void BuildActivities();
-
-  void BuildJobs();
-  void BuildQueue();
-
+  // void BuildActivities();
   /// This uses a std::unique_ptr instead of returning a toolchain by value
   /// because ToolChain has virtual methods.
   void BuildToolChain(const llvm::opt::InputArgList &args);
 
-  void BuildInputFiles(const ToolChain &tc, const DerivedArgList &args,
-                       InputFiles &inputFiles);
+  void BuildInputs(const ToolChain &tc, const DerivedArgList &args,
+                   InputFiles &inputFiles);
 
   /// TODO: A CompilationUnit consists of an InputFile and an OutputFile
   void BuildCompilationUnits(const ToolChain &tc, const DerivedArgList &args);
@@ -268,6 +264,7 @@ class Driver final : public Session {
   DriverOptions &GetDriverOptions() { return driverOpts; }
 
   void ComputeModuleOutputPath();
+  void ComputeMainOutput();
 
  protected:
   void ComputeMode(const llvm::opt::DerivedArgList &args) override;
@@ -278,28 +275,41 @@ class Driver final : public Session {
   // llvm::opt::DerivedArgList *
   // TranslateInputArgs(const llvm::opt::InputArgList &args) override;
  private:
-  /// Build all the compile activities
-  void BuildCompileActivities();
+  static llvm::StringRef GetOutputFileName();
 
-  /// Build a single compile activity
-  void BuildCompileActivity(InputActivity *activity);
+  /*
+    /// Build all the compile activities
+    void BuildCompileActivities();
 
-  /// Build all the jobs for a activity.
-  void BuildJobsForActivity(const CompilationActivity *activity);
+    /// Build a single compile activity
+    void BuildCompileActivity(InputActivity *activity);
 
-  void BuildLinkActivity();
+    /// Build all the jobs for a activity.
+    void BuildJobsForActivity(const CompilationActivity *activity);
 
-  void BuildStaticLinkActivity();
-  void BuildStaticLinkActivity(CompilationActivity &activity);
+    void BuildLinkActivity();
 
-  void BuildDynamicLinkActivity();
-  void BuildDynamicLinkActivity(CompilationActivity &activity);
+    void BuildStaticLinkActivity();
+    void BuildStaticLinkActivity(CompilationActivity &activity);
 
-  void BuildBackendActivity();
-  void BuildAssemblyActivity();
+    void BuildDynamicLinkActivity();
+    void BuildDynamicLinkActivity(CompilationActivity &activity);
 
+    void BuildBackendActivity();
+    void BuildAssemblyActivity();
+
+  */
+
+  // void PrintActivities();
  private:
-  void PrintActivities();
+
+  void BuildJobs();
+  void PrintJobs();
+  void BuildJobQueue();
+
+  static void BuildJobsForMultipleCompile(Driver &driver);
+  static void BuildJobsForSingleCompile(Driver &driver);
+  static void BuildJobsForImmediateCompile(Driver &driver);
 };
 }  // namespace driver
 }  // namespace stone

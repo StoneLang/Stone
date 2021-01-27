@@ -4,10 +4,11 @@ using namespace stone;
 using namespace stone::driver;
 
 // Some job depend on other jobs -- For example, LinkJob
-Job::Job(JobType jobType, Context& ctx) : jobType(jobType), ctx(ctx){
-}
+Job::Job(JobType jobType, Context& ctx) : jobType(jobType), ctx(ctx) {}
 
 void Job::AddDep(const Job* job) { jobOpts.deps.push_back(job); }
+
+void Job::AddInput(const InputFile input) { jobOpts.inputs.push_back(input); }
 
 /*
 const char *Job::GetName(JobType jobType) {

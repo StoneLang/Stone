@@ -131,7 +131,7 @@ class Session : public Context {
   // TODO: You want to say
   void AddFile();
 
-  InputFiles &GetInputFiles() { return sessionOpts.inputs; }
+  InputFiles &GetInputs() { return sessionOpts.inputs; }
 
   /// Return the total amount of physical memory allocated
   /// for representing CompileInstances
