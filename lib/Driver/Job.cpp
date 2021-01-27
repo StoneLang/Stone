@@ -4,17 +4,10 @@ using namespace stone;
 using namespace stone::driver;
 
 // Some job depend on other jobs -- For example, LinkJob
-Job::Job(JobType jobType, Context& ctx, InputFiles* inputs,
-         OutputFileType output)
-    : jobType(jobType), ctx(ctx), inputs(inputs) {
-  jobOpts.outputFileType = output;
+Job::Job(JobType jobType, Context& ctx) : jobType(jobType), ctx(ctx){
 }
 
-// Some jobs only consume inputs -- For example, LinkJob
-Job::Job(JobType jobType, Context& ctx, Jobs deps, OutputFileType output)
-    : jobType(jobType), ctx(ctx), deps(deps) {
-  jobOpts.outputFileType = output;
-}
+void Job::AddDep(const Job* job) { jobOpts.deps.push_back(job); }
 
 /*
 const char *Job::GetName(JobType jobType) {

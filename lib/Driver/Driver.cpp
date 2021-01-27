@@ -271,6 +271,7 @@ static void BuildJobsForMultipleInvocation(Driver &driver) {
     switch (input.first) {
       case file::FileType::Stone: {
         assert(file::IsPartOfCompilation(input.first));
+				auto job = driver.GetCompilation().CreateJob<CompileJob>(driver);
         break;
       }
       default:

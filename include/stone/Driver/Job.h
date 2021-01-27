@@ -24,17 +24,14 @@ class Job {
   JobType jobType;
   JobOptions jobOpts;
   Context& ctx;
-
  public:
-  // Job(JobType jobType);
-  // Some job depend on other jobs -- For example, LinkJob
   Job(JobType jobType, Context& ctx);
 
  public:
   JobType GetType() const { return jobType; }
+  Jobs& GetDeps() { return jobOpts.deps; }
 
-  Jobs& GetDeps() { return deps; }
-  void AddDep(const Job* job) { deps.push_back(job); }
+  void AddDep(const Job* job);
 
   const JobOptions& GetJobOptions() const { return jobOpts; }
   Context& GetContext() { return ctx; }
@@ -48,9 +45,7 @@ class Job {
 class CompileJob final : public Job {
  public:
   // Some job depend on other jobs -- For example, LinkJob
-  CompileJob(Context& ctx)
-      : Job(JobType::Compile, ctx, inputs, output) {}
-
+  CompileJob(Context& ctx) : Job(JobType::Compile, ctx) {}
  public:
   static bool classof(const Job* j) { return j->GetType() == JobType::Compile; }
 };
@@ -60,29 +55,16 @@ class LinkJob : public Job {
 
  public:
   // Some jobs only consume inputs -- For example, LinkJob
-  LinkJob(JobType jobType, Context& ctx, InputFiles* inputs, LinkType linkType,
-          OutputFileType output)
-      : Job(jobType, ctx, inputs, output), linkType(linkType) {}
-
-  // Some jobs only consume inputs -- For example, LinkJob
-  LinkJob(JobType jobType, Context& ctx, Jobs deps, LinkType linkType,
-          OutputFileType output)
-      : Job(JobType::StaticLink, ctx, deps, output), linkType(linkType) {}
-
- public:
-  LinkType GetLinkType() { return linkType; }
+  LinkJob(JobType jobType, Context& ctx, LinkType linkType)
+      : Job(jobType, ctx),linkType(linkType) {}
+	public:
+		LinkType GetLinkType() { return linkType; }
 };
 class StaticLinkJob final : public LinkJob {
  public:
   // Some jobs only consume inputs -- For example, LinkJob
-  StaticLinkJob(Context& ctx, InputFiles* inputs, LinkType linkType,
-                OutputFileType output)
-      : LinkJob(JobType::StaticLink, ctx, inputs, linkType, output) {}
-
-  // Some jobs only consume inputs -- For example, LinkJob
-  StaticLinkJob(Context& ctx, Jobs deps, LinkType linkType,
-                OutputFileType output)
-      : LinkJob(JobType::StaticLink, ctx, deps, linkType, output) {}
+  StaticLinkJob(Context& ctx, LinkType linkType)
+      : LinkJob(JobType::StaticLink, ctx, linkType) {}
 
  public:
   static bool classof(const Job* j) {
@@ -91,16 +73,10 @@ class StaticLinkJob final : public LinkJob {
 };
 
 class DynamicLinkJob final : public LinkJob {
- public:
+ public: 
   // Some jobs only consume inputs -- For example, LinkJob
-  DynamicLinkJob(Context& ctx, InputFiles* inputs, LinkType linkType,
-                 OutputFileType output)
-      : LinkJob(JobType::DynamicLink, ctx, inputs, linkType, output) {}
-
-  // Some jobs only consume inputs -- For example, LinkJob
-  DynamicLinkJob(Context& ctx, Jobs deps, LinkType linkType,
-                 OutputFileType output)
-      : LinkJob(JobType::DynamicLink, ctx, deps, linkType, output) {}
+  DynamicLinkJob(Context& ctx, LinkType linkType)
+      : LinkJob(JobType::DynamicLink, ctx, linkType) {}
 
  public:
   static bool classof(const Job* j) {
@@ -111,8 +87,7 @@ class DynamicLinkJob final : public LinkJob {
 class AssembleJob final : public Job {
  public:
   // Some job depend on other jobs -- For example, LinkJob
-  AssembleJob(Context& ctx, InputFiles* inputs, OutputFileType output)
-      : Job(JobType::Assemble, ctx, inputs, output) {}
+  AssembleJob(Context& ctx) : Job(JobType::Assemble, ctx) {}
 
  public:
   static bool classof(const Job* j) {
@@ -123,8 +98,7 @@ class AssembleJob final : public Job {
 class BackendJob final : public Job {
  public:
   // Some job depend on other jobs -- For example, LinkJob
-  BackendJob(Context& ctx, InputFiles* inputs, OutputFileType output)
-      : Job(JobType::Backend, ctx, inputs, output) {}
+  BackendJob(Context& ctx) : Job(JobType::Backend, ctx) {}
 
  public:
   static bool classof(const Job* j) { return j->GetType() == JobType::Backend; }
