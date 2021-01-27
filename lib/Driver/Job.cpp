@@ -1,10 +1,13 @@
 #include "stone/Driver/Job.h"
 
+#include "stone/Driver/Compilation.h"
+
 using namespace stone;
 using namespace stone::driver;
 
 // Some job depend on other jobs -- For example, LinkJob
-Job::Job(JobType jobType, Context& ctx) : jobType(jobType), ctx(ctx) {}
+Job::Job(JobType jobType, Compilation& compilation)
+    : jobType(jobType), compilation(compilation) {}
 
 void Job::AddDep(const Job* job) { jobOpts.deps.push_back(job); }
 

@@ -14,6 +14,7 @@ set(stone_driver_sources
 	BackendJob.cpp
 	Compilation.cpp
 	CompileJob.cpp
+	CrashState.cpp
 	DarwinToolChain.cpp
 	Driver.cpp
 	Activity.cpp

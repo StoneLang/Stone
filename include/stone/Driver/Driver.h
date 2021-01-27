@@ -134,9 +134,7 @@ class DriverRuntime final {
 
   const DriverCache &GetCache() const { return cache; }
   DriverCache &GetCache() { return cache; }
-
   bool ShouldPerformLTO() { return ltoVariant != LTOKind::None; }
-
   bool ShouldLink() { return linkType != LinkType::None; }
 };
 
@@ -277,32 +275,7 @@ class Driver final : public Session {
  private:
   static llvm::StringRef GetOutputFileName();
 
-  /*
-    /// Build all the compile activities
-    void BuildCompileActivities();
-
-    /// Build a single compile activity
-    void BuildCompileActivity(InputActivity *activity);
-
-    /// Build all the jobs for a activity.
-    void BuildJobsForActivity(const CompilationActivity *activity);
-
-    void BuildLinkActivity();
-
-    void BuildStaticLinkActivity();
-    void BuildStaticLinkActivity(CompilationActivity &activity);
-
-    void BuildDynamicLinkActivity();
-    void BuildDynamicLinkActivity(CompilationActivity &activity);
-
-    void BuildBackendActivity();
-    void BuildAssemblyActivity();
-
-  */
-
-  // void PrintActivities();
  private:
-
   void BuildJobs();
   void PrintJobs();
   void BuildJobQueue();

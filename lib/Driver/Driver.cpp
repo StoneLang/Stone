@@ -121,7 +121,7 @@ void Driver::BuildCompilation(const ToolChain &tc,
   //
   // About to move argument list, so capture some flags that will be needed
   // later.
-  driverOpts.printActivities = dArgList->hasArg(opts::PrintDriverActivities);
+  driverOpts.printJobs = dArgList->hasArg(opts::PrintDriverJobs);
   driverOpts.printLifecycle = dArgList->hasArg(opts::PrintDriverLifecycle);
 
   compilation = llvm::make_unique<Compilation>(*this);
@@ -137,43 +137,20 @@ return;
   */
 }
 
-static void PrintActivity(const Activity *activity, Driver &driver) {
+static void PrintJob(const Job *job, Driver &driver) {
   std::string str;
-
-  driver.Out() << Activity::GetName(activity->GetKind()) << "," << '\n';
-
-  if (activity->GetKind() == Activity::Kind::Input) {
-    const auto *input = dyn_cast<InputActivity>(activity);
-    driver.Out() << "\"" << input->GetInput().second << "\"";
-  }
-
-  /*
-          else {
-      os << "{";
-      llvm::interleave(
-          *cast<JobAction>(A),
-          [&](const Action *Input) { os << PrintActions(Input, Ids); },
-          [&] { os << ", "; });
-      os << "}";
-    }
-
-    unsigned Id = Ids.size();
-    Ids[A] = Id;
-    driver.Out() << Id << ": " << os.str() << ", "
-                 << file_types::getTypeName(A->getType()) << "\n";
-
-    return Id;
-
-  */
-}
-
-/*
-void Driver::PrintActivities() {
-  for (const auto &activity : GetCompilation().GetActivities()) {
-    PrintActivity(&activity, *this);
+  // driver.Out() << Job::GetName(job->GetType()) << "," << '\n';
+  if (job->GetType() == JobType::Compile) {
+    const auto *cj = dyn_cast<CompileJob>(job);
+    // driver.Out() << "\"" << input->GetInput().second << "\"";
   }
 }
-*/
+
+void Driver::PrintJobs() {
+  for (const auto &job : GetCompilation().GetJobs()) {
+    PrintJob(&job, *this);
+  }
+}
 
 bool Driver::CutOff(const ArgList &args, const ToolChain &tc) {
   if (args.hasArg(opts::Help)) {
@@ -207,7 +184,7 @@ static bool DoesInputExist(Driver &driver, const DerivedArgList &args,
 }
 // TODO: May move to session
 void Driver::BuildInputs(const ToolChain &tc, const DerivedArgList &args,
-                             InputFiles &inputs) {
+                         InputFiles &inputs) {
   llvm::DenseMap<llvm::StringRef, llvm::StringRef> seenSourceFiles;
 
   for (Arg *arg : args) {
@@ -274,7 +251,8 @@ void Driver::BuildJobsForMultipleCompile(Driver &driver) {
     switch (input.first) {
       case FileType::Stone: {
         assert(file::IsPartOfCompilation(input.first));
-        auto job = driver.GetCompilation().CreateJob<CompileJob>(driver);
+        auto job = driver.GetCompilation().CreateJob<CompileJob>(
+            driver.GetCompilation());
         job->AddInput(input);
         break;
       }
@@ -413,7 +391,6 @@ void Driver::BuildLinkActivity() {
 
 */
 
-
 void Driver::PrintLifecycle() {}
 
 void Driver::PrintHelp(bool showHidden) {
@@ -426,9 +403,7 @@ void Driver::PrintHelp(bool showHidden) {
                                  /*ShowAllAliases*/ false);
 }
 
-
 void Driver::ComputeModuleOutputPath() {}
-
 
 void Driver::ComputeMainOutput() {}
 

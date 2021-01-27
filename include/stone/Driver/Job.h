@@ -6,8 +6,8 @@
 #include "llvm/Option/Arg.h"
 #include "llvm/Option/ArgList.h"
 #include "llvm/Support/StringSaver.h"
-#include "stone/Core/Context.h"
 #include "stone/Core/List.h"
+#include "stone/Driver/CrashState.h"
 #include "stone/Driver/JobOptions.h"
 #include "stone/Driver/JobType.h"
 #include "stone/Driver/LinkType.h"
@@ -17,15 +17,15 @@ namespace stone {
 namespace driver {
 
 class Job;
-class Driver;
+class Compilation;
 
 class Job {
   JobType jobType;
   JobOptions jobOpts;
-  Context& ctx;
+  Compilation& compilation;
 
  public:
-  Job(JobType jobType, Context& ctx);
+  Job(JobType jobType, Compilation& compilation);
 
  public:
   JobType GetType() const { return jobType; }
@@ -35,7 +35,9 @@ class Job {
   void AddDep(const Job* job);
 
   const JobOptions& GetJobOptions() const { return jobOpts; }
-  Context& GetContext() { return ctx; }
+  Compilation& GetCompilation() { return compilation; }
+
+  void Print(const char* terminator, bool quote, CrashState* crashState);
 
  private:
   friend class Compilation;
@@ -46,7 +48,7 @@ class Job {
 class CompileJob final : public Job {
  public:
   // Some job depend on other jobs -- For example, LinkJob
-  CompileJob(Context& ctx) : Job(JobType::Compile, ctx) {}
+  CompileJob(Compilation& compilation) : Job(JobType::Compile, compilation) {}
 
  public:
   static bool classof(const Job* j) { return j->GetType() == JobType::Compile; }
@@ -57,8 +59,8 @@ class LinkJob : public Job {
 
  public:
   // Some jobs only consume inputs -- For example, LinkJob
-  LinkJob(JobType jobType, Context& ctx, LinkType linkType)
-      : Job(jobType, ctx), linkType(linkType) {}
+  LinkJob(JobType jobType, Compilation& compilation, LinkType linkType)
+      : Job(jobType, compilation), linkType(linkType) {}
 
  public:
   LinkType GetLinkType() { return linkType; }
@@ -66,8 +68,8 @@ class LinkJob : public Job {
 class StaticLinkJob final : public LinkJob {
  public:
   // Some jobs only consume inputs -- For example, LinkJob
-  StaticLinkJob(Context& ctx, LinkType linkType)
-      : LinkJob(JobType::StaticLink, ctx, linkType) {}
+  StaticLinkJob(Compilation& compilation, LinkType linkType)
+      : LinkJob(JobType::StaticLink, compilation, linkType) {}
 
  public:
   static bool classof(const Job* j) {
@@ -78,8 +80,8 @@ class StaticLinkJob final : public LinkJob {
 class DynamicLinkJob final : public LinkJob {
  public:
   // Some jobs only consume inputs -- For example, LinkJob
-  DynamicLinkJob(Context& ctx, LinkType linkType)
-      : LinkJob(JobType::DynamicLink, ctx, linkType) {}
+  DynamicLinkJob(Compilation& compilation, LinkType linkType)
+      : LinkJob(JobType::DynamicLink, compilation, linkType) {}
 
  public:
   static bool classof(const Job* j) {
@@ -90,7 +92,7 @@ class DynamicLinkJob final : public LinkJob {
 class AssembleJob final : public Job {
  public:
   // Some job depend on other jobs -- For example, LinkJob
-  AssembleJob(Context& ctx) : Job(JobType::Assemble, ctx) {}
+  AssembleJob(Compilation& compilation) : Job(JobType::Assemble, compilation) {}
 
  public:
   static bool classof(const Job* j) {
@@ -101,7 +103,7 @@ class AssembleJob final : public Job {
 class BackendJob final : public Job {
  public:
   // Some job depend on other jobs -- For example, LinkJob
-  BackendJob(Context& ctx) : Job(JobType::Backend, ctx) {}
+  BackendJob(Compilation& ctx) : Job(JobType::Backend, ctx) {}
 
  public:
   static bool classof(const Job* j) { return j->GetType() == JobType::Backend; }

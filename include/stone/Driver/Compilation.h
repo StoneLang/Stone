@@ -50,9 +50,6 @@ class Compilation final {
   /// only be removed if we crash.
   // ArgStringMap failureResultFiles;
 
-  /// A list of all of the managed activities created
-  SafeActivities safeActivities;
-
   /// A list of all the managed jobs created
   SafeJobs safeJobs;
 
@@ -61,16 +58,6 @@ class Compilation final {
   ~Compilation();
 
  public:
-  /// Creates a new Activity owned by this Compilation.
-  ///
-  /// The new Activity is *not* added to the list returned by GetActivitys().
-  template <typename T, typename... Args>
-  T *CreateActivity(Args &&...arg) {
-    auto activity = new T(std::forward<Args>(arg)...);
-    safeActivities.Add(std::unique_ptr<stone::driver::Activity>(activity));
-    return activity;
-  }
-
   /// Creates a new Job owned by this Compilation
   // Create jobs here instead of using the ToolChain
   template <typename T, typename... Args>
@@ -79,9 +66,6 @@ class Compilation final {
     safeJobs.Add(std::unique_ptr<stone::driver::Job>(job));
     return job;
   }
-
-  SafeActivities &GetActivities() { return safeActivities; }
-  const SafeActivities &GetActivities() const { return safeActivities; }
 
   SafeJobs &GetJobs() { return safeJobs; }
   const SafeJobs &GetJobs() const { return safeJobs; }
