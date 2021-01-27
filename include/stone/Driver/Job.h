@@ -15,17 +15,17 @@
 
 namespace stone {
 namespace driver {
-
-class Job;
 class Compilation;
 
 class Job {
+  bool isAsync;
   JobType jobType;
   JobOptions jobOpts;
   Compilation& compilation;
 
  public:
-  Job(JobType jobType, Compilation& compilation);
+  Job(JobType jobType, bool isAsync, Compilation& compilation);
+  ~Job();
 
  public:
   JobType GetType() const { return jobType; }
@@ -36,8 +36,12 @@ class Job {
 
   const JobOptions& GetJobOptions() const { return jobOpts; }
   Compilation& GetCompilation() { return compilation; }
+  bool IsAsync() { return isAsync; }
 
-  void Print(const char* terminator, bool quote, CrashState* crashState);
+  void Print(const char* terminator, bool quote, CrashState* crashState) const;
+
+ public:
+  static const char* GetName(JobType jobType);
 
  private:
   friend class Compilation;
@@ -48,7 +52,8 @@ class Job {
 class CompileJob final : public Job {
  public:
   // Some job depend on other jobs -- For example, LinkJob
-  CompileJob(Compilation& compilation) : Job(JobType::Compile, compilation) {}
+  CompileJob(bool isAsync, Compilation& compilation)
+      : Job(JobType::Compile, isAsync, compilation) {}
 
  public:
   static bool classof(const Job* j) { return j->GetType() == JobType::Compile; }
@@ -59,8 +64,9 @@ class LinkJob : public Job {
 
  public:
   // Some jobs only consume inputs -- For example, LinkJob
-  LinkJob(JobType jobType, Compilation& compilation, LinkType linkType)
-      : Job(jobType, compilation), linkType(linkType) {}
+  LinkJob(JobType jobType, bool isAsync, Compilation& compilation,
+          LinkType linkType)
+      : Job(jobType, isAsync, compilation), linkType(linkType) {}
 
  public:
   LinkType GetLinkType() { return linkType; }
@@ -68,8 +74,8 @@ class LinkJob : public Job {
 class StaticLinkJob final : public LinkJob {
  public:
   // Some jobs only consume inputs -- For example, LinkJob
-  StaticLinkJob(Compilation& compilation, LinkType linkType)
-      : LinkJob(JobType::StaticLink, compilation, linkType) {}
+  StaticLinkJob(bool isAsync, Compilation& compilation, LinkType linkType)
+      : LinkJob(JobType::StaticLink, isAsync, compilation, linkType) {}
 
  public:
   static bool classof(const Job* j) {
@@ -80,8 +86,8 @@ class StaticLinkJob final : public LinkJob {
 class DynamicLinkJob final : public LinkJob {
  public:
   // Some jobs only consume inputs -- For example, LinkJob
-  DynamicLinkJob(Compilation& compilation, LinkType linkType)
-      : LinkJob(JobType::DynamicLink, compilation, linkType) {}
+  DynamicLinkJob(bool isAsync, Compilation& compilation, LinkType linkType)
+      : LinkJob(JobType::DynamicLink, isAsync, compilation, linkType) {}
 
  public:
   static bool classof(const Job* j) {
@@ -92,7 +98,8 @@ class DynamicLinkJob final : public LinkJob {
 class AssembleJob final : public Job {
  public:
   // Some job depend on other jobs -- For example, LinkJob
-  AssembleJob(Compilation& compilation) : Job(JobType::Assemble, compilation) {}
+  AssembleJob(bool isAsync, Compilation& compilation)
+      : Job(JobType::Assemble, isAsync, compilation) {}
 
  public:
   static bool classof(const Job* j) {
@@ -103,7 +110,8 @@ class AssembleJob final : public Job {
 class BackendJob final : public Job {
  public:
   // Some job depend on other jobs -- For example, LinkJob
-  BackendJob(Compilation& ctx) : Job(JobType::Backend, ctx) {}
+  BackendJob(bool isAsync, Compilation& compilation)
+      : Job(JobType::Backend, isAsync, compilation) {}
 
  public:
   static bool classof(const Job* j) { return j->GetType() == JobType::Backend; }

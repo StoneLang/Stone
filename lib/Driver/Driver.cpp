@@ -253,7 +253,7 @@ void Driver::BuildJobsForMultipleCompile(Driver &driver) {
       case FileType::Stone: {
         assert(file::IsPartOfCompilation(input.first));
         auto job = driver.GetCompilation().CreateJob<CompileJob>(
-            driver.GetCompilation());
+            true, driver.GetCompilation());
         job->AddInput(input);
         break;
       }
