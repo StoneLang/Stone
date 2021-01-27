@@ -265,19 +265,55 @@ void Driver::ComputeMode(const llvm::opt::DerivedArgList &args) {
 }
 
 static void BuildJob() {}
-void Driver::BuildJobs() {
-  llvm::PrettyStackTraceString CrashInfo("Building compilation jobs.");
 
-  for (const auto &input : GetDriverOptions().inputs) {
+static void BuildJobsForMultipleInvocation(Driver &driver) {
+  for (const auto &input : driver.GetDriverOptions().inputs) {
     switch (input.first) {
       case file::FileType::Stone: {
         assert(file::IsPartOfCompilation(input.first));
-
         break;
       }
       default:
         break;
     }
+  }
+}
+
+static void BuildJobsForSingleInvocation(Driver &driver) {
+  for (const auto &input : driver.GetDriverOptions().inputs) {
+    switch (input.first) {
+      case file::FileType::Stone: {
+        assert(file::IsPartOfCompilation(input.first));
+        break;
+      }
+      default:
+        break;
+    }
+  }
+}
+static void BuildJobsForImmediateInvocation(Driver &driver) {
+  for (const auto &input : driver.GetDriverOptions().inputs) {
+    switch (input.first) {
+      case file::FileType::Stone: {
+        assert(file::IsPartOfCompilation(input.first));
+        break;
+      }
+      default:
+        break;
+    }
+  }
+}
+void Driver::BuildJobs() {
+  llvm::PrettyStackTraceString CrashInfo("Building compilation jobs.");
+  switch (runtime.compilerInvocationMode) {
+    case CompilerInvocationMode::Multiple:
+      return BuildJobsForMultipleInvocation(*this);
+    case CompilerInvocationMode::Single:
+      return BuildJobsForSingleInvocation(*this);
+    case CompilerInvocationMode::Immediate:
+      return BuildJobsForImmediateInvocation(*this);
+    default:
+      return;
   }
 }
 

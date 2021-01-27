@@ -7,6 +7,7 @@
 #include "llvm/Option/ArgList.h"
 #include "llvm/Support/StringSaver.h"
 #include "stone/Core/List.h"
+#include "stone/Core/Context.h"
 #include "stone/Driver/JobOptions.h"
 #include "stone/Driver/JobType.h"
 #include "stone/Driver/LinkType.h"
@@ -18,32 +19,25 @@ namespace driver {
 class Job;
 class Driver;
 
-using OutputFileType = file::FileType;
-using Jobs = llvm::SmallVector<const Job*, 4>;
 
 class Job {
-  Jobs deps;
   JobType jobType;
-  InputFiles* inputs;
-  OutputFileType output;
-  const JobOptions& jobOpts;
+  JobOptions jobOpts;
+  Context& ctx;
 
  public:
+  // Job(JobType jobType);
   // Some job depend on other jobs -- For example, LinkJob
-  Job(JobType jobType, const JobOptions& jobOpts, InputFiles* inputs,
-      OutputFileType output)
-      : jobType(jobType), jobOpts(jobOpts), inputs(inputs), output(output) {}
+  Job(JobType jobType, Context& ctx);
 
-  // Some jobs only consume inputs -- For example, LinkJob
-  Job(JobType jobType, const JobOptions& jobOpts, Jobs deps,
-      OutputFileType output)
-      : jobType(jobType), jobOpts(jobOpts), deps(deps), output(output) {}
-
+ public:
   JobType GetType() const { return jobType; }
+
   Jobs& GetDeps() { return deps; }
-  InputFiles& GetInputs() { return *inputs; }
-  OutputFileType GetOutputFileType() { return output; }
+  void AddDep(const Job* job) { deps.push_back(job); }
+
   const JobOptions& GetJobOptions() const { return jobOpts; }
+  Context& GetContext() { return ctx; }
 
  private:
   friend class Compilation;
@@ -54,9 +48,8 @@ class Job {
 class CompileJob final : public Job {
  public:
   // Some job depend on other jobs -- For example, LinkJob
-  CompileJob(const JobOptions& jobOpts, InputFiles* inputs,
-             OutputFileType output)
-      : Job(JobType::Compile, jobOpts, inputs, output) {}
+  CompileJob(Context& ctx)
+      : Job(JobType::Compile, ctx, inputs, output) {}
 
  public:
   static bool classof(const Job* j) { return j->GetType() == JobType::Compile; }
@@ -67,14 +60,14 @@ class LinkJob : public Job {
 
  public:
   // Some jobs only consume inputs -- For example, LinkJob
-  LinkJob(JobType jobType, const JobOptions& jobOpts, InputFiles* inputs,
-          LinkType linkType, OutputFileType output)
-      : Job(jobType, jobOpts, inputs, output), linkType(linkType) {}
+  LinkJob(JobType jobType, Context& ctx, InputFiles* inputs, LinkType linkType,
+          OutputFileType output)
+      : Job(jobType, ctx, inputs, output), linkType(linkType) {}
 
   // Some jobs only consume inputs -- For example, LinkJob
-  LinkJob(JobType jobType, const JobOptions& jobOpts, Jobs deps,
-          LinkType linkType, OutputFileType output)
-      : Job(JobType::StaticLink, jobOpts, deps, output), linkType(linkType) {}
+  LinkJob(JobType jobType, Context& ctx, Jobs deps, LinkType linkType,
+          OutputFileType output)
+      : Job(JobType::StaticLink, ctx, deps, output), linkType(linkType) {}
 
  public:
   LinkType GetLinkType() { return linkType; }
@@ -82,14 +75,14 @@ class LinkJob : public Job {
 class StaticLinkJob final : public LinkJob {
  public:
   // Some jobs only consume inputs -- For example, LinkJob
-  StaticLinkJob(const JobOptions& jobOpts, InputFiles* inputs,
-                LinkType linkType, OutputFileType output)
-      : LinkJob(JobType::StaticLink, jobOpts, inputs, linkType, output) {}
+  StaticLinkJob(Context& ctx, InputFiles* inputs, LinkType linkType,
+                OutputFileType output)
+      : LinkJob(JobType::StaticLink, ctx, inputs, linkType, output) {}
 
   // Some jobs only consume inputs -- For example, LinkJob
-  StaticLinkJob(const JobOptions& jobOpts, Jobs deps, LinkType linkType,
+  StaticLinkJob(Context& ctx, Jobs deps, LinkType linkType,
                 OutputFileType output)
-      : LinkJob(JobType::StaticLink, jobOpts, deps, linkType, output) {}
+      : LinkJob(JobType::StaticLink, ctx, deps, linkType, output) {}
 
  public:
   static bool classof(const Job* j) {
@@ -100,14 +93,14 @@ class StaticLinkJob final : public LinkJob {
 class DynamicLinkJob final : public LinkJob {
  public:
   // Some jobs only consume inputs -- For example, LinkJob
-  DynamicLinkJob(const JobOptions& jobOpts, InputFiles* inputs,
-                 LinkType linkType, OutputFileType output)
-      : LinkJob(JobType::DynamicLink, jobOpts, inputs, linkType, output) {}
+  DynamicLinkJob(Context& ctx, InputFiles* inputs, LinkType linkType,
+                 OutputFileType output)
+      : LinkJob(JobType::DynamicLink, ctx, inputs, linkType, output) {}
 
   // Some jobs only consume inputs -- For example, LinkJob
-  DynamicLinkJob(const JobOptions& jobOpts, Jobs deps, LinkType linkType,
+  DynamicLinkJob(Context& ctx, Jobs deps, LinkType linkType,
                  OutputFileType output)
-      : LinkJob(JobType::DynamicLink, jobOpts, deps, linkType, output) {}
+      : LinkJob(JobType::DynamicLink, ctx, deps, linkType, output) {}
 
  public:
   static bool classof(const Job* j) {
@@ -118,9 +111,8 @@ class DynamicLinkJob final : public LinkJob {
 class AssembleJob final : public Job {
  public:
   // Some job depend on other jobs -- For example, LinkJob
-  AssembleJob(const JobOptions& jobOpts, InputFiles* inputs,
-              OutputFileType output)
-      : Job(JobType::Assemble, jobOpts, inputs, output) {}
+  AssembleJob(Context& ctx, InputFiles* inputs, OutputFileType output)
+      : Job(JobType::Assemble, ctx, inputs, output) {}
 
  public:
   static bool classof(const Job* j) {
@@ -131,9 +123,8 @@ class AssembleJob final : public Job {
 class BackendJob final : public Job {
  public:
   // Some job depend on other jobs -- For example, LinkJob
-  BackendJob(const JobOptions& jobOpts, InputFiles* inputs,
-             OutputFileType output)
-      : Job(JobType::Backend, jobOpts, inputs, output) {}
+  BackendJob(Context& ctx, InputFiles* inputs, OutputFileType output)
+      : Job(JobType::Backend, ctx, inputs, output) {}
 
  public:
   static bool classof(const Job* j) { return j->GetType() == JobType::Backend; }

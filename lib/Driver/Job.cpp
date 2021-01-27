@@ -3,6 +3,19 @@
 using namespace stone;
 using namespace stone::driver;
 
+// Some job depend on other jobs -- For example, LinkJob
+Job::Job(JobType jobType, Context& ctx, InputFiles* inputs,
+         OutputFileType output)
+    : jobType(jobType), ctx(ctx), inputs(inputs) {
+  jobOpts.outputFileType = output;
+}
+
+// Some jobs only consume inputs -- For example, LinkJob
+Job::Job(JobType jobType, Context& ctx, Jobs deps, OutputFileType output)
+    : jobType(jobType), ctx(ctx), deps(deps) {
+  jobOpts.outputFileType = output;
+}
+
 /*
 const char *Job::GetName(JobType jobType) {
 }
