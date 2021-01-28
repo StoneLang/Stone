@@ -19,7 +19,8 @@ class CompilerStats final : public Stats {
   const Compiler &compiler;
 
  public:
-  CompilerStats(const Compiler &compiler) : compiler(compiler) {}
+  CompilerStats(const char *name, const Compiler &compiler)
+      : Stats(name), compiler(compiler) {}
   void Print() const override;
 };
 
@@ -33,7 +34,7 @@ class Compiler final : public Session {
   std::unique_ptr<ASTContext> ac;
 
   friend CompilerStats;
-  CompilerStats stats;
+  std::unique_ptr<CompilerStats> stats;
 
  private:
   class Implementation;
@@ -100,7 +101,7 @@ class Compiler final : public Session {
     return compilerOpts.moduleName;
   }
 
-  CompilerStats &GetStats() { return stats; }
+  CompilerStats &GetStats() { return *stats.get(); }
 
  protected:
   void ComputeMode(const llvm::opt::DerivedArgList &args) override;

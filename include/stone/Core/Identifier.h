@@ -394,7 +394,8 @@ class IdentifierTableStats final : public Stats {
   const IdentifierTable &table;
 
  public:
-  IdentifierTableStats(const IdentifierTable &table) : table(table) {}
+  IdentifierTableStats(const char *name, const IdentifierTable &table)
+      : Stats(name), table(table) {}
   void Print() const override;
 };
 

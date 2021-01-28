@@ -39,7 +39,8 @@ class DeclStats final : public Stats {
   const Decl &declaration;
 
  public:
-  DeclStats(const Decl &declaration) : declaration(declaration) {}
+  DeclStats(const char *name, const Decl &declaration)
+      : Stats(name), declaration(declaration) {}
   void Print() const override;
 };
 

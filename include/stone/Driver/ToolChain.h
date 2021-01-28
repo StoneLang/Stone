@@ -18,7 +18,6 @@
 #include "llvm/Target/TargetOptions.h"
 #include "stone/Core/LLVM.h"
 #include "stone/Core/Mem.h"
-#include "stone/Driver/Activity.h"
 #include "stone/Driver/Job.h"
 #include "stone/Session/FileType.h"
 #include "stone/Session/Mode.h"
@@ -180,7 +179,7 @@ class ToolChain {
   ///
   /// This can be overridden when a particular ToolChain needs to use
   /// a compiler other than Clang.
-  virtual Tool *PickTool(const CompilationActivity &event) const;
+  virtual Tool *PickTool(const Job &job) const;
 
  public:
   virtual Tool *BuildClangTool() const = 0;

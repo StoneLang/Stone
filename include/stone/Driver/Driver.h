@@ -7,10 +7,11 @@
 #include <vector>
 
 #include "stone/Core/Mem.h"
-#include "stone/Driver/Activity.h"
 #include "stone/Driver/Compilation.h"
 #include "stone/Driver/DriverOptions.h"
 #include "stone/Driver/DriverStats.h"
+#include "stone/Driver/Job.h"
+#include "stone/Driver/JobOptions.h"
 #include "stone/Driver/ToolChain.h"
 #include "stone/Session/Session.h"
 
@@ -31,28 +32,23 @@ class DerivedArgList;
 
 namespace stone {
 namespace driver {
-
-class Activity;
-class Job;
 class Compilation;
 class ToolChain;
+class DriverStats;
 
 enum class CompilerInvocationMode {
   None,
   /// Multiple compile invocations and -main-file.
   Multiple,
-  /// A compilation using a single compile invocation without -main-file.
+  /// A single compilation using a single compile invocation without -main-file.
   Single,
-  /// Compile and execute the inputs immediately
-  Immediate,
 };
 enum class LTOKind { None, Full, Thin, Unknown };
 
 class DriverCache final {
  public:
-  /// A map for caching Jobs for a given Activity/ToolChain pair
-  llvm::DenseMap<std::pair<const Activity *, const ToolChain *>, Job *>
-      jobCache;
+  /// A map for caching Jobs for a given ToolChain pair
+  llvm::DenseMap<const ToolChain *, Job *> jobCache;
   /// Cache of all the ToolChains in use by the driver.
   ///
   /// This maps from the string representation of a triple to a ToolChain
@@ -63,21 +59,6 @@ class DriverCache final {
 
 class DriverRuntime final {
  public:
-  /// Pointers to the activities created by Compilation -- Compilation manages
-  /// the activities.
-  llvm::SmallVector<const Activity *, 2> moduleActivities;
-
-  /// Pointers to the jobs created
-  llvm::SmallVector<const Activity *, 2> linkerActivities;
-
-  /// Pointers to the jobs created
-  llvm::SmallVector<const Activity *, 2> topLevelActivities;
-
-  /// Pointers to the jobs created
-  llvm::SmallVector<const Job *, 2> topLevelJobs;
-
-  /// All of the input files that have been created
-
   /// Default compiler invocation mode -- one file per CompileJob
   CompilerInvocationMode compilerInvocationMode =
       CompilerInvocationMode::Multiple;
@@ -108,42 +89,19 @@ class DriverRuntime final {
 
   DriverCache cache;
 
- public:
-  void AddModuleInput(const Activity *activity) {
-    moduleActivities.push_back(activity);
-  }
-
-  llvm::SmallVector<const Activity *, 2> GetModuleInputs() {
-    return moduleActivities;
-  }
-
-  void AddLinkerInput(const Activity *activity) {
-    linkerActivities.push_back(activity);
-  }
-  llvm::SmallVector<const Activity *, 2> GetLinkerInputs() {
-    return linkerActivities;
-  }
-
-  void AddTopLevelActivity(const Activity *activity) {
-    topLevelActivities.push_back(activity);
-  }
-  llvm::SmallVector<const Activity *, 2> GetTopLevelActivities() {
-    return topLevelActivities;
-  }
-
-  void AddTopLevelJob(const Job *job) { topLevelJobs.push_back(job); }
-
   const DriverCache &GetCache() const { return cache; }
   DriverCache &GetCache() { return cache; }
-  bool ShouldPerformLTO() { return ltoVariant != LTOKind::None; }
-  bool ShouldLink() { return linkType != LinkType::None; }
+
+  bool RequiresLTO() { return ltoVariant != LTOKind::None; }
+  bool RequiresLink() { return linkType != LinkType::None; }
 };
 
 class Driver final : public Session {
   DriverRuntime runtime;
-  DriverStats stats;
+  std::unique_ptr<DriverStats> stats;
   std::unique_ptr<ToolChain> toolChain;
   std::unique_ptr<Compilation> compilation;
+  friend DriverStats;
 
  public:
   /// The options for the driver
@@ -263,7 +221,7 @@ class Driver final : public Session {
 
   DriverOptions &GetDriverOptions() { return driverOpts; }
 
-  DriverStats &GetDriverStats() { return stats; }
+  DriverStats &GetStats() { return *stats.get(); }
 
   void ComputeModuleOutputPath();
   void ComputeMainOutput();
@@ -283,10 +241,6 @@ class Driver final : public Session {
   void BuildJobs();
   void PrintJobs();
   void BuildJobQueue();
-
-  static void BuildJobsForMultipleCompile(Driver &driver);
-  static void BuildJobsForSingleCompile(Driver &driver);
-  static void BuildJobsForImmediateCompile(Driver &driver);
 };
 }  // namespace driver
 }  // namespace stone

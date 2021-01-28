@@ -100,6 +100,21 @@ llvm::opt::DerivedArgList *Session::TranslateInputArgs(
 
 Mode &Session::GetMode() { return mode; }
 
+void Session::Purge() {}
+
+void Session::Finish() {
+  Purge();
+  PrintDiagnostics();
+  PrintStatistics();
+}
+void Session::PrintDiagnostics() { GetDiagEngine().Print(); }
+
+void Session::PrintStatistics() {
+  if (sessionOpts.printStats) {
+    GetStatEngine().Print();
+  }
+}
+
 /*
 static llvm::StringRef Mode::GetNameByKind(ModeKind kind) {
         //TODO: I think you can get these from the mode group
@@ -125,15 +140,5 @@ static llvm::StringRef Mode::GetNameByKind(ModeKind kind) {
         llvm_unreachable("Invalid ModeKind.");
 }
 */
-
-void Session::Purge() {}
-
-void Session::Finish() {
-  Purge();
-  PrintDiagnostics();
-  PrintStatistics();
-}
-void Session::PrintDiagnostics() { GetDiagEngine().Print(); }
-void Session::PrintStatistics() { GetStatEngine().Print(); }
 
 void Session::PrintVersion() {}

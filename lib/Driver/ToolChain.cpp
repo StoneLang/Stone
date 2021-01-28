@@ -60,9 +60,9 @@ std::unique_ptr<Job> ToolChain::CreateJob(/*const JobAction &JA, Compilation &C,
   return nullptr;
 }
 
-Tool *ToolChain::PickTool(const CompilationActivity &event) const {
-  switch (event.GetKind()) {
-    case Activity::Kind::DynamicLink:
+Tool *ToolChain::PickTool(const Job &job) const {
+  switch (job.GetType()) {
+    case JobType::DynamicLink:
       return nullptr;
     default:
       return nullptr;

@@ -37,4 +37,29 @@ Compilation::Compilation(Driver &driver) : driver(driver) {}
 
 Compilation::~Compilation() {}
 
+/*
+template <typename T, typename... Args>
+T *Compilation::CreateJob(Args &&...arg) {
+  auto job = new T(std::forward<Args>(arg)...);
+  jobs.Add(std::unique_ptr<stone::driver::Job>(job));
+  return job;
+}
+*/
+
+bool Compilation::PurgeFile(const char *name, bool issueErrors) const {
+  return true;
+}
+
+bool Compilation::PurgeFiles(const llvm::opt::ArgStringList &files,
+                             bool issueErrors) const {
+  return true;
+}
+
+int Compilation::ExecuteJob(const Job &job, const Job *&fallBackJob) const {
+  return 0;
+}
+
+void Compilation::ExecuteJobs(
+    llvm::SmallVectorImpl<std::pair<int, const Job *>> &fallBackJob) const {}
+
 int Compilation::Run() { return 0; }

@@ -10,7 +10,7 @@ class DriverStats final : public Stats {
   const Driver& driver;
 
  public:
-  DriverStats(const Driver& driver);
+  DriverStats(const char* name, const Driver& driver);
   void Print() const override;
 };
 }  // namespace driver

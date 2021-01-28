@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+#include "llvm/ADT/SmallVector.h"
+#include "stone/Core/List.h"
 #include "stone/Core/Mem.h"
 
 namespace stone {
@@ -12,24 +14,28 @@ class StatsListener {};
 
 class Stats {
  protected:
-  llvm::raw_ostream &os;
+  const char* name = nullptr;
+  llvm::raw_ostream& os;
 
  public:
-  Stats() : os(llvm::outs()) {}
+  Stats(const char* name) : name(name), os(llvm::outs()) {}
   virtual ~Stats() {}
+  const char* GetName() { return name; }
 
  public:
   virtual void Print() const = 0;
 };
 
 class StatEngine final {
+  llvm::SmallVector<const Stats*, 4> entries;
+
  public:
   StatEngine();
   ~StatEngine();
 
-  /// Owns the Stats
-  void Add(std::unique_ptr<Stats> stats);
-  ///
+ public:
+  void Register(const Stats* stats);
+  /// Print all groups and entries in groups
   void Print();
 };
 }  // namespace stone

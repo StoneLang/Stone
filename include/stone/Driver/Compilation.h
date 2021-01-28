@@ -13,11 +13,7 @@
 #include "llvm/ADT/Optional.h"
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Option/Option.h"
-//#include "llvm/Option/ArgString.h"
-
 #include "stone/Core/LLVM.h"
-#include "stone/Driver/Activity.h"
-#include "stone/Driver/Job.h"
 #include "stone/Driver/JobQueue.h"
 
 namespace llvm {
@@ -30,8 +26,9 @@ class InputArgList;
 namespace stone {
 namespace driver {
 
-class ToolChain;
 class Driver;
+class ToolChain;
+using ArgStringMap = llvm::DenseMap<const Job *, const char *>;
 
 class Compilation final {
   /// The System we were created by.
@@ -44,14 +41,17 @@ class Compilation final {
   const bool saveTempFiles = false;
 
   /// Result files which should be removed on failure.
-  // ArgStringMap resultFiles;
+  ArgStringMap resultFiles;
 
   /// Result files which are generated correctly on failure, and which should
   /// only be removed if we crash.
-  // ArgStringMap failureResultFiles;
+  ArgStringMap failureResultFiles;
 
-  /// A list of all the managed jobs created
-  SafeJobs safeJobs;
+  /// A list of all the managed jobs created by the Compilation
+  SafeList<Job> jobs;
+
+  /// The queued jobs
+  JobQueue queue;
 
  public:
   Compilation(Driver &driver);
@@ -59,18 +59,23 @@ class Compilation final {
 
  public:
   /// Creates a new Job owned by this Compilation
-  // Create jobs here instead of using the ToolChain
+  // template <typename T, typename... Args>
+  // T *CreateJob(Args &&...arg);
   template <typename T, typename... Args>
   T *CreateJob(Args &&...arg) {
     auto job = new T(std::forward<Args>(arg)...);
-    safeJobs.Add(std::unique_ptr<stone::driver::Job>(job));
+    jobs.Add(std::unique_ptr<stone::driver::Job>(job));
     return job;
   }
 
-  SafeJobs &GetJobs() { return safeJobs; }
-  const SafeJobs &GetJobs() const { return safeJobs; }
+  JobQueue &GetQueue() { return queue; }
+  const JobQueue &GetQueue() const { return queue; }
 
-  void AddJob(std::unique_ptr<Job> job) { safeJobs.Add(std::move(job)); }
+  SafeList<Job> &GetJobs() { return jobs; }
+  const SafeList<Job> &GetJobs() const { return jobs; }
+
+  ///
+  void AddJob(std::unique_ptr<Job> job) { jobs.Add(std::move(job)); }
 
   /// addTempFile - Add a file to remove on exit, and returns its
   /// argument.
@@ -105,7 +110,6 @@ class Compilation final {
   /// \param fallBackProc - For non-zero results, this will be a vector of
   /// failing commands and their associated result code.
   void ExecuteJobs(
-      const SafeJobs &jobs,
       llvm::SmallVectorImpl<std::pair<int, const Job *>> &fallBackJob) const;
 
  public:

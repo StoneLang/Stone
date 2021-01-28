@@ -141,6 +141,9 @@ def PrintDriverLifecycle : Flag<["-"], "driver-print-lifecycle">,
 Flags<[DebugOption]>,
 HelpText<"Print the lifecycle of activities and jobs">;
 
+def PrintDriverStats : Flag<["-"], "driver-print-stats">,
+Flags<[DebugOption]>,
+HelpText<"Print all driver statistics">;
 
 def MainFile : Separate<["-"], "main-file">,
   HelpText<"Produce output for this file, not the whole module">;

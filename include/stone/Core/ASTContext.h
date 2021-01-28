@@ -62,19 +62,21 @@ class ASTContextStats final : public Stats {
   const ASTContext &ac;
 
  public:
-  ASTContextStats(const ASTContext &ac) : ac(ac) {}
+  ASTContextStats(const char *name, const ASTContext &ac)
+      : Stats(name), ac(ac) {}
   void Print() const override;
 };
 class ASTContext final {
   friend ASTContextStats;
-  ASTContextStats stats;
+
+  std::unique_ptr<ASTContextStats> stats;
 
   /// The associated SourceManager object.
   SrcMgr &sm;
 
   /// The language options used to create the AST associated with
   ///  this ASTContext object.
-  const stone::Context &ctx;
+  Context &ctx;
 
   /// The search path options
   const SearchPathOptions &searchPathOpts;
@@ -91,8 +93,7 @@ class ASTContext final {
   mutable llvm::SmallVector<Type *, 0> types;
 
  public:
-  ASTContext(const stone::Context &ctx, const SearchPathOptions &pathOpts,
-             SrcMgr &sm);
+  ASTContext(Context &ctx, const SearchPathOptions &pathOpts, SrcMgr &sm);
   ~ASTContext();
 
   ASTContext(const ASTContext &) = delete;
@@ -104,7 +105,7 @@ class ASTContext final {
   ///
   Builtin &GetBuiltin() const;
   //
-  const stone::Context &GetContext() const { return ctx; }
+  const Context &GetContext() const { return ctx; }
   ///
   LangABI *GetLangABI() const;
   //
@@ -112,7 +113,7 @@ class ASTContext final {
   /// Retrieve the allocator for the given arena.
   llvm::BumpPtrAllocator &GetAllocator() const;
 
-  ASTContextStats &GetStats() { return stats; }
+  ASTContextStats &GetStats() { return *stats.get(); }
 
  public:
   /// Return the total amount of physical memory allocated for representing

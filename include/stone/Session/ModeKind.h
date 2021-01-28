@@ -15,6 +15,5 @@ enum class ModeKind {
   EmitAssembly,
   EmitExecutable
 };
-
 }
 #endif

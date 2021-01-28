@@ -24,7 +24,8 @@ class CheckerStats final : public Stats {
   const Checker &checker;
 
  public:
-  CheckerStats(const Checker &checker) : checker(checker) {}
+  CheckerStats(const char *name, const Checker &checker)
+      : Stats(name), checker(checker) {}
   void Print() const override;
 };
 

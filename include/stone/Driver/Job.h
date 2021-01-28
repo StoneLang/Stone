@@ -40,8 +40,10 @@ class Job {
 
   void Print(const char* terminator, bool quote, CrashState* crashState) const;
 
+  const char* GetName() { return Job::GetNameByType(jobType); }
+
  public:
-  static const char* GetName(JobType jobType);
+  static const char* GetNameByType(JobType jobType);
 
  private:
   friend class Compilation;
@@ -52,8 +54,7 @@ class Job {
 class CompileJob final : public Job {
  public:
   // Some job depend on other jobs -- For example, LinkJob
-  CompileJob(bool isAsync, Compilation& compilation)
-      : Job(JobType::Compile, isAsync, compilation) {}
+  CompileJob(bool isAsync, Compilation& compilation);
 
  public:
   static bool classof(const Job* j) { return j->GetType() == JobType::Compile; }
@@ -61,21 +62,22 @@ class CompileJob final : public Job {
 
 class LinkJob : public Job {
   LinkType linkType;
+  bool requiresLTO;
 
  public:
   // Some jobs only consume inputs -- For example, LinkJob
   LinkJob(JobType jobType, bool isAsync, Compilation& compilation,
-          LinkType linkType)
-      : Job(jobType, isAsync, compilation), linkType(linkType) {}
+          bool requiresLTO, LinkType linkType);
 
  public:
   LinkType GetLinkType() { return linkType; }
+  bool RequiresLTO() { return requiresLTO; }
 };
 class StaticLinkJob final : public LinkJob {
  public:
   // Some jobs only consume inputs -- For example, LinkJob
-  StaticLinkJob(bool isAsync, Compilation& compilation, LinkType linkType)
-      : LinkJob(JobType::StaticLink, isAsync, compilation, linkType) {}
+  StaticLinkJob(bool isAsync, Compilation& compilation, bool requiresLTO,
+                LinkType linkType);
 
  public:
   static bool classof(const Job* j) {
@@ -86,8 +88,8 @@ class StaticLinkJob final : public LinkJob {
 class DynamicLinkJob final : public LinkJob {
  public:
   // Some jobs only consume inputs -- For example, LinkJob
-  DynamicLinkJob(bool isAsync, Compilation& compilation, LinkType linkType)
-      : LinkJob(JobType::DynamicLink, isAsync, compilation, linkType) {}
+  DynamicLinkJob(bool isAsync, Compilation& compilation, bool requiresLTO,
+                 LinkType linkType);
 
  public:
   static bool classof(const Job* j) {
@@ -98,8 +100,7 @@ class DynamicLinkJob final : public LinkJob {
 class AssembleJob final : public Job {
  public:
   // Some job depend on other jobs -- For example, LinkJob
-  AssembleJob(bool isAsync, Compilation& compilation)
-      : Job(JobType::Assemble, isAsync, compilation) {}
+  AssembleJob(bool isAsync, Compilation& compilation);
 
  public:
   static bool classof(const Job* j) {
@@ -110,18 +111,12 @@ class AssembleJob final : public Job {
 class BackendJob final : public Job {
  public:
   // Some job depend on other jobs -- For example, LinkJob
-  BackendJob(bool isAsync, Compilation& compilation)
-      : Job(JobType::Backend, isAsync, compilation) {}
+  BackendJob(bool isAsync, Compilation& compilation);
 
  public:
   static bool classof(const Job* j) { return j->GetType() == JobType::Backend; }
 };
 
-// This is used in compilation where they are stored and shared
-class SafeJobs final : public List<Job> {
- public:
-  void Print() const;
-};
 }  // namespace driver
 }  // namespace stone
 #endif

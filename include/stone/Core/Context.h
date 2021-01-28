@@ -20,6 +20,7 @@ class Context {
 
  public:
   llvm::raw_ostream &Out() { return os; }
+
   DiagnosticEngine &GetDiagEngine() { return de; }
   const DiagnosticEngine &GetDiagEngine() const { return de; }
 

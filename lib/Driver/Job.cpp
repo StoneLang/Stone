@@ -13,7 +13,7 @@ void Job::AddDep(const Job *job) { jobOpts.deps.push_back(job); }
 
 void Job::AddInput(const InputFile input) { jobOpts.inputs.push_back(input); }
 
-const char *Job::GetName(JobType jobType) {
+const char *Job::GetNameByType(JobType jobType) {
   switch (jobType) {
     case JobType::Compile:
       return "compile";
@@ -44,5 +44,3 @@ int Job::SyncExecute(llvm::ArrayRef<llvm::Optional<llvm::StringRef>> redirects,
   return 0;
 }
 */
-
-void SafeJobs::Print() const {}

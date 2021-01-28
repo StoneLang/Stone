@@ -13,13 +13,15 @@
 using namespace stone;
 using namespace stone::syntax;
 
-ASTContext::ASTContext(const stone::Context &ctx,
-                       const SearchPathOptions &spOpts, SrcMgr &sm)
+ASTContext::ASTContext(Context &ctx, const SearchPathOptions &spOpts,
+                       SrcMgr &sm)
     : ctx(ctx),
       searchPathOpts(spOpts),
       sm(sm),
-      identifiers(ctx.GetLangOptions()),
-      stats(*this) {
+      identifiers(ctx.GetLangOptions()) {
+  stats.reset(new ASTContextStats("ASTContext", *this));
+  ctx.GetStatEngine().Register(stats.get());
+
   builtin.Init(*this);
 }
 

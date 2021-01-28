@@ -5,7 +5,11 @@
 using namespace stone;
 using namespace stone::syntax;
 
-Parser::Parser(Pipeline *pipeline) : pipeline(pipeline), stats(*this) {}
+Parser::Parser(Context& ctx, Pipeline* pipeline)
+    : ctx(ctx), pipeline(pipeline) {
+  stats.reset(new ParserStats("Parser", *this));
+  ctx.GetStatEngine().Register(stats.get());
+}
 
 Parser::~Parser() {}
 //===----------------------------------------------------------------------===//

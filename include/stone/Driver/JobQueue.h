@@ -8,7 +8,7 @@ namespace stone {
 namespace driver {
 class Job;
 class JobQueue final {
-  llvm::PriorityQueue<Job *> queue;
+  llvm::PriorityQueue<const Job *> queue;
 
  public:
   JobQueue();

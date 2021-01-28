@@ -8,7 +8,6 @@ namespace driver {
 
 class DriverOptions final : public SessionOptions {
  public:
-  bool printActivities = false;
   bool printJobs = false;
 
  public:

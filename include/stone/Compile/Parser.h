@@ -14,29 +14,27 @@ namespace stone {
 class Pipeline;
 namespace syntax {
 class Parser;
-
 class ParserStats final : public Stats {
   const Parser &parser;
 
  public:
-  ParserStats(const Parser &parser) : parser(parser) {}
+  ParserStats(const char *name, Parser &parser) : Stats(name), parser(parser) {}
   void Print() const override;
 };
 
-// class ParserDiagnostics final : public Diagnostics { };
-
 class Parser final {
   friend ParserStats;
-  ParserStats stats;
+  Context &ctx;
   Pipeline *pipeline;
   std::unique_ptr<Lexer> lexer;
+  std::unique_ptr<ParserStats> stats;
 
  public:
-  Parser(Pipeline *pipeline = nullptr);
+  Parser(Context &ctx, Pipeline *pipeline = nullptr);
   ~Parser();
 
  public:
-  ParserStats &GetStats() { return stats; }
+  ParserStats &GetStats() { return *stats.get(); }
 
  public:
   // Decl
