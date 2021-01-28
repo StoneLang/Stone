@@ -71,6 +71,5 @@ class UnsafeList {
   iterator end() { return entries.end(); }
   const_iterator end() const { return entries.end(); }
 };
-
 }  // namespace stone
 #endif

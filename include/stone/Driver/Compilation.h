@@ -14,6 +14,7 @@
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Option/Option.h"
 #include "stone/Core/LLVM.h"
+#include "stone/Core/Stats.h"
 #include "stone/Driver/JobQueue.h"
 
 namespace llvm {
@@ -28,11 +29,25 @@ namespace driver {
 
 class Driver;
 class ToolChain;
+class Compilation;
 using ArgStringMap = llvm::DenseMap<const Job *, const char *>;
+
+class CompilationStats final : public Stats {
+  const Compilation &compilation;
+
+ public:
+  CompilationStats(const char *name, const Compilation &compilation)
+      : Stats(name), compilation(compilation) {}
+  void Print() const override;
+};
 
 class Compilation final {
   /// The System we were created by.
-  const Driver &driver;
+  Driver &driver;
+
+  friend CompilationStats;
+
+  std::unique_ptr<CompilationStats> stats;
 
   /// Temporary files which should be removed on exit.
   llvm::opt::ArgStringList tempFiles;
@@ -73,6 +88,11 @@ class Compilation final {
 
   SafeList<Job> &GetJobs() { return jobs; }
   const SafeList<Job> &GetJobs() const { return jobs; }
+
+  CompilationStats &GetStats() { return *stats.get(); }
+
+  const Driver &GetDriver() const { return driver; }
+  Driver &GetDriver() { return driver; }
 
   ///
   void AddJob(std::unique_ptr<Job> job) { jobs.Add(std::move(job)); }

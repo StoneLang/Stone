@@ -9,8 +9,10 @@ DriverStats::DriverStats(const char* name, const Driver& driver)
     : Stats(name), driver(driver) {}
 
 void DriverStats::Print() const {
-  if (!driver.driverOpts.printStats) {
+  if (driver.driverOpts.printStats) {
+    os << GetName() << '\n';
     return;
   }
+
   // Print out information about the SafeList<Job>
 }

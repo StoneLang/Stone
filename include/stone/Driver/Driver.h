@@ -186,6 +186,11 @@ class Driver final : public Session {
 
   bool CutOff(const ArgList &args, const ToolChain &tc);
 
+  ///
+  void ComputeModuleOutputPath();
+  ///
+  void ComputeMainOutput();
+
  public:
   Driver(llvm::StringRef executablePath, std::string driverName);
 
@@ -219,12 +224,10 @@ class Driver final : public Session {
 
   Compilation &GetCompilation() { return *compilation.get(); }
 
+  const DriverOptions &GetDriverOptions() const { return driverOpts; }
   DriverOptions &GetDriverOptions() { return driverOpts; }
 
   DriverStats &GetStats() { return *stats.get(); }
-
-  void ComputeModuleOutputPath();
-  void ComputeMainOutput();
 
  protected:
   void ComputeMode(const llvm::opt::DerivedArgList &args) override;

@@ -76,22 +76,20 @@ void DriverInternal::BuildJobsForMultipleCompile(Driver &driver,
 }
 void DriverInternal::BuildJobsForSingleCompile(Driver &driver,
                                                DriverInternal &internal) {
-  /*
-    auto job = driver.GetCompilation().CreateJob<CompileJob>(
-        true, driver.GetCompilation());
+  auto job = driver.GetCompilation().CreateJob<CompileJob>(
+      true, driver.GetCompilation());
 
-    for (const auto &input : driver.GetDriverOptions().inputs) {
-      switch (input.first) {
-        case file::FileType::Stone: {
-          assert(file::IsPartOfCompilation(input.first));
-          job->AddInput(input);
-          break;
-        }
-        default:
-          break;
+  for (const auto &input : driver.GetDriverOptions().inputs) {
+    switch (input.first) {
+      case file::FileType::Stone: {
+        assert(file::IsPartOfCompilation(input.first));
+        job->AddInput(input);
+        break;
       }
+      default:
+        break;
     }
-          */
+  }
 }
 /// Check that the file referenced by \p Input exists. If it doesn't,
 /// issue a diagnostic and return false.

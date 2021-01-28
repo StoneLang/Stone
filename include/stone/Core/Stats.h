@@ -20,7 +20,7 @@ class Stats {
  public:
   Stats(const char* name) : name(name), os(llvm::outs()) {}
   virtual ~Stats() {}
-  const char* GetName() { return name; }
+  const char* GetName() const { return name; }
 
  public:
   virtual void Print() const = 0;

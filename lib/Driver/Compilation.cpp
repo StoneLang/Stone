@@ -33,18 +33,12 @@ using namespace stone::driver;
 
 using namespace llvm::opt;
 
-Compilation::Compilation(Driver &driver) : driver(driver) {}
+Compilation::Compilation(Driver &driver) : driver(driver) {
+  stats.reset(new CompilationStats("Compilation", *this));
+  driver.GetStatEngine().Register(stats.get());
+}
 
 Compilation::~Compilation() {}
-
-/*
-template <typename T, typename... Args>
-T *Compilation::CreateJob(Args &&...arg) {
-  auto job = new T(std::forward<Args>(arg)...);
-  jobs.Add(std::unique_ptr<stone::driver::Job>(job));
-  return job;
-}
-*/
 
 bool Compilation::PurgeFile(const char *name, bool issueErrors) const {
   return true;
@@ -63,3 +57,10 @@ void Compilation::ExecuteJobs(
     llvm::SmallVectorImpl<std::pair<int, const Job *>> &fallBackJob) const {}
 
 int Compilation::Run() { return 0; }
+
+void CompilationStats::Print() const {
+  if (compilation.GetDriver().GetDriverOptions().printStats) {
+    os << GetName() << '\n';
+    return;
+  }
+}
