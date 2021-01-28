@@ -19,6 +19,7 @@ class ColorOutputStream {
   ~ColorOutputStream() {
     if (useColor) os.resetColor();
   }
+  llvm::raw_ostream &GetOS() { return os; }
   void Reset() { os.resetColor(); }
   void UseBlack() { os.changeColor(llvm::raw_ostream::Colors::BLACK); }
   void UseGreen() { os.changeColor(llvm::raw_ostream::Colors::GREEN); }

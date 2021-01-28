@@ -100,7 +100,7 @@ void IdentifierTableStats::Print() {
 
   cos << GetName() << '\n';
 
-	fprintf(stderr, "# Identifiers:   %d\n", numIdentifiers);
+  fprintf(stderr, "# Identifiers:   %d\n", numIdentifiers);
   fprintf(stderr, "# Empty Buckets: %d\n", numEmptyBuckets);
   fprintf(stderr, "Hash density (#identifiers per bucket): %f\n",
           numIdentifiers / (double)numBuckets);

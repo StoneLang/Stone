@@ -11,15 +11,15 @@ class Context {
  protected:
   LangOptions langOpts;
   DiagnosticOptions diagOpts;
-  llvm::raw_ostream &os;
   DiagnosticEngine de;
   StatEngine se;
+  ColorOutputStream cos;
 
  public:
   Context();
 
  public:
-  llvm::raw_ostream &Out() { return os; }
+  ColorOutputStream &Out() { return cos; }
 
   DiagnosticEngine &GetDiagEngine() { return de; }
   const DiagnosticEngine &GetDiagEngine() const { return de; }

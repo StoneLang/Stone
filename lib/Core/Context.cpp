@@ -3,4 +3,4 @@
 using namespace stone;
 
 // TODO:
-Context::Context() : de(diagOpts, nullptr, false), os(llvm::outs()) {}
+Context::Context() : de(diagOpts, nullptr, false), cos(llvm::outs()) {}

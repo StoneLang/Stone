@@ -28,18 +28,18 @@ std::unique_ptr<llvm::opt::InputArgList> Session::BuildArgList(
 
   // Check for missing argument error.
   if (missingArgCount) {
-    os << "D(SrcLoc(),"
-       << "msg::error_missing_arg_value,"
-       << "argList->getArgString(missingArgIndex),"
-       << "missingArgCount" << '\n';
+    cos << "D(SrcLoc(),"
+        << "msg::error_missing_arg_value,"
+        << "argList->getArgString(missingArgIndex),"
+        << "missingArgCount" << '\n';
     return nullptr;
   }
 
   // Check for unknown arguments.
   for (const llvm::opt::Arg *arg : argList->filtered(opts::UNKNOWN)) {
-    os << "D(SourceLoc(), "
-       << "msg::error_unknown_arg,"
-       << "arg->getAsString(*ArgList));" << '\n';
+    cos << "D(SourceLoc(), "
+        << "msg::error_unknown_arg,"
+        << "arg->getAsString(*ArgList));" << '\n';
     return nullptr;
   }
   return argList;

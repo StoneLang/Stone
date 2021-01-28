@@ -38,7 +38,7 @@ class DriverInternal final {
 
  public:
   /// Print the job
-  static void PrintJob(const Job *job, const Driver &driver);
+  static void PrintJob(const Job *job, Driver &driver);
 
   /// Build compile only jobs
   static void BuildCompileOnlyJobs(Driver &driver, DriverInternal &internal);
@@ -110,13 +110,12 @@ bool DriverInternal::DoesInputExist(Driver &driver, const DerivedArgList &args,
 
   return false;
 }
-void DriverInternal::PrintJob(const Job *job, const Driver &driver) {
-  std::string str;
+void DriverInternal::PrintJob(const Job *job, Driver &driver) {
   // driver.Out() << job->GetName() << "," << '\n';
-  if (job->GetType() == JobType::Compile) {
-    const auto *cj = dyn_cast<CompileJob>(job);
-    // driver.Out() << "\"" << input->GetInput().second << "\"";
-  }
+  // if (job->GetType() == JobType::Compile) {
+  // const auto *cj = dyn_cast<CompileJob>(job);
+  // driver.Out() << "\"" << input->GetInput().second << "\"";
+  //}
 }
 
 Driver::Driver(llvm::StringRef stoneExecutable, std::string driverName)
@@ -440,8 +439,9 @@ void Driver::PrintHelp(bool showHidden) {
   // if (!showHidden)
   //  excludedFlagsBitmask |= HelpHidden;
 
-  driverOpts.GetOpts().PrintHelp(Out(), driverName.c_str(), "Stone Compiler",
-                                 includedFlagsBitmask, excludedFlagsBitmask,
+  driverOpts.GetOpts().PrintHelp(Out().GetOS(), driverName.c_str(),
+                                 "Stone Compiler", includedFlagsBitmask,
+                                 excludedFlagsBitmask,
                                  /*ShowAllAliases*/ false);
 }
 
