@@ -38,7 +38,7 @@ class DriverInternal final {
 
  public:
   /// Print the job
-  static void PrintJob(const Job *job, Driver &driver);
+  static void PrintJob(Job *job, Driver &driver);
 
   /// Build compile only jobs
   static void BuildCompileOnlyJobs(Driver &driver, DriverInternal &internal);
@@ -110,12 +110,22 @@ bool DriverInternal::DoesInputExist(Driver &driver, const DerivedArgList &args,
 
   return false;
 }
-void DriverInternal::PrintJob(const Job *job, Driver &driver) {
-  // driver.Out() << job->GetName() << "," << '\n';
-  // if (job->GetType() == JobType::Compile) {
-  // const auto *cj = dyn_cast<CompileJob>(job);
-  // driver.Out() << "\"" << input->GetInput().second << "\"";
-  //}
+void DriverInternal::PrintJob(Job *job, Driver &driver) {
+  auto cos = driver.Out();
+  cos.UseGreen();
+  switch (job->GetType()) {
+    case JobType::Compile: {
+      auto *cj = dyn_cast<CompileJob>(job);
+      cos << job->GetName() << '\n';
+      cos <<' '<<' ' << "inputs:" << '\n';
+      cos.UseMagenta();
+      for (auto input : job->GetJobOptions().inputs) {
+        cos << ' ' << ' ' << ' '<< input.second << '\n';
+      }
+    }
+    default:
+      break;
+  }
 }
 
 Driver::Driver(llvm::StringRef stoneExecutable, std::string driverName)
@@ -237,6 +247,10 @@ void Driver::BuildCompilation(const ToolChain &tc,
   compilation = llvm::make_unique<Compilation>(*this);
 
   BuildJobs();
+
+  if (driverOpts.printJobs) {
+    PrintJobs();
+  }
 }
 bool Driver::CutOff(const ArgList &args, const ToolChain &tc) {
   if (args.hasArg(opts::Help)) {
@@ -360,7 +374,7 @@ void Driver::BuildJobs() {
 }
 
 void Driver::PrintJobs() {
-  for (const auto &job : GetCompilation().GetJobs()) {
+  for (auto &job : GetCompilation().GetJobs()) {
     DriverInternal::PrintJob(&job, *this);
   }
 }
