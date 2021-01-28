@@ -39,9 +39,9 @@ class DeclStats final : public Stats {
   const Decl &declaration;
 
  public:
-  DeclStats(const char *name, const Decl &declaration)
-      : Stats(name), declaration(declaration) {}
-  void Print() const override;
+  DeclStats(const Decl &declaration)
+      : Stats("ast-declaration statistics:"), declaration(declaration) {}
+  void Print() override;
 };
 
 class alignas(8) Decl : public ASTNode /*TODO: Object */ {

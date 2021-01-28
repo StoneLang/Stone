@@ -126,7 +126,7 @@ Driver::Driver(llvm::StringRef stoneExecutable, std::string driverName)
       /*sysRoot(DEFAULT_SYSROOT),*/
       driverTitle("Stone Compiler"),
       checkInputFilesExist(true) {
-  stats.reset(new DriverStats("Driver", *this));
+  stats.reset(new DriverStats(*this));
   GetStatEngine().Register(stats.get());
 }
 /// Parse the given list of strings into an InputArgList.

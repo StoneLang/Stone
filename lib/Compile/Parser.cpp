@@ -7,7 +7,7 @@ using namespace stone::syntax;
 
 Parser::Parser(Context& ctx, Pipeline* pipeline)
     : ctx(ctx), pipeline(pipeline) {
-  stats.reset(new ParserStats("Parser", *this));
+  stats.reset(new ParserStats(*this));
   ctx.GetStatEngine().Register(stats.get());
 }
 
@@ -29,4 +29,4 @@ void Parser::ParseStmt() {}
 //===----------------------------------------------------------------------===//
 void Parser::ParseExpr() {}
 
-void ParserStats::Print() const {}
+void ParserStats::Print() {}

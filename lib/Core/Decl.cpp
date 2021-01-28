@@ -90,4 +90,4 @@ void *Decl::operator new(std::size_t size, const ASTContext &astCtx,
 //
 //
 
-void DeclStats::Print() const {}
+void DeclStats::Print() {}

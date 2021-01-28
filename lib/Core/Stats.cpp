@@ -7,7 +7,7 @@ Stats::Stats(const char* name) : name(name), cos(llvm::outs()) {}
 StatEngine::StatEngine() {}
 StatEngine::~StatEngine() {}
 
-void StatEngine::Register(const Stats* stats) {
+void StatEngine::Register(Stats* stats) {
   assert(stats && "Unable to register null stats.");
   entries.push_back(stats);
 }

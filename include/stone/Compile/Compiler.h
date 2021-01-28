@@ -19,9 +19,9 @@ class CompilerStats final : public Stats {
   const Compiler &compiler;
 
  public:
-  CompilerStats(const char *name, const Compiler &compiler)
-      : Stats(name), compiler(compiler) {}
-  void Print() const override;
+  CompilerStats(const Compiler &compiler)
+      : Stats("compiler statistics:"), compiler(compiler) {}
+  void Print() override;
 };
 
 class OutputProfile final {};

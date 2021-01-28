@@ -19,7 +19,7 @@ ASTContext::ASTContext(Context &ctx, const SearchPathOptions &spOpts,
       searchPathOpts(spOpts),
       sm(sm),
       identifiers(ctx.GetLangOptions()) {
-  stats.reset(new ASTContextStats("ASTContext", *this));
+  stats.reset(new ASTContextStats(*this));
   ctx.GetStatEngine().Register(stats.get());
 
   builtin.Init(*this);
@@ -34,4 +34,4 @@ size_t ASTContext::GetSizeOfMemUsed() const {
   return bumpAlloc.getTotalMemory();
 }
 
-void ASTContextStats::Print() const {}
+void ASTContextStats::Print() {}

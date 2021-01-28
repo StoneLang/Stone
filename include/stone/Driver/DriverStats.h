@@ -10,8 +10,8 @@ class DriverStats final : public Stats {
   const Driver& driver;
 
  public:
-  DriverStats(const char* name, const Driver& driver);
-  void Print() const override;
+  DriverStats(const Driver& driver);
+  void Print() override;
 };
 }  // namespace driver
 }  // namespace stone

@@ -28,18 +28,18 @@ class Stats {
   void Disable() { enabled = false; }
 
  public:
-  virtual void Print() const = 0;
+  virtual void Print() = 0;
 };
 
 class StatEngine final {
-  llvm::SmallVector<const Stats*, 4> entries;
+  llvm::SmallVector<Stats*, 4> entries;
 
  public:
   StatEngine();
   ~StatEngine();
 
  public:
-  void Register(const Stats* stats);
+  void Register(Stats* stats);
   /// Print all groups and entries in groups
   void Print();
 };

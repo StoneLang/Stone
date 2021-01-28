@@ -35,9 +35,12 @@ using namespace stone::driver;
 using namespace llvm::opt;
 
 Compilation::Compilation(Driver &driver) : driver(driver) {
-  stats.reset(new CompilationStats("Compilation", *this));
+  stats.reset(new CompilationStats(*this));
   driver.GetStatEngine().Register(stats.get());
 }
+
+CompilationStats::CompilationStats(const Compilation &compilation)
+    : Stats("compilation statistics:"), compilation(compilation) {}
 
 Compilation::~Compilation() {}
 
@@ -59,10 +62,10 @@ void Compilation::ExecuteJobs(
 
 int Compilation::Run() { return 0; }
 
-void CompilationStats::Print() const {
+void CompilationStats::Print() {
   if (compilation.GetDriver().GetDriverOptions().printStats) {
-    // cos.UseGreen();
-    // cos << GetName() << '\n';
+    cos.UseGreen();
+    cos << GetName() << '\n';
     return;
   }
 }

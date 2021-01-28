@@ -81,7 +81,7 @@ void IdentifierTable::AddKeywords(const LangOptions &LangOpts) {
 //===----------------------------------------------------------------------===//
 /// PrintStats - Print statistics about how well the identifier table is doing
 /// at hashing identifiers.
-void IdentifierTableStats::Print() const {
+void IdentifierTableStats::Print() {
   unsigned numBuckets = table.entries.getNumBuckets();
   unsigned numIdentifiers = table.entries.getNumItems();
   unsigned numEmptyBuckets = numBuckets - numIdentifiers;
@@ -98,9 +98,9 @@ void IdentifierTableStats::Print() const {
     if (maxIdentifierLength < idLen) maxIdentifierLength = idLen;
   }
 
-  // cos << "\n*** Identifier Table Stats:  << '\n';
+  cos << GetName() << '\n';
 
-  fprintf(stderr, "# Identifiers:   %d\n", numIdentifiers);
+	fprintf(stderr, "# Identifiers:   %d\n", numIdentifiers);
   fprintf(stderr, "# Empty Buckets: %d\n", numEmptyBuckets);
   fprintf(stderr, "Hash density (#identifiers per bucket): %f\n",
           numIdentifiers / (double)numBuckets);

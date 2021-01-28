@@ -18,8 +18,9 @@ class ParserStats final : public Stats {
   const Parser &parser;
 
  public:
-  ParserStats(const char *name, Parser &parser) : Stats(name), parser(parser) {}
-  void Print() const override;
+  ParserStats(const Parser &parser)
+      : Stats("parser statistics:"), parser(parser) {}
+  void Print() override;
 };
 
 class Parser final {

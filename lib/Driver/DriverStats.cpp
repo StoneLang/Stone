@@ -5,14 +5,13 @@
 using namespace stone;
 using namespace stone::driver;
 
-DriverStats::DriverStats(const char* name, const Driver& driver)
-    : Stats(name), driver(driver) {}
+DriverStats::DriverStats(const Driver& driver)
+    : Stats("driver statistics:"), driver(driver) {}
 
-void DriverStats::Print() const {
+void DriverStats::Print() {
   if (driver.driverOpts.printStats) {
-    // cos << GetName() << '\n';
+    cos.UseGreen();
+    cos << GetName() << '\n';
     return;
   }
-
-  // Print out information about the SafeList<Job>
 }

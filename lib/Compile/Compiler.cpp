@@ -16,7 +16,7 @@ Compiler::Compiler(Pipeline *pipeline)
       sm(GetDiagEngine(), fm) {
   ac.reset(new ASTContext(*this, compilerOpts.spOpts, sm));
 
-  stats.reset(new CompilerStats("Compiler", *this));
+  stats.reset(new CompilerStats(*this));
   GetStatEngine().Register(stats.get());
 }
 
@@ -81,4 +81,4 @@ std::unique_ptr<Compiler> Compiler::Create() {
 
 */
 
-void CompilerStats::Print() const {}
+void CompilerStats::Print() {}

@@ -394,9 +394,9 @@ class IdentifierTableStats final : public Stats {
   const IdentifierTable &table;
 
  public:
-  IdentifierTableStats(const char *name, const IdentifierTable &table)
-      : Stats(name), table(table) {}
-  void Print() const override;
+  IdentifierTableStats(const IdentifierTable &table)
+      : Stats("identifier table statistics:"), table(table) {}
+  void Print() override;
 };
 
 /// Implements an efficient mapping from strings to Identifier nodes.

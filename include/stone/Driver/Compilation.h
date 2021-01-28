@@ -36,9 +36,8 @@ class CompilationStats final : public Stats {
   const Compilation &compilation;
 
  public:
-  CompilationStats(const char *name, const Compilation &compilation)
-      : Stats(name), compilation(compilation) {}
-  void Print() const override;
+  CompilationStats(const Compilation &compilation);
+  void Print() override;
 };
 
 class Compilation final {
