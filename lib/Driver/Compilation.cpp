@@ -24,6 +24,7 @@
 #include "llvm/Support/StringSaver.h"
 #include "llvm/Support/TargetRegistry.h"
 #include "llvm/Support/raw_ostream.h"
+#include "stone/Core/Color.h"
 #include "stone/Core/Ret.h"
 #include "stone/Driver/Driver.h"
 #include "stone/Driver/ToolChain.h"
@@ -60,7 +61,8 @@ int Compilation::Run() { return 0; }
 
 void CompilationStats::Print() const {
   if (compilation.GetDriver().GetDriverOptions().printStats) {
-    os << GetName() << '\n';
+    // cos.UseGreen();
+    // cos << GetName() << '\n';
     return;
   }
 }

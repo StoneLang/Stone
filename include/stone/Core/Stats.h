@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "llvm/ADT/SmallVector.h"
+#include "stone/Core/Color.h"
 #include "stone/Core/List.h"
 #include "stone/Core/Mem.h"
 
@@ -13,14 +14,18 @@ class StatsPrinter {};
 class StatsListener {};
 
 class Stats {
+  bool enabled = false;
+
  protected:
   const char* name = nullptr;
-  llvm::raw_ostream& os;
+  ColorOutputStream cos;
 
  public:
-  Stats(const char* name) : name(name), os(llvm::outs()) {}
+  Stats(const char* name);
   virtual ~Stats() {}
   const char* GetName() const { return name; }
+  void Enable() { enabled = true; }
+  void Disable() { enabled = false; }
 
  public:
   virtual void Print() const = 0;

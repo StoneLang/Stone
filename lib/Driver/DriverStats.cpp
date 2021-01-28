@@ -10,7 +10,7 @@ DriverStats::DriverStats(const char* name, const Driver& driver)
 
 void DriverStats::Print() const {
   if (driver.driverOpts.printStats) {
-    os << GetName() << '\n';
+    // cos << GetName() << '\n';
     return;
   }
 

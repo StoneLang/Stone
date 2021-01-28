@@ -2,6 +2,8 @@
 
 using namespace stone;
 
+Stats::Stats(const char* name) : name(name), cos(llvm::outs()) {}
+
 StatEngine::StatEngine() {}
 StatEngine::~StatEngine() {}
 

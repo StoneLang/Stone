@@ -98,7 +98,7 @@ void IdentifierTableStats::Print() const {
     if (maxIdentifierLength < idLen) maxIdentifierLength = idLen;
   }
 
-  os << "\n*** Identifier Table Stats: " << '\n';
+  // cos << "\n*** Identifier Table Stats:  << '\n';
 
   fprintf(stderr, "# Identifiers:   %d\n", numIdentifiers);
   fprintf(stderr, "# Empty Buckets: %d\n", numEmptyBuckets);
