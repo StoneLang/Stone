@@ -14,3 +14,11 @@ class CompileActivityListener : public InputActivityListener {
 	}
 };
 
+
+compile(0): {test.stone} -> object
+
+compile(1): {sample.stone} -> object 
+
+link: {compile(0),compile(1)} -> image 
+
+

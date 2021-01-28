@@ -7,9 +7,9 @@ using namespace stone::driver;
 
 // Some job depend on other jobs -- For example, LinkJob
 Job::Job(JobType jobType, bool isAsync, Compilation &compilation)
-    : jobType(jobType), isAsync(isAsync), compilation(compilation) {}
+    : jobType(jobType), jobID(0), isAsync(isAsync), compilation(compilation) {}
 
-void Job::AddDep(const Job *job) { jobOpts.deps.push_back(job); }
+void Job::AddDep(const Job *job) { deps.push_back(job); }
 
 void Job::AddInput(const InputFile input) { jobOpts.inputs.push_back(input); }
 

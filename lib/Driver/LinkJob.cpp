@@ -16,8 +16,12 @@ StaticLinkJob::StaticLinkJob(bool isAsync, Compilation& compilation,
     : LinkJob(JobType::StaticLink, isAsync, compilation, requiresLTO,
               linkType) {}
 
+void StaticLinkJob::BuildOutputProfile() {}
+
 // Some jobs only consume inputs -- For example, LinkJob
 DynamicLinkJob::DynamicLinkJob(bool isAsync, Compilation& compilation,
                                bool requiresLTO, LinkType linkType)
     : LinkJob(JobType::DynamicLink, isAsync, compilation, requiresLTO,
               linkType) {}
+
+void DynamicLinkJob::BuildOutputProfile() {}

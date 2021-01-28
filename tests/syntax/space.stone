@@ -1,12 +1,10 @@
 
 space System.Maths {
-
 	public fun Sin() -> void {
 	}
 }
 
 space System.Physics {
-
 	public fun Fire(const Particle* particle) -> void {
 		return true; 
 	}

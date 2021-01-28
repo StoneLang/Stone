@@ -6,14 +6,12 @@
 
 namespace stone {
 namespace driver {
-class Job;
+
 using OutputFileType = file::FileType;
-using Jobs = llvm::SmallVector<const Job*, 4>;
 
 class JobOptions final {
  public:
   InputFiles inputs;
-  Jobs deps;
   OutputFileType outputFileType = file::FileType::None;
 
  public:

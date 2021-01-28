@@ -57,7 +57,7 @@ class DriverCache final {
   mutable llvm::StringMap<std::unique_ptr<ToolChain>> toolChainCache;
 };
 
-class DriverRuntime final {
+class DriverOutputProfile final {
  public:
   /// Default compiler invocation mode -- one file per CompileJob
   CompilerInvocationMode compilerInvocationMode =
@@ -97,11 +97,11 @@ class DriverRuntime final {
 };
 
 class Driver final : public Session {
-  DriverRuntime runtime;
+  friend DriverStats;
+  DriverOutputProfile outputProfile;
   std::unique_ptr<DriverStats> stats;
   std::unique_ptr<ToolChain> toolChain;
   std::unique_ptr<Compilation> compilation;
-  friend DriverStats;
 
  public:
   /// The options for the driver
@@ -177,9 +177,10 @@ class Driver final : public Session {
   /// \param[out] OI The OutputInfo in which to store the resulting output
   /// information.
 
-  void BuildOutputs(const ToolChain &toolChain,
-                    const llvm::opt::DerivedArgList &args, const bool batchMode,
-                    const InputFiles &inputs, DriverRuntime &runtime) const;
+  void BuildOutputProfile(const ToolChain &toolChain,
+                          const llvm::opt::DerivedArgList &args,
+                          const bool batchMode, const InputFiles &inputs,
+                          DriverOutputProfile &outputProfile) const;
 
   void BuildCompilation(const ToolChain &tc,
                         const llvm::opt::InputArgList &args);
@@ -219,8 +220,8 @@ class Driver final : public Session {
   const ToolChain &GetToolChain() const { return *toolChain.get(); }
   ToolChain &GetToolChain() { return *toolChain.get(); }
 
-  const DriverRuntime &GetRuntime() const { return runtime; }
-  DriverRuntime &GetRuntime() { return runtime; }
+  const DriverOutputProfile &GetOutputProfile() const { return outputProfile; }
+  DriverOutputProfile &GetOutputProfile() { return outputProfile; }
 
   Compilation &GetCompilation() { return *compilation.get(); }
 
