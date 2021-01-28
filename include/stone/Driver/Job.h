@@ -20,8 +20,6 @@ class Compilation;
 using JobID = int64_t;
 using Jobs = llvm::SmallVector<const Job*, 4>;
 
-
-
 struct JobOutputProfile {};
 
 class Job {

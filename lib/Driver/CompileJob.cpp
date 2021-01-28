@@ -1,4 +1,4 @@
-#include "stone/Driver/Job.h"
+#include "stone/Driver/CompileJob.h"
 
 using namespace stone;
 using namespace stone::driver;

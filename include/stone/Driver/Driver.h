@@ -164,9 +164,6 @@ class Driver final : public Session {
   void BuildInputs(const ToolChain &tc, const DerivedArgList &args,
                    InputFiles &inputFiles);
 
-  /// TODO: A CompilationUnit consists of an InputFile and an OutputFile
-  void BuildCompilationUnits(const ToolChain &tc, const DerivedArgList &args);
-
   /// Construct the OutputInfo for the driver from the given arguments.
   ///
   /// \param TC The current tool chain.
@@ -177,13 +174,10 @@ class Driver final : public Session {
   /// \param[out] OI The OutputInfo in which to store the resulting output
   /// information.
 
-  void BuildOutputProfile(const ToolChain &toolChain,
-                          const llvm::opt::DerivedArgList &args,
-                          const bool batchMode, const InputFiles &inputs,
+  void BuildOutputProfile(const llvm::opt::DerivedArgList &args,
                           DriverOutputProfile &outputProfile) const;
 
-  void BuildCompilation(const ToolChain &tc,
-                        const llvm::opt::InputArgList &args);
+  void BuildCompilation(const llvm::opt::InputArgList &args);
 
   bool CutOff(const ArgList &args, const ToolChain &tc);
 

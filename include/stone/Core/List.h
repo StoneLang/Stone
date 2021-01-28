@@ -72,7 +72,6 @@ class UnsafeList {
   const_iterator end() const { return entries.end(); }
 };
 
-
 /// JobList - A sequence of jobs to perform.
 template <typename T>
 class ConstList {

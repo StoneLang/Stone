@@ -112,24 +112,6 @@ bool DriverInternal::DoesInputExist(Driver &driver, const DerivedArgList &args,
 
   return false;
 }
-void DriverInternal::PrintJob(Job *job, Driver &driver) {
-  auto cos = driver.Out();
-  cos.UseGreen();
-  switch (job->GetType()) {
-    case JobType::Compile: {
-      auto *cj = dyn_cast<CompileJob>(job);
-      cos << job->GetName() << '\n';
-      cos.UseMagenta();
-      for (auto input : job->GetJobOptions().inputs) {
-        cos << ' ' << input.second << ' ' << "->" << ' '
-            << job->GetOutputTypeName() << '\n';
-      }
-      break;
-    }
-    default:
-      break;
-  }
-}
 
 Driver::Driver(llvm::StringRef stoneExecutable, std::string driverName)
     : Session(driverOpts),
@@ -151,7 +133,7 @@ bool Driver::Build(llvm::ArrayRef<const char *> args) {
   BuildToolChain(*originalArgs);
   // TODO: Check for errors
 
-  BuildCompilation(*toolChain, *originalArgs);
+  BuildCompilation(*originalArgs);
 
   if (de.HasError()) {
     return false;
@@ -198,8 +180,7 @@ void Driver::BuildToolChain(const llvm::opt::InputArgList &argList) {
       break;
   }
 }
-void Driver::BuildCompilation(const ToolChain &tc,
-                              const llvm::opt::InputArgList &argList) {
+void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
   llvm::PrettyStackTraceString CrashInfo("Compilation construction");
 
   // TODO:
@@ -217,11 +198,11 @@ void Driver::BuildCompilation(const ToolChain &tc,
   if (de.HasError()) {
     return;
   }
-  if (CutOff(*dArgList, tc)) {
+  if (CutOff(*dArgList, GetToolChain())) {
     return;
   }
 
-  BuildInputs(tc, *dArgList, GetInputs());
+  BuildInputs(GetToolChain(), *dArgList, GetInputs());
 
   if (GetInputs().size() == 0) {
     Out() << "msg::driver_error_no_input_files" << '\n';
@@ -230,14 +211,7 @@ void Driver::BuildCompilation(const ToolChain &tc,
 
   if (de.HasError()) return;
 
-  /*
-  BuildOutputProfile(GetToolChain(),
-                          const llvm::opt::DerivedArgList &args,
-                          const bool batchMode,
-                                                                                                                          const InputFiles &inputs,
-                                                                                                                          DriverOutputProfile& outputProfile)
-
-  */
+  BuildOutputProfile(*dArgList, GetOutputProfile());
 
   // TODO: ComputeCompileMod()
   //
@@ -310,10 +284,16 @@ void Driver::BuildInputs(const ToolChain &tc, const DerivedArgList &args,
   }
 }
 
-void Driver::BuildOutputProfile(const ToolChain &toolChain,
-                                const llvm::opt::DerivedArgList &args,
-                                const bool batchMode, const InputFiles &inputs,
+void Driver::BuildOutputProfile(const llvm::opt::DerivedArgList &args,
                                 DriverOutputProfile &outputProfile) const {
+  auto compilerOutputType = outputProfile.ltoVariant != LTOKind::None
+                                ? FileType::BC
+                                : FileType::Object;
+  // By default, the driver does not link its outputProfile. this will be
+  // updated appropriately below if linking is required.
+  //
+  outputProfile.compilerOutputFileType = compilerOutputType;
+
   // Basic for the time being
   switch (mode.GetKind()) {
     case ModeKind::EmitExecutable:
@@ -407,17 +387,18 @@ void Driver::BuildCompileActivities() {
   }
 }
 void Driver::BuildCompileActivity(InputActivity *inputActivity) {
-  if (outputProfile.compilerInvocationMode == CompilerInvocationMode::Multiple)
-{ auto compileActivity = GetCompilation().CreateActivity<CompileActivity>(
-        inputActivity, outputProfile.compilerOutputFileType);
+  if (outputProfile.rofile.compilerInvocationMode ==
+CompilerInvocationMode::Multiple) { auto compileActivity =
+GetCompilation().CreateActivity<CompileActivity>( inputActivity,
+outputProfile.rofile.compilerOutputFileType);
 
-    outputProfile.AddModuleInput(compileActivity);
-    if (outputProfile.ShouldLink()) {
-      outputProfile.AddLinkerInput(compileActivity);
+    outputProfile.rofile.AddModuleInput(compileActivity);
+    if (outputProfile.rofile.ShouldLink()) {
+      outputProfile.rofile.AddLinkerInput(compileActivity);
     }
     // BuildJobsForActivity(compileActivity);
 
-  } else if (outputProfile.compilerInvocationMode ==
+  } else if (outputProfile.rofile.compilerInvocationMode ==
 CompilerInvocationMode::Single) {
     // TODO:
   }
@@ -433,17 +414,17 @@ void Driver::BuildLinkActivity() {
   // First, build all the compile activities
   BuildCompileActivities();
 
-  if (outputProfile.ShouldLink() && !outputProfile.linkerActivities.empty()) {
-    Activity *linkActivity = nullptr;
-    if (outputProfile.linkType == LinkType::StaticLibrary) {
+  if (outputProfile.rofile.ShouldLink() &&
+!outputProfile.rofile.linkerActivities.empty()) { Activity *linkActivity =
+nullptr; if (outputProfile.rofile.linkType == LinkType::StaticLibrary) {
       linkActivity = GetCompilation().CreateActivity<StaticLinkActivity>(
-          outputProfile.linkerActivities, outputProfile.linkType);
+          outputProfile.rofile.linkerActivities, outputProfile.rofile.linkType);
     } else {
       linkActivity = GetCompilation().CreateActivity<DynamicLinkActivity>(
-          outputProfile.linkerActivities, outputProfile.linkType,
-          outputProfile.ShouldPerformLTO());
+          outputProfile.rofile.linkerActivities, outputProfile.rofile.linkType,
+          outputProfile.rofile.ShouldPerformLTO());
     }
-    outputProfile.AddTopLevelActivity(linkActivity);
+    outputProfile.rofile.AddTopLevelActivity(linkActivity);
   }
   // BuildJobForActivity()
 }
@@ -461,6 +442,25 @@ void Driver::PrintHelp(bool showHidden) {
                                  "Stone Compiler", includedFlagsBitmask,
                                  excludedFlagsBitmask,
                                  /*ShowAllAliases*/ false);
+}
+
+void DriverInternal::PrintJob(Job *job, Driver &driver) {
+  auto cos = driver.Out();
+  cos.UseGreen();
+  switch (job->GetType()) {
+    case JobType::Compile: {
+      auto *cj = dyn_cast<CompileJob>(job);
+      cos << job->GetName() << '\n';
+      cos.UseMagenta();
+      for (auto input : job->GetJobOptions().inputs) {
+        cos << ' ' << input.second << ' ' << "->" << ' '
+            << job->GetOutputTypeName() << '\n';
+      }
+      break;
+    }
+    default:
+      break;
+  }
 }
 
 void Driver::ComputeModuleOutputPath() {}
