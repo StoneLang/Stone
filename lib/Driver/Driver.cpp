@@ -2,6 +2,7 @@
 
 #include "llvm/Config/llvm-config.h"
 #include "llvm/Support/FormatVariadic.h"
+#include "stone/Core/LLVM.h"
 #include "stone/Core/Ret.h"
 #include "stone/Driver/Job.h"
 #include "stone/Driver/ToolChain.h"
@@ -11,7 +12,6 @@ using namespace stone;
 using namespace stone::file;
 using namespace stone::driver;
 using namespace llvm::opt;
-
 
 class DriverInternal final {
  public:
@@ -56,8 +56,7 @@ class DriverInternal final {
                                             const DerivedArgList &args,
                                             const InputFiles &inputs);
 
-  // static void ComputeCompilerOutputFile(const Driver& driver);
-
+  static void ComputeCompilerOutputFile(const Driver &driver);
   static void ComputeCmdOutput(const Driver &driver);
 
   static llvm::StringRef ComputeBaseNameForImage(const Job *job,
@@ -67,15 +66,16 @@ class DriverInternal final {
                                                  llvm::StringRef baseInput,
                                                  llvm::StringRef baseName);
 
-
-static llvm:::StringRef ComputeOutputFilename(Compilation &compilation,
-                                   const Job *job,
-                                   /*const TypeToPathMap *OutputMap,*/
-                                   llvm::StringRef workingDir,
-                                   bool atTopLevel,
-                                   llvm::StringRef BaseInput,
-                                   llvm::StringRef PrimaryInput,
-                                   llvm::SmallString<128> &buffer)
+  /*
+  static llvm:::StringRef ComputeOutputFilename(Compilation &compilation,
+                             const Job *job,
+                             const TypeToPathMap *OutputMap,
+                             llvm::StringRef workingDir,
+                             bool atTopLevel,
+                             llvm::StringRef BaseInput,
+                             llvm::StringRef PrimaryInput,
+                             llvm::SmallString<128> &buffer);
+  */
 };
 
 void DriverInternal::ComputeCompilerInvocationMode(const Driver &driver,
@@ -120,7 +120,7 @@ void DriverInternal::BuildJobsForSingleCompile(Driver &driver,
         break;
     }
   }
-  job->BuildCmdOutput();
+  // job->BuildCmdOutput();
 }
 /// Check that the file referenced by \p Input exists. If it doesn't,
 /// issue a diagnostic and return false.
