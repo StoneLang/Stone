@@ -78,7 +78,7 @@ class DriverInternal final {
   */
 
   static std::unique_ptr<driver::TaskQueue> BuildTaskQueue(
-      Driver &driver, DriverInternal& internal);
+      Driver &driver, DriverInternal &internal);
 
  public:
   /// Builds the compile jobs
@@ -512,12 +512,10 @@ int Driver::Run() {
   if (driverOpts.printHelp) {
     // PrintHelp();
   }
-  //auto compilationResult = 
-	//	GetCompilation().Run(DriverInternal::BuildTaskQueue(*this)); 
+  // auto compilationResult =
+  //	GetCompilation().Run(DriverInternal::BuildTaskQueue(*this));
 
-	if(CutOff()) 
-		return ret::err; 
+  if (CutOff()) return ret::err;
 
-	return ret::ok; 
-
+  return ret::ok;
 }

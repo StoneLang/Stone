@@ -66,8 +66,8 @@ void Compilation::ExecuteJobs(
 ///
 /// \returns result code for the Compilation's Jobs; 0 indicates success and
 /// -2 indicates that one of the Compilation's Jobs crashed during execution
-//CompilationResult Run(std::unique_ptr<driver::TaskQueue> &&queue) {
-//	return;  
+// CompilationResult Run(std::unique_ptr<driver::TaskQueue> &&queue) {
+//	return;
 //}
 
 void CompilationStats::Print() {

@@ -129,16 +129,16 @@ class Compilation final {
   /// \param fallBackProc - For non-zero results, this will be a vector of
   /// failing commands and their associated result code.
   void ExecuteJobs(
-      llvm::SmallVectorImpl<std::pair<int, const Job *>> &fallBackJob) const; 
+      llvm::SmallVectorImpl<std::pair<int, const Job *>> &fallBackJob) const;
+
  public:
-   /// Asks the Compilation to perform the Jobs which it knows about.
+  /// Asks the Compilation to perform the Jobs which it knows about.
   ///
   /// \param TQ The TaskQueue used to schedule jobs for execution.
   ///
   /// \returns result code for the Compilation's Jobs; 0 indicates success and
   /// -2 indicates that one of the Compilation's Jobs crashed during execution
   CompilationResult Run(std::unique_ptr<driver::TaskQueue> &&queue);
-
 };
 }  // namespace driver
 }  // namespace stone
