@@ -52,7 +52,7 @@ class ToolOptions final {
   bool canLink = false;
 };
 class Tool {
-  ToolType ty;
+  ToolType toolType;
   /// The tool name (for debugging).
   llvm::StringRef fullName;
   /// The human readable name for the tool, for use in diagnostics.
@@ -72,7 +72,7 @@ class Tool {
   ToolOptions toolOpts;
 
  public:
-  Tool(llvm::StringRef fullName, llvm::StringRef shortName, ToolType ty,
+  Tool(llvm::StringRef fullName, llvm::StringRef shortName, ToolType toolType,
        const ToolChain &toolChain);
 
  public:
@@ -83,7 +83,7 @@ class Tool {
   bool IsObsolete() { return isObsolete; }
   llvm::StringRef GetFullName() { return fullName; }
   llvm::StringRef GetShortName() { return shortName; }
-  ToolType GetType() { return ty; }
+  ToolType GetType() { return toolType; }
   ToolOptions &GetOptions() { return toolOpts; }
   const ToolOptions &GetOptions() const { return toolOpts; }
   const ToolChain &GetToolChain() const { return toolChain; }
@@ -168,8 +168,7 @@ class ToolChain {
  protected:
   /// Tools that stone supports and looks for
   std::unique_ptr<ClangTool> clangTool;
-  std::unique_ptr<LDLinkTool> ldLinkTool;
-  std::unique_ptr<LLDLinkTool> lldLinkTool;
+  std::unique_ptr<LinkTool> linkTool;
   std::unique_ptr<AssembleTool> assembleTool;
   std::unique_ptr<GCCTool> gccTool;
   std::unique_ptr<StoneTool> stoneTool;

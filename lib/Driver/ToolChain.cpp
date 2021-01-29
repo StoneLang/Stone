@@ -5,9 +5,12 @@
 using namespace stone;
 using namespace stone::driver;
 
-Tool::Tool(llvm::StringRef fullName, llvm::StringRef shortName, ToolType toolType,
-           const ToolChain &toolChain)
-    : fullName(fullName), shortName(shortName), toolType(toolType), toolChain(toolChain) {}
+Tool::Tool(llvm::StringRef fullName, llvm::StringRef shortName,
+           ToolType toolType, const ToolChain &toolChain)
+    : fullName(fullName),
+      shortName(shortName),
+      toolType(toolType),
+      toolChain(toolChain) {}
 
 Tool::~Tool() {}
 
@@ -28,7 +31,6 @@ ClangTool::ClangTool(llvm::StringRef fullName, llvm::StringRef shortName,
 
 ClangTool::~ClangTool() {}
 
-
 GCCTool::GCCTool(llvm::StringRef fullName, llvm::StringRef shortName,
                  const ToolChain &toolChain)
     : Tool(fullName, shortName, ToolType::GCC, toolChain) {
@@ -37,15 +39,16 @@ GCCTool::GCCTool(llvm::StringRef fullName, llvm::StringRef shortName,
 }
 GCCTool::~GCCTool() {}
 
-LinkTool::LinkTool(llvm::StringRef fullName, llvm::StringRef shortName, ToolType toolType, 
-                   const ToolChain &toolChain, LinkType linkType)
+LinkTool::LinkTool(llvm::StringRef fullName, llvm::StringRef shortName,
+                   ToolType toolType, const ToolChain &toolChain,
+                   LinkType linkType)
     : Tool(fullName, shortName, toolType, toolChain), linkType(linkType) {
   toolOpts.canLink = true;
 }
 LinkTool::~LinkTool() {}
 
 LLDLinkTool::LLDLinkTool(llvm::StringRef fullName, llvm::StringRef shortName,
-                        const ToolChain &toolChain, LinkType linkType)
+                         const ToolChain &toolChain, LinkType linkType)
     : LinkTool(fullName, shortName, ToolType::LLD, toolChain, linkType) {}
 
 LLDLinkTool::~LLDLinkTool() {}
@@ -101,13 +104,19 @@ bool ToolChain::Build() {
     }
   }
   // Build the link tools, ect.
-  if (GetDriver().GetMode().IsLinkOnly()) {
-    assert(BuildLDLinkTool() && "Failed to build static-link tools.");
-    assert(BuildLLDLinkTool() && "Failed to build dynamic-tools.");
-    return true;
+  if (GetDriver().GetMode().CanLink()) {
+    if (GetDriver().GetDriverOptions().useLLDLinker) {
+      assert(BuildLLDLinkTool() && "Failed to build lld.");
+    } else if (GetDriver().GetDriverOptions().useLDLinker) {
+      assert(BuildLDLinkTool() && "Failed to build ld.");
+    }
+    if (GetDriver().GetMode().IsLinkOnly()) {
+      return true;
+    }
   }
   // Since we can do more than linking (emit-ir, ect.) first, build clang tool
   if (!BuildClangTool()) {
+    // TODO: warn ... could not find clang, trying gcc
     assert(BuildGCCTool() && "Failed to build clang and gcc tools.");
   }
   return true;

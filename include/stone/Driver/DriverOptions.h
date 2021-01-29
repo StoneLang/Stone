@@ -10,6 +10,8 @@ namespace driver {
 class DriverOptions final : public SessionOptions {
  public:
   bool printJobs = false;
+  bool useLDLinker = true;
+  bool useLLDLinker = false;
   bool showJobLifecycle = false;
 
  public:
