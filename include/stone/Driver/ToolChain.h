@@ -19,6 +19,7 @@
 #include "stone/Core/LLVM.h"
 #include "stone/Core/Mem.h"
 #include "stone/Driver/Job.h"
+#include "stone/Driver/LinkType.h"
 #include "stone/Session/FileType.h"
 #include "stone/Session/Mode.h"
 #include "stone/Session/Options.h"
@@ -42,15 +43,8 @@ class Driver;
 class OutputProfile;
 
 /// The tool types that are supported
-enum class ToolType {
-  None,
-  Assemble,
-  Clang,
-  DynamicLink,
-  GCC,
-  StaticLink,
-  Stone
-};
+enum class ToolType { None, Assemble, Clang, GCC, LD, LLD, Stone };
+
 class ToolOptions final {
  public:
   bool canEmitIR = false;
@@ -116,18 +110,28 @@ class GCCTool final : public Tool {
   ~GCCTool();
 };
 
-class DynamicLinkTool final : public Tool {
+class LinkTool : public Tool {
+  LinkType linkType;
+
  public:
-  DynamicLinkTool(llvm::StringRef fullName, llvm::StringRef shortName,
-                  const ToolChain &toolChain);
-  ~DynamicLinkTool();
+  LinkTool(llvm::StringRef fullName, llvm::StringRef shortName, ToolType toolTy,
+           const ToolChain &toolChain, LinkType linkTy);
+  ~LinkTool();
+  LinkType GetLinkType() { linkType; }
 };
 
-class StaticLinkTool final : public Tool {
+class LDLinkTool final : public LinkTool {
  public:
-  StaticLinkTool(llvm::StringRef fullName, llvm::StringRef shortName,
-                 const ToolChain &toolChain);
-  ~StaticLinkTool();
+  LDLinkTool(llvm::StringRef fullName, llvm::StringRef shortName,
+             const ToolChain &toolChain, LinkType linkTy);
+  ~LDLinkTool();
+};
+
+class LLDLinkTool final : public LinkTool {
+ public:
+  LLDLinkTool(llvm::StringRef fullName, llvm::StringRef shortName,
+              const ToolChain &toolChain, LinkType linkTy);
+  ~LLDLinkTool();
 };
 
 class AssembleTool final : public Tool {
@@ -163,12 +167,12 @@ class ToolChain {
 
  protected:
   /// Tools that stone supports and looks for
-  std::unique_ptr<ClangTool> clang;
-  std::unique_ptr<DynamicLinkTool> staticLink;
-  std::unique_ptr<StaticLinkTool> dynamicLink;
-  std::unique_ptr<AssembleTool> assemble;
-  std::unique_ptr<GCCTool> gcc;
-  std::unique_ptr<StoneTool> stone;
+  std::unique_ptr<ClangTool> clangTool;
+  std::unique_ptr<LDLinkTool> ldLinkTool;
+  std::unique_ptr<LLDLinkTool> lldLinkTool;
+  std::unique_ptr<AssembleTool> assembleTool;
+  std::unique_ptr<GCCTool> gccTool;
+  std::unique_ptr<StoneTool> stoneTool;
 
   /// Since you are picking a tool you may need a dense map here
   // llvm::SmallVector<std::unique_ptr<Tool>, 4> tools;
@@ -211,7 +215,7 @@ class ToolChain {
   const Paths &GetProgramPaths() const { return programPaths; }
 
  public:
-  virtual bool Build() = 0;
+  virtual bool Build();
   virtual Tool *GetTool(Mode mode) const = 0;
   /// Pick a tool to use to handle the compilation event \p event.
   ///
@@ -222,8 +226,8 @@ class ToolChain {
  protected:
   virtual bool BuildClangTool() = 0;
   virtual bool BuildAssembleTool() = 0;
-  virtual bool BuildDynamicLinkTool() = 0;
-  virtual bool BuildStaticLinkTool() = 0;
+  virtual bool BuildLDLinkTool() = 0;
+  virtual bool BuildLLDLinkTool() = 0;
   virtual bool BuildGCCTool() = 0;
   virtual bool BuildStoneTool() = 0;
 };
@@ -237,7 +241,6 @@ class DarwinToolChain final : public ToolChain {
   ~DarwinToolChain() = default;
 
  public:
-  bool Build() override;
   Tool *GetTool(Mode mode) const override;
   /// Pick a tool to use to handle the compilation event \p event.
   ///
@@ -248,8 +251,8 @@ class DarwinToolChain final : public ToolChain {
  protected:
   bool BuildClangTool() override;
   bool BuildAssembleTool() override;
-  bool BuildDynamicLinkTool() override;
-  bool BuildStaticLinkTool() override;
+  bool BuildLDLinkTool() override;
+  bool BuildLLDLinkTool() override;
   bool BuildGCCTool() override;
   bool BuildStoneTool() override;
 };

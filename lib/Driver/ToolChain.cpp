@@ -5,11 +5,18 @@
 using namespace stone;
 using namespace stone::driver;
 
-Tool::Tool(llvm::StringRef fullName, llvm::StringRef shortName, ToolType ty,
+Tool::Tool(llvm::StringRef fullName, llvm::StringRef shortName, ToolType toolType,
            const ToolChain &toolChain)
-    : fullName(fullName), shortName(shortName), toolChain(toolChain) {}
+    : fullName(fullName), shortName(shortName), toolType(toolType), toolChain(toolChain) {}
 
 Tool::~Tool() {}
+
+StoneTool::StoneTool(llvm::StringRef fullName, llvm::StringRef shortName,
+                     const ToolChain &toolChain)
+    : Tool(fullName, shortName, ToolType::Stone, toolChain) {
+  toolOpts.canEmitIR = true;
+}
+StoneTool::~StoneTool() {}
 
 ClangTool::ClangTool(llvm::StringRef fullName, llvm::StringRef shortName,
                      const ToolChain &toolChain)
@@ -21,34 +28,39 @@ ClangTool::ClangTool(llvm::StringRef fullName, llvm::StringRef shortName,
 
 ClangTool::~ClangTool() {}
 
-StoneTool::StoneTool(llvm::StringRef fullName, llvm::StringRef shortName,
-                     const ToolChain &toolChain)
-    : Tool(fullName, shortName, ToolType::Stone, toolChain) {
-  toolOpts.canEmitIR = true;
-}
-StoneTool::~StoneTool() {}
 
 GCCTool::GCCTool(llvm::StringRef fullName, llvm::StringRef shortName,
                  const ToolChain &toolChain)
-    : Tool(fullName, shortName, ToolType::GCC, toolChain) {}
+    : Tool(fullName, shortName, ToolType::GCC, toolChain) {
+  toolOpts.canAssemble = true;
+  toolOpts.canLink = true;
+}
 GCCTool::~GCCTool() {}
 
-DynamicLinkTool::DynamicLinkTool(llvm::StringRef fullName,
-                                 llvm::StringRef shortName,
-                                 const ToolChain &toolChain)
-    : Tool(fullName, shortName, ToolType::DynamicLink, toolChain) {}
-DynamicLinkTool::~DynamicLinkTool() {}
+LinkTool::LinkTool(llvm::StringRef fullName, llvm::StringRef shortName, ToolType toolType, 
+                   const ToolChain &toolChain, LinkType linkType)
+    : Tool(fullName, shortName, toolType, toolChain), linkType(linkType) {
+  toolOpts.canLink = true;
+}
+LinkTool::~LinkTool() {}
 
-StaticLinkTool::StaticLinkTool(llvm::StringRef fullName,
-                               llvm::StringRef shortName,
-                               const ToolChain &toolChain)
-    : Tool(fullName, shortName, ToolType::StaticLink, toolChain) {}
+LLDLinkTool::LLDLinkTool(llvm::StringRef fullName, llvm::StringRef shortName,
+                        const ToolChain &toolChain, LinkType linkType)
+    : LinkTool(fullName, shortName, ToolType::LLD, toolChain, linkType) {}
 
-StaticLinkTool::~StaticLinkTool() {}
+LLDLinkTool::~LLDLinkTool() {}
+
+LDLinkTool::LDLinkTool(llvm::StringRef fullName, llvm::StringRef shortName,
+                       const ToolChain &toolChain, LinkType linkType)
+    : LinkTool(fullName, shortName, ToolType::LD, toolChain, linkType) {}
+
+LDLinkTool::~LDLinkTool() {}
 
 AssembleTool::AssembleTool(llvm::StringRef fullName, llvm::StringRef shortName,
                            const ToolChain &toolChain)
-    : Tool(fullName, shortName, ToolType::Assemble, toolChain) {}
+    : Tool(fullName, shortName, ToolType::Assemble, toolChain) {
+  toolOpts.canAssemble = true;
+}
 AssembleTool::~AssembleTool() {}
 
 ToolChain::ToolChain(const Driver &driver, const llvm::Triple &triple)
@@ -63,11 +75,40 @@ std::unique_ptr<Job> ToolChain::CreateJob(/*const JobAction &JA, Compilation &C,
 }
 
 Tool *ToolChain::PickTool(const Job &job) const {
-  switch (job.GetType()) {
-    case JobType::DynamicLink:
-      return nullptr;
-    default:
-      return nullptr;
-  }
+  /*
+    switch (job.GetType()) {
+      case JobType::Compile:
+        return stoneTool.get();
+      case JobType::StaticLink:
+        return staticLink.get();
+      case JobType::DynamicLink:
+        return dynamicLink.get();
+      case JobType::DynamicLink:
+        return dynamicLink.get();
+        return nullptr;
+    }
+  */
+
   return nullptr;
+}
+
+// TODO: Update for other scenarios like assemble
+bool ToolChain::Build() {
+  if (GetDriver().GetMode().CanCompile()) {
+    assert(BuildStoneTool() && "Failed to build stone tool.");
+    if (GetDriver().GetMode().IsCompileOnly()) {
+      return true;
+    }
+  }
+  // Build the link tools, ect.
+  if (GetDriver().GetMode().IsLinkOnly()) {
+    assert(BuildLDLinkTool() && "Failed to build static-link tools.");
+    assert(BuildLLDLinkTool() && "Failed to build dynamic-tools.");
+    return true;
+  }
+  // Since we can do more than linking (emit-ir, ect.) first, build clang tool
+  if (!BuildClangTool()) {
+    assert(BuildGCCTool() && "Failed to build clang and gcc tools.");
+  }
+  return true;
 }

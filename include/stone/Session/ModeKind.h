@@ -13,7 +13,8 @@ enum class ModeKind {
   EmitLibrary,
   EmitModuleOnly,
   EmitAssembly,
-  EmitExecutable
+  EmitExecutable,
+  Link
 };
 }
 #endif

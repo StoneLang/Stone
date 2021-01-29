@@ -45,7 +45,7 @@ class alignas(8) CompilerUnit final {
   CompilerUnit::Input &GetInput() { return input; }
   CompilerUnit::Output &GetOutput() { return output; }
 
-  bool HasOutput() { return compiler.GetMode().IsOutput(); }
+  bool HasOutput() { return compiler.GetMode().CanOutput(); }
 
   void SetIsPrimary(bool primary) { isPrimary = primary; }
   bool IsPrimary() { return isPrimary; }
