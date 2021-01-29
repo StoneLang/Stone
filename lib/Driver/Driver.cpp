@@ -10,8 +10,8 @@
 using namespace stone;
 using namespace stone::file;
 using namespace stone::driver;
-
 using namespace llvm::opt;
+
 
 class DriverInternal final {
  public:
@@ -50,11 +50,40 @@ class DriverInternal final {
   /// Build jobs for a single compile -- the compile jobs has multiple files.
   static void BuildJobsForSingleCompile(Driver &driver,
                                         DriverInternal &internal);
+
+  // TODO:
+  static void ComputeCompilerInvocationMode(const Driver &driver,
+                                            const DerivedArgList &args,
+                                            const InputFiles &inputs);
+
+  // static void ComputeCompilerOutputFile(const Driver& driver);
+
+  static void ComputeCmdOutput(const Driver &driver);
+
+  static llvm::StringRef ComputeBaseNameForImage(const Job *job,
+                                                 const DriverOutputProfile &op,
+                                                 const llvm::Triple &triple,
+                                                 llvm::SmallString<128> &buffer,
+                                                 llvm::StringRef baseInput,
+                                                 llvm::StringRef baseName);
+
+
+static llvm:::StringRef ComputeOutputFilename(Compilation &compilation,
+                                   const Job *job,
+                                   /*const TypeToPathMap *OutputMap,*/
+                                   llvm::StringRef workingDir,
+                                   bool atTopLevel,
+                                   llvm::StringRef BaseInput,
+                                   llvm::StringRef PrimaryInput,
+                                   llvm::SmallString<128> &buffer)
 };
+
+void DriverInternal::ComputeCompilerInvocationMode(const Driver &driver,
+                                                   const DerivedArgList &args,
+                                                   const InputFiles &inputs) {}
 
 void DriverInternal::BuildCompileOnlyJobs(Driver &driver,
                                           DriverInternal &internal) {}
-
 void DriverInternal::BuildJobsForMultipleCompile(Driver &driver,
                                                  DriverInternal &internal) {
   for (const auto &input : driver.GetDriverOptions().inputs) {
@@ -64,7 +93,7 @@ void DriverInternal::BuildJobsForMultipleCompile(Driver &driver,
         auto job = driver.GetCompilation().CreateJob<CompileJob>(
             true, driver.GetCompilation());
         job->AddInput(input);
-        job->BuildOutputProfile();
+        // job->BuildCmdOutput();
         internal.AddCompileJob(job);
         break;
       }
@@ -91,7 +120,7 @@ void DriverInternal::BuildJobsForSingleCompile(Driver &driver,
         break;
     }
   }
-  job->BuildOutputProfile();
+  job->BuildCmdOutput();
 }
 /// Check that the file referenced by \p Input exists. If it doesn't,
 /// issue a diagnostic and return false.
@@ -294,14 +323,42 @@ void Driver::BuildOutputProfile(const llvm::opt::DerivedArgList &args,
   //
   outputProfile.compilerOutputFileType = compilerOutputType;
 
+  // if (const Arg *numThreads = args.getLastArg(opts::NumThreads)) {
+  // if (StringRef(A->getValue()).getAsInteger(10, outputProfile.numThreads)) {
+  // Diags.diagnose(SourceLoc(), diag::error_invalid_arg_value,
+  //               A->getAsString(Args), A->getValue());
+  //}
+  //}
+
   // Basic for the time being
   switch (mode.GetKind()) {
-    case ModeKind::EmitExecutable:
-      outputProfile.linkType = LinkType::Executable;
+    case ModeKind::EmitLibrary: {
+      outputProfile.linkType = args.hasArg(opts::Static)
+                                   ? LinkType::StaticLibrary
+                                   : LinkType::DynamicLibrary;
+      outputProfile.compilerOutputFileType = compilerOutputType;
+    } break;
+    case ModeKind::EmitObject:
+      outputProfile.compilerOutputFileType = FileType::Object;
+      break;
+    case ModeKind::EmitAssembly:
+      outputProfile.compilerOutputFileType = FileType::Assembly;
+      break;
+    case ModeKind::EmitIR:
+      outputProfile.compilerOutputFileType = FileType::IR;
+      break;
+    case ModeKind::EmitBC:
+      outputProfile.compilerOutputFileType = FileType::BC;
+      break;
+    case ModeKind::Parse:
+    case ModeKind::Check:
+      outputProfile.compilerOutputFileType = FileType::None;
       break;
     default:
+      outputProfile.linkType = LinkType::Executable;
       break;
   }
+  assert(outputProfile.compilerOutputFileType != FileType::INVALID);
 }
 
 ModeKind Driver::GetDefaultModeKind() { return ModeKind::EmitExecutable; }

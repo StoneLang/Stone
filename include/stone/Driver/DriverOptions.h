@@ -6,9 +6,11 @@
 namespace stone {
 namespace driver {
 
+// TODO: a lot of what is in DriverOutputProfile can go here
 class DriverOptions final : public SessionOptions {
  public:
   bool printJobs = false;
+  bool showJobLifecycle = false;
 
  public:
   DriverOptions() {}

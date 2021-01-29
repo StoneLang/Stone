@@ -12,6 +12,7 @@ set( LLVM_LINK_COMPONENTS
 set(stone_driver_sources
 	AssembleJob.cpp
 	BackendJob.cpp
+	CmdOutput.cpp
 	Compilation.cpp
 	CompileJob.cpp
 	CrashState.cpp

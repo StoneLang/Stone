@@ -7,4 +7,4 @@ using namespace stone::driver;
 CompileJob::CompileJob(bool isAsync, Compilation& compilation)
     : Job(JobType::Compile, isAsync, compilation) {}
 
-void CompileJob::BuildOutputProfile() {}
+void CompileJob::BuildCmdOutput() {}

@@ -74,6 +74,11 @@ def EmitIR : Flag<["-"], "emit-ir">,
 HelpText<"Emit LLVM IR file(s)">, ModeOpt,
 Flags<[CompileOption]>;
 
+def Static : Flag<["-"], "static">,
+  Flags<[CompileOption]>,
+  HelpText<"Make this module statically linkable and make the output of -emit-library a static library.">;
+
+
 def DumpAST : Flag<["-"], "dump-ast">,
 HelpText<"Parse and type-check input file(s) and dump AST(s)">, ModeOpt,
 Flags<[CompileOption]>;

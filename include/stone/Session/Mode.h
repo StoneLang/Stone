@@ -46,6 +46,7 @@ class Mode final {
         return false;
     }
   }
+
   static llvm::StringRef GetNameByKind(ModeKind kind);
 
  private:

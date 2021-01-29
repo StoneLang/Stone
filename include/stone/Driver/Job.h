@@ -7,6 +7,7 @@
 #include "llvm/Option/ArgList.h"
 #include "llvm/Support/StringSaver.h"
 #include "stone/Core/List.h"
+#include "stone/Driver/CmdOutput.h"
 #include "stone/Driver/CrashState.h"
 #include "stone/Driver/JobOptions.h"
 #include "stone/Driver/JobType.h"
@@ -20,15 +21,20 @@ class Compilation;
 using JobID = int64_t;
 using Jobs = llvm::SmallVector<const Job*, 4>;
 
-struct JobOutputProfile {};
-
 class Job {
+ protected:
   bool isAsync;
   JobType jobType;
   JobOptions jobOpts;
   Compilation& compilation;
   JobID jobID;
+  /// Inputs
   Jobs deps;
+  /// The output of this command.
+  std::unique_ptr<CmdOutput> output;
+
+  /// The executable to run.
+  const char* executable = nullptr;
 
  public:
   Job(JobType jobType, bool isAsync, Compilation& compilation);
@@ -57,7 +63,7 @@ class Job {
   void SetJobID(JobID jid) { jobID = jid; }
   JobID GetJobID() { return jobID; }
 
-  virtual void BuildOutputProfile() = 0;
+  virtual void BuildCmdOutput() = 0;
 
  public:
   static const char* GetNameByType(JobType jobType);
@@ -73,7 +79,7 @@ class CompileJob final : public Job {
   // Some job depend on other jobs -- For example, LinkJob
   CompileJob(bool isAsync, Compilation& compilation);
 
-  void BuildOutputProfile() override;
+  void BuildCmdOutput() override;
 
  public:
   static bool classof(const Job* j) { return j->GetType() == JobType::Compile; }
@@ -88,7 +94,7 @@ class LinkJob : public Job {
   LinkJob(JobType jobType, bool isAsync, Compilation& compilation,
           bool requiresLTO, LinkType linkType);
 
-  virtual void BuildOutputProfile() = 0;
+  virtual void BuildCmdOutput() = 0;
 
  public:
   LinkType GetLinkType() { return linkType; }
@@ -100,7 +106,7 @@ class StaticLinkJob final : public LinkJob {
   StaticLinkJob(bool isAsync, Compilation& compilation, bool requiresLTO,
                 LinkType linkType);
 
-  void BuildOutputProfile() override;
+  void BuildCmdOutput() override;
 
  public:
   static bool classof(const Job* j) {
@@ -114,7 +120,7 @@ class DynamicLinkJob final : public LinkJob {
   DynamicLinkJob(bool isAsync, Compilation& compilation, bool requiresLTO,
                  LinkType linkType);
 
-  void BuildOutputProfile() override;
+  void BuildCmdOutput() override;
 
  public:
   static bool classof(const Job* j) {
@@ -127,7 +133,7 @@ class AssembleJob final : public Job {
   // Some job depend on other jobs -- For example, LinkJob
   AssembleJob(bool isAsync, Compilation& compilation);
 
-  void BuildOutputProfile() override;
+  void BuildCmdOutput() override;
 
  public:
   static bool classof(const Job* j) {
@@ -140,7 +146,7 @@ class BackendJob final : public Job {
   // Some job depend on other jobs -- For example, LinkJob
   BackendJob(bool isAsync, Compilation& compilation);
 
-  void BuildOutputProfile() override;
+  void BuildCmdOutput() override;
 
  public:
   static bool classof(const Job* j) { return j->GetType() == JobType::Backend; }
