@@ -234,9 +234,6 @@ bool Driver::Build(llvm::ArrayRef<const char *> args) {
   originalArgs = BuildArgList(args);
   // TODO: Check for errors
 
-  BuildToolChain(*originalArgs);
-  // TODO: Check for errors
-
   BuildCompilation(*originalArgs);
 
   if (de.HasError()) {
@@ -261,6 +258,7 @@ void Driver::BuildToolChain(const llvm::opt::InputArgList &argList) {
       }
       toolChain =
           llvm::make_unique<DarwinToolChain>(*this, target, targetVariant);
+      toolChain->Build();
       break;
     }
       /*
@@ -295,6 +293,10 @@ void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
 
   // Computer the compiler mode.
   ComputeMode(*dArgList);
+
+  BuildToolChain(*originalArgs);
+  // TODO: Check for errors
+
   // Perform toolchain specific args validation.
   // toolChain.ValidateArguments(de, *dArgList, targetTriple);
   //

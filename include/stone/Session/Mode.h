@@ -31,7 +31,7 @@ class Mode final {
         return false;
     }
   }
-  bool IsCompileOnly() {
+  const bool IsCompileOnly() const {
     switch (GetKind()) {
       case ModeKind::Parse:
       case ModeKind::Check:

@@ -1,5 +1,7 @@
 #include "stone/Driver/ToolChain.h"
 
+#include "stone/Driver/Driver.h"
+
 using namespace stone;
 using namespace stone::driver;
 

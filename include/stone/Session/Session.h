@@ -116,7 +116,8 @@ class Session : public Context {
   void PrintDiagnostics();
   void PrintStatistics();
 
-  Mode &GetMode();
+  Mode &GetMode() { return mode; }
+  const Mode &GetMode() const { return mode; }
 
   /// The original (untranslated) input argument list.
   llvm::opt::InputArgList &GetOriginalArgs() { return *originalArgs.get(); }
@@ -147,7 +148,7 @@ class Session : public Context {
 
   virtual ModeKind GetDefaultModeKind() = 0;
 
-  std::string ComputeWorkingDir();
+  llvm::StringRef ComputeWorkingDir();
 
   void Purge();
 };

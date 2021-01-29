@@ -98,8 +98,6 @@ llvm::opt::DerivedArgList *Session::TranslateInputArgs(
   return translatedArgs.get();
 }
 
-Mode &Session::GetMode() { return mode; }
-
 void Session::Purge() {}
 
 void Session::Finish() {

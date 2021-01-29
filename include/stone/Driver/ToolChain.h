@@ -138,11 +138,12 @@ class AssembleTool final : public Tool {
 };
 
 class ToolChain {
-  const Driver &driver;
-  const llvm::Triple triple;
-
   /// A special name used to identify the 'stone' executable itself.
   constexpr static const char *const stoneExecutableName = "stone";
+
+ protected:
+  const Driver &driver;
+  const llvm::Triple triple;
 
  public:
   using Paths = llvm::SmallVector<std::string, 16>;
@@ -162,20 +163,20 @@ class ToolChain {
 
  protected:
   /// Tools that stone supports and looks for
-  // std::unique_ptr<ClangTool> clangTool;
-  // std::unique_ptr<DynamicLinkTool> staticLinkTool;
-  // std::unique_ptr<StaticLinkTool> dynamicLinkTool;
-  // std::unique_ptr<AssembleTool> assembleTool;
-  // std::unique_ptr<GCCTool> gccTool;
-  // std::unique_ptr<StoneTool> StoneTool;
+  std::unique_ptr<ClangTool> clang;
+  std::unique_ptr<DynamicLinkTool> staticLink;
+  std::unique_ptr<StaticLinkTool> dynamicLink;
+  std::unique_ptr<AssembleTool> assemble;
+  std::unique_ptr<GCCTool> gcc;
+  std::unique_ptr<StoneTool> stone;
 
   /// Since you are picking a tool you may need a dense map here
-  llvm::SmallVector<std::unique_ptr<Tool>, 4> tools;
+  // llvm::SmallVector<std::unique_ptr<Tool>, 4> tools;
 
  public:
   virtual ~ToolChain() = default;
 
-  const Driver &GetDriver() const { return driver; }
+  const Driver &GetDriver() { return driver; }
   const llvm::Triple &GetTriple() const { return triple; }
 
   /// Construct a Job for the action \p JA, taking the given information
@@ -210,21 +211,21 @@ class ToolChain {
   const Paths &GetProgramPaths() const { return programPaths; }
 
  public:
-  virtual bool Build(ModeKind kind) = 0;
-
-  // virtual Tool *BuildClangTool() const = 0;
-  // virtual Tool *BuildAssembleTool() const = 0;
-  // virtual Tool *BuildDynamicLinkTool() const = 0;
-  // virtual Tool *BuildStaticLinkTool() const = 0;
-  // virtual Tool *BuildGCCTool() const = 0;
-  // virtual Tool *BuildStoneTool() const = 0;
-  virtual Tool *GetTool(ModeKind kind) const = 0;
-
+  virtual bool Build() = 0;
+  virtual Tool *GetTool(Mode mode) const = 0;
   /// Pick a tool to use to handle the compilation event \p event.
   ///
   /// This can be overridden when a particular ToolChain needs to use
   /// a compiler other than Clang.
   virtual Tool *PickTool(const Job &job) const;
+
+ protected:
+  virtual bool BuildClangTool() = 0;
+  virtual bool BuildAssembleTool() = 0;
+  virtual bool BuildDynamicLinkTool() = 0;
+  virtual bool BuildStaticLinkTool() = 0;
+  virtual bool BuildGCCTool() = 0;
+  virtual bool BuildStoneTool() = 0;
 };
 
 class DarwinToolChain final : public ToolChain {
@@ -236,20 +237,21 @@ class DarwinToolChain final : public ToolChain {
   ~DarwinToolChain() = default;
 
  public:
-  // Tool *BuildClangTool() const override;
-  // Tool *BuildAssembleTool() const override;
-  // Tool *BuildDynamicLinkTool() const override;
-  // Tool *BuildStaticLinkTool() const override;
-  // Tool *BuildGCCTool() const override;
-  // Tool *BuildStoneTool() const override;
-
-  bool Build(ModeKind kind) override;
-  Tool *GetTool(ModeKind kind) const override;
+  bool Build() override;
+  Tool *GetTool(Mode mode) const override;
   /// Pick a tool to use to handle the compilation event \p event.
   ///
   /// This can be overridden when a particular ToolChain needs to use
   /// a compiler other than Clang.
   Tool *PickTool(const Job &job) const override;
+
+ protected:
+  bool BuildClangTool() override;
+  bool BuildAssembleTool() override;
+  bool BuildDynamicLinkTool() override;
+  bool BuildStaticLinkTool() override;
+  bool BuildGCCTool() override;
+  bool BuildStoneTool() override;
 };
 
 /*
