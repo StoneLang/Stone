@@ -39,6 +39,7 @@ namespace stone {
 namespace driver {
 class ToolChain;
 class Driver;
+class OutputProfile;
 
 class Tool {
   /// The tool name (for debugging).
@@ -160,11 +161,21 @@ class ToolChain {
   ///
   /// This method dispatches to the various \c constructInvocation methods,
   /// which may be overridden by platform-specific subclasses.
-  std::unique_ptr<Job> CreateJob(/*const CompilationActivity &event, Compilation &compilation,
+  std::unique_ptr<Job> CreateJob(/*const CompilationActivity &activity, Compilation &compilation,
                                     llvm::SmallVectorImpl<const Job *> &&jobs,
                                     ArrayRef<const Activity *> activities,
                                     std::unique_ptr<CommandOutput> output,
                                     const OutputInfo &OI*/) const;
+
+  /// Create a Job for the action \p JA, taking the given information
+  /// into account.
+  ///
+  /// This method dispatches to the various \c constructInvocation methods,
+  /// which may be overridden by platform-specific subclasses.
+  std::unique_ptr<Job> CreateJob(Compilation &compilation,
+                                 llvm::SmallVectorImpl<const Job *> &&jobs,
+                                 std::unique_ptr<CmdOutput> cmdOutput,
+                                 const OutputProfile &outputProfile) const;
 
   Paths &GetLibraryPaths() { return libraryPaths; }
   const Paths &GetLibraryPaths() const { return libraryPaths; }

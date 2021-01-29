@@ -15,7 +15,8 @@
 #include "llvm/Option/Option.h"
 #include "stone/Core/LLVM.h"
 #include "stone/Core/Stats.h"
-#include "stone/Driver/JobQueue.h"
+#include "stone/Driver/Job.h"
+#include "stone/Driver/TaskQueue.h"
 
 namespace llvm {
 namespace opt {
@@ -39,7 +40,7 @@ class CompilationStats final : public Stats {
   CompilationStats(const Compilation &compilation);
   void Print() override;
 };
-
+class CompilationResult {};
 class Compilation final {
   /// The System we were created by.
   Driver &driver;
@@ -47,6 +48,11 @@ class Compilation final {
   friend CompilationStats;
 
   std::unique_ptr<CompilationStats> stats;
+
+  std::unique_ptr<driver::TaskQueue> queue;
+
+  /// A list of all the managed jobs created by the Compilation
+  SafeList<Job> jobs;
 
   /// Temporary files which should be removed on exit.
   llvm::opt::ArgStringList tempFiles;
@@ -60,12 +66,6 @@ class Compilation final {
   /// Result files which are generated correctly on failure, and which should
   /// only be removed if we crash.
   ArgStringMap failureResultFiles;
-
-  /// A list of all the managed jobs created by the Compilation
-  SafeList<Job> jobs;
-
-  /// The queued jobs
-  JobQueue queue;
 
  public:
   Compilation(Driver &driver);
@@ -82,8 +82,8 @@ class Compilation final {
     return job;
   }
 
-  JobQueue &GetQueue() { return queue; }
-  const JobQueue &GetQueue() const { return queue; }
+  TaskQueue &GetQueue() { return *queue.get(); }
+  const TaskQueue &GetQueue() const { return *queue.get(); }
 
   SafeList<Job> &GetJobs() { return jobs; }
   const SafeList<Job> &GetJobs() const { return jobs; }
@@ -129,10 +129,16 @@ class Compilation final {
   /// \param fallBackProc - For non-zero results, this will be a vector of
   /// failing commands and their associated result code.
   void ExecuteJobs(
-      llvm::SmallVectorImpl<std::pair<int, const Job *>> &fallBackJob) const;
-
+      llvm::SmallVectorImpl<std::pair<int, const Job *>> &fallBackJob) const; 
  public:
-  int Run();
+   /// Asks the Compilation to perform the Jobs which it knows about.
+  ///
+  /// \param TQ The TaskQueue used to schedule jobs for execution.
+  ///
+  /// \returns result code for the Compilation's Jobs; 0 indicates success and
+  /// -2 indicates that one of the Compilation's Jobs crashed during execution
+  CompilationResult Run(std::unique_ptr<driver::TaskQueue> &&queue);
+
 };
 }  // namespace driver
 }  // namespace stone

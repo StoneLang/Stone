@@ -31,10 +31,16 @@ class Job {
   /// Inputs
   Jobs deps;
   /// The output of this command.
-  std::unique_ptr<CmdOutput> output;
+  std::unique_ptr<CmdOutput> cmdOutput;
 
   /// The executable to run.
   const char* executable = nullptr;
+
+  /// The list of program arguments (not including the implicit first argument,
+  /// which will be the Executable).
+  ///
+  /// These argument strings must be kept alive as long as the Job is alive.
+  llvm::opt::ArgStringList arguments;
 
  public:
   Job(JobType jobType, bool isAsync, Compilation& compilation);
@@ -46,6 +52,7 @@ class Job {
 
   void AddInput(const InputFile input);
   void AddDep(const Job* job);
+  void AddArgument();
 
   const JobOptions& GetJobOptions() const { return jobOpts; }
   Compilation& GetCompilation() { return compilation; }
@@ -63,7 +70,14 @@ class Job {
   void SetJobID(JobID jid) { jobID = jid; }
   JobID GetJobID() { return jobID; }
 
+  // TODO: Think about
   virtual void BuildCmdOutput() = 0;
+
+  // TODO: Think about
+  void SetCmdOutput(std::unique_ptr<CmdOutput> output) {
+    cmdOutput = std::move(output);
+  }
+  void SetExecutable(const char* exec) { executable = exec; }
 
  public:
   static const char* GetNameByType(JobType jobType);

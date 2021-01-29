@@ -60,7 +60,15 @@ int Compilation::ExecuteJob(const Job &job, const Job *&fallBackJob) const {
 void Compilation::ExecuteJobs(
     llvm::SmallVectorImpl<std::pair<int, const Job *>> &fallBackJob) const {}
 
-int Compilation::Run() { return 0; }
+/// Asks the Compilation to perform the Jobs which it knows about.
+///
+/// \param TQ The TaskQueue used to schedule jobs for execution.
+///
+/// \returns result code for the Compilation's Jobs; 0 indicates success and
+/// -2 indicates that one of the Compilation's Jobs crashed during execution
+//CompilationResult Run(std::unique_ptr<driver::TaskQueue> &&queue) {
+//	return;  
+//}
 
 void CompilationStats::Print() {
   if (compilation.GetDriver().GetDriverOptions().printStats) {

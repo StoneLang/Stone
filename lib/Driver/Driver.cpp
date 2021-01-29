@@ -21,7 +21,7 @@ class DriverInternal final {
 
   /// Pointers to the jobs created by Compilation -- Compilation manages these
   /// jobs.
-  Jobs linkerJobs;
+  Job *linkJob = nullptr;
 
   /// Pointers to the jobs created by Compilation -- Compilation manages these
   /// jobs.
@@ -29,7 +29,7 @@ class DriverInternal final {
 
  public:
   void AddCompileJob(const Job *job) { compileJobs.push_back(job); }
-  void AddLinkerJob(const Job *job) { linkerJobs.push_back(job); }
+  void SetLinkJob(Job *job) { linkJob = job; }
   void AddTopLevelJob(const Job *job) { topLevelJobs.push_back(job); }
 
  public:
@@ -40,32 +40,32 @@ class DriverInternal final {
   /// Print the job
   static void PrintJob(Job *job, Driver &driver);
 
-  /// Build compile only jobs
-  static void BuildCompileOnlyJobs(Driver &driver, DriverInternal &internal);
+  /// Print the job
+  static void PrintJobVerbosely(Job *job, Driver &driver);
 
   /// Build jobs for multiple compiles -- each job gets one source file
-  static void BuildJobsForMultipleCompile(Driver &driver,
-                                          DriverInternal &internal);
+  static void BuildJobsForMultipleCompileType(Driver &driver,
+                                              DriverInternal &internal);
 
   /// Build jobs for a single compile -- the compile jobs has multiple files.
-  static void BuildJobsForSingleCompile(Driver &driver,
-                                        DriverInternal &internal);
+  static void BuildJobsForSingleCompileType(Driver &driver,
+                                            DriverInternal &internal);
 
   // TODO:
-  static void ComputeCompilerInvocationMode(const Driver &driver,
-                                            const DerivedArgList &args,
-                                            const InputFiles &inputs);
+  static void ComputeCompileType(const Driver &driver,
+                                 const DerivedArgList &args,
+                                 const InputFiles &inputs);
 
   static void ComputeCompilerOutputFile(const Driver &driver);
+
   static void ComputeCmdOutput(const Driver &driver);
 
   static llvm::StringRef ComputeBaseNameForImage(const Job *job,
-                                                 const DriverOutputProfile &op,
+                                                 const OutputProfile &op,
                                                  const llvm::Triple &triple,
                                                  llvm::SmallString<128> &buffer,
                                                  llvm::StringRef baseInput,
                                                  llvm::StringRef baseName);
-
   /*
   static llvm:::StringRef ComputeOutputFilename(Compilation &compilation,
                              const Job *job,
@@ -76,16 +76,46 @@ class DriverInternal final {
                              llvm::StringRef PrimaryInput,
                              llvm::SmallString<128> &buffer);
   */
+
+  static std::unique_ptr<driver::TaskQueue> BuildTaskQueue(
+      Driver &driver, DriverInternal& internal);
+
+ public:
+  /// Builds the compile jobs
+  static void BuildCompileJobs(Driver &driver, DriverInternal &internal);
+
+  /// Builds the  link job
+  static void BuildLinkJob(Driver &driver, DriverInternal &internal);
+
+  /// Build compile only jobs
+  static void BuildBackendJob(Driver &driver, DriverInternal &internal);
+
+  /// Build compile only jobs
+  static void BuildAssembleJob(Driver &driver, DriverInternal &internal);
 };
 
-void DriverInternal::ComputeCompilerInvocationMode(const Driver &driver,
-                                                   const DerivedArgList &args,
-                                                   const InputFiles &inputs) {}
+/// Check that the file referenced by \p Input exists. If it doesn't,
+/// issue a diagnostic and return false.
+bool DriverInternal::DoesInputExist(Driver &driver, const DerivedArgList &args,
+                                    llvm::StringRef input) {
+  if (!driver.GetCheckInputFilesExist()) {
+    return true;
+  }
+  // stdin always exists.
+  if (input == "-") {
+    return true;
+  }
+  if (file::Exists(input)) {
+    return true;
+  }
+  driver.Out() << "de.D(SourceLoc(),"
+               << "diag::error_no_such_file_or_directory, Input);" << input
+               << '\n';
+  return false;
+}
 
-void DriverInternal::BuildCompileOnlyJobs(Driver &driver,
-                                          DriverInternal &internal) {}
-void DriverInternal::BuildJobsForMultipleCompile(Driver &driver,
-                                                 DriverInternal &internal) {
+void DriverInternal::BuildCompileJobs(Driver &driver,
+                                      DriverInternal &internal) {
   for (const auto &input : driver.GetDriverOptions().inputs) {
     switch (input.first) {
       case FileType::Stone: {
@@ -93,7 +123,6 @@ void DriverInternal::BuildJobsForMultipleCompile(Driver &driver,
         auto job = driver.GetCompilation().CreateJob<CompileJob>(
             true, driver.GetCompilation());
         job->AddInput(input);
-        // job->BuildCmdOutput();
         internal.AddCompileJob(job);
         break;
       }
@@ -104,8 +133,62 @@ void DriverInternal::BuildJobsForMultipleCompile(Driver &driver,
     }
   }
 }
-void DriverInternal::BuildJobsForSingleCompile(Driver &driver,
-                                               DriverInternal &internal) {
+
+void DriverInternal::BuildLinkJob(Driver &driver, DriverInternal &internal) {
+  BuildCompileJobs(driver, internal);
+  if (driver.GetMode().IsCompileOnly()) {
+    return;
+  }
+  if (driver.GetOutputProfile().RequiresLink() &&
+      !internal.compileJobs.empty()) {
+    Job *linkJob = nullptr;
+    switch (driver.GetOutputProfile().linkType) {
+      case LinkType::StaticLibrary: {
+        // TODO: driver.GetToolChain().Createob ...
+        linkJob = driver.GetCompilation().CreateJob<StaticLinkJob>(
+            true, driver.GetCompilation(),
+            driver.GetOutputProfile().RequiresLTO(),
+            driver.GetOutputProfile().linkType);
+        break;
+      }
+      case LinkType::DynamicLibrary: {
+        linkJob = driver.GetCompilation().CreateJob<DynamicLinkJob>(
+            true, driver.GetCompilation(),
+            driver.GetOutputProfile().RequiresLTO(),
+            driver.GetOutputProfile().linkType);
+        break;
+      }
+      default:
+        break;
+    }
+    assert(linkJob && "LinkJob was not created -- requires linking.");
+    for (auto job : internal.compileJobs) {
+      linkJob->AddDep(job);
+    }
+    assert(linkJob && "LinkJob was not created.");
+    internal.SetLinkJob(linkJob);
+  }
+}
+
+void DriverInternal::BuildAssembleJob(Driver &driver,
+                                      DriverInternal &internal) {}
+
+void DriverInternal::BuildBackendJob(Driver &driver, DriverInternal &internal) {
+}
+
+void DriverInternal::BuildJobsForMultipleCompileType(Driver &driver,
+                                                     DriverInternal &internal) {
+  if (driver.GetMode().IsCompileOnly()) {
+    BuildCompileJobs(driver, internal);
+    return;
+  }
+  if (driver.GetOutputProfile().RequiresLink()) {
+    BuildLinkJob(driver, internal);
+    return;
+  }
+}
+void DriverInternal::BuildJobsForSingleCompileType(Driver &driver,
+                                                   DriverInternal &internal) {
   auto job = driver.GetCompilation().CreateJob<CompileJob>(
       true, driver.GetCompilation());
 
@@ -122,25 +205,10 @@ void DriverInternal::BuildJobsForSingleCompile(Driver &driver,
   }
   // job->BuildCmdOutput();
 }
-/// Check that the file referenced by \p Input exists. If it doesn't,
-/// issue a diagnostic and return false.
-bool DriverInternal::DoesInputExist(Driver &driver, const DerivedArgList &args,
-                                    llvm::StringRef input) {
-  // TODO:
-  // if (!driver.GetCheckInputFilesExist())
-  //  return true;
 
-  // stdin always exists.
-  if (input == "-") return true;
-
-  if (file::Exists(input)) return true;
-
-  driver.Out() << "de.D(SourceLoc(),"
-               << "diag::error_no_such_file_or_directory, Input);" << input
-               << '\n';
-
-  return false;
-}
+void DriverInternal::ComputeCompileType(const Driver &driver,
+                                        const DerivedArgList &args,
+                                        const InputFiles &inputs) {}
 
 Driver::Driver(llvm::StringRef stoneExecutable, std::string driverName)
     : Session(driverOpts),
@@ -152,6 +220,13 @@ Driver::Driver(llvm::StringRef stoneExecutable, std::string driverName)
   stats.reset(new DriverStats(*this));
   GetStatEngine().Register(stats.get());
 }
+
+std::unique_ptr<driver::TaskQueue> DriverInternal::BuildTaskQueue(
+    Driver &driver, DriverInternal &internal) {
+  // TODO:
+  return llvm::make_unique<driver::UnixTaskQueue>(driver);
+}
+
 /// Parse the given list of strings into an InputArgList.
 bool Driver::Build(llvm::ArrayRef<const char *> args) {
   excludedFlagsBitmask = opts::NoDriverOption;
@@ -220,27 +295,25 @@ void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
 
   // Computer the compiler mode.
   ComputeMode(*dArgList);
-
   // Perform toolchain specific args validation.
   // toolChain.ValidateArguments(de, *dArgList, targetTriple);
   //
-  if (de.HasError()) {
-    return;
-  }
-  if (CutOff(*dArgList, GetToolChain())) {
+  if (EmitInfo(*dArgList, GetToolChain())) {
     return;
   }
 
   BuildInputs(GetToolChain(), *dArgList, GetInputs());
+
+  if (CutOff()) return;
 
   if (GetInputs().size() == 0) {
     Out() << "msg::driver_error_no_input_files" << '\n';
     return;
   }
 
-  if (de.HasError()) return;
-
   BuildOutputProfile(*dArgList, GetOutputProfile());
+
+  if (CutOff()) return;
 
   // TODO: ComputeCompileMod()
   //
@@ -254,15 +327,18 @@ void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
 
   BuildJobs();
 
+  if (CutOff()) return;
+
   if (driverOpts.printJobs) {
     PrintJobs();
   }
 }
-bool Driver::CutOff(const ArgList &args, const ToolChain &tc) {
+bool Driver::EmitInfo(const ArgList &args, const ToolChain &tc) {
   if (args.hasArg(opts::Help)) {
     PrintHelp(false);
     return true;
-  } else if (args.hasArg(opts::Version)) {
+  }
+  if (args.hasArg(opts::Version)) {
     PrintVersion();
     return true;
   }
@@ -314,7 +390,7 @@ void Driver::BuildInputs(const ToolChain &tc, const DerivedArgList &args,
 }
 
 void Driver::BuildOutputProfile(const llvm::opt::DerivedArgList &args,
-                                DriverOutputProfile &outputProfile) const {
+                                OutputProfile &outputProfile) const {
   auto compilerOutputType = outputProfile.ltoVariant != LTOKind::None
                                 ? FileType::BC
                                 : FileType::Object;
@@ -377,39 +453,15 @@ void Driver::BuildJobs() {
 
   // TODO: BuildCompileOnlyJobs();
   DriverInternal driverInternal;
-  switch (outputProfile.compilerInvocationMode) {
-    case CompilerInvocationMode::Multiple:
-      DriverInternal::BuildJobsForMultipleCompile(*this, driverInternal);
+  switch (outputProfile.compileType) {
+    case CompileType::Multiple:
+      DriverInternal::BuildJobsForMultipleCompileType(*this, driverInternal);
       break;
-    case CompilerInvocationMode::Single:
-      DriverInternal::BuildJobsForSingleCompile(*this, driverInternal);
+    case CompileType::Single:
+      DriverInternal::BuildJobsForSingleCompileType(*this, driverInternal);
       break;
     default:
       break;
-  }
-
-  if (outputProfile.RequiresLink() && !driverInternal.compileJobs.empty()) {
-    Job *linkJob = nullptr;
-    switch (outputProfile.linkType) {
-      case LinkType::StaticLibrary: {
-        linkJob = GetCompilation().CreateJob<StaticLinkJob>(
-            true, GetCompilation(), outputProfile.RequiresLTO(),
-            outputProfile.linkType);
-        break;
-      }
-      case LinkType::DynamicLibrary: {
-        linkJob = GetCompilation().CreateJob<DynamicLinkJob>(
-            true, GetCompilation(), outputProfile.RequiresLTO(),
-            outputProfile.linkType);
-        break;
-      }
-      default:
-        break;
-    }
-    assert(linkJob && "LinkJob was not created -- requires linking.");
-    for (auto job : driverInternal.compileJobs) {
-      linkJob->AddDep(job);
-    }
   }
 }
 
@@ -418,75 +470,6 @@ void Driver::PrintJobs() {
     DriverInternal::PrintJob(&job, *this);
   }
 }
-
-/*
-void Driver::BuildActivities() {
-  llvm::PrettyStackTraceString CrashInfo("Building compilation activities");
-
-  if (mode.IsCompileOnly()) {
-    BuildCompileActivities();
-  } else {
-    BuildLinkActivity();
-  }
-}
-void Driver::BuildCompileActivities() {
-  for (const auto &input : GetDriverOptions().inputs) {
-    auto inputActivity = GetCompilation().CreateActivity<InputActivity>(input);
-    switch (input.first) {
-      case file::FileType::Stone: {
-        assert(file::IsPartOfCompilation(input.first));
-        BuildCompileActivity(inputActivity);
-        break;
-      }
-      default:
-        break;
-    }
-  }
-}
-void Driver::BuildCompileActivity(InputActivity *inputActivity) {
-  if (outputProfile.rofile.compilerInvocationMode ==
-CompilerInvocationMode::Multiple) { auto compileActivity =
-GetCompilation().CreateActivity<CompileActivity>( inputActivity,
-outputProfile.rofile.compilerOutputFileType);
-
-    outputProfile.rofile.AddModuleInput(compileActivity);
-    if (outputProfile.rofile.ShouldLink()) {
-      outputProfile.rofile.AddLinkerInput(compileActivity);
-    }
-    // BuildJobsForActivity(compileActivity);
-
-  } else if (outputProfile.rofile.compilerInvocationMode ==
-CompilerInvocationMode::Single) {
-    // TODO:
-  }
-
-  // TODO: May just want build BuildJobsForActivity
-  //
-  // Since we are here, let us build the jobs.
-}
-
-void Driver::BuildJobsForActivity(const CompilationActivity *activity) {}
-
-void Driver::BuildLinkActivity() {
-  // First, build all the compile activities
-  BuildCompileActivities();
-
-  if (outputProfile.rofile.ShouldLink() &&
-!outputProfile.rofile.linkerActivities.empty()) { Activity *linkActivity =
-nullptr; if (outputProfile.rofile.linkType == LinkType::StaticLibrary) {
-      linkActivity = GetCompilation().CreateActivity<StaticLinkActivity>(
-          outputProfile.rofile.linkerActivities, outputProfile.rofile.linkType);
-    } else {
-      linkActivity = GetCompilation().CreateActivity<DynamicLinkActivity>(
-          outputProfile.rofile.linkerActivities, outputProfile.rofile.linkType,
-          outputProfile.rofile.ShouldPerformLTO());
-    }
-    outputProfile.rofile.AddTopLevelActivity(linkActivity);
-  }
-  // BuildJobForActivity()
-}
-
-*/
 
 void Driver::PrintLifecycle() {}
 
@@ -529,5 +512,12 @@ int Driver::Run() {
   if (driverOpts.printHelp) {
     // PrintHelp();
   }
-  return GetCompilation().Run();
+  //auto compilationResult = 
+	//	GetCompilation().Run(DriverInternal::BuildTaskQueue(*this)); 
+
+	if(CutOff()) 
+		return ret::err; 
+
+	return ret::ok; 
+
 }

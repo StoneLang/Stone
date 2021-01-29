@@ -36,12 +36,12 @@ class Compilation;
 class ToolChain;
 class DriverStats;
 
-enum class CompilerInvocationMode {
+enum class CompileType {
   None,
   /// Multiple compile invocations and -main-file.
   Multiple,
   /// A single compilation using a single compile invocation without -main-file.
-  Single,
+  Single
 };
 enum class LTOKind { None, Full, Thin, Unknown };
 
@@ -57,11 +57,13 @@ class DriverCache final {
   mutable llvm::StringMap<std::unique_ptr<ToolChain>> toolChainCache;
 };
 
-class DriverOutputProfile final {
+class OutputProfile final {
  public:
   /// Default compiler invocation mode -- one file per CompileJob
-  CompilerInvocationMode compilerInvocationMode =
-      CompilerInvocationMode::Multiple;
+  CompileType compileType = CompileType::Multiple;
+
+  /// Default linking type
+  LinkType linkType = LinkType::None;
 
   LTOKind ltoVariant = LTOKind::None;
 
@@ -77,9 +79,6 @@ class DriverOutputProfile final {
 
   // Whether or not the driver should generate a module.
   bool generateModule = false;
-
-  /// Default linking kind
-  LinkType linkType = LinkType::None;
 
   /// The output type which should be used for the compiler
   file::FileType compilerOutputFileType = file::FileType::INVALID;
@@ -98,7 +97,7 @@ class DriverOutputProfile final {
 
 class Driver final : public Session {
   friend DriverStats;
-  DriverOutputProfile outputProfile;
+  OutputProfile outputProfile;
   std::unique_ptr<DriverStats> stats;
   std::unique_ptr<ToolChain> toolChain;
   std::unique_ptr<Compilation> compilation;
@@ -175,11 +174,11 @@ class Driver final : public Session {
   /// information.
 
   void BuildOutputProfile(const llvm::opt::DerivedArgList &args,
-                          DriverOutputProfile &outputProfile) const;
+                          OutputProfile &outputProfile) const;
 
   void BuildCompilation(const llvm::opt::InputArgList &args);
 
-  bool CutOff(const ArgList &args, const ToolChain &tc);
+  bool EmitInfo(const ArgList &args, const ToolChain &tc);
 
   ///
   void ComputeModuleOutputPath();
@@ -214,8 +213,8 @@ class Driver final : public Session {
   const ToolChain &GetToolChain() const { return *toolChain.get(); }
   ToolChain &GetToolChain() { return *toolChain.get(); }
 
-  const DriverOutputProfile &GetOutputProfile() const { return outputProfile; }
-  DriverOutputProfile &GetOutputProfile() { return outputProfile; }
+  const OutputProfile &GetOutputProfile() const { return outputProfile; }
+  OutputProfile &GetOutputProfile() { return outputProfile; }
 
   Compilation &GetCompilation() { return *compilation.get(); }
 
@@ -236,6 +235,8 @@ class Driver final : public Session {
   static llvm::StringRef GetOutputFileName();
 
  private:
+  bool CutOff() { return de.HasError(); }
+
   void BuildJobs();
   void PrintJobs();
   void BuildJobQueue();

@@ -20,12 +20,14 @@ set(stone_driver_sources
 	DarwinToolChain.cpp
 	Driver.cpp
 	Job.cpp
-	JobQueue.cpp
 	LinkJob.cpp
 	Run.cpp
 	ToolChain.cpp
+	TaskQueue.cpp
 	UnixToolChain.cpp
+	UnixTaskQueue.cpp
 	WinToolChain.cpp
+	WinTaskQueue.cpp
 
 	LINK_LIBS
 	StoneCore
