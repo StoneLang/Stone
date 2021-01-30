@@ -110,13 +110,16 @@ void DriverInternal::BuildCompileJobs(Driver &driver,
     switch (input.first) {
       case FileType::Stone: {
         assert(file::IsPartOfCompilation(input.first));
-        // driver.GetToolChiain().PickTool(JobType::Compile).CreateJob();
+        // auto job =
+        // driver.GetToolChiain().PickTool(JobType::Compile).CreateJob(driver.GetCompilation());
+
         auto job = driver.GetCompilation().CreateJob<CompileJob>(
             driver.GetCompilation());
+
         job->AddInput(input);
 
         if (driver.GetMode().IsCompileOnly()) {
-          // driver.GetCompilation().AddJob();
+          //(void)driver.GetCompilation().AddJob(job)
         } else {
           internal.TableJob(job);
         }

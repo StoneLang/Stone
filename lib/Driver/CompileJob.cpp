@@ -5,11 +5,10 @@ using namespace stone;
 using namespace stone::driver;
 
 // Some job depend on other jobs -- For example, LinkJob
-CompileJob::CompileJob(Compilation& compilation)
+CompileJob::CompileJob(Compilation &compilation)
     : Job(JobType::Compile, compilation) {}
 
 void CompileJob::BuildCmdOutput() {}
-
 
 StoneTool::StoneTool(llvm::StringRef fullName, llvm::StringRef shortName,
                      const ToolChain &toolChain)
@@ -17,12 +16,15 @@ StoneTool::StoneTool(llvm::StringRef fullName, llvm::StringRef shortName,
   toolOpts.canEmitIR = true;
 }
 
-std::unique_ptr<Job> StoneTool::CreateJob(
-    Compilation &compilation, llvm::SmallVectorImpl<const Job *> &&deps,
-    std::unique_ptr<CmdOutput> cmdOutput,
-    const OutputProfile &outputProfile) const {
-  return llvm::make_unique<CompileJob>(compilation);
+Job *StoneTool::CreateJob(Compilation &compilation,
+                          llvm::SmallVectorImpl<const Job *> &&deps,
+                          std::unique_ptr<CmdOutput> cmdOutput,
+                          const OutputProfile &outputProfile)  {
+
+  //auto job = llvm::make_unique<CompileJob>(compilation);
+	//return job.get(); 
+
+	return nullptr; 
 }
 
 StoneTool::~StoneTool() {}
-

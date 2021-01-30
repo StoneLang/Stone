@@ -71,6 +71,7 @@ class Tool {
   llvm::StringRef version;
 
  protected:
+  SafeList<Job> jobs;
   ToolOptions toolOpts;
 
  public:
@@ -84,10 +85,10 @@ class Tool {
   ///
   /// This method dispatches to the various \c constructInvocation methods,
   /// which may be overridden by platform-specific subclasses.
-  virtual std::unique_ptr<Job> CreateJob(
-      Compilation &compilation, llvm::SmallVectorImpl<const Job *> &&deps,
-      std::unique_ptr<CmdOutput> cmdOutput,
-      const OutputProfile &outputProfile) const = 0;
+  virtual Job *CreateJob(Compilation &compilation,
+                         llvm::SmallVectorImpl<const Job *> &&deps,
+                         std::unique_ptr<CmdOutput> cmdOutput,
+                         const OutputProfile &outputProfile)  = 0;
 
  public:
   bool IsOnSystem() { return isOnSystem; }
@@ -113,10 +114,10 @@ class StoneTool final : public Tool {
   ///
   /// This method dispatches to the various \c constructInvocation methods,
   /// which may be overridden by platform-specific subclasses.
-  virtual std::unique_ptr<Job> CreateJob(
-      Compilation &compilation, llvm::SmallVectorImpl<const Job *> &&deps,
-      std::unique_ptr<CmdOutput> cmdOutput,
-      const OutputProfile &outputProfile) const override;
+  virtual Job *CreateJob(Compilation &compilation,
+                         llvm::SmallVectorImpl<const Job *> &&deps,
+                         std::unique_ptr<CmdOutput> cmdOutput,
+                         const OutputProfile &outputProfile) override;
 };
 
 class LinkTool : public Tool {
@@ -135,10 +136,10 @@ class LinkTool : public Tool {
   ///
   /// This method dispatches to the various \c constructInvocation methods,
   /// which may be overridden by platform-specific subclasses.
-  virtual std::unique_ptr<Job> CreateJob(
-      Compilation &compilation, llvm::SmallVectorImpl<const Job *> &&deps,
-      std::unique_ptr<CmdOutput> cmdOutput,
-      const OutputProfile &outputProfile) const override;
+  virtual Job *CreateJob(Compilation &compilation,
+                         llvm::SmallVectorImpl<const Job *> &&deps,
+                         std::unique_ptr<CmdOutput> cmdOutput,
+                         const OutputProfile &outputProfile) override;
 };
 
 class LDLinkTool final : public LinkTool {
@@ -167,10 +168,10 @@ class ClangTool : public LinkTool {
   ///
   /// This method dispatches to the various \c constructInvocation methods,
   /// which may be overridden by platform-specific subclasses.
-  virtual std::unique_ptr<Job> CreateJob(
-      Compilation &compilation, llvm::SmallVectorImpl<const Job *> &&deps,
-      std::unique_ptr<CmdOutput> cmdOutput,
-      const OutputProfile &outputProfile) const override;
+  virtual Job *CreateJob(Compilation &compilation,
+                         llvm::SmallVectorImpl<const Job *> &&deps,
+                         std::unique_ptr<CmdOutput> cmdOutput,
+                         const OutputProfile &outputProfile) override;
 };
 
 class GCCTool final : public LinkTool {
@@ -185,10 +186,10 @@ class GCCTool final : public LinkTool {
   ///
   /// This method dispatches to the various \c constructInvocation methods,
   /// which may be overridden by platform-specific subclasses.
-  virtual std::unique_ptr<Job> CreateJob(
-      Compilation &compilation, llvm::SmallVectorImpl<const Job *> &&deps,
-      std::unique_ptr<CmdOutput> cmdOutput,
-      const OutputProfile &outputProfile) const override;
+  virtual Job *CreateJob(Compilation &compilation,
+                         llvm::SmallVectorImpl<const Job *> &&deps,
+                         std::unique_ptr<CmdOutput> cmdOutput,
+                         const OutputProfile &outputProfile) override;
 };
 
 class AssembleTool final : public Tool {
@@ -203,10 +204,10 @@ class AssembleTool final : public Tool {
   ///
   /// This method dispatches to the various \c constructInvocation methods,
   /// which may be overridden by platform-specific subclasses.
-  virtual std::unique_ptr<Job> CreateJob(
-      Compilation &compilation, llvm::SmallVectorImpl<const Job *> &&deps,
-      std::unique_ptr<CmdOutput> cmdOutput,
-      const OutputProfile &outputProfile) const override;
+  virtual Job *CreateJob(Compilation &compilation,
+                         llvm::SmallVectorImpl<const Job *> &&deps,
+                         std::unique_ptr<CmdOutput> cmdOutput,
+                         const OutputProfile &outputProfile) override;
 };
 
 class ToolChain {

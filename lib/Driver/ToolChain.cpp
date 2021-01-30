@@ -1,4 +1,5 @@
 #include "stone/Driver/ToolChain.h"
+
 #include "stone/Driver/Driver.h"
 
 using namespace stone;
@@ -12,7 +13,6 @@ Tool::Tool(llvm::StringRef fullName, llvm::StringRef shortName,
       toolChain(toolChain) {}
 
 Tool::~Tool() {}
-
 
 ToolChain::ToolChain(const Driver &driver, const llvm::Triple &triple)
     : driver(driver), triple(triple) {}
