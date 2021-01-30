@@ -51,6 +51,8 @@ class ToolOptions final {
   bool canAssemble = false;
   bool canLink = false;
 };
+class LinkTool;
+
 class Tool {
   ToolType toolType;
   /// The tool name (for debugging).
@@ -99,24 +101,6 @@ class Tool {
   const llvm::StringRef &GetVersion() const { return version; }
 };
 
-class ClangTool : public Tool {
- public:
-  ClangTool(llvm::StringRef fullName, llvm::StringRef shortName,
-            const ToolChain &toolChain);
-  ~ClangTool();
-
- public:
-  /// Create a Job for the action \p JA, taking the given information
-  /// into account.
-  ///
-  /// This method dispatches to the various \c constructInvocation methods,
-  /// which may be overridden by platform-specific subclasses.
-  virtual std::unique_ptr<Job> CreateJob(
-      Compilation &compilation, llvm::SmallVectorImpl<const Job *> &&deps,
-      std::unique_ptr<CmdOutput> cmdOutput,
-      const OutputProfile &outputProfile) const override;
-};
-
 class StoneTool final : public Tool {
  public:
   StoneTool(llvm::StringRef fullName, llvm::StringRef shortName,
@@ -135,25 +119,8 @@ class StoneTool final : public Tool {
       const OutputProfile &outputProfile) const override;
 };
 
-class GCCTool final : public Tool {
- public:
-  GCCTool(llvm::StringRef fullName, llvm::StringRef shortName,
-          const ToolChain &toolChain);
-  ~GCCTool();
-
- public:
-  /// Create a Job for the action \p JA, taking the given information
-  /// into account.
-  ///
-  /// This method dispatches to the various \c constructInvocation methods,
-  /// which may be overridden by platform-specific subclasses.
-  virtual std::unique_ptr<Job> CreateJob(
-      Compilation &compilation, llvm::SmallVectorImpl<const Job *> &&deps,
-      std::unique_ptr<CmdOutput> cmdOutput,
-      const OutputProfile &outputProfile) const override;
-};
-
 class LinkTool : public Tool {
+ protected:
   LinkType linkType;
 
  public:
@@ -186,6 +153,42 @@ class LLDLinkTool final : public LinkTool {
   LLDLinkTool(llvm::StringRef fullName, llvm::StringRef shortName,
               const ToolChain &toolChain, LinkType linkTy);
   ~LLDLinkTool();
+};
+
+class ClangTool : public LinkTool {
+ public:
+  ClangTool(llvm::StringRef fullName, llvm::StringRef shortName,
+            const ToolChain &toolChain, LinkType linkTy);
+  ~ClangTool();
+
+ public:
+  /// Create a Job for the action \p JA, taking the given information
+  /// into account.
+  ///
+  /// This method dispatches to the various \c constructInvocation methods,
+  /// which may be overridden by platform-specific subclasses.
+  virtual std::unique_ptr<Job> CreateJob(
+      Compilation &compilation, llvm::SmallVectorImpl<const Job *> &&deps,
+      std::unique_ptr<CmdOutput> cmdOutput,
+      const OutputProfile &outputProfile) const override;
+};
+
+class GCCTool final : public LinkTool {
+ public:
+  GCCTool(llvm::StringRef fullName, llvm::StringRef shortName,
+          const ToolChain &toolChain, LinkType linkTy);
+  ~GCCTool();
+
+ public:
+  /// Create a Job for the action \p JA, taking the given information
+  /// into account.
+  ///
+  /// This method dispatches to the various \c constructInvocation methods,
+  /// which may be overridden by platform-specific subclasses.
+  virtual std::unique_ptr<Job> CreateJob(
+      Compilation &compilation, llvm::SmallVectorImpl<const Job *> &&deps,
+      std::unique_ptr<CmdOutput> cmdOutput,
+      const OutputProfile &outputProfile) const override;
 };
 
 class AssembleTool final : public Tool {

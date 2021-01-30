@@ -57,7 +57,7 @@ class Job {
   llvm::opt::ArgStringList arguments;
 
  public:
-  Job(JobType jobType, bool isAsync, Compilation& compilation);
+  Job(JobType jobType, Compilation& compilation);
   virtual ~Job();
 
  public:
@@ -95,19 +95,24 @@ class Job {
 
   JobStats& GetStats() { return *stats.get(); }
 
+  void SetToSync() { isAsync = false; }
+
+  //	void Wait();
+  //	void Schedule();
+
  public:
   static const char* GetNameByType(JobType jobType);
 
- private:
-  friend class Compilation;
-  /// Jobs are creaed through Compilation::CreateJob
+ public:
+  friend class Tool;
+  /// Jobs are creaed through Tool::CreateJob(...)
   void* operator new(size_t size) { return ::operator new(size); };
 };
 
 class AssembleJob final : public Job {
  public:
   // Some job depend on other jobs -- For example, LinkJob
-  AssembleJob(bool isAsync, Compilation& compilation);
+  AssembleJob(Compilation& compilation);
 
   void BuildCmdOutput() override;
 
@@ -120,7 +125,7 @@ class AssembleJob final : public Job {
 class BackendJob final : public Job {
  public:
   // Some job depend on other jobs -- For example, LinkJob
-  BackendJob(bool isAsync, Compilation& compilation);
+  BackendJob(Compilation& compilation);
 
   void BuildCmdOutput() override;
 
@@ -131,7 +136,7 @@ class BackendJob final : public Job {
 class CompileJob final : public Job {
  public:
   // Some job depend on other jobs -- For example, LinkJob
-  CompileJob(bool isAsync, Compilation& compilation);
+  CompileJob(Compilation& compilation);
 
   void BuildCmdOutput() override;
 
@@ -145,8 +150,8 @@ class LinkJob : public Job {
 
  public:
   // Some jobs only consume inputs -- For example, LinkJob
-  LinkJob(JobType jobType, bool isAsync, Compilation& compilation,
-          bool requiresLTO, LinkType linkType);
+  LinkJob(JobType jobType, Compilation& compilation, bool requiresLTO,
+          LinkType linkType);
 
   virtual void BuildCmdOutput() = 0;
 
@@ -158,8 +163,7 @@ class LinkJob : public Job {
 class DynamicLinkJob final : public LinkJob {
  public:
   // Some jobs only consume inputs -- For example, LinkJob
-  DynamicLinkJob(bool isAsync, Compilation& compilation, bool requiresLTO,
-                 LinkType linkType);
+  DynamicLinkJob(Compilation& compilation, bool requiresLTO, LinkType linkType);
 
   void BuildCmdOutput() override;
 
@@ -172,8 +176,7 @@ class DynamicLinkJob final : public LinkJob {
 class StaticLinkJob final : public LinkJob {
  public:
   // Some jobs only consume inputs -- For example, LinkJob
-  StaticLinkJob(bool isAsync, Compilation& compilation, bool requiresLTO,
-                LinkType linkType);
+  StaticLinkJob(Compilation& compilation, bool requiresLTO, LinkType linkType);
 
   void BuildCmdOutput() override;
 

@@ -7,8 +7,8 @@ using namespace stone;
 using namespace stone::driver;
 
 // Some job depend on other jobs -- For example, LinkJob
-Job::Job(JobType jobType, bool isAsync, Compilation &compilation)
-    : jobType(jobType), jobID(0), isAsync(isAsync), compilation(compilation) {
+Job::Job(JobType jobType, Compilation &compilation)
+    : jobType(jobType), jobID(0), isAsync(true), compilation(compilation) {
   stats.reset(new JobStats(*this));
   compilation.GetDriver().GetStatEngine().Register(stats.get());
 }

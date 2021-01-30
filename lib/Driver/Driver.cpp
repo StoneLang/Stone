@@ -112,7 +112,7 @@ void DriverInternal::BuildCompileJobs(Driver &driver,
         assert(file::IsPartOfCompilation(input.first));
         // driver.GetToolChiain().PickTool(JobType::Compile).CreateJob();
         auto job = driver.GetCompilation().CreateJob<CompileJob>(
-            true, driver.GetCompilation());
+            driver.GetCompilation());
         job->AddInput(input);
 
         if (driver.GetMode().IsCompileOnly()) {
@@ -158,16 +158,14 @@ void DriverInternal::BuildLinkJob(Driver &driver, DriverInternal &internal) {
         // TODO: This makes the most sense
         // driver.GetToolChain().PickTool(JobType::StaticLink).CreateJob();
         linkJob = driver.GetCompilation().CreateJob<StaticLinkJob>(
-            true, driver.GetCompilation(),
-            driver.GetOutputProfile().RequiresLTO(),
+            driver.GetCompilation(), driver.GetOutputProfile().RequiresLTO(),
             driver.GetOutputProfile().linkType);
         break;
       }
       case LinkType::DynamicLibrary: {
         // driver.GetToolChain().PickTool(JobType::DynamicLink).CreateJob();
         linkJob = driver.GetCompilation().CreateJob<DynamicLinkJob>(
-            true, driver.GetCompilation(),
-            driver.GetOutputProfile().RequiresLTO(),
+            driver.GetCompilation(), driver.GetOutputProfile().RequiresLTO(),
             driver.GetOutputProfile().linkType);
         // TODO: get the tool from the ToolChain and pass to CreateJob?
         break;
@@ -208,8 +206,8 @@ void DriverInternal::BuildJobsForMultipleCompileType(Driver &driver,
 }
 void DriverInternal::BuildJobsForSingleCompileType(Driver &driver,
                                                    DriverInternal &internal) {
-  auto job = driver.GetCompilation().CreateJob<CompileJob>(
-      true, driver.GetCompilation());
+  auto job =
+      driver.GetCompilation().CreateJob<CompileJob>(driver.GetCompilation());
 
   for (const auto &input : driver.GetDriverOptions().inputs) {
     switch (input.first) {

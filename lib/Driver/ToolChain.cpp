@@ -24,14 +24,14 @@ std::unique_ptr<Job> StoneTool::CreateJob(
     Compilation &compilation, llvm::SmallVectorImpl<const Job *> &&deps,
     std::unique_ptr<CmdOutput> cmdOutput,
     const OutputProfile &outputProfile) const {
-  return nullptr;  // llvm::make_unique<CompileJob>(
+  return llvm::make_unique<CompileJob>(compilation);
 }
 
 StoneTool::~StoneTool() {}
 
 ClangTool::ClangTool(llvm::StringRef fullName, llvm::StringRef shortName,
-                     const ToolChain &toolChain)
-    : Tool(fullName, shortName, ToolType::Clang, toolChain) {
+                     const ToolChain &toolChain, LinkType linkType)
+    : LinkTool(fullName, shortName, ToolType::Clang, toolChain, linkType) {
   toolOpts.canEmitIR = true;
   toolOpts.canAssemble = true;
   toolOpts.canLink = true;
@@ -40,14 +40,23 @@ std::unique_ptr<Job> ClangTool::CreateJob(
     Compilation &compilation, llvm::SmallVectorImpl<const Job *> &&deps,
     std::unique_ptr<CmdOutput> cmdOutput,
     const OutputProfile &outputProfile) const {
-  return nullptr;
+  // Depend on the mode-type -- if you want to emit ir
+  if (linkType == LinkType::DynamicLibrary) {
+    return llvm::make_unique<DynamicLinkJob>(
+        compilation, compilation.GetDriver().GetOutputProfile().RequiresLTO(),
+        compilation.GetDriver().GetOutputProfile().linkType);
+  }
+
+  return llvm::make_unique<StaticLinkJob>(
+      compilation, compilation.GetDriver().GetOutputProfile().RequiresLTO(),
+      compilation.GetDriver().GetOutputProfile().linkType);
 }
 
 ClangTool::~ClangTool() {}
 
 GCCTool::GCCTool(llvm::StringRef fullName, llvm::StringRef shortName,
-                 const ToolChain &toolChain)
-    : Tool(fullName, shortName, ToolType::GCC, toolChain) {
+                 const ToolChain &toolChain, LinkType linkType)
+    : LinkTool(fullName, shortName, ToolType::GCC, toolChain, linkType) {
   toolOpts.canAssemble = true;
   toolOpts.canLink = true;
 }
@@ -55,7 +64,16 @@ std::unique_ptr<Job> GCCTool::CreateJob(
     Compilation &compilation, llvm::SmallVectorImpl<const Job *> &&deps,
     std::unique_ptr<CmdOutput> cmdOutput,
     const OutputProfile &outputProfile) const {
-  return nullptr;
+  // Depend on the mode-type -- if you want to emit ir
+  if (linkType == LinkType::DynamicLibrary) {
+    return llvm::make_unique<DynamicLinkJob>(
+        compilation, compilation.GetDriver().GetOutputProfile().RequiresLTO(),
+        compilation.GetDriver().GetOutputProfile().linkType);
+  }
+
+  return llvm::make_unique<StaticLinkJob>(
+      compilation, compilation.GetDriver().GetOutputProfile().RequiresLTO(),
+      compilation.GetDriver().GetOutputProfile().linkType);
 }
 
 GCCTool::~GCCTool() {}
@@ -70,7 +88,15 @@ std::unique_ptr<Job> LinkTool::CreateJob(
     Compilation &compilation, llvm::SmallVectorImpl<const Job *> &&deps,
     std::unique_ptr<CmdOutput> cmdOutput,
     const OutputProfile &outputProfile) const {
-  return nullptr;
+  if (linkType == LinkType::DynamicLibrary) {
+    return llvm::make_unique<DynamicLinkJob>(
+        compilation, compilation.GetDriver().GetOutputProfile().RequiresLTO(),
+        compilation.GetDriver().GetOutputProfile().linkType);
+  }
+
+  return llvm::make_unique<StaticLinkJob>(
+      compilation, compilation.GetDriver().GetOutputProfile().RequiresLTO(),
+      compilation.GetDriver().GetOutputProfile().linkType);
 }
 
 LinkTool::~LinkTool() {}
@@ -96,7 +122,8 @@ std::unique_ptr<Job> AssembleTool::CreateJob(
     Compilation &compilation, llvm::SmallVectorImpl<const Job *> &&deps,
     std::unique_ptr<CmdOutput> cmdOutput,
     const OutputProfile &outputProfile) const {
-  return nullptr;
+  // Depend on the mode-type -- if you want to emit ir
+  return llvm::make_unique<AssembleJob>(compilation);
 }
 
 AssembleTool::~AssembleTool() {}
