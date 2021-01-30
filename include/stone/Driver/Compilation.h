@@ -51,7 +51,7 @@ class Compilation final {
 
   std::unique_ptr<driver::TaskQueue> queue;
 
-  /// A list of all the managed jobs created by the Compilation
+  /// A list of all the top-level jobs to run
   SafeList<Job> jobs;
 
   /// Temporary files which should be removed on exit.

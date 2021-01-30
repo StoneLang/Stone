@@ -96,6 +96,7 @@ class Tool {
   ToolOptions &GetOptions() { return toolOpts; }
   const ToolOptions &GetOptions() const { return toolOpts; }
   const ToolChain &GetToolChain() const { return toolChain; }
+  const llvm::StringRef &GetVersion() const { return version; }
 };
 
 class ClangTool : public Tool {
@@ -236,9 +237,6 @@ class ToolChain {
   std::unique_ptr<AssembleTool> assembleTool;
   std::unique_ptr<GCCTool> gccTool;
   std::unique_ptr<StoneTool> stoneTool;
-
-  /// Since you are picking a tool you may need a dense map here
-  // llvm::SmallVector<std::unique_ptr<Tool>, 4> tools;
 
  public:
   virtual ~ToolChain() = default;

@@ -15,22 +15,12 @@ using namespace llvm::opt;
 
 class DriverInternal final {
  public:
-  /// Pointers to the compile jobs created by Compilation -- Compilation manages
-  /// these jobs
-  Jobs compileJobs;
-
-  /// Pointers to the jobs created by Compilation -- Compilation manages these
-  /// jobs.
-  Job *linkJob = nullptr;
-
-  /// Pointers to the jobs created by Compilation -- Compilation manages these
-  /// jobs.
-  Jobs topLevelJobs;
+  /// Pointers to all jobs created to prepare for compilation.
+  /// The jobs in compilation are the top-level jobs run
+  Jobs jobs;
 
  public:
-  void AddCompileJob(const Job *job) { compileJobs.push_back(job); }
-  void SetLinkJob(Job *job) { linkJob = job; }
-  void AddTopLevelJob(const Job *job) { topLevelJobs.push_back(job); }
+  void TableJob(const Job *job) { jobs.push_back(job); }
 
  public:
   static bool DoesInputExist(Driver &driver, const DerivedArgList &args,
@@ -124,7 +114,12 @@ void DriverInternal::BuildCompileJobs(Driver &driver,
         auto job = driver.GetCompilation().CreateJob<CompileJob>(
             true, driver.GetCompilation());
         job->AddInput(input);
-        internal.AddCompileJob(job);
+
+        if (driver.GetMode().IsCompileOnly()) {
+          // driver.GetCompilation().AddJob();
+        } else {
+          internal.TableJob(job);
+        }
         break;
       }
       case FileType::Object:
@@ -136,12 +131,27 @@ void DriverInternal::BuildCompileJobs(Driver &driver,
 }
 
 void DriverInternal::BuildLinkJob(Driver &driver, DriverInternal &internal) {
-  BuildCompileJobs(driver, internal);
   if (driver.GetMode().IsCompileOnly()) {
     return;
   }
-  if (driver.GetOutputProfile().RequiresLink() &&
-      !internal.compileJobs.empty()) {
+  if (!driver.GetOutputProfile().RequiresLink()) {
+    return;
+  }
+  if (driver.GetMode().IsLinkOnly()) {
+    for (const auto &input : driver.GetDriverOptions().inputs) {
+      switch (input.first) {
+        case FileType::Object:
+          break;
+        default:
+          break;
+      }
+    }
+    return;
+  }
+
+  BuildCompileJobs(driver, internal);
+
+  if (driver.GetMode().CanLink()) {
     Job *linkJob = nullptr;
     switch (driver.GetOutputProfile().linkType) {
       case LinkType::StaticLibrary: {
@@ -166,11 +176,16 @@ void DriverInternal::BuildLinkJob(Driver &driver, DriverInternal &internal) {
         break;
     }
     assert(linkJob && "LinkJob was not created -- requires linking.");
-    for (auto job : internal.compileJobs) {
-      linkJob->AddDep(job);
+    for (auto job : internal.jobs) {
+      if (job->GetType() == JobType::Compile) {
+        linkJob->AddDep(job);
+      }
     }
     assert(linkJob && "LinkJob was not created.");
-    internal.SetLinkJob(linkJob);
+    // TODO: Since this is top level, directly add to
+    // driver.GetCompilation().AddJob()
+    internal.TableJob(linkJob);
+    // TODO: Move to driver.GetCompilation().AddJob()
   }
 }
 
