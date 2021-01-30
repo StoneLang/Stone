@@ -98,21 +98,27 @@ bool DriverInternal::DoesInputExist(Driver &driver, const DerivedArgList &args,
 
 void DriverInternal::BuildCompileJobs(Driver &driver,
                                       DriverInternal &internal) {
+  if (!driver.GetMode().CanCompile()) {
+    return;
+  }
+  if (driver.GetDriverOptions().inputs.size() == 0) {
+    return;
+  }
+  OutputFileMap fileMap;
+  auto tool = driver.GetToolChain().PickTool(JobType::Compile);
+  assert(tool && "Could not find a tool for CompileJob.");
+
+  auto cmdOutput = llvm::make_unique<CmdOutput>("todo", fileMap);
+
   for (const auto &input : driver.GetDriverOptions().inputs) {
     if (input.first == FileType::Stone) {
       assert(file::IsPartOfCompilation(input.first));
-      // auto job =
-      // driver.GetToolChain().PickTool(JobType::Compile)->CreateJob(driver.GetCompilation());
 
-      // auto job = driver.GetCompilation().CreateJob<CompileJob>(
-      //    driver.GetCompilation());
-
-      // job->AddInput(input);
+      auto job = tool->CreateJob(driver.GetCompilation(), std::move(cmdOutput),
+                                 driver.GetOutputProfile());
 
       if (driver.GetMode().IsCompileOnly()) {
-        //(void)driver.GetCompilation().AddJob(job)
-      } else {
-        // internal.TableJob(job);
+        driver.GetCompilation().AddJob(job);
       }
     }
   }

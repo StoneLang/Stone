@@ -3,6 +3,8 @@
 using namespace stone;
 using namespace stone::driver;
 
-// CmdOutput::CmdOutput(file::FileType primaryOutputType, OutputFileMap
-// &derived) {
-//}
+CmdOutput::CmdOutput(file::FileType primaryOutputType, OutputFileMap& map)
+    : derivedOutputMap(map) {}
+
+CmdOutput::CmdOutput(llvm::StringRef fakeBaseName, OutputFileMap& map)
+    : derivedOutputMap(map) {}

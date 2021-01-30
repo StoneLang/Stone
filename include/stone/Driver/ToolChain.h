@@ -86,6 +86,15 @@ class Tool {
   /// This method dispatches to the various \c constructInvocation methods,
   /// which may be overridden by platform-specific subclasses.
   virtual Job *CreateJob(Compilation &compilation,
+                         std::unique_ptr<CmdOutput> cmdOutput,
+                         const OutputProfile &outputProfile) = 0;
+
+  /// Create a Job
+  /// into account.
+  ///
+  /// This method dispatches to the various \c constructInvocation methods,
+  /// which may be overridden by platform-specific subclasses.
+  virtual Job *CreateJob(Compilation &compilation,
                          llvm::SmallVectorImpl<const Job *> &&deps,
                          std::unique_ptr<CmdOutput> cmdOutput,
                          const OutputProfile &outputProfile) = 0;
@@ -100,6 +109,7 @@ class Tool {
   const ToolOptions &GetOptions() const { return toolOpts; }
   const ToolChain &GetToolChain() const { return toolChain; }
   const llvm::StringRef &GetVersion() const { return version; }
+  const SafeList<Job> &GetJobs() const { return jobs; }
 };
 
 class StoneTool final : public Tool {
@@ -109,6 +119,15 @@ class StoneTool final : public Tool {
   ~StoneTool();
 
  public:
+  /// Create a Job for the action \p JA, taking the given information
+  /// into account.
+  ///
+  /// This method dispatches to the various \c constructInvocation methods,
+  /// which may be overridden by platform-specific subclasses.
+  virtual Job *CreateJob(Compilation &compilation,
+                         std::unique_ptr<CmdOutput> cmdOutput,
+                         const OutputProfile &outputProfile) override;
+
   /// Create a Job for the action \p JA, taking the given information
   /// into account.
   ///
@@ -131,6 +150,15 @@ class LinkTool : public Tool {
   LinkType GetLinkType() { return linkType; }
 
  public:
+  /// Create a Job for the action \p JA, taking the given information
+  /// into account.
+  ///
+  /// This method dispatches to the various \c constructInvocation methods,
+  /// which may be overridden by platform-specific subclasses.
+  virtual Job *CreateJob(Compilation &compilation,
+                         std::unique_ptr<CmdOutput> cmdOutput,
+                         const OutputProfile &outputProfile) override;
+
   /// Create a Job for the action \p JA, taking the given information
   /// into account.
   ///
@@ -169,6 +197,15 @@ class ClangTool : public LinkTool {
   /// This method dispatches to the various \c constructInvocation methods,
   /// which may be overridden by platform-specific subclasses.
   virtual Job *CreateJob(Compilation &compilation,
+                         std::unique_ptr<CmdOutput> cmdOutput,
+                         const OutputProfile &outputProfile) override;
+
+  /// Create a Job for the action \p JA, taking the given information
+  /// into account.
+  ///
+  /// This method dispatches to the various \c constructInvocation methods,
+  /// which may be overridden by platform-specific subclasses.
+  virtual Job *CreateJob(Compilation &compilation,
                          llvm::SmallVectorImpl<const Job *> &&deps,
                          std::unique_ptr<CmdOutput> cmdOutput,
                          const OutputProfile &outputProfile) override;
@@ -187,6 +224,15 @@ class GCCTool final : public LinkTool {
   /// This method dispatches to the various \c constructInvocation methods,
   /// which may be overridden by platform-specific subclasses.
   virtual Job *CreateJob(Compilation &compilation,
+                         std::unique_ptr<CmdOutput> cmdOutput,
+                         const OutputProfile &outputProfile) override;
+
+  /// Create a Job for the action \p JA, taking the given information
+  /// into account.
+  ///
+  /// This method dispatches to the various \c constructInvocation methods,
+  /// which may be overridden by platform-specific subclasses.
+  virtual Job *CreateJob(Compilation &compilation,
                          llvm::SmallVectorImpl<const Job *> &&deps,
                          std::unique_ptr<CmdOutput> cmdOutput,
                          const OutputProfile &outputProfile) override;
@@ -199,6 +245,15 @@ class AssembleTool final : public Tool {
   ~AssembleTool();
 
  public:
+  /// Create a Job for the action \p JA, taking the given information
+  /// into account.
+  ///
+  /// This method dispatches to the various \c constructInvocation methods,
+  /// which may be overridden by platform-specific subclasses.
+  virtual Job *CreateJob(Compilation &compilation,
+                         std::unique_ptr<CmdOutput> cmdOutput,
+                         const OutputProfile &outputProfile) override;
+
   /// Create a Job for the action \p JA, taking the given information
   /// into account.
   ///

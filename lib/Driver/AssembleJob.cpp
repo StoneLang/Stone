@@ -15,6 +15,16 @@ AssembleTool::AssembleTool(llvm::StringRef fullName, llvm::StringRef shortName,
     : Tool(fullName, shortName, ToolType::Assemble, toolChain) {
   toolOpts.canAssemble = true;
 }
+
+Job *AssembleTool::CreateJob(Compilation &compilation,
+                             std::unique_ptr<CmdOutput> cmdOutput,
+                             const OutputProfile &outputProfile) {
+  auto job = llvm::make_unique<AssembleJob>(compilation);
+  Job *result = job.get();
+  jobs.Add(std::move(job));
+  return result;
+}
+
 Job *AssembleTool::CreateJob(Compilation &compilation,
                              llvm::SmallVectorImpl<const Job *> &&deps,
                              std::unique_ptr<CmdOutput> cmdOutput,

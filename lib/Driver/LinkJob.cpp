@@ -31,6 +31,13 @@ ClangTool::ClangTool(llvm::StringRef fullName, llvm::StringRef shortName,
   toolOpts.canAssemble = true;
   toolOpts.canLink = true;
 }
+
+Job *ClangTool::CreateJob(Compilation &compilation,
+                          std::unique_ptr<CmdOutput> cmdOutput,
+                          const OutputProfile &outputProfile) {
+  return LinkTool::CreateJob(compilation, std::move(cmdOutput), outputProfile);
+}
+
 Job *ClangTool::CreateJob(Compilation &compilation,
                           llvm::SmallVectorImpl<const Job *> &&deps,
                           std::unique_ptr<CmdOutput> cmdOutput,
@@ -47,6 +54,14 @@ GCCTool::GCCTool(llvm::StringRef fullName, llvm::StringRef shortName,
   toolOpts.canAssemble = true;
   toolOpts.canLink = true;
 }
+
+Job *GCCTool::CreateJob(Compilation &compilation,
+                        std::unique_ptr<CmdOutput> cmdOutput,
+                        const OutputProfile &outputProfile) {
+  // NOTE: For the time being.
+  return LinkTool::CreateJob(compilation, std::move(cmdOutput), outputProfile);
+}
+
 Job *GCCTool::CreateJob(Compilation &compilation,
                         llvm::SmallVectorImpl<const Job *> &&deps,
                         std::unique_ptr<CmdOutput> cmdOutput,
@@ -64,6 +79,29 @@ LinkTool::LinkTool(llvm::StringRef fullName, llvm::StringRef shortName,
     : Tool(fullName, shortName, toolType, toolChain), linkType(linkType) {
   toolOpts.canLink = true;
 }
+
+Job *LinkTool::CreateJob(Compilation &compilation,
+                         std::unique_ptr<CmdOutput> cmdOutput,
+                         const OutputProfile &outputProfile) {
+  Job *result = nullptr;
+  // Depend on the mode-type -- if you want to emit ir
+  if (linkType == LinkType::DynamicLibrary) {
+    auto job = llvm::make_unique<DynamicLinkJob>(
+        compilation, compilation.GetDriver().GetOutputProfile().RequiresLTO(),
+        compilation.GetDriver().GetOutputProfile().linkType);
+    result = job.get();
+    jobs.Add(std::move(job));
+
+  } else {
+    auto job = llvm::make_unique<StaticLinkJob>(
+        compilation, compilation.GetDriver().GetOutputProfile().RequiresLTO(),
+        compilation.GetDriver().GetOutputProfile().linkType);
+    result = job.get();
+    jobs.Add(std::move(job));
+  }
+  return result;
+}
+
 Job *LinkTool::CreateJob(Compilation &compilation,
                          llvm::SmallVectorImpl<const Job *> &&deps,
                          std::unique_ptr<CmdOutput> cmdOutput,
