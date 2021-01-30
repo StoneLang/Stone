@@ -48,12 +48,12 @@ class Mode final {
         return false;
     }
   }
-  const bool IsCompileOnly() const {
+  bool IsCompileOnly() const {
     if (CanLink()) return false;
     return IsCompileOnlyImpl();
   }
 
-  const bool CanCompile() const {
+  bool CanCompile() const {
     switch (GetKind()) {
       case ModeKind::EmitExecutable:
         return true;
@@ -61,8 +61,8 @@ class Mode final {
         return IsCompileOnlyImpl();
     }
   }
-  const bool IsLinkOnly() const { return GetKind() == ModeKind::Link; }
-  const bool CanLink() const {
+  bool IsLinkOnly() const { return GetKind() == ModeKind::Link; }
+  bool CanLink() const {
     switch (GetKind()) {
       case ModeKind::EmitExecutable:
       case ModeKind::Link:

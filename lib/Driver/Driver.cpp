@@ -20,7 +20,7 @@ class DriverInternal final {
 
  public:
   /// Print the job
-  const static void PrintJob(const Job &job, Driver &driver);
+  static void PrintJob(const Job &job, Driver &driver);
 
   /// Print the job
   static void PrintJobVerbosely(Job *job, Driver &driver);
@@ -95,6 +95,7 @@ bool DriverInternal::DoesInputExist(Driver &driver, const DerivedArgList &args,
                << '\n';
   return false;
 }
+void DriverInternal::ComputeCmdOutput(const Driver &driver) {}
 
 void DriverInternal::BuildCompileJobs(Driver &driver,
                                       DriverInternal &internal) {
@@ -502,7 +503,7 @@ void Driver::PrintHelp(bool showHidden) {
                                  /*ShowAllAliases*/ false);
 }
 
-const void DriverInternal::PrintJob(const Job &job, Driver &driver) {
+void DriverInternal::PrintJob(const Job &job, Driver &driver) {
   auto cos = driver.Out();
   cos.UseGreen();
 
