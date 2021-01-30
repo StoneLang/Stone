@@ -26,6 +26,7 @@
 #include "llvm/Support/StringSaver.h"
 #include "llvm/Support/TargetRegistry.h"
 #include "llvm/Support/VirtualFileSystem.h"
+#include "stone/Core/Clock.h"
 #include "stone/Core/Context.h"
 #include "stone/Session/FileType.h"
 #include "stone/Session/Mode.h"
@@ -73,17 +74,8 @@ class Session : public Context {
     fileSystem = fs;
   }
   llvm::vfs::FileSystem &GetFS() const { return *fileSystem; }
-  //
-  /// When the session was started.
-  ///
-  /// This should be as close as possible to when the driver was invoked, since
-  /// it's used as a lower bound.
-  llvm::sys::TimePoint<> startTime;
 
-  /// The time of the last build.
-  ///
-  /// If unknown, this will be some time in the past.
-  llvm::sys::TimePoint<> endTime = llvm::sys::TimePoint<>::min();
+  Clock clock;
 
  public:
   Session(SessionOptions &sessionOpts);

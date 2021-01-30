@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "llvm/ADT/SmallVector.h"
+#include "llvm/Support/Chrono.h"
 #include "stone/Core/Color.h"
 #include "stone/Core/List.h"
 #include "stone/Core/Mem.h"
@@ -20,6 +21,18 @@ class Stats {
  protected:
   const char* name = nullptr;
   ColorOutputStream cos;
+
+ public:
+  /// When the session was started.
+  ///
+  /// This should be as close as possible to when the driver was invoked, since
+  /// it's used as a lower bound.
+  llvm::sys::TimePoint<> startTime;
+
+  /// The time of the last build.
+  ///
+  /// If unknown, this will be some time in the past.
+  llvm::sys::TimePoint<> endTime = llvm::sys::TimePoint<>::min();
 
  public:
   Stats(const char* name);

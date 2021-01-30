@@ -13,6 +13,7 @@ set(stone_core_sources
 	Builtin.cpp
 	BumpTable.cpp
 	Char.cpp
+	Clock.cpp
 	Comment.cpp
 	Context.cpp
 	Decl.cpp

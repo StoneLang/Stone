@@ -11,7 +11,7 @@ Session::Session(SessionOptions &sessionOpts)
       targetTriple(llvm::sys::getDefaultTargetTriple()),
       fileSystem(llvm::vfs::getRealFileSystem()),
       strSaver(bumpAlloc) {
-  startTime = std::chrono::system_clock::now();
+  clock.Start();
 }
 
 Session::~Session() {}
@@ -101,6 +101,7 @@ llvm::opt::DerivedArgList *Session::TranslateInputArgs(
 void Session::Purge() {}
 
 void Session::Finish() {
+  clock.Stop();
   Purge();
   PrintDiagnostics();
   PrintStatistics();
