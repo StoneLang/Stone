@@ -16,5 +16,4 @@ bool DarwinToolChain::BuildLDLinkTool() { return true; }
 bool DarwinToolChain::BuildGCCTool() { return true; }
 bool DarwinToolChain::BuildStoneTool() { return true; }
 
-Tool *DarwinToolChain::GetTool(Mode mode) const { nullptr; }
-Tool *DarwinToolChain::PickTool(const Job &job) const { return nullptr; }
+Tool *DarwinToolChain::PickTool(JobType jobType) const { return ToolChain::PickTool(jobType); }

@@ -120,6 +120,7 @@ void DriverInternal::BuildCompileJobs(Driver &driver,
     switch (input.first) {
       case FileType::Stone: {
         assert(file::IsPartOfCompilation(input.first));
+        // driver.GetToolChiain().PickTool(JobType::Compile).CreateJob();
         auto job = driver.GetCompilation().CreateJob<CompileJob>(
             true, driver.GetCompilation());
         job->AddInput(input);
@@ -144,7 +145,8 @@ void DriverInternal::BuildLinkJob(Driver &driver, DriverInternal &internal) {
     Job *linkJob = nullptr;
     switch (driver.GetOutputProfile().linkType) {
       case LinkType::StaticLibrary: {
-        // TODO: driver.GetToolChain().Createob ...
+        // TODO: This makes the most sense
+        // driver.GetToolChain().PickTool(JobType::StaticLink).CreateJob();
         linkJob = driver.GetCompilation().CreateJob<StaticLinkJob>(
             true, driver.GetCompilation(),
             driver.GetOutputProfile().RequiresLTO(),
@@ -152,10 +154,12 @@ void DriverInternal::BuildLinkJob(Driver &driver, DriverInternal &internal) {
         break;
       }
       case LinkType::DynamicLibrary: {
+        // driver.GetToolChain().PickTool(JobType::DynamicLink).CreateJob();
         linkJob = driver.GetCompilation().CreateJob<DynamicLinkJob>(
             true, driver.GetCompilation(),
             driver.GetOutputProfile().RequiresLTO(),
             driver.GetOutputProfile().linkType);
+        // TODO: get the tool from the ToolChain and pass to CreateJob?
         break;
       }
       default:

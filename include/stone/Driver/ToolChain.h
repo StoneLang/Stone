@@ -179,9 +179,6 @@ class ToolChain {
  public:
   virtual ~ToolChain() = default;
 
-  const Driver &GetDriver() { return driver; }
-  const llvm::Triple &GetTriple() const { return triple; }
-
   /// Construct a Job for the action \p JA, taking the given information
   /// into account.
   ///
@@ -204,6 +201,9 @@ class ToolChain {
                                  std::unique_ptr<CmdOutput> cmdOutput,
                                  const OutputProfile &outputProfile) const;
 
+  const Driver &GetDriver() { return driver; }
+  const llvm::Triple &GetTriple() const { return triple; }
+
   Paths &GetLibraryPaths() { return libraryPaths; }
   const Paths &GetLibraryPaths() const { return libraryPaths; }
 
@@ -213,14 +213,13 @@ class ToolChain {
   Paths &GetProgramPaths() { return programPaths; }
   const Paths &GetProgramPaths() const { return programPaths; }
 
+  llvm::Triple::ArchType GetArchType() { return triple.getArch(); }
+  const llvm::Triple::ArchType GetArchType() const { return triple.getArch(); }
+
  public:
   virtual bool Build();
-  virtual Tool *GetTool(Mode mode) const = 0;
   /// Pick a tool to use to handle the compilation event \p event.
-  ///
-  /// This can be overridden when a particular ToolChain needs to use
-  /// a compiler other than Clang.
-  virtual Tool *PickTool(const Job &job) const;
+  virtual Tool *PickTool(JobType jobType) const;
 
  protected:
   virtual bool BuildClangTool() = 0;
@@ -240,12 +239,11 @@ class DarwinToolChain final : public ToolChain {
   ~DarwinToolChain() = default;
 
  public:
-  Tool *GetTool(Mode mode) const override;
   /// Pick a tool to use to handle the compilation event \p event.
   ///
   /// This can be overridden when a particular ToolChain needs to use
   /// a compiler other than Clang.
-  Tool *PickTool(const Job &job) const override;
+  Tool *PickTool(JobType jobType) const override;
 
  protected:
   bool BuildClangTool() override;

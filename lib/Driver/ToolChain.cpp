@@ -77,22 +77,16 @@ std::unique_ptr<Job> ToolChain::CreateJob(/*const JobAction &JA, Compilation &C,
   return nullptr;
 }
 
-Tool *ToolChain::PickTool(const Job &job) const {
-  /*
-    switch (job.GetType()) {
-      case JobType::Compile:
-        return stoneTool.get();
-      case JobType::StaticLink:
-        return staticLink.get();
-      case JobType::DynamicLink:
-        return dynamicLink.get();
-      case JobType::DynamicLink:
-        return dynamicLink.get();
-        return nullptr;
-    }
-  */
-
-  return nullptr;
+Tool *ToolChain::PickTool(JobType jobType) const {
+  switch (jobType) {
+    case JobType::Compile:
+      return stoneTool.get();
+    case JobType::StaticLink:
+    case JobType::DynamicLink:
+      return linkTool.get();
+    default:
+      llvm_unreachable("Invalid tool type.");
+  }
 }
 
 // TODO: Update for other scenarios like assemble
