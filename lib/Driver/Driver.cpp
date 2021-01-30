@@ -16,7 +16,7 @@ using namespace llvm::opt;
 class DriverInternal final {
  public:
   /// Pointers to all jobs created to prepare for compilation.
-  /// The jobs in compilation are the top-level jobs run
+  /// The jobs in compilation are the top-level jobs to run
   Jobs jobs;
 
  public:
@@ -62,8 +62,8 @@ class DriverInternal final {
                              const TypeToPathMap *OutputMap,
                              llvm::StringRef workingDir,
                              bool atTopLevel,
-                             llvm::StringRef BaseInput,
-                             llvm::StringRef PrimaryInput,
+                             llvm::StringRef baseInput,
+                             llvm::StringRef brimaryInput,
                              llvm::SmallString<128> &buffer);
   */
 

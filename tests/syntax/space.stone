@@ -5,7 +5,12 @@ space System.Maths {
 }
 
 space System.Physics {
+	struct Particle {
+		public f32 mass = 100.00; 
+	}
 	public fun Fire(const Particle* particle) -> void {
 		return true; 
 	}
+
 }
+

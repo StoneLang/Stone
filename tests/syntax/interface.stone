@@ -5,7 +5,12 @@ public interface I0 {
 
 	fun Do(int* data) -> void; 
 }
-public struct S0 : I0  {
+
+
+public class C0 : I0  {
+}
+
+public fun C0::Do(int* data) -> void {
 
 }
 

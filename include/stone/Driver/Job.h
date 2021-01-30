@@ -11,6 +11,7 @@
 #include "stone/Driver/CmdOutput.h"
 #include "stone/Driver/CrashState.h"
 #include "stone/Driver/JobOptions.h"
+#include "stone/Driver/JobProfile.h"
 #include "stone/Driver/JobType.h"
 #include "stone/Driver/LinkType.h"
 #include "stone/Session/SessionOptions.h"
@@ -103,6 +104,30 @@ class Job {
   void* operator new(size_t size) { return ::operator new(size); };
 };
 
+class AssembleJob final : public Job {
+ public:
+  // Some job depend on other jobs -- For example, LinkJob
+  AssembleJob(bool isAsync, Compilation& compilation);
+
+  void BuildCmdOutput() override;
+
+ public:
+  static bool classof(const Job* j) {
+    return j->GetType() == JobType::Assemble;
+  }
+};
+
+class BackendJob final : public Job {
+ public:
+  // Some job depend on other jobs -- For example, LinkJob
+  BackendJob(bool isAsync, Compilation& compilation);
+
+  void BuildCmdOutput() override;
+
+ public:
+  static bool classof(const Job* j) { return j->GetType() == JobType::Backend; }
+};
+
 class CompileJob final : public Job {
  public:
   // Some job depend on other jobs -- For example, LinkJob
@@ -129,19 +154,6 @@ class LinkJob : public Job {
   LinkType GetLinkType() { return linkType; }
   bool RequiresLTO() { return requiresLTO; }
 };
-class StaticLinkJob final : public LinkJob {
- public:
-  // Some jobs only consume inputs -- For example, LinkJob
-  StaticLinkJob(bool isAsync, Compilation& compilation, bool requiresLTO,
-                LinkType linkType);
-
-  void BuildCmdOutput() override;
-
- public:
-  static bool classof(const Job* j) {
-    return j->GetType() == JobType::StaticLink;
-  }
-};
 
 class DynamicLinkJob final : public LinkJob {
  public:
@@ -157,28 +169,18 @@ class DynamicLinkJob final : public LinkJob {
   }
 };
 
-class AssembleJob final : public Job {
+class StaticLinkJob final : public LinkJob {
  public:
-  // Some job depend on other jobs -- For example, LinkJob
-  AssembleJob(bool isAsync, Compilation& compilation);
+  // Some jobs only consume inputs -- For example, LinkJob
+  StaticLinkJob(bool isAsync, Compilation& compilation, bool requiresLTO,
+                LinkType linkType);
 
   void BuildCmdOutput() override;
 
  public:
   static bool classof(const Job* j) {
-    return j->GetType() == JobType::Assemble;
+    return j->GetType() == JobType::StaticLink;
   }
-};
-
-class BackendJob final : public Job {
- public:
-  // Some job depend on other jobs -- For example, LinkJob
-  BackendJob(bool isAsync, Compilation& compilation);
-
-  void BuildCmdOutput() override;
-
- public:
-  static bool classof(const Job* j) { return j->GetType() == JobType::Backend; }
 };
 
 }  // namespace driver

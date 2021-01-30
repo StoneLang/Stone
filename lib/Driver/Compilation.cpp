@@ -37,6 +37,7 @@ using namespace llvm::opt;
 Compilation::Compilation(Driver &driver) : driver(driver) {
   stats.reset(new CompilationStats(*this));
   driver.GetStatEngine().Register(stats.get());
+  clock.Start();
 }
 
 Compilation::~Compilation() {}

@@ -24,7 +24,7 @@ std::unique_ptr<Job> StoneTool::CreateJob(
     Compilation &compilation, llvm::SmallVectorImpl<const Job *> &&deps,
     std::unique_ptr<CmdOutput> cmdOutput,
     const OutputProfile &outputProfile) const {
-  return nullptr;
+  return nullptr;  // llvm::make_unique<CompileJob>(
 }
 
 StoneTool::~StoneTool() {}

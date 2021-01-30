@@ -8,3 +8,6 @@ fun F0() -> void {
 fun F1() -> auto {
 	return 0; 
 }
+
+public fun F2() -> void {
+}

@@ -1,6 +1,6 @@
 module Stone.Syntax 
 
-use Physics;
+use System.Physics;
 
 
 fun Main() -> i32 {

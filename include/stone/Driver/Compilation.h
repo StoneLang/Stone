@@ -13,6 +13,7 @@
 #include "llvm/ADT/Optional.h"
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Option/Option.h"
+#include "stone/Core/Clock.h"
 #include "stone/Core/LLVM.h"
 #include "stone/Core/Stats.h"
 #include "stone/Driver/Job.h"
@@ -45,10 +46,11 @@ class CompilationStats final : public Stats {
 
 class CompilationResult {};
 class Compilation final {
-  /// The System we were created by.
+  friend CompilationStats;
+
   Driver &driver;
 
-  friend CompilationStats;
+  Clock clock;
 
   std::unique_ptr<CompilationStats> stats;
 

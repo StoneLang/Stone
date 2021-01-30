@@ -1,8 +1,14 @@
 module Stone.Syntax 
 
-class C0 {	
+public class C0 {	
+	string name = "test"; 
+
+	public int data = 100; 
 }
 
+fun C0::DoSometing() -> void {
+
+}
 C0::this() { 
 }
 C0::defer() { 
