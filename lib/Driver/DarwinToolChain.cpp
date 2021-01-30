@@ -16,4 +16,6 @@ bool DarwinToolChain::BuildLDLinkTool() { return true; }
 bool DarwinToolChain::BuildGCCTool() { return true; }
 bool DarwinToolChain::BuildStoneTool() { return true; }
 
-Tool *DarwinToolChain::PickTool(JobType jobType) const { return ToolChain::PickTool(jobType); }
+Tool *DarwinToolChain::PickTool(JobType jobType) const {
+  return ToolChain::PickTool(jobType);
+}

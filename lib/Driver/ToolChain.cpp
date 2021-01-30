@@ -19,6 +19,14 @@ StoneTool::StoneTool(llvm::StringRef fullName, llvm::StringRef shortName,
     : Tool(fullName, shortName, ToolType::Stone, toolChain) {
   toolOpts.canEmitIR = true;
 }
+
+std::unique_ptr<Job> StoneTool::CreateJob(
+    Compilation &compilation, llvm::SmallVectorImpl<const Job *> &&deps,
+    std::unique_ptr<CmdOutput> cmdOutput,
+    const OutputProfile &outputProfile) const {
+  return nullptr;
+}
+
 StoneTool::~StoneTool() {}
 
 ClangTool::ClangTool(llvm::StringRef fullName, llvm::StringRef shortName,
@@ -27,6 +35,12 @@ ClangTool::ClangTool(llvm::StringRef fullName, llvm::StringRef shortName,
   toolOpts.canEmitIR = true;
   toolOpts.canAssemble = true;
   toolOpts.canLink = true;
+}
+std::unique_ptr<Job> ClangTool::CreateJob(
+    Compilation &compilation, llvm::SmallVectorImpl<const Job *> &&deps,
+    std::unique_ptr<CmdOutput> cmdOutput,
+    const OutputProfile &outputProfile) const {
+  return nullptr;
 }
 
 ClangTool::~ClangTool() {}
@@ -37,6 +51,13 @@ GCCTool::GCCTool(llvm::StringRef fullName, llvm::StringRef shortName,
   toolOpts.canAssemble = true;
   toolOpts.canLink = true;
 }
+std::unique_ptr<Job> GCCTool::CreateJob(
+    Compilation &compilation, llvm::SmallVectorImpl<const Job *> &&deps,
+    std::unique_ptr<CmdOutput> cmdOutput,
+    const OutputProfile &outputProfile) const {
+  return nullptr;
+}
+
 GCCTool::~GCCTool() {}
 
 LinkTool::LinkTool(llvm::StringRef fullName, llvm::StringRef shortName,
@@ -45,6 +66,13 @@ LinkTool::LinkTool(llvm::StringRef fullName, llvm::StringRef shortName,
     : Tool(fullName, shortName, toolType, toolChain), linkType(linkType) {
   toolOpts.canLink = true;
 }
+std::unique_ptr<Job> LinkTool::CreateJob(
+    Compilation &compilation, llvm::SmallVectorImpl<const Job *> &&deps,
+    std::unique_ptr<CmdOutput> cmdOutput,
+    const OutputProfile &outputProfile) const {
+  return nullptr;
+}
+
 LinkTool::~LinkTool() {}
 
 LLDLinkTool::LLDLinkTool(llvm::StringRef fullName, llvm::StringRef shortName,
@@ -64,18 +92,17 @@ AssembleTool::AssembleTool(llvm::StringRef fullName, llvm::StringRef shortName,
     : Tool(fullName, shortName, ToolType::Assemble, toolChain) {
   toolOpts.canAssemble = true;
 }
+std::unique_ptr<Job> AssembleTool::CreateJob(
+    Compilation &compilation, llvm::SmallVectorImpl<const Job *> &&deps,
+    std::unique_ptr<CmdOutput> cmdOutput,
+    const OutputProfile &outputProfile) const {
+  return nullptr;
+}
+
 AssembleTool::~AssembleTool() {}
 
 ToolChain::ToolChain(const Driver &driver, const llvm::Triple &triple)
     : driver(driver), triple(triple) {}
-
-std::unique_ptr<Job> ToolChain::CreateJob(/*const JobAction &JA, Compilation &C,
-                                    SmallVectorImpl<const Job *> &&inputs,
-                                    ArrayRef<const Action *> inputActions,
-                                    std::unique_ptr<CommandOutput> output,
-																		const OutputInfo &OI*/) const {
-  return nullptr;
-}
 
 Tool *ToolChain::PickTool(JobType jobType) const {
   switch (jobType) {
