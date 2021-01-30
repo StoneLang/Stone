@@ -42,14 +42,7 @@ Compilation::Compilation(Driver &driver) : driver(driver) {
 
 Compilation::~Compilation() {}
 
-Job *Compilation::AddJob(std::unique_ptr<Job> job) {
-  Job *result = job.get();
-  // TODO:
-  // Jobs.emplace_back(std::move(job));
-  // GetStats().AddDep(result->GetStats());
-
-  return result;
-}
+void Compilation::AddJob(const Job *job) { jobs.Add(job); }
 
 bool Compilation::PurgeFile(const char *name, bool issueErrors) const {
   return true;

@@ -88,7 +88,7 @@ class Tool {
   virtual Job *CreateJob(Compilation &compilation,
                          llvm::SmallVectorImpl<const Job *> &&deps,
                          std::unique_ptr<CmdOutput> cmdOutput,
-                         const OutputProfile &outputProfile)  = 0;
+                         const OutputProfile &outputProfile) = 0;
 
  public:
   bool IsOnSystem() { return isOnSystem; }

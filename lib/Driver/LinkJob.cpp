@@ -35,22 +35,8 @@ Job *ClangTool::CreateJob(Compilation &compilation,
                           llvm::SmallVectorImpl<const Job *> &&deps,
                           std::unique_ptr<CmdOutput> cmdOutput,
                           const OutputProfile &outputProfile) {
-
-	/*
-  // Depend on the mode-type -- if you want to emit ir
-  if (linkType == LinkType::DynamicLibrary) {
-    return llvm::make_unique<DynamicLinkJob>(
-        compilation, compilation.GetDriver().GetOutputProfile().RequiresLTO(),
-        compilation.GetDriver().GetOutputProfile().linkType);
-  }
-
-  return llvm::make_unique<StaticLinkJob>(
-      compilation, compilation.GetDriver().GetOutputProfile().RequiresLTO(),
-      compilation.GetDriver().GetOutputProfile().linkType);
-
-	*/
-
-	return nullptr; 
+  return LinkTool::CreateJob(compilation, std::move(deps), std::move(cmdOutput),
+                             outputProfile);
 }
 
 ClangTool::~ClangTool() {}
@@ -65,22 +51,9 @@ Job *GCCTool::CreateJob(Compilation &compilation,
                         llvm::SmallVectorImpl<const Job *> &&deps,
                         std::unique_ptr<CmdOutput> cmdOutput,
                         const OutputProfile &outputProfile) {
-
-/*
-  // Depend on the mode-type -- if you want to emit ir
-  if (linkType == LinkType::DynamicLibrary) {
-    return llvm::make_unique<DynamicLinkJob>(
-        compilation, compilation.GetDriver().GetOutputProfile().RequiresLTO(),
-        compilation.GetDriver().GetOutputProfile().linkType);
-  }
-
-  return llvm::make_unique<StaticLinkJob>(
-      compilation, compilation.GetDriver().GetOutputProfile().RequiresLTO(),
-      compilation.GetDriver().GetOutputProfile().linkType);
-
-*/
-
-	return nullptr; 
+  // NOTE: For the time being.
+  return LinkTool::CreateJob(compilation, std::move(deps), std::move(cmdOutput),
+                             outputProfile);
 }
 
 GCCTool::~GCCTool() {}
@@ -95,21 +68,23 @@ Job *LinkTool::CreateJob(Compilation &compilation,
                          llvm::SmallVectorImpl<const Job *> &&deps,
                          std::unique_ptr<CmdOutput> cmdOutput,
                          const OutputProfile &outputProfile) {
-
-	/*
+  Job *result = nullptr;
+  // Depend on the mode-type -- if you want to emit ir
   if (linkType == LinkType::DynamicLibrary) {
-    return llvm::make_unique<DynamicLinkJob>(
+    auto job = llvm::make_unique<DynamicLinkJob>(
         compilation, compilation.GetDriver().GetOutputProfile().RequiresLTO(),
         compilation.GetDriver().GetOutputProfile().linkType);
+    result = job.get();
+    jobs.Add(std::move(job));
+
+  } else {
+    auto job = llvm::make_unique<StaticLinkJob>(
+        compilation, compilation.GetDriver().GetOutputProfile().RequiresLTO(),
+        compilation.GetDriver().GetOutputProfile().linkType);
+    result = job.get();
+    jobs.Add(std::move(job));
   }
-
-  return llvm::make_unique<StaticLinkJob>(
-      compilation, compilation.GetDriver().GetOutputProfile().RequiresLTO(),
-      compilation.GetDriver().GetOutputProfile().linkType);
-
-	*/
-
-	return nullptr; 
+  return result;
 }
 
 LinkTool::~LinkTool() {}

@@ -15,20 +15,12 @@ using namespace llvm::opt;
 
 class DriverInternal final {
  public:
-  /// Pointers to all jobs created to prepare for compilation.
-  /// The jobs in compilation are the top-level jobs to run
-  Jobs jobs;
-
- public:
-  void TableJob(const Job *job) { jobs.push_back(job); }
-
- public:
   static bool DoesInputExist(Driver &driver, const DerivedArgList &args,
                              llvm::StringRef input);
 
  public:
   /// Print the job
-  static void PrintJob(Job *job, Driver &driver);
+  const static void PrintJob(const Job &job, Driver &driver);
 
   /// Print the job
   static void PrintJobVerbosely(Job *job, Driver &driver);
@@ -107,28 +99,21 @@ bool DriverInternal::DoesInputExist(Driver &driver, const DerivedArgList &args,
 void DriverInternal::BuildCompileJobs(Driver &driver,
                                       DriverInternal &internal) {
   for (const auto &input : driver.GetDriverOptions().inputs) {
-    switch (input.first) {
-      case FileType::Stone: {
-        assert(file::IsPartOfCompilation(input.first));
-        // auto job =
-        // driver.GetToolChiain().PickTool(JobType::Compile).CreateJob(driver.GetCompilation());
+    if (input.first == FileType::Stone) {
+      assert(file::IsPartOfCompilation(input.first));
+      // auto job =
+      // driver.GetToolChain().PickTool(JobType::Compile)->CreateJob(driver.GetCompilation());
 
-        auto job = driver.GetCompilation().CreateJob<CompileJob>(
-            driver.GetCompilation());
+      // auto job = driver.GetCompilation().CreateJob<CompileJob>(
+      //    driver.GetCompilation());
 
-        job->AddInput(input);
+      // job->AddInput(input);
 
-        if (driver.GetMode().IsCompileOnly()) {
-          //(void)driver.GetCompilation().AddJob(job)
-        } else {
-          internal.TableJob(job);
-        }
-        break;
+      if (driver.GetMode().IsCompileOnly()) {
+        //(void)driver.GetCompilation().AddJob(job)
+      } else {
+        // internal.TableJob(job);
       }
-      case FileType::Object:
-        break;
-      default:
-        break;
     }
   }
 }
@@ -160,16 +145,16 @@ void DriverInternal::BuildLinkJob(Driver &driver, DriverInternal &internal) {
       case LinkType::StaticLibrary: {
         // TODO: This makes the most sense
         // driver.GetToolChain().PickTool(JobType::StaticLink).CreateJob();
-        linkJob = driver.GetCompilation().CreateJob<StaticLinkJob>(
-            driver.GetCompilation(), driver.GetOutputProfile().RequiresLTO(),
-            driver.GetOutputProfile().linkType);
+        // linkJob = driver.GetCompilation().CreateJob<StaticLinkJob>(
+        //    driver.GetCompilation(), driver.GetOutputProfile().RequiresLTO(),
+        //    driver.GetOutputProfile().linkType);
         break;
       }
       case LinkType::DynamicLibrary: {
         // driver.GetToolChain().PickTool(JobType::DynamicLink).CreateJob();
-        linkJob = driver.GetCompilation().CreateJob<DynamicLinkJob>(
-            driver.GetCompilation(), driver.GetOutputProfile().RequiresLTO(),
-            driver.GetOutputProfile().linkType);
+        // linkJob = driver.GetCompilation().CreateJob<DynamicLinkJob>(
+        //    driver.GetCompilation(), driver.GetOutputProfile().RequiresLTO(),
+        //    driver.GetOutputProfile().linkType);
         // TODO: get the tool from the ToolChain and pass to CreateJob?
         break;
       }
@@ -177,15 +162,18 @@ void DriverInternal::BuildLinkJob(Driver &driver, DriverInternal &internal) {
         break;
     }
     assert(linkJob && "LinkJob was not created -- requires linking.");
-    for (auto job : internal.jobs) {
-      if (job->GetType() == JobType::Compile) {
-        linkJob->AddDep(job);
-      }
-    }
+    /*
+for (auto job : internal.jobs) {
+if (job->GetType() == JobType::Compile) {
+linkJob->AddDep(job);
+}
+}
+    */
+
     assert(linkJob && "LinkJob was not created.");
     // TODO: Since this is top level, directly add to
     // driver.GetCompilation().AddJob()
-    internal.TableJob(linkJob);
+    // internal.TableJob(linkJob);
     // TODO: Move to driver.GetCompilation().AddJob()
   }
 }
@@ -209,20 +197,23 @@ void DriverInternal::BuildJobsForMultipleCompileType(Driver &driver,
 }
 void DriverInternal::BuildJobsForSingleCompileType(Driver &driver,
                                                    DriverInternal &internal) {
-  auto job =
-      driver.GetCompilation().CreateJob<CompileJob>(driver.GetCompilation());
+  /*
+    auto job =
+        driver.GetCompilation().CreateJob<CompileJob>(driver.GetCompilation());
 
-  for (const auto &input : driver.GetDriverOptions().inputs) {
-    switch (input.first) {
-      case file::FileType::Stone: {
-        assert(file::IsPartOfCompilation(input.first));
-        job->AddInput(input);
-        break;
+    for (const auto &input : driver.GetDriverOptions().inputs) {
+      switch (input.first) {
+        case file::FileType::Stone: {
+          assert(file::IsPartOfCompilation(input.first));
+          job->AddInput(input);
+          break;
+        }
+        default:
+          break;
       }
-      default:
-        break;
     }
-  }
+          */
+
   // job->BuildCmdOutput();
 }
 
@@ -381,12 +372,12 @@ void Driver::BuildInputs(const ToolChain &tc, const DerivedArgList &args,
         // By default, treat stdin as Swift input.
         ft = file::FileType::Stone;
       } else {
-        // Otherwise lookup by extension.
+        // Otherwise lookup by internal.
         ft = file::GetTypeByExt(file::GetExt(argValue));
 
         if (ft == file::FileType::INVALID) {
-          // By default, treat inputs with no extension, or with an
-          // extension that isn't recognized, as object files.
+          // By default, treat inputs with no internal, or with an
+          // internal that isn't recognized, as object files.
           ft = file::FileType::Object;
         }
       }
@@ -474,22 +465,21 @@ void Driver::BuildJobs() {
   }
 
   // TODO: BuildCompileOnlyJobs();
-  DriverInternal driverInternal;
+  DriverInternal internal;
   switch (outputProfile.compileType) {
     case CompileType::Multiple:
-      DriverInternal::BuildJobsForMultipleCompileType(*this, driverInternal);
+      DriverInternal::BuildJobsForMultipleCompileType(*this, internal);
       break;
     case CompileType::Single:
-      DriverInternal::BuildJobsForSingleCompileType(*this, driverInternal);
+      DriverInternal::BuildJobsForSingleCompileType(*this, internal);
       break;
     default:
       break;
   }
 }
-
 void Driver::PrintJobs() {
   for (auto &job : GetCompilation().GetJobs()) {
-    DriverInternal::PrintJob(&job, *this);
+    DriverInternal::PrintJob(job, *this);
   }
 }
 
@@ -506,31 +496,32 @@ void Driver::PrintHelp(bool showHidden) {
                                  /*ShowAllAliases*/ false);
 }
 
-void DriverInternal::PrintJob(Job *job, Driver &driver) {
+const void DriverInternal::PrintJob(const Job &job, Driver &driver) {
   auto cos = driver.Out();
   cos.UseGreen();
 
-  if (job->GetDeps().size() > 0) {
-    /*
-    for (auto &j : job->GetDeps()) {
-            DriverInternal::PrintJob(&j, driver);
+  if (job.GetDeps().size() > 0) {
+    for (const auto &j : job.GetDeps()) {
+      DriverInternal::PrintJob(j, driver);
     }
-    */
   }
-  switch (job->GetType()) {
-    case JobType::Compile: {
-      auto *cj = dyn_cast<CompileJob>(job);
-      cos << job->GetName() << '\n';
-      cos.UseMagenta();
-      for (auto input : job->GetJobOptions().inputs) {
-        cos << ' ' << input.second << ' ' << "->" << ' '
-            << job->GetOutputTypeName() << '\n';
+
+  /*
+      switch (job.GetType()) {
+        case JobType::Compile: {
+          auto *cj = dyn_cast<CompileJob>(job);
+          cos << job.GetName() << '\n';
+          cos.UseMagenta();
+          for (auto input : job.GetJobOptions().inputs) {
+            cos << ' ' << input.second << ' ' << "->" << ' '
+                << job.GetOutputTypeName() << '\n';
+          }
+          break;
+        }
+        default:
+          break;
       }
-      break;
-    }
-    default:
-      break;
-  }
+  */
 }
 
 void Driver::ComputeModuleOutputPath() {}

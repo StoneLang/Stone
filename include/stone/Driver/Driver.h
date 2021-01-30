@@ -97,6 +97,7 @@ class OutputProfile final {
 
 class Driver final : public Session {
   friend DriverStats;
+  class Internal;
   OutputProfile outputProfile;
   std::unique_ptr<DriverStats> stats;
   std::unique_ptr<ToolChain> toolChain;
@@ -155,7 +156,6 @@ class Driver final : public Session {
   std::unique_ptr<llvm::opt::InputArgList> cfgOpts;
 
  private:
-  // void BuildActivities();
   /// This uses a std::unique_ptr instead of returning a toolchain by value
   /// because ToolChain has virtual methods.
   void BuildToolChain(const llvm::opt::InputArgList &args);

@@ -21,7 +21,6 @@ namespace driver {
 class Job;
 class Compilation;
 using JobID = int64_t;
-using Jobs = llvm::SmallVector<const Job*, 4>;
 
 class JobStats final : public Stats {
   const Job& job;
@@ -41,7 +40,7 @@ class Job {
   Compilation& compilation;
   JobID jobID;
   /// Inputs
-  Jobs deps;
+  ConstList<Job> deps;
   /// The output of this command.
   std::unique_ptr<CmdOutput> cmdOutput;
 
@@ -62,7 +61,7 @@ class Job {
 
  public:
   JobType GetType() const { return jobType; }
-  Jobs& GetDeps() { return deps; }
+  const ConstList<Job>& GetDeps() const { return deps; }
 
   void AddInput(const InputFile input);
   void AddDep(const Job* job);

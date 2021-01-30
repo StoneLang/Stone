@@ -13,7 +13,7 @@ Job::Job(JobType jobType, Compilation &compilation)
   compilation.GetDriver().GetStatEngine().Register(stats.get());
 }
 
-void Job::AddDep(const Job *job) { deps.push_back(job); }
+void Job::AddDep(const Job *job) { deps.Add(job); }
 
 void Job::AddInput(const InputFile input) { jobOpts.inputs.push_back(input); }
 

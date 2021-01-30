@@ -57,7 +57,7 @@ class Compilation final {
   std::unique_ptr<driver::TaskQueue> queue;
 
   /// A list of all the top-level jobs to run
-  SafeList<Job> jobs;
+  ConstList<Job> jobs;
 
   /// Temporary files which should be removed on exit.
   llvm::opt::ArgStringList tempFiles;
@@ -77,23 +77,13 @@ class Compilation final {
   ~Compilation();
 
  public:
-  /// Creates a new Job owned by this Compilation
-  // template <typename T, typename... Args>
-  // T *CreateJob(Args &&...arg);
-  template <typename T, typename... Args>
-  T *CreateJob(Args &&...arg) {
-    auto job = new T(std::forward<Args>(arg)...);
-    jobs.Add(std::unique_ptr<stone::driver::Job>(job));
-    return job;
-  }
-
-  Job *AddJob(std::unique_ptr<Job> job);
+  void AddJob(const Job *job);
 
   TaskQueue &GetQueue() { return *queue.get(); }
   const TaskQueue &GetQueue() const { return *queue.get(); }
 
-  SafeList<Job> &GetJobs() { return jobs; }
-  const SafeList<Job> &GetJobs() const { return jobs; }
+  ConstList<Job> &GetJobs() { return jobs; }
+  const ConstList<Job> &GetJobs() const { return jobs; }
 
   CompilationStats &GetStats() { return *stats.get(); }
 

@@ -19,12 +19,11 @@ StoneTool::StoneTool(llvm::StringRef fullName, llvm::StringRef shortName,
 Job *StoneTool::CreateJob(Compilation &compilation,
                           llvm::SmallVectorImpl<const Job *> &&deps,
                           std::unique_ptr<CmdOutput> cmdOutput,
-                          const OutputProfile &outputProfile)  {
-
-  //auto job = llvm::make_unique<CompileJob>(compilation);
-	//return job.get(); 
-
-	return nullptr; 
+                          const OutputProfile &outputProfile) {
+  auto job = llvm::make_unique<CompileJob>(compilation);
+  Job *result = job.get();
+  jobs.Add(std::move(job));
+  return result;
 }
 
 StoneTool::~StoneTool() {}

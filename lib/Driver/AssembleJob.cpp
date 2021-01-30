@@ -19,13 +19,10 @@ Job *AssembleTool::CreateJob(Compilation &compilation,
                              llvm::SmallVectorImpl<const Job *> &&deps,
                              std::unique_ptr<CmdOutput> cmdOutput,
                              const OutputProfile &outputProfile) {
-
-
-	auto job = llvm::make_unique<AssembleJob>(compilation);
-	Job *result = job.get(); 
+  auto job = llvm::make_unique<AssembleJob>(compilation);
+  Job *result = job.get();
   jobs.Add(std::move(job));
   return result;
-
 }
 
 AssembleTool::~AssembleTool() {}
