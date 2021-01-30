@@ -508,6 +508,14 @@ void Driver::PrintHelp(bool showHidden) {
 void DriverInternal::PrintJob(Job *job, Driver &driver) {
   auto cos = driver.Out();
   cos.UseGreen();
+
+  if (job->GetDeps().size() > 0) {
+    /*
+    for (auto &j : job->GetDeps()) {
+            DriverInternal::PrintJob(&j, driver);
+    }
+    */
+  }
   switch (job->GetType()) {
     case JobType::Compile: {
       auto *cj = dyn_cast<CompileJob>(job);

@@ -1,13 +1,17 @@
 #include "stone/Driver/Job.h"
 
 #include "stone/Driver/Compilation.h"
+#include "stone/Driver/Driver.h"
 
 using namespace stone;
 using namespace stone::driver;
 
 // Some job depend on other jobs -- For example, LinkJob
 Job::Job(JobType jobType, bool isAsync, Compilation &compilation)
-    : jobType(jobType), jobID(0), isAsync(isAsync), compilation(compilation) {}
+    : jobType(jobType), jobID(0), isAsync(isAsync), compilation(compilation) {
+  stats.reset(new JobStats(*this));
+  compilation.GetDriver().GetStatEngine().Register(stats.get());
+}
 
 void Job::AddDep(const Job *job) { deps.push_back(job); }
 
@@ -30,6 +34,8 @@ const char *Job::GetNameByType(JobType jobType) {
 }
 
 Job::~Job() {}
+
+void JobStats::Print() {}
 
 void Job::Print(const char *terminator, bool quote, CrashState *crash) const {}
 

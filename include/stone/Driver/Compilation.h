@@ -33,13 +33,16 @@ class ToolChain;
 class Compilation;
 using ArgStringMap = llvm::DenseMap<const Job *, const char *>;
 
+class Compilation;
 class CompilationStats final : public Stats {
   const Compilation &compilation;
 
  public:
-  CompilationStats(const Compilation &compilation);
+  CompilationStats(const Compilation &compilation)
+      : Stats("compilation statistics:"), compilation(compilation) {}
   void Print() override;
 };
+
 class CompilationResult {};
 class Compilation final {
   /// The System we were created by.
@@ -82,6 +85,8 @@ class Compilation final {
     return job;
   }
 
+  Job *AddJob(std::unique_ptr<Job> job);
+
   TaskQueue &GetQueue() { return *queue.get(); }
   const TaskQueue &GetQueue() const { return *queue.get(); }
 
@@ -92,9 +97,6 @@ class Compilation final {
 
   const Driver &GetDriver() const { return driver; }
   Driver &GetDriver() { return driver; }
-
-  ///
-  void AddJob(std::unique_ptr<Job> job) { jobs.Add(std::move(job)); }
 
   /// addTempFile - Add a file to remove on exit, and returns its
   /// argument.

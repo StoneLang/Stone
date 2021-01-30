@@ -15,6 +15,7 @@ class StatsListener {};
 
 class Stats {
   bool enabled = false;
+  ConstList<Stats> deps;
 
  protected:
   const char* name = nullptr;
@@ -26,6 +27,8 @@ class Stats {
   const char* GetName() const { return name; }
   void Enable() { enabled = true; }
   void Disable() { enabled = false; }
+  void AddDep(const Stats* stats) { deps.Add(stats); }
+  ConstList<Stats> GetDeps() { return deps; }
 
  public:
   virtual void Print() = 0;

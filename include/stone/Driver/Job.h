@@ -7,6 +7,7 @@
 #include "llvm/Option/ArgList.h"
 #include "llvm/Support/StringSaver.h"
 #include "stone/Core/List.h"
+#include "stone/Core/Stats.h"
 #include "stone/Driver/CmdOutput.h"
 #include "stone/Driver/CrashState.h"
 #include "stone/Driver/JobOptions.h"
@@ -21,7 +22,17 @@ class Compilation;
 using JobID = int64_t;
 using Jobs = llvm::SmallVector<const Job*, 4>;
 
+class JobStats final : public Stats {
+  const Job& job;
+
+ public:
+  JobStats(const Job& compilation) : Stats("job statistics:"), job(job) {}
+  void Print() override;
+};
+
 class Job {
+  friend JobStats;
+
  protected:
   bool isAsync;
   JobType jobType;
@@ -32,6 +43,8 @@ class Job {
   Jobs deps;
   /// The output of this command.
   std::unique_ptr<CmdOutput> cmdOutput;
+
+  std::unique_ptr<JobStats> stats;
 
   /// The executable to run.
   const char* executable = nullptr;
@@ -78,6 +91,8 @@ class Job {
     cmdOutput = std::move(output);
   }
   void SetExecutable(const char* exec) { executable = exec; }
+
+  JobStats& GetStats() { return *stats.get(); }
 
  public:
   static const char* GetNameByType(JobType jobType);

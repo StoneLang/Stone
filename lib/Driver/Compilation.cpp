@@ -39,10 +39,16 @@ Compilation::Compilation(Driver &driver) : driver(driver) {
   driver.GetStatEngine().Register(stats.get());
 }
 
-CompilationStats::CompilationStats(const Compilation &compilation)
-    : Stats("compilation statistics:"), compilation(compilation) {}
-
 Compilation::~Compilation() {}
+
+Job *Compilation::AddJob(std::unique_ptr<Job> job) {
+  Job *result = job.get();
+  // TODO:
+  // Jobs.emplace_back(std::move(job));
+  // GetStats().AddDep(result->GetStats());
+
+  return result;
+}
 
 bool Compilation::PurgeFile(const char *name, bool issueErrors) const {
   return true;
