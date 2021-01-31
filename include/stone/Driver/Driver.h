@@ -11,6 +11,7 @@
 #include "stone/Driver/DriverOptions.h"
 #include "stone/Driver/DriverStats.h"
 #include "stone/Driver/Job.h"
+#include "stone/Driver/JobBuilder.h"
 #include "stone/Driver/JobOptions.h"
 #include "stone/Driver/ToolChain.h"
 #include "stone/Session/Session.h"
@@ -99,6 +100,8 @@ class OutputProfile final {
 
 class Driver final : public Session {
   friend DriverStats;
+  friend JobBuilder;
+
   class Internal;
   OutputProfile outputProfile;
   std::unique_ptr<DriverStats> stats;
@@ -242,6 +245,7 @@ class Driver final : public Session {
   void BuildJobs();
   void PrintJobs();
   void BuildJobQueue();
+  void AddJobForCompilation(const Job *job);
 };
 }  // namespace driver
 }  // namespace stone

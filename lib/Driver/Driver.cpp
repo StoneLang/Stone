@@ -17,6 +17,7 @@ class DriverInternal final {
  public:
   static bool DoesInputExist(Driver &driver, const DerivedArgList &args,
                              llvm::StringRef input);
+
  public:
   /// Print the job
   static void PrintJob(const Job &job, Driver &driver);
@@ -57,6 +58,7 @@ class DriverInternal final {
   */
 
   static std::unique_ptr<driver::TaskQueue> BuildTaskQueue(Driver &driver);
+
  public:
   /// Builds the compile jobs
   static void BuildCompileJobs(Driver &driver);
@@ -462,18 +464,23 @@ void Driver::BuildJobs() {
     return;
   }
 
-  // TODO: BuildCompileOnlyJobs();
-  DriverInternal internal;
-  switch (outputProfile.compileType) {
-    case CompileType::Multiple:
-      DriverInternal::BuildJobsForMultipleCompileType(*this);
-      break;
-    case CompileType::Single:
-      DriverInternal::BuildJobsForSingleCompileType(*this);
-      break;
-    default:
-      break;
-  }
+  JobBuilder::BuildJobs(*this);
+
+  /*
+    // TODO: BuildCompileOnlyJobs();
+    DriverInternal internal;
+    switch (outputProfile.compileType) {
+      case CompileType::Multiple:
+        DriverInternal::BuildJobsForMultipleCompileType(*this);
+        break;
+      case CompileType::Single:
+        DriverInternal::BuildJobsForSingleCompileType(*this);
+        break;
+      default:
+        break;
+    }
+
+  */
 }
 void Driver::PrintJobs() {
   for (auto &job : GetCompilation().GetJobs()) {
@@ -525,6 +532,10 @@ void DriverInternal::PrintJob(const Job &job, Driver &driver) {
 void Driver::ComputeModuleOutputPath() {}
 
 void Driver::ComputeMainOutput() {}
+
+void Driver::AddJobForCompilation(const Job *job) {
+  GetCompilation().AddJob(job);
+}
 
 int Driver::Run() {
   // Perform a quick help check

@@ -20,6 +20,7 @@ set(stone_driver_sources
 	DarwinToolChain.cpp
 	Driver.cpp
 	Job.cpp
+	JobBuilder.cpp
 	LinkJob.cpp
 	Run.cpp
 	ToolChain.cpp
