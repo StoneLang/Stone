@@ -16,13 +16,12 @@ Session::Session(SessionOptions &sessionOpts)
 
 Session::~Session() {}
 
-std::unique_ptr<llvm::opt::InputArgList> Session::BuildArgList(
+std::unique_ptr<llvm::opt::InputArgList> Session::ParseArgList(
     llvm::ArrayRef<const char *> args) {
-  std::unique_ptr<llvm::opt::InputArgList> argList =
-      llvm::make_unique<llvm::opt::InputArgList>(
-          sessionOpts.GetOpts().ParseArgs(args, missingArgIndex,
-                                          missingArgCount, includedFlagsBitmask,
-                                          excludedFlagsBitmask));
+  auto argList = llvm::make_unique<llvm::opt::InputArgList>(
+      sessionOpts.GetOpts().ParseArgs(args, missingArgIndex, missingArgCount,
+                                      includedFlagsBitmask,
+                                      excludedFlagsBitmask));
 
   assert(argList && "No input argument list.");
 
@@ -43,6 +42,15 @@ std::unique_ptr<llvm::opt::InputArgList> Session::BuildArgList(
     return nullptr;
   }
   return argList;
+}
+std::unique_ptr<llvm::opt::DerivedArgList> Session::TranslateArgList(
+    const llvm::opt::InputArgList &args) {
+  auto dArgList = llvm::make_unique<llvm::opt::DerivedArgList>(args);
+
+  for (Arg *arg : args) {
+    dArgList->append(arg);
+  }
+  return dArgList;
 }
 
 void Session::SetTargetTriple(const llvm::Triple &triple) {
@@ -87,15 +95,6 @@ void Session::ComputeMode(const llvm::opt::DerivedArgList &args) {
   if (mode.GetKind() == ModeKind::None) {
     mode.SetKind(GetDefaultModeKind());
   }
-}
-llvm::opt::DerivedArgList *Session::TranslateInputArgs(
-    const llvm::opt::InputArgList &args) {
-  translatedArgs.reset(new DerivedArgList(args));
-
-  for (Arg *arg : args) {
-    translatedArgs->append(arg);
-  }
-  return translatedArgs.get();
 }
 
 void Session::Purge() {}

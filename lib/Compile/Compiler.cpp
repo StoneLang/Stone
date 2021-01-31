@@ -34,12 +34,11 @@ void Compiler::SetMainModule(Module *m) {}
 bool Compiler::Build(llvm::ArrayRef<const char *> args) {
   excludedFlagsBitmask = opts::NoCompileOption;
 
-  auto argList = BuildArgList(args);
+  originalArgs = ParseArgList(args);
 
-  std::unique_ptr<llvm::opt::DerivedArgList> dArgList(
-      TranslateInputArgs(*argList));
+  translatedArgs = TranslateArgList(*originalArgs);
   // Computer the compiler mode.
-  ComputeMode(*dArgList);
+  ComputeMode(*translatedArgs);
 
   BuildInputs();
 

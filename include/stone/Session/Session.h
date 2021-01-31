@@ -82,8 +82,13 @@ class Session : public Context {
   virtual ~Session();
 
  protected:
-  std::unique_ptr<llvm::opt::InputArgList> BuildArgList(
+  std::unique_ptr<llvm::opt::InputArgList> ParseArgList(
       llvm::ArrayRef<const char *> args);
+
+  /// TranslateInputArgs - Create a new derived argument list from the input
+  /// arguments, after applying the standard argument translations.
+  virtual std::unique_ptr<llvm::opt::DerivedArgList> TranslateArgList(
+      const llvm::opt::InputArgList &args);
 
  public:
   ///
@@ -133,10 +138,6 @@ class Session : public Context {
  protected:
   // Compute the mode id -- TODO: virtual
   virtual void ComputeMode(const llvm::opt::DerivedArgList &args);
-  /// TranslateInputArgs - Create a new derived argument list from the input
-  /// arguments, after applying the standard argument translations.
-  virtual llvm::opt::DerivedArgList *TranslateInputArgs(
-      const llvm::opt::InputArgList &args);
 
   virtual ModeKind GetDefaultModeKind() = 0;
 

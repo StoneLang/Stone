@@ -249,7 +249,7 @@ std::unique_ptr<driver::TaskQueue> DriverInternal::BuildTaskQueue(
 bool Driver::Build(llvm::ArrayRef<const char *> args) {
   excludedFlagsBitmask = opts::NoDriverOption;
 
-  originalArgs = BuildArgList(args);
+  originalArgs = ParseArgList(args);
   // TODO: Check for errors
 
   BuildCompilation(*originalArgs);
@@ -307,10 +307,10 @@ void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
   // workingDir = ComputeWorkingDir(argList.get());
 
   // NOTE: Session manages this object
-  auto dArgList = TranslateInputArgs(argList);
+  translatedArgs = TranslateArgList(argList);
 
   // Computer the compiler mode.
-  ComputeMode(*dArgList);
+  ComputeMode(*translatedArgs);
 
   BuildToolChain(*originalArgs);
   // TODO: Check for errors
@@ -318,11 +318,11 @@ void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
   // Perform toolchain specific args validation.
   // toolChain.ValidateArguments(de, *dArgList, targetTriple);
   //
-  if (EmitInfo(*dArgList, GetToolChain())) {
+  if (EmitInfo(*translatedArgs, GetToolChain())) {
     return;
   }
 
-  BuildInputs(GetToolChain(), *dArgList, GetInputs());
+  BuildInputs(GetToolChain(), *translatedArgs, GetInputs());
 
   if (CutOff()) return;
 
@@ -331,7 +331,7 @@ void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
     return;
   }
 
-  BuildOutputProfile(*dArgList, GetOutputProfile());
+  BuildOutputProfile(*translatedArgs, GetOutputProfile());
 
   if (CutOff()) return;
 
@@ -339,9 +339,10 @@ void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
   //
   // About to move argument list, so capture some flags that will be needed
   // later.
-  driverOpts.printJobs = dArgList->hasArg(opts::PrintDriverJobs);
-  driverOpts.printLifecycle = dArgList->hasArg(opts::PrintDriverLifecycle);
-  driverOpts.printStats = dArgList->hasArg(opts::PrintDriverStats);
+  driverOpts.printJobs = translatedArgs->hasArg(opts::PrintDriverJobs);
+  driverOpts.printLifecycle =
+      translatedArgs->hasArg(opts::PrintDriverLifecycle);
+  driverOpts.printStats = translatedArgs->hasArg(opts::PrintDriverStats);
 
   compilation = llvm::make_unique<Compilation>(*this);
 
