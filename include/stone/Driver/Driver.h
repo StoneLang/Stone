@@ -41,7 +41,9 @@ enum class CompileType {
   /// Multiple compile invocations and -main-file.
   Multiple,
   /// A single compilation using a single compile invocation without -main-file.
-  Single
+  Single,
+  /// A single batch that contains may 'Multiple' CompileType.
+  Batch
 };
 enum class LTOKind { None, Full, Thin, Unknown };
 

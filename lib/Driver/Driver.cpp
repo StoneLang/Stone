@@ -17,7 +17,6 @@ class DriverInternal final {
  public:
   static bool DoesInputExist(Driver &driver, const DerivedArgList &args,
                              llvm::StringRef input);
-
  public:
   /// Print the job
   static void PrintJob(const Job &job, Driver &driver);
@@ -26,12 +25,10 @@ class DriverInternal final {
   static void PrintJobVerbosely(Job *job, Driver &driver);
 
   /// Build jobs for multiple compiles -- each job gets one source file
-  static void BuildJobsForMultipleCompileType(Driver &driver,
-                                              DriverInternal &internal);
+  static void BuildJobsForMultipleCompileType(Driver &driver);
 
   /// Build jobs for a single compile -- the compile jobs has multiple files.
-  static void BuildJobsForSingleCompileType(Driver &driver,
-                                            DriverInternal &internal);
+  static void BuildJobsForSingleCompileType(Driver &driver);
 
   // TODO:
   static void ComputeCompileType(const Driver &driver,
@@ -59,21 +56,19 @@ class DriverInternal final {
                              llvm::SmallString<128> &buffer);
   */
 
-  static std::unique_ptr<driver::TaskQueue> BuildTaskQueue(
-      Driver &driver, DriverInternal &internal);
-
+  static std::unique_ptr<driver::TaskQueue> BuildTaskQueue(Driver &driver);
  public:
   /// Builds the compile jobs
-  static void BuildCompileJobs(Driver &driver, DriverInternal &internal);
+  static void BuildCompileJobs(Driver &driver);
 
   /// Builds the  link job
-  static void BuildLinkJob(Driver &driver, DriverInternal &internal);
+  static void BuildLinkJob(Driver &driver);
 
   /// Build compile only jobs
-  static void BuildBackendJob(Driver &driver, DriverInternal &internal);
+  static void BuildBackendJob(Driver &driver);
 
   /// Build compile only jobs
-  static void BuildAssembleJob(Driver &driver, DriverInternal &internal);
+  static void BuildAssembleJob(Driver &driver);
 };
 
 /// Check that the file referenced by \p Input exists. If it doesn't,
@@ -97,8 +92,7 @@ bool DriverInternal::DoesInputExist(Driver &driver, const DerivedArgList &args,
 }
 void DriverInternal::ComputeCmdOutput(const Driver &driver) {}
 
-void DriverInternal::BuildCompileJobs(Driver &driver,
-                                      DriverInternal &internal) {
+void DriverInternal::BuildCompileJobs(Driver &driver) {
   if (!driver.GetMode().CanCompile()) {
     return;
   }
@@ -125,7 +119,7 @@ void DriverInternal::BuildCompileJobs(Driver &driver,
   }
 }
 
-void DriverInternal::BuildLinkJob(Driver &driver, DriverInternal &internal) {
+void DriverInternal::BuildLinkJob(Driver &driver) {
   if (driver.GetMode().IsCompileOnly()) {
     return;
   }
@@ -144,7 +138,7 @@ void DriverInternal::BuildLinkJob(Driver &driver, DriverInternal &internal) {
     return;
   }
 
-  BuildCompileJobs(driver, internal);
+  BuildCompileJobs(driver);
 
   if (driver.GetMode().CanLink()) {
     Job *linkJob = nullptr;
@@ -185,25 +179,21 @@ linkJob->AddDep(job);
   }
 }
 
-void DriverInternal::BuildAssembleJob(Driver &driver,
-                                      DriverInternal &internal) {}
+void DriverInternal::BuildAssembleJob(Driver &driver) {}
 
-void DriverInternal::BuildBackendJob(Driver &driver, DriverInternal &internal) {
-}
+void DriverInternal::BuildBackendJob(Driver &driver) {}
 
-void DriverInternal::BuildJobsForMultipleCompileType(Driver &driver,
-                                                     DriverInternal &internal) {
+void DriverInternal::BuildJobsForMultipleCompileType(Driver &driver) {
   if (driver.GetMode().IsCompileOnly()) {
-    BuildCompileJobs(driver, internal);
+    BuildCompileJobs(driver);
     return;
   }
   if (driver.GetOutputProfile().RequiresLink()) {
-    BuildLinkJob(driver, internal);
+    BuildLinkJob(driver);
     return;
   }
 }
-void DriverInternal::BuildJobsForSingleCompileType(Driver &driver,
-                                                   DriverInternal &internal) {
+void DriverInternal::BuildJobsForSingleCompileType(Driver &driver) {
   /*
     auto job =
         driver.GetCompilation().CreateJob<CompileJob>(driver.GetCompilation());
@@ -240,7 +230,7 @@ Driver::Driver(llvm::StringRef stoneExecutable, std::string driverName)
 }
 
 std::unique_ptr<driver::TaskQueue> DriverInternal::BuildTaskQueue(
-    Driver &driver, DriverInternal &internal) {
+    Driver &driver) {
   // TODO:
   return llvm::make_unique<driver::UnixTaskQueue>(driver);
 }
@@ -476,10 +466,10 @@ void Driver::BuildJobs() {
   DriverInternal internal;
   switch (outputProfile.compileType) {
     case CompileType::Multiple:
-      DriverInternal::BuildJobsForMultipleCompileType(*this, internal);
+      DriverInternal::BuildJobsForMultipleCompileType(*this);
       break;
     case CompileType::Single:
-      DriverInternal::BuildJobsForSingleCompileType(*this, internal);
+      DriverInternal::BuildJobsForSingleCompileType(*this);
       break;
     default:
       break;
