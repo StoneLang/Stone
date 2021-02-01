@@ -1,0 +1,22 @@
+module Stone.Compile; 
+
+using Stone.Session; 
+
+space Stone.Compile {
+
+	class Compiler : Session {
+		public Module* md = null;
+		public ASTContext* ast = null; 
+	}	
+	fun Compiler::Init() {
+		m = new Module(); 
+		context = new ASTContext(); 
+	}
+	fun Compiler::Defer() {
+		free ast;
+		free md;
+	}
+	public fun Compiler::Build() -> i32 {
+		return 0; 
+	}
+}

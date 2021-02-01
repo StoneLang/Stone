@@ -9,7 +9,7 @@ interface CI {
 	fun Print() -> void; 
 }
 class C0 :  CI {
-	Options* options = null; 
+	const Options* options = null; 
 	public i32 counter = 0; 
 	public System* system = null;  
 }
@@ -27,13 +27,13 @@ C0::defer(){
 
 
 // Leaning this way
-init C0::Init(Options* options, Context* context) {
+init fun C0::Init(const Options* options, Context* context) {
 	this.options = options;
 	this.context = context; 
 	this.system = new System(); 
 }
 [test]
-defer C0::Defer() { 
+defer fun C0::Defer() { 
 	free system;
 	free options; 
 }

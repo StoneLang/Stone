@@ -1,0 +1,32 @@
+module Stone.Driver
+using Stone.Session; 
+
+
+space Stone.Driver {
+
+	public class Driver : Session {
+		public string  name;
+		private SessionProfile* profile = null; 
+		private Compilation* compilation = null; 
+	}
+	fun Driver::Init() {
+		profile = new SessionProfile(); 
+	}
+	fun Driver::Defer() {
+		if(compilation){
+			free compilation; 
+		}
+	}
+	public fun Driver::Build() -> bool {
+		return true; 
+	}
+	public fun Driver::BuildCompilation() -> bool {
+		compilation = new Compilation();
+	}
+	public fun Driver::GetCompilation() -> Compilation* {
+		return compiplation;
+	}
+	public fun Driver::GetProfile() -> SessionProfile* {
+		return profile;	
+	}
+}

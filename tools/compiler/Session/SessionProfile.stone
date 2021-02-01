@@ -1,0 +1,12 @@
+module Stone.Session; 
+
+space Stone.Session {
+
+	public struct SessionProfile {
+		public Mode mode;  
+	}
+	fun SessionProfile::Init() {
+	}
+	fun SessionProfile::Defer() {
+	}
+}

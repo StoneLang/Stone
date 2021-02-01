@@ -8,9 +8,23 @@ space System.Physics {
 	struct Particle {
 		public f32 mass = 100.00; 
 	}
-	public fun Fire(const Particle* particle) -> void {
+	public fun Particle::Fire() -> void {
+
+		if(self.mass > 200.00) {
+		}
 		return true; 
 	}
 
 }
 
+
+class ASTContext {
+	public IdentifierTable* table = null; 
+}
+
+ASTContext::New() {
+	self.table = new IdentifierTable(); 
+}
+ASTContext::Old(){
+
+}

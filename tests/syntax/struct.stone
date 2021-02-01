@@ -3,5 +3,8 @@
 struct S0 {	
 }
 
+void S0::Do() -> void {
+}
+
 
 

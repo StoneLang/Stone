@@ -8,9 +8,31 @@ space Stone.Physics.Mechanics {
 }
 
 space Stone.Physics.Quantum {
-	public fun Fire(const Particle* particle) -> auto {
-		int* result = null; 
-		return true; 
+
+	struct ParticleProfile {
+		public f32 mass; 
+		public string name; 
+	}
+	public interface Particle {
+		fun Fire() -> auto;  
+	}	
+	class Proton : Particle {
+		ParticleProfile* profile = null;
+	}
+	init fun Proton::Init(const ParticleProfile* profile) {
+		self.profile = profile; 
+	}
+	defer fun Proton::Defer() {
+		free profile;
+	}
+	public fun Proton::GetProfile() -> ParticleProfile* {
+		return profile;  
+	}
+	public fun Proton::Fire() -> auto {
+		int* result = null;
+		if(profile.mass > 10.00) {
+		}
+		return true;
 	}
 
 }

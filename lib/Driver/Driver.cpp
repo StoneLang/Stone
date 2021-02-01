@@ -243,13 +243,10 @@ bool Driver::Build(llvm::ArrayRef<const char *> args) {
 
   originalArgs = ParseArgList(args);
   // TODO: Check for errors
-
   BuildCompilation(*originalArgs);
-
   if (de.HasError()) {
     return false;
   }
-
   return true;
 }
 

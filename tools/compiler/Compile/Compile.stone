@@ -1,0 +1,10 @@
+module Stone.Compile; 
+
+space Stone.Compile {
+
+	public fun Compile(string[] args) -> i32 {
+		Compiler* compiler = new Compiler();
+		free compiler; 
+		return 0;
+	}
+}

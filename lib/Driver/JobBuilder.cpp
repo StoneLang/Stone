@@ -42,7 +42,6 @@ Job* JobBuilder::BuildJobForCompile(Driver& driver, const InputFile& input) {
          "The 'mode-type' does not support compiling.");
 
   assert(input.first == FileType::Stone && "Incorrect file for compiling.");
-
   auto tool = driver.GetToolChain().PickTool(JobType::Compile);
   assert(tool && "Could not find a tool for CompileJob.");
   // return tool->CreateJob(driver.GetCompilation(), std::move(cmdOutput),
@@ -117,7 +116,7 @@ int Driver::BuildJobs() {
 
   if (GetDriverOptions().inputs.empty()) {
     Out() << "D(SrcLoc(), msg::error_no_input_files)" << '\n';
-    ret::err;
+    return ret::err;
   }
   switch (GetMode().GetKind()) {
     case ModeKind::Check:

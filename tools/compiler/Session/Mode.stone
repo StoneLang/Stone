@@ -1,0 +1,22 @@
+module Stone.Session; 
+
+space Stone.Session {
+
+	public enum ModeType {
+		None,
+		Parse,
+		Check
+	}
+	public class Mode {
+		public ModeType modeType = ModeType::None; 
+	}
+	public fun Mode::IsCompileOnly() -> bool {
+		match (self.modeType) {
+			case ModeType::Parse:
+			case ModeType::Check:
+				return true; 
+			default:
+				break;
+		}
+	}
+}

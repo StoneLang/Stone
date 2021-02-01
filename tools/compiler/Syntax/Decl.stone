@@ -1,0 +1,11 @@
+module Stone.Syntax;
+
+
+space Stone.Syntax {
+
+	public class Decl : Node {
+	}	
+	public class TypeDecl {
+		public Decl* decl = null; 
+	}
+}

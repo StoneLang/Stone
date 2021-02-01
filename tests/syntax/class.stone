@@ -2,7 +2,6 @@ module Stone.Syntax
 
 public class C0 {	
 	string name = "test"; 
-
 	public int data = 100; 
 }
 
