@@ -1,7 +1,7 @@
+#include "stone/Core/Ret.h"
 #include "stone/Driver/Compilation.h"
 #include "stone/Driver/Driver.h"
 #include "stone/Driver/Job.h"
-#include "stone/Core/Ret.h"
 
 using namespace stone;
 using namespace stone::file;
@@ -70,8 +70,14 @@ int JobBuilder::BuildJobsForExecutable(Driver& driver) {
   return ret::ok;
 }
 
-int Driver::BuildJobs(Driver& driver) {
-  switch (driver.GetMode().GetKind()) {
+int Driver::BuildJobs() {
+  llvm::PrettyStackTraceString CrashInfo("Building compilation jobs.");
+
+  if (GetDriverOptions().inputs.empty()) {
+    Out() << "D(SrcLoc(), msg::error_no_input_files)" << '\n';
+    ret::err;
+  }
+  switch (GetMode().GetKind()) {
     case ModeKind::Check:
     case ModeKind::EmitLibrary:
     case ModeKind::EmitObject:
@@ -80,13 +86,13 @@ int Driver::BuildJobs(Driver& driver) {
     case ModeKind::EmitIR:
     case ModeKind::EmitBC:
     case ModeKind::Parse:
-      return JobBuilder::BuildJobsForCompile(driver);
+      return JobBuilder::BuildJobsForCompile(*this);
       break;
     case ModeKind::EmitExecutable:
-      return JobBuilder::BuildJobsForExecutable(driver);
+      return JobBuilder::BuildJobsForExecutable(*this);
       break;
     case ModeKind::Link:
-      return JobBuilder::BuildJobForLinking(driver);
+      return JobBuilder::BuildJobForLinking(*this);
     default:
       return ret::err;
       break;

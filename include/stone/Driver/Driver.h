@@ -239,14 +239,10 @@ class Driver final : public Session {
 
  private:
   bool CutOff() { return de.HasError(); }
-
-  void BuildJobs();
+  int BuildJobs();
   void PrintJobs();
   void BuildJobQueue();
   void AddJobForCompilation(const Job *job);
-
- private:
-  int static BuildJobs(Driver &driver);
 };
 }  // namespace driver
 }  // namespace stone

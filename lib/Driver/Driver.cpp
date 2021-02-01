@@ -456,31 +456,6 @@ void Driver::ComputeMode(const llvm::opt::DerivedArgList &args) {
   Session::ComputeMode(args);
 }
 
-void Driver::BuildJobs() {
-  llvm::PrettyStackTraceString CrashInfo("Building compilation jobs.");
-
-  if (GetDriverOptions().inputs.empty()) {
-    Out() << "D(SrcLoc(), msg::error_no_input_files)" << '\n';
-    return;
-  }
-  Driver::BuildJobs(*this);
-
-  /*
-    // TODO: BuildCompileOnlyJobs();
-    DriverInternal internal;
-    switch (outputProfile.compileType) {
-      case CompileType::Multiple:
-        DriverInternal::BuildJobsForMultipleCompileType(*this);
-        break;
-      case CompileType::Single:
-        DriverInternal::BuildJobsForSingleCompileType(*this);
-        break;
-      default:
-        break;
-    }
-
-  */
-}
 void Driver::PrintJobs() {
   for (auto &job : GetCompilation().GetJobs()) {
     DriverInternal::PrintJob(job, *this);
