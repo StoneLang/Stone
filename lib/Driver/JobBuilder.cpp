@@ -9,9 +9,6 @@ using namespace stone::driver;
 namespace stone {
 namespace driver {
 struct JobBuilder final {
-  /// Build jobs entry point
-  static bool BuildJobs(Driver& driver);
-
   /// Build jobs for compiling
   static bool BuildJobsForCompile(Driver& driver);
   static Job* BuildJobForCompile(Driver& driver, const InputFile& input);
@@ -25,11 +22,11 @@ struct JobBuilder final {
 };
 }  // namespace driver
 }  // namespace stone
+
 bool JobBuilder::BuildJobsForCompile(Driver& driver) {
   assert(driver.GetMode().IsCompileOnly() &&
          "Can only be called directly for compiling only.");
 
-  // Pick a tool
   for (const auto& input : driver.GetDriverOptions().inputs) {
     auto job = JobBuilder::BuildJobForCompile(driver, input);
     driver.AddJobForCompilation(job);
@@ -39,6 +36,13 @@ bool JobBuilder::BuildJobsForCompile(Driver& driver) {
 
 Job* JobBuilder::BuildJobForCompile(Driver& driver, const InputFile& input) {
   assert(input.first == FileType::Stone && "Incorrect file for compiling.");
+
+  auto tool = driver.GetToolChain().PickTool(JobType::Compile);
+  assert(tool && "Could not find a tool for CompileJob.");
+
+  // return tool->CreateJob(driver.GetCompilation(), std::move(cmdOutput),
+  //                               driver.GetOutputProfile());
+  return nullptr;
 }
 
 bool JobBuilder::BuildJobForLinking(Driver& driver) {
