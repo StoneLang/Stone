@@ -60,6 +60,11 @@ void Compiler::PrintLifecycle() {}
 
 void Compiler::PrintHelp(bool showHidden) {}
 
+
+void Compiler::BuildOptions()  {
+}
+
+
 int Compiler::Run() {
   // Perform a quick help check
   if (compilerOpts.printHelp) {

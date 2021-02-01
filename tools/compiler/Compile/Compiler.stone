@@ -5,18 +5,25 @@ using Stone.Session;
 space Stone.Compile {
 
 	class Compiler : Session {
-		public Module* md = null;
-		public ASTContext* ast = null; 
+		Module* md = null;
+		ASTContext* ast = null; 
 	}	
-	fun Compiler::Init() {
-		m = new Module(); 
-		context = new ASTContext(); 
+	init fun Compiler::Init() {
+		md = new Module(); 
+		ast = new ASTContext(); 
 	}
-	fun Compiler::Defer() {
+	defer fun Compiler::Defer() {
 		free ast;
 		free md;
 	}
 	public fun Compiler::Build() -> i32 {
 		return 0; 
 	}
+	public fun Compiler::GetModule() -> Module* {
+		return md;
+	}
+
 }
+
+
+

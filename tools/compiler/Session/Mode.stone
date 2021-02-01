@@ -11,7 +11,7 @@ space Stone.Session {
 		public ModeType modeType = ModeType::None; 
 	}
 	public fun Mode::IsCompileOnly() -> bool {
-		match (self.modeType) {
+		match (me.modeType) {
 			case ModeType::Parse:
 			case ModeType::Check:
 				return true; 

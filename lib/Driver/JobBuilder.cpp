@@ -12,16 +12,30 @@ namespace driver {
 struct JobBuilder final {
   /// Build jobs for compiling
   static int BuildJobsForCompile(Driver& driver);
-  static Job* BuildJobForCompile(Driver& driver, const InputFile& input);
+  static Job* BuildJobForCompile(Driver& driver, const InputFile input);
 
   /// Build jobs for linking
   static int BuildJobForLinking(Driver& driver);
+
+	//TODO: Think about 
+	static int BuildJobForLinking(Driver& driver, Job* dep);
+	static int BuildJobForLinking(Driver& driver, const InputFile input); 
+
+
   static Job* BuildJobForLinkingImpl(Driver& driver);
+
   static Job* BuildJobForStaticLinking(Driver& driver);
   static Job* BuildJobForDynamicLinking(Driver& driver);
 
   /// Build a jobs for compiling, and linking.
   static int BuildJobsForExecutable(Driver& driver);
+
+  static int BuildJobForAssemble(Driver& driver);
+
+	/// Build a jobs for compiling, and linking.
+  static int BuildJobForBackend(Driver& driver);
+
+
 };
 }  // namespace driver
 }  // namespace stone
@@ -37,15 +51,18 @@ int JobBuilder::BuildJobsForCompile(Driver& driver) {
   return ret::ok;
 }
 
-Job* JobBuilder::BuildJobForCompile(Driver& driver, const InputFile& input) {
+Job* JobBuilder::BuildJobForCompile(Driver& driver, const InputFile input) {
   assert(driver.GetMode().CanCompile() &&
          "The 'mode-type' does not support compiling.");
 
+	Job* result = nullptr; 
   assert(input.first == FileType::Stone && "Incorrect file for compiling.");
   auto tool = driver.GetToolChain().PickTool(JobType::Compile);
   assert(tool && "Could not find a tool for CompileJob.");
-  // return tool->CreateJob(driver.GetCompilation(), std::move(cmdOutput),
+  // result = tool->CreateJob(driver.GetCompilation(), std::move(cmdOutput),
   //                               driver.GetOutputProfile());
+	//
+	// result->AddInput(input); 
   return nullptr;
 }
 
@@ -61,7 +78,6 @@ int JobBuilder::BuildJobForLinking(Driver& driver) {
   driver.AddJobForCompilation(job);
   return ret::ok;
 }
-
 Job* JobBuilder::BuildJobForLinkingImpl(Driver& driver) {
   assert(driver.GetMode().CanLink() &&
          "The 'mode-type' does not support linking.");

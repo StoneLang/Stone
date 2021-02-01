@@ -28,23 +28,22 @@ C0::defer(){
 
 // Leaning this way
 init fun C0::Init(const Options* options, Context* context) {
-	this.options = options;
-	this.context = context; 
-	this.system = new System(); 
+	me.options = options;
+	me.context = context; 
+	me.system = new System(); 
 }
 [test]
 defer fun C0::Defer() { 
-	free system;
-	free options; 
+	free {
+		system;
+		options;
+	}
 }
 
 
 
 module Physics; 
-
-space Physics.Device {
-
-
+space Physics.Physics {
 	interface Accelerator<T> {
 			Fire(const T* particle != null) -> bool;
 	}
@@ -81,3 +80,34 @@ space Physics.Device {
 
 	}
 }
+
+
+// Or
+
+
+space Physics {
+	temp(T) interface Accelerator {
+			fun Fire(const Particle* particle) -> bool;
+	}
+	class LinearAccelerator : real(LinearAccelerator) Accelerator {
+		public string name = "some name";  
+	}
+	init public fun LinearAccelerator::Init() {
+	}
+	defer public fun LinearAccelerator::Defer() {
+	}
+	public fun LinearAccelerator::Fire(const Particle* particle) -> bool {
+		return true; 
+	}
+}
+fun Main() -> int {
+	real(LinearAccelerator) Accelerator* a = new LinearAccelerator();
+	Particle* p = new Particle();
+	a.Fire(p); 
+
+	free p; 
+}
+
+
+
+

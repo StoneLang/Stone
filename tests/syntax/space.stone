@@ -18,13 +18,3 @@ space System.Physics {
 }
 
 
-class ASTContext {
-	public IdentifierTable* table = null; 
-}
-
-ASTContext::New() {
-	self.table = new IdentifierTable(); 
-}
-ASTContext::Old(){
-
-}

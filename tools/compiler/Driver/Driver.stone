@@ -10,7 +10,7 @@ space Stone.Driver {
 		private Compilation* compilation = null; 
 	}
 	fun Driver::Init() {
-		profile = new SessionProfile(); 
+		profile = new SessionProfile();	
 	}
 	fun Driver::Defer() {
 		if(compilation){
@@ -21,12 +21,12 @@ space Stone.Driver {
 		return true; 
 	}
 	public fun Driver::BuildCompilation() -> bool {
-		compilation = new Compilation();
+		compilation = new Compilation(me);
 	}
 	public fun Driver::GetCompilation() -> Compilation* {
-		return compiplation;
+		return me.compiplation;
 	}
 	public fun Driver::GetProfile() -> SessionProfile* {
-		return profile;	
+		return me.profile;	
 	}
 }

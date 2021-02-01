@@ -1,17 +1,42 @@
 
-any<T> interface Collection {
+temp(T) interface Queue {
+	fun Add(T* t) -> void; 
+	fun Pop() -> T*; 
 }
 
-any<T: Comparable> struct Array<T> : Collection<T> {
+/// Consider using a struct 
+temp(T) class PriorityQueue : temp(T) Queue {
+}
 
+fun PriorityQueue::Push(T* t) -> void {
+}
+fun PriorityQueue::Pop() -> T* {
+}
+
+struct Particle {
+}
+fun Main() -> u8 {
+	real(int) Queue* q0 = new PriorityQueue();
+	q0.Push(23);
+
+	Particle* p = new Particle();
+	real(Particle) Queue* q1 = new PriorityQueue(); 
+	q1.Push(p);
+
+	free {
+		q0;
+		q1;
+		p;
+	}
 }
 
 
-temp<T: Comparable> class List {
+
+temp(T) fun Max(T* first, T* second) -> T {
+	if(first > second) {
+		return first; 
+	}
+	return second;
 }
-
-public pure Collection<T> {
-}
-
-
+auto max = real(i32) Max(23, 25); 
 

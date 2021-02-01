@@ -1,12 +1,27 @@
 module Stone.Session; 
 
+using System.Time; 
+
 space Stone.Session {
 
+	public struct SessionOptions {
+	}
 	public struct SessionProfile {
-		public Mode mode;  
+		public ref Mode mode;
+		public ref SessionOptions options; 
+	  public Time* time = null;  
 	}
-	fun SessionProfile::Init() {
+	init fun SessionProfile::Init(ref SessionOptions options, ref Mode mode) {
+		me.mode = mode; 
+		me.time = new Time(); 
+		me.options = options; 
 	}
-	fun SessionProfile::Defer() {
+	defer fun SessionProfile::Defer() {
+		//me.time.Print();
+		if(time) 
+			free time; 
+	}
+	fun SessionProfile::GetMode() -> ref Mode {
+		return me.mode; 
 	}
 }

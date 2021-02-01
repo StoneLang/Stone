@@ -37,8 +37,7 @@ class DriverInternal final {
                                  const InputFiles &inputs);
 
   static void ComputeCompilerOutputFile(const Driver &driver);
-
-  static void ComputeCmdOutput(const Driver &driver);
+ 
 
   static llvm::StringRef ComputeBaseNameForImage(const Job *job,
                                                  const OutputProfile &op,
@@ -92,8 +91,6 @@ bool DriverInternal::DoesInputExist(Driver &driver, const DerivedArgList &args,
                << '\n';
   return false;
 }
-void DriverInternal::ComputeCmdOutput(const Driver &driver) {}
-
 void DriverInternal::BuildCompileJobs(Driver &driver) {
   if (!driver.GetMode().CanCompile()) {
     return;
@@ -327,7 +324,7 @@ void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
   // TODO: ComputeCompileMod()
   //
   // About to move argument list, so capture some flags that will be needed
-  // later.
+  
   driverOpts.printJobs = translatedArgs->hasArg(opts::PrintDriverJobs);
   driverOpts.printLifecycle =
       translatedArgs->hasArg(opts::PrintDriverLifecycle);
@@ -343,6 +340,10 @@ void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
     PrintJobs();
   }
 }
+void Driver::BuildOptions()  {
+}
+
+
 bool Driver::EmitInfo(const ArgList &args, const ToolChain &tc) {
   if (args.hasArg(opts::Help)) {
     PrintHelp(false);
@@ -501,7 +502,7 @@ void DriverInternal::PrintJob(const Job &job, Driver &driver) {
 }
 
 void Driver::ComputeModuleOutputPath() {}
-
+void Driver::ComputeCmdOutput() {}
 void Driver::ComputeMainOutput() {}
 
 void Driver::AddJobForCompilation(const Job *job) {

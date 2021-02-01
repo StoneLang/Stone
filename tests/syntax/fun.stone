@@ -11,3 +11,18 @@ fun F1() -> auto {
 
 public fun F2() -> void {
 }
+
+
+temp(T) fun Max(T* first, T* second) -> T* {
+
+	if(first > second) {
+		return first;
+	}
+	return second; 
+}
+fun Main() -> int {
+
+	auto result = real(int) Max(25, 26); 
+}
+
+
