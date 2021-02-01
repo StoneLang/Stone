@@ -17,6 +17,8 @@ struct JobBuilder final {
   /// Build jobs for linking
   static int BuildJobForLinking(Driver& driver);
   static Job* BuildJobForLinkingImpl(Driver& driver);
+  static Job* BuildJobForStaticLinking(Driver& driver);
+  static Job* BuildJobForDynamicLinking(Driver& driver);
 
   /// Build a jobs for compiling, and linking.
   static int BuildJobsForExecutable(Driver& driver);
@@ -36,6 +38,9 @@ int JobBuilder::BuildJobsForCompile(Driver& driver) {
 }
 
 Job* JobBuilder::BuildJobForCompile(Driver& driver, const InputFile& input) {
+  assert(driver.GetMode().CanCompile() &&
+         "The 'mode-type' does not support compiling.");
+
   assert(input.first == FileType::Stone && "Incorrect file for compiling.");
 
   auto tool = driver.GetToolChain().PickTool(JobType::Compile);
@@ -58,7 +63,44 @@ int JobBuilder::BuildJobForLinking(Driver& driver) {
   return ret::ok;
 }
 
-Job* JobBuilder::BuildJobForLinkingImpl(Driver& driver) { return nullptr; }
+Job* JobBuilder::BuildJobForLinkingImpl(Driver& driver) {
+  assert(driver.GetMode().CanLink() &&
+         "The 'mode-type' does not support linking.");
+
+  Job* result = nullptr;
+  switch (driver.GetOutputProfile().linkType) {
+    case LinkType::StaticLibrary:
+      result = JobBuilder::BuildJobForStaticLinking(driver);
+      break;
+    case LinkType::DynamicLibrary:
+      result = JobBuilder::BuildJobForDynamicLinking(driver);
+      break;
+    default:
+      break;
+  }
+  return result;
+}
+
+Job* JobBuilder::BuildJobForStaticLinking(Driver& driver) {
+  auto tool = driver.GetToolChain().PickTool(JobType::StaticLink);
+  assert(tool && "Could not find a tool for static linking.");
+
+  // result = driver.GetCompilation().CreateJob<StaticLinkJob>(
+  //    driver.GetCompilation(), driver.GetOutputProfile().RequiresLTO(),
+  //    driver.GetOutputProfile().linkType);
+  //
+  return nullptr;
+}
+Job* JobBuilder::BuildJobForDynamicLinking(Driver& driver) {
+  auto tool = driver.GetToolChain().PickTool(JobType::DynamicLink);
+  assert(tool && "Could not find a tool for dynamic linking.");
+  // result = driver.GetCompilation().CreateJob<DynamicLinkJob>(
+  //    driver.GetCompilation(), driver.GetOutputProfile().RequiresLTO(),
+  //    driver.GetOutputProfile().linkType);
+  // TODO: get the tool from the ToolChain and pass to CreateJob?
+  //
+  return nullptr;
+}
 
 int JobBuilder::BuildJobsForExecutable(Driver& driver) {
   auto link = JobBuilder::BuildJobForLinkingImpl(driver);
