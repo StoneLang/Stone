@@ -463,8 +463,7 @@ void Driver::BuildJobs() {
     Out() << "D(SrcLoc(), msg::error_no_input_files)" << '\n';
     return;
   }
-
-  JobBuilder::BuildJobs(*this);
+  Driver::BuildJobs(*this);
 
   /*
     // TODO: BuildCompileOnlyJobs();

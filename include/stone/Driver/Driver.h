@@ -11,7 +11,6 @@
 #include "stone/Driver/DriverOptions.h"
 #include "stone/Driver/DriverStats.h"
 #include "stone/Driver/Job.h"
-#include "stone/Driver/JobBuilder.h"
 #include "stone/Driver/JobOptions.h"
 #include "stone/Driver/ToolChain.h"
 #include "stone/Session/Session.h"
@@ -36,6 +35,7 @@ namespace driver {
 class Compilation;
 class ToolChain;
 class DriverStats;
+struct JobBuilder;
 
 enum class CompileType {
   None,
@@ -101,8 +101,6 @@ class OutputProfile final {
 class Driver final : public Session {
   friend DriverStats;
   friend JobBuilder;
-
-  class Internal;
   OutputProfile outputProfile;
   std::unique_ptr<DriverStats> stats;
   std::unique_ptr<ToolChain> toolChain;
@@ -246,6 +244,9 @@ class Driver final : public Session {
   void PrintJobs();
   void BuildJobQueue();
   void AddJobForCompilation(const Job *job);
+
+ private:
+  bool static BuildJobs(Driver &driver);
 };
 }  // namespace driver
 }  // namespace stone
