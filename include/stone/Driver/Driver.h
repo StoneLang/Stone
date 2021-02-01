@@ -246,7 +246,7 @@ class Driver final : public Session {
   void AddJobForCompilation(const Job *job);
 
  private:
-  bool static BuildJobs(Driver &driver);
+  int static BuildJobs(Driver &driver);
 };
 }  // namespace driver
 }  // namespace stone

@@ -1,6 +1,7 @@
 #include "stone/Driver/Compilation.h"
 #include "stone/Driver/Driver.h"
 #include "stone/Driver/Job.h"
+#include "stone/Core/Ret.h"
 
 using namespace stone;
 using namespace stone::file;
@@ -10,20 +11,20 @@ namespace stone {
 namespace driver {
 struct JobBuilder final {
   /// Build jobs for compiling
-  static bool BuildJobsForCompile(Driver& driver);
+  static int BuildJobsForCompile(Driver& driver);
   static Job* BuildJobForCompile(Driver& driver, const InputFile& input);
 
   /// Build jobs for linking
-  static bool BuildJobForLinking(Driver& driver);
+  static int BuildJobForLinking(Driver& driver);
   static Job* BuildJobForLinkingImpl(Driver& driver);
 
   /// Build a jobs for compiling, and linking.
-  static bool BuildJobsForExecutable(Driver& driver);
+  static int BuildJobsForExecutable(Driver& driver);
 };
 }  // namespace driver
 }  // namespace stone
 
-bool JobBuilder::BuildJobsForCompile(Driver& driver) {
+int JobBuilder::BuildJobsForCompile(Driver& driver) {
   assert(driver.GetMode().IsCompileOnly() &&
          "Can only be called directly for compiling only.");
 
@@ -31,7 +32,7 @@ bool JobBuilder::BuildJobsForCompile(Driver& driver) {
     auto job = JobBuilder::BuildJobForCompile(driver, input);
     driver.AddJobForCompilation(job);
   }
-  return true;
+  return ret::ok;
 }
 
 Job* JobBuilder::BuildJobForCompile(Driver& driver, const InputFile& input) {
@@ -39,13 +40,12 @@ Job* JobBuilder::BuildJobForCompile(Driver& driver, const InputFile& input) {
 
   auto tool = driver.GetToolChain().PickTool(JobType::Compile);
   assert(tool && "Could not find a tool for CompileJob.");
-
   // return tool->CreateJob(driver.GetCompilation(), std::move(cmdOutput),
   //                               driver.GetOutputProfile());
   return nullptr;
 }
 
-bool JobBuilder::BuildJobForLinking(Driver& driver) {
+int JobBuilder::BuildJobForLinking(Driver& driver) {
   assert(driver.GetMode().IsLinkOnly() &&
          "Can only be called directly for linking only");
 
@@ -55,18 +55,22 @@ bool JobBuilder::BuildJobForLinking(Driver& driver) {
     job->AddInput(input);
   }
   driver.AddJobForCompilation(job);
-  return true;
+  return ret::ok;
 }
 
 Job* JobBuilder::BuildJobForLinkingImpl(Driver& driver) { return nullptr; }
 
-bool JobBuilder::BuildJobsForExecutable(Driver& driver) {
+int JobBuilder::BuildJobsForExecutable(Driver& driver) {
+  auto link = JobBuilder::BuildJobForLinkingImpl(driver);
   for (const auto& input : driver.GetDriverOptions().inputs) {
-    auto job = JobBuilder::BuildJobForCompile(driver, input);
+    auto compile = JobBuilder::BuildJobForCompile(driver, input);
+    link->AddDep(compile);
   }
+  driver.AddJobForCompilation(link);
+  return ret::ok;
 }
 
-bool Driver::BuildJobs(Driver& driver) {
+int Driver::BuildJobs(Driver& driver) {
   switch (driver.GetMode().GetKind()) {
     case ModeKind::Check:
     case ModeKind::EmitLibrary:
@@ -84,7 +88,7 @@ bool Driver::BuildJobs(Driver& driver) {
     case ModeKind::Link:
       return JobBuilder::BuildJobForLinking(driver);
     default:
-      return false;
+      return ret::err;
       break;
   }
 }
