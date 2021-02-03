@@ -16,11 +16,11 @@ set(stone_compile_sources
 	CompilerScope.cpp
 	CompilerUnit.cpp
 	Gen.cpp
+	Generator.cpp
 	Lexer.cpp
 	Optimize.cpp
 	Parse.cpp
 	Parser.cpp
-	Transformer.cpp
 	
 	LINK_LIBS
 	StoneCore

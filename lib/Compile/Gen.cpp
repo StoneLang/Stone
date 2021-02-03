@@ -1,8 +1,7 @@
 #include "stone/Compile/Gen.h"
-
 #include "llvm/IR/Module.h"
 #include "stone/Compile/GenOptions.h"
-#include "stone/Compile/Transformer.h"
+#include "stone/Compile/Generator.h"
 #include "stone/Core/ASTContext.h"
 #include "stone/Core/Module.h"
 #include "stone/Core/Ret.h"
@@ -16,7 +15,8 @@ llvm::Module *stone::GenIR(syn::Module *moduleDecl, const Context &ctx,
                            const GenOptions &genOpts,
                            llvm::StringRef outputModulename) {
   assert(moduleDecl && "No Module");
-  Transformer transformer;
+  Generator generator; 
+
   return nullptr;
 }
 

@@ -1,5 +1,5 @@
-#ifndef STONE_COMPILE_TRANSFORMER_H
-#define STONE_COMPILE_TRANSFORMER_H
+#ifndef STONE_COMPILE_GENERATOR_H
+#define STONE_COMPILE_GENERATOR_H
 
 #include "stone/Core/ASTContext.h"
 #include "stone/Core/Context.h"
@@ -16,11 +16,10 @@ class TargetMachine;
 }  // namespace llvm
 
 namespace stone {
-
-class Transformer final {
+namespace gen {
+class Generator final {
  public:
-  Transformer();
-
+ Generator();
  public:
   void GenStmt();
 
@@ -30,5 +29,6 @@ class Transformer final {
  public:
   void GenExpr();
 };
+}
 }  // namespace stone
 #endif

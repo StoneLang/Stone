@@ -1,4 +1,4 @@
-#include "stone/Compile/Transformer.h"
+#include "stone/Compile/Generator.h"
 
 #include "llvm/IR/Module.h"
 #include "stone/Core/Module.h"
@@ -6,20 +6,22 @@
 #include "stone/Public.h"
 
 using namespace stone;
+using namespace stone::gen; 
 
-Transformer::Transformer() {}
+
+Generator::Generator() {}
 
 //===----------------------------------------------------------------------===//
 // Decl
 //===----------------------------------------------------------------------===//
-void Transformer::GenDecl() {}
+void Generator::GenDecl() {}
 
 //===----------------------------------------------------------------------===//
 // Stmt
 //===----------------------------------------------------------------------===//
-void Transformer::GenStmt() {}
+void Generator::GenStmt() {}
 
 //===----------------------------------------------------------------------===//
 // Expr
 //===----------------------------------------------------------------------===//
-void Transformer::GenExpr() {}
+void Generator::GenExpr() {}
