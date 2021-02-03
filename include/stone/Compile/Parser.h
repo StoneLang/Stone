@@ -12,7 +12,7 @@
 
 namespace stone {
 class Pipeline;
-namespace syntax {
+namespace syn {
 class Parser;
 class ParserStats final : public Stats {
   const Parser &parser;
@@ -55,6 +55,6 @@ class Parser final {
   // Expr
   void ParseExpr();
 };
-}  // namespace syntax
+}  // namespace syn
 }  // namespace stone
 #endif

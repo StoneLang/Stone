@@ -3,10 +3,10 @@
 
 namespace stone {
 class Compiler;
-namespace syntax {
+namespace syn {
 class SourceUnit;
 }
-namespace syntax {
+namespace syn {
 class Token;
 }
 
@@ -29,8 +29,8 @@ class Pipeline {
   ///
   virtual void ParseFinished(const Compiler &compiler) = 0;
 
-  // virtual void OnToken(const syntax::Token &token);
-  // virtual void OnSourceFile(const syntax::SourceUnit &unit);
+  // virtual void OnToken(const syn::Token &token);
+  // virtual void OnSourceFile(const syn::SourceUnit &unit);
 
  public:
   ///

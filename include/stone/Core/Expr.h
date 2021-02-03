@@ -22,7 +22,7 @@
 #include "stone/Core/Stmt.h"
 
 namespace stone {
-namespace syntax {
+namespace syn {
 
 class Expr : public ValueStmt {
   expr::Kind kind;
@@ -36,6 +36,6 @@ class Expr : public ValueStmt {
 
  public:
 };
-}  // namespace syntax
+}  // namespace syn
 }  // namespace stone
 #endif

@@ -25,7 +25,7 @@
 #include "stone/Core/SrcLoc.h"
 
 namespace stone {
-namespace syntax {
+namespace syn {
 /// Represents a template argument.
 class TemplateArgument final {
  public:
@@ -81,7 +81,7 @@ class TemplateParameterList {
 class TemplateDecl : public NamingDecl {
  public:
 };
-}  // namespace syntax
+}  // namespace syn
 }  // namespace stone
 
 #endif

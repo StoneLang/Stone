@@ -2,9 +2,9 @@
 #define STONE_CORE_ASTLISTENER_H
 
 namespace stone {
-namespace syntax {
+namespace syn {
 class ASTListener final {};
-}  // namespace syntax
+}  // namespace syn
 }  // namespace stone
 
 #endif

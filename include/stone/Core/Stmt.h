@@ -22,7 +22,7 @@
 #include "stone/Core/StmtKind.h"
 
 namespace stone {
-namespace syntax {
+namespace syn {
 class Stmt : public ASTNode {
   stmt::Kind kind;
 
@@ -38,6 +38,6 @@ class Stmt : public ASTNode {
 };
 
 class ValueStmt : public Stmt {};
-}  // namespace syntax
+}  // namespace syn
 }  // namespace stone
 #endif

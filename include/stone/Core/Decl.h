@@ -27,7 +27,7 @@
 #include "stone/Core/SrcLoc.h"
 
 namespace stone {
-namespace syntax {
+namespace syn {
 
 class Decl;
 class BraceStmt;
@@ -228,6 +228,6 @@ class ConstructorDecl : public FunctionDecl {
 class DestructorDecl : public FunctionDecl {
  public:
 };
-}  // namespace syntax
+}  // namespace syn
 }  // namespace stone
 #endif

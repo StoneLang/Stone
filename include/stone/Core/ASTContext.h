@@ -43,7 +43,7 @@
 #include "stone/Core/Type.h"
 
 namespace stone {
-namespace syntax {
+namespace syn {
 
 class BlockExpr;
 class LangABI;
@@ -131,7 +131,7 @@ class ASTContext final {
 
  public:
 };
-}  // namespace syntax
+}  // namespace syn
 }  // namespace stone
 /// Placement new for using the ASTContext's allocator.
 ///
@@ -161,7 +161,7 @@ class ASTContext final {
 /// @param Alignment The alignment of the allocated memory (if the underlying
 ///                  allocator supports it).
 /// @return The allocated memory. Could be nullptr.
-inline void *operator new(size_t bytes, const stone::syntax::ASTContext &C,
+inline void *operator new(size_t bytes, const stone::syn::ASTContext &C,
                           size_t alignment /* = 8 */) {
   return C.Allocate(bytes, alignment);
 }
@@ -172,7 +172,7 @@ inline void *operator new(size_t bytes, const stone::syntax::ASTContext &C,
 /// invoking it directly; see the new operator for more details. This operator
 /// is called implicitly by the compiler if a placement new expression using
 /// the ASTContext throws in the object constructor.
-inline void operator delete(void *Ptr, const stone::syntax::ASTContext &C,
+inline void operator delete(void *Ptr, const stone::syn::ASTContext &C,
                             size_t) {
   C.Deallocate(Ptr);
 }
@@ -200,8 +200,7 @@ inline void operator delete(void *Ptr, const stone::syntax::ASTContext &C,
 /// @param Alignment The alignment of the allocated memory (if the underlying
 ///                  allocator supports it).
 /// @return The allocated memory. Could be nullptr.
-inline void *operator new[](size_t bytes,
-                            const stone::syntax::ASTContext &astCtx,
+inline void *operator new[](size_t bytes, const stone::syn::ASTContext &astCtx,
                             size_t alignment /* = 8 */) {
   return astCtx.Allocate(bytes, alignment);
 }
@@ -212,8 +211,8 @@ inline void *operator new[](size_t bytes,
 /// invoking it directly; see the new[] operator for more details. This operator
 /// is called implicitly by the compiler if a placement new[] expression using
 /// the ASTContext throws in the object constructor.
-inline void operator delete[](void *Ptr,
-                              const stone::syntax::ASTContext &astCtx, size_t) {
+inline void operator delete[](void *Ptr, const stone::syn::ASTContext &astCtx,
+                              size_t) {
   astCtx.Deallocate(Ptr);
 }
 

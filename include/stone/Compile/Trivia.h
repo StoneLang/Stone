@@ -6,7 +6,7 @@
 #include "stone/Core/LLVM.h"
 
 namespace stone {
-namespace syntax {
+namespace syn {
 enum class TriviaKind { GarbageText };
 
 class TriviaPiece final {
@@ -83,7 +83,7 @@ struct Trivia {
   }
   bool operator!=(const Trivia &other) const { return !(*this == other); }
 };
-}  // namespace syntax
+}  // namespace syn
 }  // namespace stone
 
 #endif

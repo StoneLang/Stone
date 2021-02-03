@@ -2,10 +2,10 @@
 #define STONE_CORE_ASTNODE_H
 
 namespace stone {
-namespace syntax {
+namespace syn {
 class ASTNode {
  public:
 };
-}  // namespace syntax
+}  // namespace syn
 }  // namespace stone
 #endif

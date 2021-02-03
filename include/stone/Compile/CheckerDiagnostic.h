@@ -6,11 +6,11 @@
 #include "stone/Core/Diagnostics.h"
 
 namespace stone {
-namespace semantics {
+namespace sema {
 class CheckerDiagnostics final : public Diagnostics {
  public:
 };
-}  // namespace semantics
+}  // namespace sema
 }  // namespace stone
 
 #endif

@@ -3,11 +3,11 @@
 #include <string>
 
 namespace stone {
-namespace syntax {
+namespace syn {
 class TypeLoc {};
 
 class Type {};
 
-}  // namespace syntax
+}  // namespace syn
 }  // namespace stone
 #endif

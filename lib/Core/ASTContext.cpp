@@ -11,7 +11,7 @@
 #include "llvm/Support/Compiler.h"
 
 using namespace stone;
-using namespace stone::syntax;
+using namespace stone::syn;
 
 ASTContext::ASTContext(Context &ctx, const SearchPathOptions &spOpts,
                        SrcMgr &sm)

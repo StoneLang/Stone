@@ -3,7 +3,7 @@
 #include "stone/Core/Ret.h"
 
 using namespace stone;
-using namespace stone::syntax;
+using namespace stone::syn;
 
 Parser::Parser(Context& ctx, Pipeline* pipeline)
     : ctx(ctx), pipeline(pipeline) {

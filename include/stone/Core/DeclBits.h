@@ -10,7 +10,7 @@
 #include <utility>
 
 namespace stone {
-namespace syntax {
+namespace syn {
 
 class NominalTypeDecl;
 class DeclContext;
@@ -77,7 +77,7 @@ class NominalTypeDeclBits {
   uint64_t IsBeingDefined : 1;
 
   /// True if this tag declaration is "embedded" (i.e., defined or declared
-  /// for the very first time) in the syntax of a declarator.
+  /// for the very first time) in the syn of a declarator.
   uint64_t IsEmbeddedInDeclarator : 1;
 
   /// True if this tag is free standing, e.g. "struct foo;".
@@ -162,7 +162,7 @@ class FunctionDeclBits final {
 
 /// Number of non-inherited bits in FunctionDeclBitfields.
 enum { NumFunctionDeclBits = 27 };
-}  // namespace syntax
+}  // namespace syn
 }  // namespace stone
 
 #endif

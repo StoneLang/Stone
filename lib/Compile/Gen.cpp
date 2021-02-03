@@ -10,9 +10,9 @@
 
 using namespace stone;
 using namespace stone::gen;
-using namespace stone::syntax;
+using namespace stone::syn;
 
-llvm::Module *stone::GenIR(syntax::Module *moduleDecl, const Context &ctx,
+llvm::Module *stone::GenIR(syn::Module *moduleDecl, const Context &ctx,
                            const GenOptions &genOpts,
                            llvm::StringRef outputModulename) {
   assert(moduleDecl && "No Module");

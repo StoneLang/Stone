@@ -2,7 +2,7 @@
 #define STONE_CORE_BUILTIN_H
 
 namespace stone {
-namespace syntax {
+namespace syn {
 class ASTContext;
 
 class Builtin final {
@@ -23,6 +23,6 @@ class Builtin final {
 
   void Init(ASTContext &astCtx);
 };
-}  // namespace syntax
+}  // namespace syn
 }  // namespace stone
 #endif

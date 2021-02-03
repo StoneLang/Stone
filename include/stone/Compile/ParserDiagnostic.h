@@ -6,11 +6,11 @@
 #include "stone/Core/Diagnostics.h"
 
 namespace stone {
-namespace syntax {
+namespace syn {
 class ParserDiagnostics final : public Diagnostics {
  public:
 };
-}  // namespace syntax
+}  // namespace syn
 }  // namespace stone
 
 #endif

@@ -16,24 +16,24 @@ class TargetMachine;
 
 namespace stone {
 
-namespace syntax {
+namespace syn {
 class ASTContext;
 class Module;
-}  // namespace syntax
+}  // namespace syn
 namespace gen {
 class GenOptions;
 class GenModuleProfile;
 }  // namespace gen
 
 std::unique_ptr<llvm::TargetMachine> CreateTargetMachine(
-    const gen::GenOptions &Opts, syntax::ASTContext &astCtx);
+    const gen::GenOptions &Opts, syn::ASTContext &astCtx);
 
 // TODO: remove GenModuleProfile
-llvm::Module *GenIR(syntax::Module *moduleDecl, const Context &ctx,
+llvm::Module *GenIR(syn::Module *moduleDecl, const Context &ctx,
                     const gen::GenOptions &genOpts,
                     llvm::StringRef outputModulename);
 
 bool GenObject(llvm::Module *llvmModule, const gen::GenOptions &genOpts,
-               syntax::ASTContext &astCtx, llvm::StringRef outputFilename);
+               syn::ASTContext &astCtx, llvm::StringRef outputFilename);
 }  // namespace stone
 #endif

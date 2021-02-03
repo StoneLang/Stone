@@ -31,7 +31,7 @@
 #include "stone/Core/Type.h"
 
 using namespace stone;
-using namespace stone::syntax;
+using namespace stone::syn;
 
 void *Decl::operator new(std::size_t size, const ASTContext &astCtx,
                          unsigned globalDeclID, std::size_t extra) {

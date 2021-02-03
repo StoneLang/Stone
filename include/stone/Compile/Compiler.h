@@ -9,7 +9,7 @@
 #include "stone/Core/Stats.h"
 #include "stone/Session/Session.h"
 
-using namespace stone::syntax;
+using namespace stone::syn;
 
 namespace stone {
 class Pipeline;
@@ -84,7 +84,7 @@ class Compiler final : public Session {
   SrcMgr &GetSrcMgr() { return sm; }
 
   ASTContext &GetASTContext() { return *ac.get(); }
-  // stone::syntax::Module &GetModule() { return *md.get(); }
+  // stone::syn::Module &GetModule() { return *md.get(); }
   //
   /// Retrieve the main module containing the files being compiled.
   Module *GetMainModule() const;

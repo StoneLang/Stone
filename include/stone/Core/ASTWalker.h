@@ -2,10 +2,10 @@
 #define STONE_CORE_ASTWALKER_H
 
 namespace stone {
-namespace syntax {
+namespace syn {
 class ASTWalker {
  public:
 };
-}  // namespace syntax
+}  // namespace syn
 }  // namespace stone
 #endif

@@ -6,18 +6,18 @@
 namespace stone {
 class Pipeline;
 
-namespace syntax {
+namespace syn {
 class SourceUnit;
 }
 
 /// Parse a source file
-void ParseSourceUnit(syntax::SourceUnit &su, Pipeline *pipeline = nullptr);
+void ParseSourceUnit(syn::SourceUnit &su, Pipeline *pipeline = nullptr);
 
 /// Perform type checking
-void CheckSourceUnit(syntax::SourceUnit &su, Pipeline *pipeline = nullptr);
+void CheckSourceUnit(syn::SourceUnit &su, Pipeline *pipeline = nullptr);
 
 /// Perform type checking
-void CheckWholeModule(syntax::SourceUnit &su, Pipeline *pipeline = nullptr);
+void CheckWholeModule(syn::SourceUnit &su, Pipeline *pipeline = nullptr);
 
 }  // namespace stone
 #endif

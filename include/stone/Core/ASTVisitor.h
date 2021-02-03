@@ -2,10 +2,10 @@
 #define STONE_CORE_ASTVISITOR_H
 
 namespace stone {
-namespace syntax {
+namespace syn {
 class ASTVisitor {
  public:
 };
-}  // namespace syntax
+}  // namespace syn
 }  // namespace stone
 #endif

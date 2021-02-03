@@ -9,7 +9,7 @@
 #include "stone/Core/LLVM.h"
 
 namespace stone {
-namespace syntax {
+namespace syn {
 class Module;
 
 class ModuleUnit {
@@ -74,7 +74,7 @@ class Module final : public DeclContext, public TypeDecl {
   ModuleUnit &GetMainUnit(ModuleUnit::Kind kind) const;
 };
 
-}  // namespace syntax
+}  // namespace syn
 }  // namespace stone
 
 #endif

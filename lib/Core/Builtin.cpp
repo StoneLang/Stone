@@ -1,7 +1,7 @@
 #include "stone/Core/Builtin.h"
 
 using namespace stone;
-using namespace stone::syntax;
+using namespace stone::syn;
 
 Builtin::~Builtin() {}
 

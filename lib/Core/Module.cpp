@@ -12,7 +12,7 @@
 #include "llvm/Support/SaveAndRestore.h"
 #include "llvm/Support/raw_ostream.h"
 
-using namespace stone::syntax;
+using namespace stone::syn;
 
 void Module::AddUnit(ModuleUnit &unit) {
   // If this is a LoadedFile, make sure it loaded without error.

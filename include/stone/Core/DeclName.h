@@ -2,7 +2,7 @@
 #define STONE_CORE_DECLNAME_H
 #include "stone/Core/Identifier.h"
 namespace stone {
-namespace syntax {
+namespace syn {
 
 class DeclNameLoc {};
 class DeclName {
@@ -12,6 +12,6 @@ class DeclName {
   // TODO:
   Identifier *GetAsIdentifier() const {}
 };
-}  // namespace syntax
+}  // namespace syn
 }  // namespace stone
 #endif

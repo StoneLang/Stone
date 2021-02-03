@@ -2,9 +2,9 @@
 #define STONE_CORE_ASTFILE_H
 
 namespace stone {
-namespace syntax {
+namespace syn {
 class ASTFile final {};
-}  // namespace syntax
+}  // namespace syn
 }  // namespace stone
 
 #endif

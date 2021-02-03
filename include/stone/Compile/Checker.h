@@ -9,15 +9,16 @@
 #include "stone/Core/Module.h"
 #include "stone/Core/Stats.h"
 
-using namespace stone::syntax;
+using namespace stone::syn;
 
 namespace stone {
 class Pipeline;
 
-namespace syntax {
+namespace syn {
 class SourceUnit;
 }
-namespace semantics {
+
+namespace sema {
 class Checker;
 
 class CheckerStats final : public Stats {
@@ -31,13 +32,14 @@ class CheckerStats final : public Stats {
 
 class Checker final {
   friend CheckerStats;
-  syntax::SourceUnit &su;
-  CheckerStats stats;
+  syn::SourceUnit &su;
+  std::unique_ptr<CheckerStats> stats;
   Pipeline *pipeline;
+  Context &ctx;
 
  public:
   // TODO: CompileUnit
-  Checker(syntax::SourceUnit &su, Pipeline *pipeline = nullptr);
+  Checker(syn::SourceUnit &su, Context &ctx, Pipeline *pipeline = nullptr);
 
  public:
   void CheckDecl();
@@ -48,6 +50,6 @@ class Checker final {
  public:
   void CheckExpr();
 };
-}  // namespace semantics
+}  // namespace sema
 }  // namespace stone
 #endif

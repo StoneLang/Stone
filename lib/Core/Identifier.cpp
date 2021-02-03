@@ -20,7 +20,7 @@
 #include "stone/Core/TokenKind.h"
 
 using namespace stone;
-using namespace stone::syntax;
+using namespace stone::syn;
 
 enum class KeywordStatus {
   On,

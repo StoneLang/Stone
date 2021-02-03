@@ -7,7 +7,7 @@
 
 using namespace stone;
 using namespace stone::opts;
-using namespace stone::syntax;
+using namespace stone::syn;
 
 Compiler::Compiler(Pipeline *pipeline)
     : Session(compilerOpts),

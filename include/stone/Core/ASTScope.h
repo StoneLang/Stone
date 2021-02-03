@@ -2,8 +2,8 @@
 #define STONE_CORE_ASTSCOPE_H
 
 namespace stone {
-namespace syntax {
+namespace syn {
 class ASTScope {};
-}  // namespace syntax
+}  // namespace syn
 }  // namespace stone
 #endif

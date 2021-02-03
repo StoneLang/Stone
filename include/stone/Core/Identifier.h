@@ -22,7 +22,7 @@
 namespace stone {
 class LangOptions;
 class SrcLoc;
-namespace syntax {
+namespace syn {
 
 class DeclName;
 class DeclNameTable;
@@ -487,8 +487,8 @@ namespace detail {
 /// DeclNameExtra is tightly coupled to DeclName and any change
 /// here is very likely to require changes in DeclName(Table).
 class alignas(IdentifierAlignment) SpecialDeclName {
-  friend class stone::syntax::DeclName;
-  friend class stone::syntax::DeclNameTable;
+  friend class stone::syn::DeclName;
+  friend class stone::syn::DeclNameTable;
 
  protected:
   /// The kind of "extra" information stored in the DeclName. See
@@ -517,31 +517,31 @@ class alignas(IdentifierAlignment) SpecialDeclName {
 };
 
 }  // namespace detail
-}  // namespace syntax
+}  // namespace syn
 }  // namespace stone
 
 namespace llvm {
 // Provide PointerLikeTypeTraits for Identifier pointers, which
 // are not guaranteed to be 8-byte aligned.
 template <>
-struct PointerLikeTypeTraits<stone::syntax::Identifier *> {
-  static void *getAsVoidPointer(stone::syntax::Identifier *P) { return P; }
+struct PointerLikeTypeTraits<stone::syn::Identifier *> {
+  static void *getAsVoidPointer(stone::syn::Identifier *P) { return P; }
 
-  static stone::syntax::Identifier *getFromVoidPointer(void *P) {
-    return static_cast<stone::syntax::Identifier *>(P);
+  static stone::syn::Identifier *getFromVoidPointer(void *P) {
+    return static_cast<stone::syn::Identifier *>(P);
   }
 
   enum { NumLowBitsAvailable = 1 };
 };
 
 template <>
-struct PointerLikeTypeTraits<const stone::syntax::Identifier *> {
-  static const void *getAsVoidPointer(const stone::syntax::Identifier *P) {
+struct PointerLikeTypeTraits<const stone::syn::Identifier *> {
+  static const void *getAsVoidPointer(const stone::syn::Identifier *P) {
     return P;
   }
 
-  static const stone::syntax::Identifier *getFromVoidPointer(const void *P) {
-    return static_cast<const stone::syntax::Identifier *>(P);
+  static const stone::syn::Identifier *getFromVoidPointer(const void *P) {
+    return static_cast<const stone::syn::Identifier *>(P);
   }
 
   enum { NumLowBitsAvailable = 1 };
