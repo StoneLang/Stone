@@ -1,5 +1,5 @@
-#ifndef TIN_SESSION_FILETYPE_H
-#define TIN_SESSION_FILETYPE_H
+#ifndef STONE_SESSION_FILETYPE_H
+#define STONE_SESSION_FILETYPE_H
 
 #include <functional>
 

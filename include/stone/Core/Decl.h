@@ -39,7 +39,7 @@ class DeclStats final : public Stats {
 
  public:
   DeclStats(const Decl &declaration)
-      : Stats("ast-declaration statistics:"), declaration(declaration) {}
+      : Stats("ast-declaration stats:"), declaration(declaration) {}
   void Print() override;
 };
 
@@ -48,16 +48,6 @@ class alignas(8) Decl : public ASTNode /*TODO: Object */ {
   decl::Kind kind;
   SrcLoc loc;
   DeclContext *dc;
-
- public:
-  /*
-    enum class Kind : unsigned {
-  #define DECL(Id, Parent) Id,
-  #define LAST_DECL(Id) LastDecl = Id,
-  #define DECL_RANGE(Id, FirstId, LastId) \ First##Id##Decl = FirstId,
-  Last##Id##Decl = LastId, #include "stone/Core/DeclKind.def"
-    };
-  */
 
  protected:
   /// Allocate memory for a deserialized declaration.

@@ -62,8 +62,7 @@ class ASTContextStats final : public Stats {
   const ASTContext &ac;
 
  public:
-  ASTContextStats(const ASTContext &ac)
-      : Stats("ast-context statistics:"), ac(ac) {}
+  ASTContextStats(const ASTContext &ac) : Stats("ast-context stats:"), ac(ac) {}
   void Print() override;
 };
 class ASTContext final {

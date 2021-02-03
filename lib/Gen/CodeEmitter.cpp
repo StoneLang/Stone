@@ -1,20 +1,24 @@
-#include "stone/Gen/Emitter.h"
+#include "stone/Gen/CodeEmitter.h"
 
+#include "stone/Core/Decl.h"
+
+using namespace stone;
 using namespace stone::gen;
+using namespace stone::syn;
 
-Emitter::Emitter() {}
+CodeEmitter::CodeEmitter() {}
 
 //===----------------------------------------------------------------------===//
 // Decl
 //===----------------------------------------------------------------------===//
-void Emitter::EmitDecl() {}
+void CodeEmitter::EmitDecl(const Decl& del) {}
 
 //===----------------------------------------------------------------------===//
 // Stmt
 //===----------------------------------------------------------------------===//
-void Emitter::EmitStmt() {}
+void CodeEmitter::EmitStmt() {}
 
 //===----------------------------------------------------------------------===//
 // Expr
 //===----------------------------------------------------------------------===//
-void Emitter::EmitExpr() {}
+void CodeEmitter::EmitExpr() {}
