@@ -4,9 +4,10 @@
 #include <iostream>
 
 #include "llvm/Support/Chrono.h"
-
+#include "llvm/Support/Timer.h"
 namespace stone {
 
+// TODO: Replace with llvm/Support/Timer.h"
 class Clock final {
  public:
   enum class TimeType {
@@ -19,6 +20,8 @@ class Clock final {
   TimeType timeType = TimeType::Milliseconds;
 
  private:
+  // TODO:
+  llvm::Timer time;
   llvm::sys::TimePoint<> startTime;
   llvm::sys::TimePoint<> endTime = llvm::sys::TimePoint<>::min();
 
@@ -33,6 +36,7 @@ class Clock final {
   void Start();
   void Stop();
   void Print();
+  void Reset();
   llvm::sys::TimePoint<> GetDuration();
 };
 

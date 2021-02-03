@@ -265,6 +265,9 @@ class AssembleTool final : public Tool {
                          const OutputProfile &outputProfile) override;
 };
 
+/// A map for caching Jobs for a given Action/ToolChain pair
+// using ToolCacheMap = llvm::DenseMap<ToolType, std::unique_ptr<Tool>>;
+
 class ToolChain {
   /// A special name used to identify the 'stone' executable itself.
   constexpr static const char *const stoneExecutableName = "stone";
@@ -296,6 +299,8 @@ class ToolChain {
   std::unique_ptr<AssembleTool> assembleTool;
   std::unique_ptr<GCCTool> gccTool;
   std::unique_ptr<StoneTool> stoneTool;
+
+  // ToolCacheMap tools;
 
  public:
   virtual ~ToolChain() = default;
@@ -345,6 +350,8 @@ class DarwinToolChain final : public ToolChain {
   Tool *PickTool(JobType jobType) const override;
 
  protected:
+  // bool BuildTools() override;
+
   bool BuildClangTool() override;
   bool BuildAssembleTool() override;
   bool BuildLDLinkTool() override;

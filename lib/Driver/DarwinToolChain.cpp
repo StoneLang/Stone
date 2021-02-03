@@ -19,7 +19,8 @@ bool DarwinToolChain::BuildGCCTool() {
 }
 
 bool DarwinToolChain::BuildStoneTool() {
-  stoneTool = llvm::make_unique<StoneTool>("test", "test", *this);
+  // Get the path for the tool on your the respective system
+  stoneTool = llvm::make_unique<StoneTool>("stone", "test", *this);
   return true;
 }
 

@@ -1,0 +1,10 @@
+
+public struct S0 {
+
+}
+fun Main() -> int {
+
+safe S0* s0 = new S0(); 
+
+}
+	

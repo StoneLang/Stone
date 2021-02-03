@@ -9,6 +9,7 @@
 #include "stone/Public.h"
 
 using namespace stone;
+using namespace stone::gen;
 using namespace stone::syntax;
 
 llvm::Module *stone::GenIR(syntax::Module *moduleDecl, const Context &ctx,
@@ -23,7 +24,7 @@ std::unique_ptr<llvm::TargetMachine> stone::CreateTargetMachine(
     const GenOptions &Opts, ASTContext &astCtx) {
   return nullptr;
 }
-bool stone::GenObject(llvm::Module *llvmModule, const GenOptions &genOpts,
+bool stone::GenObject(llvm::Module *llvmModule, const gen::GenOptions &genOpts,
                       ASTContext &astCtx, llvm::StringRef outputFilename) {
   return true;
 }

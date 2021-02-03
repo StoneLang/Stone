@@ -27,6 +27,10 @@ fun Main() -> u8 {
 	real(string) Queue* q1 = new PriorityQueue(); 
 	q1.Push(p);
 
+	//real(int, string) 
+	//	DenseMap* map = new DenseMap(); 
+
+
 	free {
 		q0;
 		q1;
@@ -42,20 +46,4 @@ any(T) fun Max(T* first, T* second) -> T {
 }
 auto max = use(i32) Max(23, 25); 
 
-// Other way to tink about this
 
-public interface Queue::(T) {
-	fun Add(T* t) -> void; 
-	fun Pop() -> T*; 
-}
-class PriorityQueue : Queue::(PriorityQueue) {
-}
-
-fun Main() {
-	Queue::(Particle)* q = new PriorityQueue(); 
-}
-
-fun Queue::Push(T t) -> void {
-
-
-}

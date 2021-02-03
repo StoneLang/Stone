@@ -57,10 +57,10 @@ Job* JobBuilder::BuildJobForCompile(Driver& driver, const InputFile input) {
   auto tool = driver.GetToolChain().PickTool(JobType::Compile);
   assert(tool && "Could not find a tool for CompileJob.");
   // result = tool->CreateJob(driver.GetCompilation(), std::move(cmdOutput),
-  //                               driver.GetOutputProfile());
-  //
+  //                         driver.GetOutputProfile());
   // result->AddInput(input);
-  return nullptr;
+
+  return result;
 }
 
 int JobBuilder::BuildJobForLinking(Driver& driver) {
@@ -97,7 +97,7 @@ Job* JobBuilder::BuildJobForStaticLinking(Driver& driver) {
   auto tool = driver.GetToolChain().PickTool(JobType::StaticLink);
   assert(tool && "Could not find a tool for static linking.");
 
-  // result = driver.GetCompilation().CreateJob<StaticLinkJob>(
+  // auto result = tool->CreateJob<StaticLinkJob>(
   //    driver.GetCompilation(), driver.GetOutputProfile().RequiresLTO(),
   //    driver.GetOutputProfile().linkType);
   //

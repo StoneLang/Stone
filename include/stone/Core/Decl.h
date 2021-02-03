@@ -24,7 +24,6 @@
 #include "stone/Core/DeclName.h"
 #include "stone/Core/Identifier.h"
 #include "stone/Core/LLVM.h"
-#include "stone/Core/Object.h"
 #include "stone/Core/SrcLoc.h"
 
 namespace stone {

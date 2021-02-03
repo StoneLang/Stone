@@ -7,14 +7,12 @@
 #include "stone/Core/SrcLoc.h"
 #include "stone/Session/SessionOptions.h"
 
+using namespace stone::gen;
+
 namespace stone {
-namespace syntax {
-class SourceUnit;
-}
 
-class CompilerScope;
 class Compiler;
-
+class CompilerScope;
 /*
 class OutputFile;
 
@@ -56,10 +54,6 @@ class CompilerOptions final : public SessionOptions {
   GenOptions genOpts;
   SearchPathOptions spOpts;
   FileSystemOptions fsOpts;
-
-  /// Current inputs in the system
-  // std::vector<InputFile *> inputs;
-
   bool wholeModuleCheck = false;
 
  public:

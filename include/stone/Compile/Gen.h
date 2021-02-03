@@ -5,8 +5,6 @@
 #include "stone/Core/ASTContext.h"
 #include "stone/Core/LLVM.h"
 
-using namespace stone::syntax;
-
 namespace llvm {
 class raw_pwrite_stream;
 class GlobalVariable;
@@ -17,20 +15,25 @@ class TargetMachine;
 }  // namespace llvm
 
 namespace stone {
-class GenOptions;
 
 namespace syntax {
 class ASTContext;
-}
-std::unique_ptr<llvm::TargetMachine> CreateTargetMachine(const GenOptions &Opts,
-                                                         ASTContext &astCtx);
+class Module;
+}  // namespace syntax
+namespace gen {
+class GenOptions;
+class GenModuleProfile;
+}  // namespace gen
 
-/// May want to pass Module instead
-llvm::Module *GenIR(syntax::Module *moduleDecl, const stone::Context &ctx,
-                    const GenOptions &genOpts,
+std::unique_ptr<llvm::TargetMachine> CreateTargetMachine(
+    const gen::GenOptions &Opts, syntax::ASTContext &astCtx);
+
+// TODO: remove GenModuleProfile
+llvm::Module *GenIR(syntax::Module *moduleDecl, const Context &ctx,
+                    const gen::GenOptions &genOpts,
                     llvm::StringRef outputModulename);
 
-bool GenObject(llvm::Module *llvmModule, const GenOptions &genOpts,
-               ASTContext &astCtx, llvm::StringRef outputFilename);
+bool GenObject(llvm::Module *llvmModule, const gen::GenOptions &genOpts,
+               syntax::ASTContext &astCtx, llvm::StringRef outputFilename);
 }  // namespace stone
 #endif
