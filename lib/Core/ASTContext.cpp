@@ -9,6 +9,7 @@
 #include "llvm/ADT/StringSwitch.h"
 #include "llvm/Support/Allocator.h"
 #include "llvm/Support/Compiler.h"
+#include "stone/Utils/Diagnostics.h"
 
 using namespace stone;
 using namespace stone::syn;

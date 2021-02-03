@@ -57,6 +57,7 @@ class Module;
 class Stmt;
 class Builtin;
 class ASTContext;
+class DiagnosticEngine;
 
 class ASTContextStats final : public Stats {
   const ASTContext &ac;

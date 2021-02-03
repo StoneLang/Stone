@@ -81,7 +81,9 @@ enum class DiagnositicArgumentKind {
   Custom,
 };
 
-class CustomDiagnosticArgument {};
+class CustomDiagnosticArgument {
+ public:
+};
 /// Concrete class used by the front-end to report problems and issues.
 ///
 /// This massages the diagnostics (e.g. handling things like "report warnings
@@ -113,13 +115,15 @@ class DiagnosticEngine final {
   // (d2Start = d1End + 1  , d2End = d1End + max)
   // update: use maxMessages from Diagnostic to calculate startMsgID, and
   // endMsgID
-  void AddDiagnostics(std::unique_ptr<Diagnostics> diagnostics);
+  void Register(std::unique_ptr<Diagnostics> diagnostics);
 
   // void AddDiagnosticListener(std::unique_ptr<DiagnosticListener> diagnostic);
   //
   bool HasError();
 
   void Print();
+
+  void AddCustomArgument(const CustomDiagnosticArgument *argument);
 };
 
 class DiagnosticBuilder final {
