@@ -3,7 +3,7 @@
 
 #include "llvm/ADT/ArrayRef.h"
 #include "stone/Compile/Compiler.h"
-#include "stone/Compile/GenOptions.h"
+#include "stone/Compile/CodeGenOptions.h"
 #include "stone/Core/FileSystemOptions.h"
 #include "stone/Core/SearchPathOptions.h"
 #include "stone/Core/SrcLoc.h"

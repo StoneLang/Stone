@@ -1,7 +1,7 @@
 #ifndef STONE_COMPILE_COMPILEOPTIONS_H
 #define STONE_COMPILE_COMPILEOPTIONS_H
 
-#include "stone/Compile/GenOptions.h"
+#include "stone/Compile/CodeGenOptions.h"
 #include "stone/Core/FileSystemOptions.h"
 #include "stone/Core/SearchPathOptions.h"
 #include "stone/Core/SrcLoc.h"
@@ -51,7 +51,7 @@ class OutputFile final {};
 
 class CompilerOptions final : public SessionOptions {
  public:
-  GenOptions genOpts;
+  CodeGenOptions genOpts;
   SearchPathOptions spOpts;
   FileSystemOptions fsOpts;
   bool wholeModuleCheck = false;

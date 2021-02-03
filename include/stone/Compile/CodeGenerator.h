@@ -1,9 +1,6 @@
 #ifndef STONE_COMPILE_GENERATOR_H
 #define STONE_COMPILE_GENERATOR_H
 
-#include "stone/Compile/GenProfile.h"
-#include "stone/Core/ASTContext.h"
-#include "stone/Core/Context.h"
 #include "stone/Core/LLVM.h"
 #include "stone/Core/Module.h"
 
@@ -18,15 +15,16 @@ class TargetMachine;
 
 namespace stone {
 namespace gen {
-class Generator final {
+class CodeGenModule; 
+class CodeGenerator final {
  public:
-  Generator();
+  CodeGenerator();
 
  public:
-  /// Return an opaque reference to the GenModuleProfile object, which can
+  /// Return an opaque reference to the CodeGenModule object, which can
   /// be used in various secondary APIs.  It is valid as long as the
   /// Generator exists.
-  GenModuleProfile &GetGenModuleProfile();
+  CodeGenModule &GetCodeGenModule();
 
   /// Return the module that this code generator is building into.
   ///
@@ -36,7 +34,7 @@ class Generator final {
   /// will be deleted.
   ///
   /// It will also return null if the module is released.
-  llvm::Module *GetModule();
+  llvm::Module *GetModule(); 
 };
 }  // namespace gen
 }  // namespace stone

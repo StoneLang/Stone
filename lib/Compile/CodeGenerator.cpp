@@ -1,4 +1,4 @@
-#include "stone/Compile/Generator.h"
+#include "stone/Compile/CodeGenerator.h"
 
 #include "llvm/IR/Module.h"
 #include "stone/Core/Module.h"
@@ -8,4 +8,4 @@
 using namespace stone;
 using namespace stone::gen;
 
-Generator::Generator() {}
+CodeGenerator::CodeGenerator() {}

@@ -21,19 +21,19 @@ class ASTContext;
 class Module;
 }  // namespace syn
 namespace gen {
-class GenOptions;
+class CodeGenOptions;
 class GenModuleProfile;
 }  // namespace gen
 
 std::unique_ptr<llvm::TargetMachine> CreateTargetMachine(
-    const gen::GenOptions &Opts, syn::ASTContext &astCtx);
+    const gen::CodeGenOptions &Opts, syn::ASTContext &astCtx);
 
 // TODO: remove GenModuleProfile
 llvm::Module *GenIR(syn::Module *moduleDecl, const Context &ctx,
-                    const gen::GenOptions &genOpts,
+                    const gen::CodeGenOptions &genOpts,
                     llvm::StringRef outputModulename);
 
-bool GenObject(llvm::Module *llvmModule, const gen::GenOptions &genOpts,
+bool GenObject(llvm::Module *llvmModule, const gen::CodeGenOptions &genOpts,
                syn::ASTContext &astCtx, llvm::StringRef outputFilename);
 }  // namespace stone
 #endif

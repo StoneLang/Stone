@@ -15,8 +15,11 @@ set(stone_compile_sources
 	Compiler.cpp
 	CompilerScope.cpp
 	CompilerUnit.cpp
+	Emitter.cpp
 	Gen.cpp
-	Generator.cpp
+	CodeGenBlocks.cpp
+	CodeGenFunction.cpp
+	CodeGenerator.cpp
 	Lexer.cpp
 	Optimize.cpp
 	Parse.cpp

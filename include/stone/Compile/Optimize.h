@@ -9,8 +9,8 @@ class TargetMachine;
 }  // namespace llvm
 
 namespace stone {
-class GenOptions;
-void OptimizeIR(llvm::Module *llvmModule, const GenOptions &go,
+class CodeGenOptions;
+void OptimizeIR(llvm::Module *llvmModule, const CodeGenOptions &go,
                 llvm::TargetMachine *tm);
 }  // namespace stone
 #endif
