@@ -24,6 +24,10 @@ set(stone_compile_sources
 	StoneCore
 	StoneGen
 	StoneSession
+
+	DEPENDS
+	StoneOptions
+
 )
 add_stone_library(StoneCompile
 	${stone_compile_sources}
