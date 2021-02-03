@@ -17,10 +17,9 @@ struct JobBuilder final {
   /// Build jobs for linking
   static int BuildJobForLinking(Driver& driver);
 
-	//TODO: Think about 
-	static int BuildJobForLinking(Driver& driver, Job* dep);
-	static int BuildJobForLinking(Driver& driver, const InputFile input); 
-
+  // TODO: Think about
+  static int BuildJobForLinking(Driver& driver, Job* dep);
+  static int BuildJobForLinking(Driver& driver, const InputFile input);
 
   static Job* BuildJobForLinkingImpl(Driver& driver);
 
@@ -32,10 +31,8 @@ struct JobBuilder final {
 
   static int BuildJobForAssemble(Driver& driver);
 
-	/// Build a jobs for compiling, and linking.
+  /// Build a jobs for compiling, and linking.
   static int BuildJobForBackend(Driver& driver);
-
-
 };
 }  // namespace driver
 }  // namespace stone
@@ -55,14 +52,14 @@ Job* JobBuilder::BuildJobForCompile(Driver& driver, const InputFile input) {
   assert(driver.GetMode().CanCompile() &&
          "The 'mode-type' does not support compiling.");
 
-	Job* result = nullptr; 
+  Job* result = nullptr;
   assert(input.first == FileType::Stone && "Incorrect file for compiling.");
   auto tool = driver.GetToolChain().PickTool(JobType::Compile);
   assert(tool && "Could not find a tool for CompileJob.");
   // result = tool->CreateJob(driver.GetCompilation(), std::move(cmdOutput),
   //                               driver.GetOutputProfile());
-	//
-	// result->AddInput(input); 
+  //
+  // result->AddInput(input);
   return nullptr;
 }
 
@@ -118,12 +115,15 @@ Job* JobBuilder::BuildJobForDynamicLinking(Driver& driver) {
 }
 
 int JobBuilder::BuildJobsForExecutable(Driver& driver) {
-  auto link = JobBuilder::BuildJobForLinkingImpl(driver);
+  auto linkJob = JobBuilder::BuildJobForLinkingImpl(driver);
+  assert(linkJob && "Could not create 'LinkJob'");
+
   for (const auto& input : driver.GetDriverOptions().inputs) {
-    auto compile = JobBuilder::BuildJobForCompile(driver, input);
-    link->AddDep(compile);
+    auto compileJob = JobBuilder::BuildJobForCompile(driver, input);
+    assert(compileJob && "Could not create 'CompileJob'");
+    linkJob->AddDep(compileJob);
   }
-  driver.AddJobForCompilation(link);
+  driver.AddJobForCompilation(linkJob);
   return ret::ok;
 }
 

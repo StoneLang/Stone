@@ -339,9 +339,13 @@ static bool IsIdentifier(const signed char ch) {
   }
 }
 
-Lexer::Lexer(const SrcID srcID, SrcMgr &sm, const stone::Context &ctx,
+Lexer::Lexer(const SrcID srcID, SrcMgr &sm, stone::Context &ctx,
              Pipeline *pipeline)
     : srcID(srcID), sm(sm), ctx(ctx) {
+  stats.reset(new LexerStats(*this));
+  ctx.GetStatEngine().Register(stats.get());
+  clock.Start();
+
   bool invalid = false;
   auto memBuffer = sm.getBuffer(srcID, SrcLoc(), &invalid /*true means error*/);
 
@@ -521,3 +525,5 @@ void Lexer::CreateToken(tk kind, const char *tokenStart) {
   }
   nextToken.SetToken(kind, tokenText, commentLength);
 }
+
+void LexerStats::Print() {}

@@ -188,7 +188,7 @@ class Driver final : public Session {
   ///
   void ComputeMainOutput();
 
-	void ComputeCmdOutput(); 
+  void ComputeCmdOutput();
 
  public:
   Driver(llvm::StringRef executablePath, std::string driverName);
@@ -231,9 +231,7 @@ class Driver final : public Session {
  protected:
   void ComputeMode(const llvm::opt::DerivedArgList &args) override;
   ModeKind GetDefaultModeKind() override;
-	void BuildOptions() override;
-
-
+  void BuildOptions() override;
 
   /// TranslateInputArgs - Create a new derived argument list from the input
   /// arguments, after applying the standard argument translations.

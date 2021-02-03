@@ -1,9 +1,6 @@
 module Stone.Session; 
 
-space Stone.Session {
-
-	public interface Session {
-		fun Build() -> bool;
-		fun GetProfile() -> SessionProfile*; 
-	}
+public interface Session {
+	fun Build() -> bool;
+	fun GetProfile() -> SessionProfile*; 
 }

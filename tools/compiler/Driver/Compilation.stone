@@ -1,16 +1,13 @@
 module Stone.Driver
-using Stone.Session; 
+use Stone.Session; 
 
-
-space Stone.Driver {
-
-	class Compilaiton {
+class Compilaiton {
 		Driver* driver = null; 
-	}
-	fun Compilation::Init(Driver* driver) {
-		me.driver = driver;
-	}
-	fun Compilation::GetDriver() -> Driver* {
-		return me.driver; 
-	}
+}
+fun Compilation::Init(Driver* driver) {
+	me.driver = driver;
+}
+fun Compilation::GetDriver() -> Driver* {
+	return me.driver; 
+}
 

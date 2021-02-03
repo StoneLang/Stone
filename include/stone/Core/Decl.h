@@ -203,11 +203,12 @@ class SpaceDecl : public NamingDecl {
       : NamingDecl(decl::Kind::Space, dc, loc, name) {}
 };
 
-class DeclaratorDecl : public ValueDecl {
+/// DeclaratorDecl
+class DDecl : public ValueDecl {
  public:
 };
 
-class FunctionDecl : public DeclaratorDecl, public DeclContext {
+class FunctionDecl : public DDecl, public DeclContext {
  public:
 };
 

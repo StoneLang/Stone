@@ -1,11 +1,12 @@
+space System.Collection;
 
-temp(T) interface Queue {
+public any(T) interface Queue {
 	fun Add(T* t) -> void; 
 	fun Pop() -> T*; 
 }
 
 /// Consider using a struct 
-temp(T) class PriorityQueue : temp(T) Queue {
+any(T) class PriorityQueue : any(T) Queue {
 }
 
 fun PriorityQueue::Push(T* t) -> void {
@@ -13,14 +14,17 @@ fun PriorityQueue::Push(T* t) -> void {
 fun PriorityQueue::Pop() -> T* {
 }
 
+space System.Physics;
+use System.Collection; 
+
 struct Particle {
 }
 fun Main() -> u8 {
-	real(int) Queue* q0 = new PriorityQueue();
+	use(int) Queue* q0 = new PriorityQueue();
 	q0.Push(23);
 
 	Particle* p = new Particle();
-	real(Particle) Queue* q1 = new PriorityQueue(); 
+	real(string) Queue* q1 = new PriorityQueue(); 
 	q1.Push(p);
 
 	free {
@@ -30,13 +34,28 @@ fun Main() -> u8 {
 	}
 }
 
-
-
-temp(T) fun Max(T* first, T* second) -> T {
+any(T) fun Max(T* first, T* second) -> T {
 	if(first > second) {
 		return first; 
 	}
 	return second;
 }
-auto max = real(i32) Max(23, 25); 
+auto max = use(i32) Max(23, 25); 
 
+// Other way to tink about this
+
+public interface Queue::(T) {
+	fun Add(T* t) -> void; 
+	fun Pop() -> T*; 
+}
+class PriorityQueue : Queue::(PriorityQueue) {
+}
+
+fun Main() {
+	Queue::(Particle)* q = new PriorityQueue(); 
+}
+
+fun Queue::Push(T t) -> void {
+
+
+}

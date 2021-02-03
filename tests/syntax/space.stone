@@ -1,20 +1,53 @@
 
-space System.Maths {
-	public fun Sin() -> void {
-	}
+// Accelerator.stone 
+// Every file belongs to one space which is different from a module -- 
+// The module this file belongs to is System.Physics; 
+space System.Physics.QM; 
+using System.Core; // This is a module  
+
+
+public struct Particle {
+
 }
 
-space System.Physics {
-	struct Particle {
-		public f32 mass = 100.00; 
-	}
-	public fun Particle::Fire() -> void {
+any(T) interface Accelerator {
+	fun Fire(Particle* particle) -> bool; 
+}
+public class Cyclotron : use(Cyclotron) Accelerator {
+}
+public fun Cyclotron::Fire(Particle* particle) -> bool {
+	return true; 
+}
 
-		if(self.mass > 200.00) {
-		}
-		return true; 
-	}
+public class Linear : use(Linear) Accelerator {
+}
+public fun Linear::Fire(Particle* particle) -> bool {
+	return true; 
+}
 
+
+// Main.stone 
+using System.Physics;
+using System.Physics.QM; 
+
+fun Main() -> int {
+
+
+	use(Cyclotron) 
+		Accelerator* c0 = new Cyclotron();
+
+	use(Linear) 
+		Accelerator* l0 = new Linear();
+
+	use(Linear) 
+		Accelerator* l1 = null; 
+
+	l1 = new Linear(); 
+
+	free{
+		c0;
+		l1; 
+	}
 }
 
 

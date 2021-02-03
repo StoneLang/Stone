@@ -9,8 +9,8 @@ space Stone.Driver {
 		private SessionProfile* profile = null; 
 		private Compilation* compilation = null; 
 	}
-	fun Driver::Init() {
-		profile = new SessionProfile();	
+	fun Driver::Init(SessionProfile* profile) {
+		me.profile = profile; 
 	}
 	fun Driver::Defer() {
 		if(compilation){

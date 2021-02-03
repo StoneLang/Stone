@@ -37,7 +37,6 @@ class DriverInternal final {
                                  const InputFiles &inputs);
 
   static void ComputeCompilerOutputFile(const Driver &driver);
- 
 
   static llvm::StringRef ComputeBaseNameForImage(const Job *job,
                                                  const OutputProfile &op,
@@ -324,7 +323,7 @@ void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
   // TODO: ComputeCompileMod()
   //
   // About to move argument list, so capture some flags that will be needed
-  
+
   driverOpts.printJobs = translatedArgs->hasArg(opts::PrintDriverJobs);
   driverOpts.printLifecycle =
       translatedArgs->hasArg(opts::PrintDriverLifecycle);
@@ -340,9 +339,7 @@ void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
     PrintJobs();
   }
 }
-void Driver::BuildOptions()  {
-}
-
+void Driver::BuildOptions() {}
 
 bool Driver::EmitInfo(const ArgList &args, const ToolChain &tc) {
   if (args.hasArg(opts::Help)) {

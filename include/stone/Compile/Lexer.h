@@ -4,6 +4,7 @@
 #include "stone/Compile/LexerDiagnostic.h"
 #include "stone/Compile/Token.h"
 #include "stone/Compile/Trivia.h"
+#include "stone/Core/Clock.h"
 #include "stone/Core/Context.h"
 #include "stone/Core/SrcLoc.h"
 
@@ -28,11 +29,22 @@ enum class TriviaRetentionMode {
 /// the encoding is invalid.
 uint32_t ValidateUTF8CharAndAdvance(const char *&startOfByte, const char *end);
 
+class Lexer;
+class LexerStats final : public Stats {
+  const Lexer &lexer;
+
+ public:
+  LexerStats(const Lexer &lexer) : Stats("lexer statistics:"), lexer(lexer) {}
+  void Print() override;
+};
+
 class Lexer final {
+  friend LexerStats;
   const SrcID srcID;
   SrcMgr &sm;
+  Clock clock;
   const stone::Context &ctx;
-
+  std::unique_ptr<LexerStats> stats;
   std::unique_ptr<LexerDiagnostics> diagnostics;
 
   /// Pointer to the first character of the buffer, even in a lexer that
@@ -95,7 +107,7 @@ class Lexer final {
   tk GetKindOfIdentifier(StringRef tokStr);
 
  public:
-  Lexer(const SrcID srcID, SrcMgr &sm, const Context &ctx,
+  Lexer(const SrcID srcID, SrcMgr &sm, Context &ctx,
         Pipeline *pipeline = nullptr);
 
  public:

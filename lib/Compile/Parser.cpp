@@ -9,6 +9,7 @@ Parser::Parser(Context& ctx, Pipeline* pipeline)
     : ctx(ctx), pipeline(pipeline) {
   stats.reset(new ParserStats(*this));
   ctx.GetStatEngine().Register(stats.get());
+  clock.Start();
 }
 
 Parser::~Parser() {}

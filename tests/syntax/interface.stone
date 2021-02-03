@@ -1,4 +1,4 @@
-module Stone.Syntax 
+module Stone.Syntax; 
 
 
 public interface I0 {

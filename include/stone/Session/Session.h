@@ -110,7 +110,7 @@ class Session : public Context {
 
   // virtual llvm::StringRef GetName() = 0;
   void Finish();
-  
+
   Mode &GetMode() { return mode; }
   const Mode &GetMode() const { return mode; }
 
@@ -137,15 +137,13 @@ class Session : public Context {
   // Compute the mode id -- TODO: virtual
   virtual void ComputeMode(const llvm::opt::DerivedArgList &args);
   virtual ModeKind GetDefaultModeKind() = 0;
-	virtual void BuildOptions() = 0;  
+  virtual void BuildOptions() = 0;
 
-
-protected:
-	llvm::StringRef ComputeWorkingDir();
+ protected:
+  llvm::StringRef ComputeWorkingDir();
   void Purge();
-	void PrintDiagnostics();
+  void PrintDiagnostics();
   void PrintStatistics();
-
 };
 
 }  // namespace stone

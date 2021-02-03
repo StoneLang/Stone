@@ -2,28 +2,29 @@ module Stone.Compile;
 
 using Stone.Session; 
 
-space Stone.Compile {
-
-	class Compiler : Session {
-		Module* md = null;
-		ASTContext* ast = null; 
-	}	
-	init fun Compiler::Init() {
-		md = new Module(); 
-		ast = new ASTContext(); 
-	}
-	defer fun Compiler::Defer() {
-		free ast;
-		free md;
-	}
-	public fun Compiler::Build() -> i32 {
-		return 0; 
-	}
-	public fun Compiler::GetModule() -> Module* {
-		return md;
-	}
-
+class Compiler : Session {
+	Module* md = null;
+	ASTContext* ast = null;
+	SessionProfile* profile = null;
+}	
+init fun Compiler::Init(const SessionProfile* profile) {
+	md = new Module(); 
+	ast = new ASTContext(); 
+	me.profile = profile; 
 }
+defer fun Compiler::Defer() {
+	free {
+		md;
+		ast;
+	}
+}
+public fun Compiler::Build() -> i32 {
+	return 0; 
+}
+public fun Compiler::GetModule() -> Module* {
+	return md;
+}
+
 
 
 

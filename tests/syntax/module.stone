@@ -38,3 +38,27 @@ space Stone.Physics.Quantum {
 }
 
 
+// You may want to consider:
+
+// Physics.stone
+module System.Physics;
+
+public fun Fire(Particle* particle) -> bool {
+
+	if(particle == null) {
+		Panic("Could not create 'Particle'");
+	}
+	return false; 
+}
+
+// Main
+using System.Core;
+using System.Physics; 
+
+fun Main() -> int {	
+	Particle* particle = new Particle();
+	Fire(particle);
+	free particle; 
+
+	return 0; 
+}

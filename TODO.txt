@@ -1,24 +1,9 @@
 
-1. Future structure: Core, Analysis (Lexer, Parser, Checker), Gen, Compile, Driver, Session
+1. Future structure: Core, Analyze(Lexer, Parser, Checker), Gen, Compile, Driver, Session
 
-
-2. For the Driver, you may be better off implementing the listener pattern:
-
-class InputActivityListener {
-	template<typename T> void OnInputEntered(T sender, InputActivityArgs) = 0; 
-}
-
-class CompileActivityListener : public InputActivityListener {
-	void OnInputEntered(T sender, InputAcitivityArgs) {
-		args.InputType
-	}
-};
-
-
+2.
 compile(0): {test.stone} -> object
-
 compile(1): {sample.stone} -> object 
-
 link: {compile(0),compile(1)} -> image 
 
-
+3. Implement LinkType 

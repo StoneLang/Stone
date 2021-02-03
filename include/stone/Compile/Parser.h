@@ -26,6 +26,7 @@ class ParserStats final : public Stats {
 class Parser final {
   friend ParserStats;
   Context &ctx;
+  Clock clock;
   Pipeline *pipeline;
   std::unique_ptr<Lexer> lexer;
   std::unique_ptr<ParserStats> stats;

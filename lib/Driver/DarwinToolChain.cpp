@@ -13,8 +13,8 @@ bool DarwinToolChain::BuildClangTool() { return true; }
 bool DarwinToolChain::BuildAssembleTool() { return true; }
 bool DarwinToolChain::BuildLLDLinkTool() { return true; }
 bool DarwinToolChain::BuildLDLinkTool() { return true; }
-bool DarwinToolChain::BuildGCCTool() { 
- //gccTool = llvm::make_unique<GCCTool>("test", "test", *this);
+bool DarwinToolChain::BuildGCCTool() {
+  // gccTool = llvm::make_unique<GCCTool>("test", "test", *this);
   return true;
 }
 

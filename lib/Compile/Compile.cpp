@@ -37,6 +37,7 @@ class Compiler::Implementation final {
   int EmitIR();
   int EmitObject();
   int EmitAssembly();
+  int EmitLibrary();
   int EmitModuleOnly();
   int EmitBitCode();
 };
@@ -86,6 +87,8 @@ int Compiler::Implementation::EmitObject() {
 
 int Compiler::Implementation::EmitModuleOnly() { return ret::ok; }
 
+int Compiler::Implementation::EmitLibrary() { return ret::ok; }
+
 int Compiler::Implementation::EmitBitCode() { return ret::ok; }
 
 int Compiler::Run(Compiler &compiler) {
@@ -105,6 +108,9 @@ int Compiler::Run(Compiler &compiler) {
       return implementation->EmitModuleOnly();
     case ModeKind::EmitBC:
       return implementation->EmitBitCode();
+    case ModeKind::EmitLibrary:
+      return implementation->EmitLibrary();
+
     default:
       break;
   }
