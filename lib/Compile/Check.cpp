@@ -3,8 +3,7 @@
 #include "stone/Core/Ret.h"
 #include "stone/Public.h"
 
-
-using namespace stone::syn; 
+using namespace stone::syn;
 using namespace stone::sema;
 
 void stone::CheckSourceUnit(SourceUnit &su, Pipeline *pipeline) {
@@ -12,6 +11,5 @@ void stone::CheckSourceUnit(SourceUnit &su, Pipeline *pipeline) {
 }
 
 void stone::CheckWholeModule(SourceUnit &su, Pipeline *pipeline) {
-
-	// Checker checker
+  // Checker checker
 }

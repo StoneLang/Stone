@@ -3,7 +3,6 @@
 
 namespace stone {
 namespace gen {
-class GenFunctionProfile {};
 
 class GenDebugProfile {};
 
