@@ -1,0 +1,8 @@
+#define DEFINE_DIAGNOSTIC_MACROS
+#include "stone/Utils/DiagnosticDefs.h"
+
+ERROR(err_unable_to_execute_command,none,
+      "unable to execute command: %0", (StringRef))
+
+#define UNDEFINE_DIAGNOSTIC_MACROS
+#include "stone/Utils/DiagnosticDefs.h"

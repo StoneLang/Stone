@@ -10,7 +10,7 @@ namespace syn {
 
 class QualTypeCustomDiagnosticArgument : public CustomDiagnosticArgument {};
 class DeclNameCustomDiagnosticArgument : public CustomDiagnosticArgument {};
-
+class IdentifierCustomDiagnosticArgument : public CustomDiagnosticArgument {};
 class NamedDeclCustomDiagnosticArgument : public CustomDiagnosticArgument {};
 
 class ASTDiagnostics final : public Diagnostics {

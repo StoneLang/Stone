@@ -19,6 +19,7 @@ set(stone_driver_sources
 	DriverStats.cpp
 	DarwinToolChain.cpp
 	Driver.cpp
+	DriverDiagnostics.cpp
 	Job.cpp
 	JobBuilder.cpp
 	LinkJob.cpp

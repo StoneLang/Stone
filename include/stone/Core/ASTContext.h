@@ -36,9 +36,9 @@
 #include "stone/Core/Context.h"
 #include "stone/Core/Identifier.h"
 #include "stone/Core/LangABI.h"
-#include "stone/Core/LangOptions.h"
 #include "stone/Core/SearchPathOptions.h"
 #include "stone/Core/Type.h"
+#include "stone/Utils/LangOptions.h"
 #include "stone/Utils/SrcMgr.h"
 #include "stone/Utils/Stats.h"
 

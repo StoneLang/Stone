@@ -1,5 +1,5 @@
 #include "stone/Analysis/Lexer.h"
-#include "stone/Core/LangOptions.h"
+#include "stone/Utils/LangOptions.h"
 #include "stone/Utils/Mem.h"
 #include "stone/Utils/SrcMgr.h"
 

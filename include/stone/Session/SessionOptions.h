@@ -1,10 +1,10 @@
 #ifndef STONE_SESSION_SESSIONOPTIONS_H
 #define STONE_SESSION_SESSIONOPTIONS_H
 
-#include "stone/Core/LangOptions.h"
 #include "stone/Session/FileType.h"
 #include "stone/Session/ModeKind.h"
 #include "stone/Session/Options.h"
+#include "stone/Utils/LangOptions.h"
 
 namespace stone {
 

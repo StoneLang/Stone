@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "stone/Driver/Compilation.h"
-#include "stone/Driver/DriverDiagnostic.h"
+#include "stone/Driver/DriverDiagnostics.h"
 #include "stone/Driver/DriverOptions.h"
 #include "stone/Driver/DriverStats.h"
 #include "stone/Driver/Job.h"

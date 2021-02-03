@@ -21,38 +21,15 @@
 #include "llvm/Support/Compiler.h"
 #include "llvm/Support/Error.h"
 #include "stone/Utils/DiagnosticOptions.h"
+#include "stone/Utils/LangOptions.h"
+#include "stone/Utils/List.h"
 #include "stone/Utils/SrcLoc.h"
 
 namespace stone {
 
+class Diagnostics;
 class DiagnosticEngine;
 class DiagnosticBuilder;
-
-class FixIt final {};
-
-class DiagnosticPrinter {};
-class DiagnosticListener {};
-
-class Diagnostics {
-  friend DiagnosticEngine;
-  // bool isActive;
- protected:
-  unsigned int uniqueID = 0;
-  unsigned int maxMessages = 0;
-  unsigned int startID = 0;
-  unsigned int endID = 0;
-
- public:
-  unsigned int GetUniqueID() const { return uniqueID; }
-
- protected:
-  // Only for Diagnostics
-  void Init();
-  unsigned int GetStartID() const { return startID; }
-  unsigned int GetEndID() const { return endID; }
-
- public:
-};
 
 enum class DiagnosticLevel {
   None,
@@ -64,12 +41,112 @@ enum class DiagnosticLevel {
   Fatal
 };
 
-enum class DiagnositicArgumentKind {
+class FixIt final {
+ public:
+};
+
+class DiagnosticPrinter {};
+
+class DiagnosticListener {
+ protected:
+  unsigned numWarnings = 0;  ///< Number of warnings reported
+  unsigned numErrors = 0;    ///< Number of errors reported
+
+ public:
+  DiagnosticListener() = default;
+  virtual ~DiagnosticListener();
+
+  unsigned GetNumErrors() const { return numErrors; }
+  unsigned GetNumWarnings() const { return numWarnings; }
+
+  /// Clear all warnings and errors.
+  virtual void Clear() { numWarnings = numErrors = 0; }
+
+  /// Callback to inform the diagnostic client that processing
+  /// of a source file is beginning.
+  ///
+  /// Note that diagnostics may be emitted outside the processing of a source
+  /// file, for example during the parsing of command line options. However,
+  /// diagnostics with source range information are required to only be emitted
+  /// in between BeginSourceFile() and EndSourceFile().
+  ///
+  /// \param LangOpts The language options for the source file being processed.
+  /// \param PP The preprocessor object being used for the source; this is
+  /// optional, e.g., it may not be present when processing AST source files.
+  virtual void BeginSourceFile(const LangOptions &langOpts) {}
+
+  /// Callback to inform the diagnostic client that processing
+  /// of a source file has ended.
+  ///
+  /// The diagnostic client should assume that any objects made available via
+  /// BeginSourceFile() are inaccessible.
+  virtual void EndSourceFile() {}
+
+  /// Callback to inform the diagnostic client that processing of all
+  /// source files has ended.
+  virtual void Finish() {}
+
+  /// Indicates whether the diagnostics handled by this
+  /// DiagnosticConsumer should be included in the number of diagnostics
+  /// reported by DiagnosticsEngine.
+  ///
+  /// The default implementation returns true.
+  virtual bool IncludeInDiagnosticCounts() const;
+
+  /// Handle this diagnostic, reporting it to the user or
+  /// capturing it to a log as needed.
+  ///
+  /// The default implementation just keeps track of the total number of
+  /// warnings and errors.
+  virtual void HandleDiagnostic(DiagnosticLevel level,
+                                const Diagnostics &diagnostics);
+};
+
+class FakeDiagnosticListener final : public DiagnosticListener {
+ public:
+};
+struct Diagnostic final {
+ public:
+  Diagnostic() {}
+};
+
+class Diagnostics {
+  friend DiagnosticEngine;
+  // bool isActive;
+ protected:
+  unsigned int uniqueID = 0;
+  unsigned int maxMessages = 0;
+  unsigned int startID = 0;
+  unsigned int endID = 0;
+
+  enum MsgID : uint32_t;
+
+  // llvm::DenseMap<unsigned, Diagnostic> entries;
+
+  // List<Diagnostic> entries;
+
+ public:
+  unsigned GetUniqueID() const { return uniqueID; }
+
+ protected:
+  // Only for Diagnostics
+  void Init();
+  unsigned int GetStartID() const { return startID; }
+  unsigned int GetEndID() const { return endID; }
+
+  // const DiagnosticLine DiagnosticLines[100];
+ public:
+};
+
+enum class DiagnosticArgumentKind {
   /// std::string
   STDStr,
 
   /// const char *
   CStr,
+
+  /// llvm::StringRef
+  LLVMStr,
 
   /// int
   SInt,
@@ -81,8 +158,19 @@ enum class DiagnositicArgumentKind {
   Custom,
 };
 
-class CustomDiagnosticArgument {
+class DiagnosticArgument {
+  DiagnosticArgumentKind kind;
+
  public:
+  DiagnosticArgument(DiagnosticArgumentKind kind) : kind(kind) {}
+
+ public:
+  DiagnosticArgumentKind GetKind() { return kind; }
+};
+class CustomDiagnosticArgument : public DiagnosticArgument {
+ public:
+  CustomDiagnosticArgument()
+      : DiagnosticArgument(DiagnosticArgumentKind::Custom) {}
 };
 /// Concrete class used by the front-end to report problems and issues.
 ///

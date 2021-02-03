@@ -1,9 +1,9 @@
 #ifndef STONE_CORE_CONTEXT_H
 #define STONE_CORE_CONTEXT_H
 
-#include "stone/Core/LangOptions.h"
 #include "stone/Utils/DiagnosticOptions.h"
 #include "stone/Utils/Diagnostics.h"
+#include "stone/Utils/LangOptions.h"
 #include "stone/Utils/Stats.h"
 
 namespace stone {
