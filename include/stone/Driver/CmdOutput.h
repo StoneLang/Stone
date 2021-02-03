@@ -6,8 +6,8 @@
 #include "llvm/ADT/StringMap.h"
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Support/StringSaver.h"
-#include "stone/Utils/LLVM.h"
 #include "stone/Session/FileType.h"
+#include "stone/Utils/LLVM.h"
 
 namespace stone {
 namespace driver {

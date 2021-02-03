@@ -1,7 +1,7 @@
 #include "stone/Compile/Analyze.h"
 #include "stone/Compile/Checker.h"
-#include "stone/Utils/Ret.h"
 #include "stone/Public.h"
+#include "stone/Utils/Ret.h"
 
 using namespace stone::syn;
 using namespace stone::sema;

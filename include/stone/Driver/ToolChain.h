@@ -16,13 +16,13 @@
 #include "llvm/Option/Option.h"
 #include "llvm/Support/VersionTuple.h"
 #include "llvm/Target/TargetOptions.h"
-#include "stone/Utils/LLVM.h"
-#include "stone/Utils/Mem.h"
 #include "stone/Driver/Job.h"
 #include "stone/Driver/LinkType.h"
 #include "stone/Session/FileType.h"
 #include "stone/Session/Mode.h"
 #include "stone/Session/Options.h"
+#include "stone/Utils/LLVM.h"
+#include "stone/Utils/Mem.h"
 
 namespace llvm {
 namespace opt {

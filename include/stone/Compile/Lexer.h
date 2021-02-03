@@ -4,8 +4,8 @@
 #include "stone/Compile/LexerDiagnostic.h"
 #include "stone/Compile/Token.h"
 #include "stone/Compile/Trivia.h"
-#include "stone/Utils/Clock.h"
 #include "stone/Core/Context.h"
+#include "stone/Utils/Clock.h"
 #include "stone/Utils/SrcLoc.h"
 
 //	#include "stone/Utils/SrcLoc.h"

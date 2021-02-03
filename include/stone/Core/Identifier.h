@@ -15,9 +15,11 @@
 #include "llvm/Support/Allocator.h"
 #include "llvm/Support/PointerLikeTypeTraits.h"
 #include "llvm/Support/type_traits.h"
+
+
+#include "stone/Core/TokenKind.h"
 #include "stone/Utils/LLVM.h"
 #include "stone/Utils/Stats.h"
-#include "stone/Core/TokenKind.h"
 
 namespace stone {
 class LangOptions;

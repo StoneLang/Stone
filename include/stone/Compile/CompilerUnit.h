@@ -3,13 +3,13 @@
 
 #include "llvm/ADT/ArrayRef.h"
 #include "stone/Compile/Compiler.h"
-#include "stone/Utils/FileSystemOptions.h"
 #include "stone/Core/SearchPathOptions.h"
-#include "stone/Utils/SrcLoc.h"
 #include "stone/Gen/CodeGenOptions.h"
 #include "stone/Session/FileType.h"
 #include "stone/Session/Mode.h"
 #include "stone/Session/SessionOptions.h"
+#include "stone/Utils/FileSystemOptions.h"
+#include "stone/Utils/SrcLoc.h"
 
 namespace stone {
 class CompilerScope;

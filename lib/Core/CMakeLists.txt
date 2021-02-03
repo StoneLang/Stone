@@ -6,7 +6,7 @@ set(LLVM_LINK_COMPONENTS
 
 set(stone_core_sources
 	ASTContext.cpp
-	ASTConsumer.cpp
+	ASTListener.cpp
 	ASTScope.cpp
 	ASTVisitor.cpp
 	ASTWalker.cpp

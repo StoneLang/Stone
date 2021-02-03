@@ -18,6 +18,7 @@
 #include "llvm/Support/Compiler.h"
 #include "llvm/Support/PrettyStackTrace.h"
 #include "llvm/Support/VersionTuple.h"
+
 #include "stone/Core/ASTNode.h"
 #include "stone/Core/DeclBits.h"
 #include "stone/Core/DeclKind.h"

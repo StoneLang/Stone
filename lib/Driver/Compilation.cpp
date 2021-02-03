@@ -24,10 +24,10 @@
 #include "llvm/Support/StringSaver.h"
 #include "llvm/Support/TargetRegistry.h"
 #include "llvm/Support/raw_ostream.h"
-#include "stone/Utils/Color.h"
-#include "stone/Utils/Ret.h"
 #include "stone/Driver/Driver.h"
 #include "stone/Driver/ToolChain.h"
+#include "stone/Utils/Color.h"
+#include "stone/Utils/Ret.h"
 
 using namespace stone;
 using namespace stone::driver;

@@ -10,7 +10,7 @@ namespace driver {
 class DriverDiagnostics final : public Diagnostics {
  public:
 };
-}  // namespace syn
+}  // namespace driver
 }  // namespace stone
 
 #endif

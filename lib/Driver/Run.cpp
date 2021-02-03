@@ -19,12 +19,12 @@
 #include "llvm/Support/Signals.h"
 #include "llvm/Support/StringSaver.h"
 #include "llvm/Support/TargetSelect.h"
-#include "stone/Utils/Defer.h"
-#include "stone/Utils/LLVM.h"
-#include "stone/Utils/Ret.h"
 #include "stone/Driver/Compilation.h"
 #include "stone/Driver/Driver.h"
 #include "stone/Session/ExecutablePath.h"
+#include "stone/Utils/Defer.h"
+#include "stone/Utils/LLVM.h"
+#include "stone/Utils/Ret.h"
 
 using namespace stone;
 using namespace stone::driver;

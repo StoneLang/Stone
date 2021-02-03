@@ -6,8 +6,8 @@
 #include "stone/Core/ASTContext.h"
 #include "stone/Core/Module.h"
 #include "stone/Core/SearchPathOptions.h"
-#include "stone/Utils/Stats.h"
 #include "stone/Session/Session.h"
+#include "stone/Utils/Stats.h"
 
 using namespace stone::syn;
 

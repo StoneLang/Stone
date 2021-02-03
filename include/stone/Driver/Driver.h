@@ -6,16 +6,15 @@
 #include <string>
 #include <vector>
 
-#include "stone/Utils/Mem.h"
 #include "stone/Driver/Compilation.h"
-#include "stone/Driver/DriverOptions.h"
 #include "stone/Driver/DriverDiagnostic.h"
-
+#include "stone/Driver/DriverOptions.h"
 #include "stone/Driver/DriverStats.h"
 #include "stone/Driver/Job.h"
 #include "stone/Driver/JobOptions.h"
 #include "stone/Driver/ToolChain.h"
 #include "stone/Session/Session.h"
+#include "stone/Utils/Mem.h"
 
 using namespace llvm::opt;
 namespace llvm {

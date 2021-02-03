@@ -21,14 +21,14 @@
 #include "llvm/Support/VersionTuple.h"
 #include "llvm/Support/raw_ostream.h"
 #include "stone/Core/Identifier.h"
-#include "stone/Utils/LLVM.h"
 #include "stone/Core/LangOptions.h"
 #include "stone/Core/Module.h"
-#include "stone/Utils/SrcLoc.h"
 #include "stone/Core/Stmt.h"
-#include "stone/Utils/Target.h"
 #include "stone/Core/Template.h"  //DeclTemplate
 #include "stone/Core/Type.h"
+#include "stone/Utils/LLVM.h"
+#include "stone/Utils/SrcLoc.h"
+#include "stone/Utils/Target.h"
 
 using namespace stone;
 using namespace stone::syn;

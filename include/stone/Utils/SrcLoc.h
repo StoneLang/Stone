@@ -8,7 +8,6 @@
 
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Support/PointerLikeTypeTraits.h"
-
 #include "stone/Utils/LLVM.h"
 
 namespace llvm {

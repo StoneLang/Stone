@@ -1,11 +1,11 @@
 #ifndef STONE_COMPILE_COMPILEOPTIONS_H
 #define STONE_COMPILE_COMPILEOPTIONS_H
 
-#include "stone/Utils/FileSystemOptions.h"
 #include "stone/Core/SearchPathOptions.h"
-#include "stone/Utils/SrcLoc.h"
 #include "stone/Gen/CodeGenOptions.h"
 #include "stone/Session/SessionOptions.h"
+#include "stone/Utils/FileSystemOptions.h"
+#include "stone/Utils/SrcLoc.h"
 
 using namespace stone::gen;
 

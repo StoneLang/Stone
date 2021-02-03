@@ -2,8 +2,8 @@
 #define STONE_COMPILE_TOKEN_H
 
 #include "llvm/ADT/StringRef.h"
-#include "stone/Utils/LLVM.h"
 #include "stone/Core/TokenKind.h"
+#include "stone/Utils/LLVM.h"
 
 namespace stone {
 namespace syn {

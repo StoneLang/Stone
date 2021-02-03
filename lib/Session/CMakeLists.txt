@@ -11,6 +11,7 @@ set(stone_session_sources
 	Session.cpp
 
 	LINK_LIBS
+	#TODO: Should only need StoneUtils 
 	StoneCore
 )
 add_stone_library(StoneSession

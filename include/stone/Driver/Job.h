@@ -6,8 +6,6 @@
 #include "llvm/Option/Arg.h"
 #include "llvm/Option/ArgList.h"
 #include "llvm/Support/StringSaver.h"
-#include "stone/Utils/List.h"
-#include "stone/Utils/Stats.h"
 #include "stone/Driver/CmdOutput.h"
 #include "stone/Driver/CrashState.h"
 #include "stone/Driver/JobOptions.h"
@@ -15,6 +13,8 @@
 #include "stone/Driver/JobType.h"
 #include "stone/Driver/LinkType.h"
 #include "stone/Session/SessionOptions.h"
+#include "stone/Utils/List.h"
+#include "stone/Utils/Stats.h"
 
 namespace stone {
 namespace driver {

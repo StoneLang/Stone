@@ -67,11 +67,11 @@
 
 #include "stone/Core/ASTContext.h"
 #include "stone/Core/Module.h"
-#include "stone/Utils/Ret.h"
 #include "stone/Gen/CodeGenOptions.h"
 #include "stone/Gen/CodeGenerator.h"
 #include "stone/Gen/Gen.h"
 #include "stone/Public.h"
+#include "stone/Utils/Ret.h"
 
 using namespace stone;
 using namespace stone::gen;

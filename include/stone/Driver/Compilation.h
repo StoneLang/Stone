@@ -13,11 +13,11 @@
 #include "llvm/ADT/Optional.h"
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Option/Option.h"
+#include "stone/Driver/Job.h"
+#include "stone/Driver/TaskQueue.h"
 #include "stone/Utils/Clock.h"
 #include "stone/Utils/LLVM.h"
 #include "stone/Utils/Stats.h"
-#include "stone/Driver/Job.h"
-#include "stone/Driver/TaskQueue.h"
 
 namespace llvm {
 namespace opt {
