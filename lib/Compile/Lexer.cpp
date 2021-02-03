@@ -339,8 +339,7 @@ static bool IsIdentifier(const signed char ch) {
   }
 }
 
-Lexer::Lexer(const SrcID srcID, SrcMgr &sm, stone::Context &ctx,
-             Pipeline *pipeline)
+Lexer::Lexer(const SrcID srcID, SrcMgr &sm, Context &ctx, Pipeline *pipeline)
     : srcID(srcID), sm(sm), ctx(ctx) {
   stats.reset(new LexerStats(*this));
   ctx.GetStatEngine().Register(stats.get());

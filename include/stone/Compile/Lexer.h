@@ -43,7 +43,7 @@ class Lexer final {
   const SrcID srcID;
   SrcMgr &sm;
   Clock clock;
-  const stone::Context &ctx;
+  const Context &ctx;
   std::unique_ptr<LexerStats> stats;
   std::unique_ptr<LexerDiagnostics> diagnostics;
 

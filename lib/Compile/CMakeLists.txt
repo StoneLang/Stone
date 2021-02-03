@@ -9,7 +9,7 @@ set( LLVM_LINK_COMPONENTS
   Option
   )
 set(stone_compile_sources
-	Analyze.cpp
+	Check.cpp
 	Checker.cpp
 	Compile.cpp
 	Compiler.cpp
@@ -18,6 +18,7 @@ set(stone_compile_sources
 	Gen.cpp
 	Lexer.cpp
 	Optimize.cpp
+	Parse.cpp
 	Parser.cpp
 	Transformer.cpp
 	
