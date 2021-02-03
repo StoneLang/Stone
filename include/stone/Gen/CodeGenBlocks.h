@@ -1,5 +1,5 @@
-#ifndef STONE_COMPILE_CODEGENFUNCTION_H
-#define STONE_COMPILE_CODEGENFUNCTION_H
+#ifndef STONE_GEN_CODEGENBLOCKS_H
+#define STONE_GEN_CODEGENBLOCKS_H
 
 namespace llvm {
 class raw_pwrite_stream;
@@ -13,9 +13,9 @@ class TargetMachine;
 namespace stone {
 namespace gen {
 
-class CodeGenFunction {
+class CodeGenBlocks {
  public:
-  CodeGenFunction();
+  CodeGenBlocks();
 };
 
 }  // namespace gen

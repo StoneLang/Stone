@@ -15,11 +15,6 @@ set(stone_compile_sources
 	Compiler.cpp
 	CompilerScope.cpp
 	CompilerUnit.cpp
-	Emitter.cpp
-	Gen.cpp
-	CodeGenBlocks.cpp
-	CodeGenFunction.cpp
-	CodeGenerator.cpp
 	Lexer.cpp
 	Optimize.cpp
 	Parse.cpp
@@ -27,6 +22,7 @@ set(stone_compile_sources
 	
 	LINK_LIBS
 	StoneCore
+	StoneGen
 	StoneSession
 )
 add_stone_library(StoneCompile

@@ -1,4 +1,4 @@
-#include "stone/Compile/CodeGenBlocks.h"
+#include "stone/Gen/CodeGenBlocks.h"
 
 using namespace stone::gen;
 

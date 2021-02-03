@@ -1,5 +1,5 @@
-#ifndef STONE_COMPILE_CODEGENMODULE_H
-#define STONE_COMPILE_CODEGENMODULE_H
+#ifndef STONE_GEN_CODEGENMODULE_H
+#define STONE_GEN_CODEGENMODULE_H
 
 namespace stone {
 namespace gen {

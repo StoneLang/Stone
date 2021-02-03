@@ -1,5 +1,5 @@
-#ifndef STONE_COMPILE_BACKEND_H
-#define STONE_COMPILE_BACKEND_H
+#ifndef STONE_GEN_BACKEND_H
+#define STONE_GEN_BACKEND_H
 
 #include "llvm/Target/TargetMachine.h"
 #include "stone/Core/ASTContext.h"

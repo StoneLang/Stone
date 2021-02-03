@@ -1,5 +1,5 @@
-#ifndef STONE_COMPILE_GENERATOR_H
-#define STONE_COMPILE_GENERATOR_H
+#ifndef STONE_GEN_GENERATOR_H
+#define STONE_GEN_GENERATOR_H
 
 #include "stone/Core/LLVM.h"
 #include "stone/Core/Module.h"
@@ -15,7 +15,7 @@ class TargetMachine;
 
 namespace stone {
 namespace gen {
-class CodeGenModule; 
+class CodeGenModule;
 class CodeGenerator final {
  public:
   CodeGenerator();
@@ -34,7 +34,7 @@ class CodeGenerator final {
   /// will be deleted.
   ///
   /// It will also return null if the module is released.
-  llvm::Module *GetModule(); 
+  llvm::Module *GetModule();
 };
 }  // namespace gen
 }  // namespace stone

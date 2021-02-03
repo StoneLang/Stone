@@ -1,11 +1,11 @@
-#include "stone/Compile/Gen.h"
+#include "stone/Gen/Gen.h"
 
 #include "llvm/IR/Module.h"
-#include "stone/Compile/CodeGenOptions.h"
-#include "stone/Compile/CodeGenerator.h"
 #include "stone/Core/ASTContext.h"
 #include "stone/Core/Module.h"
 #include "stone/Core/Ret.h"
+#include "stone/Gen/CodeGenOptions.h"
+#include "stone/Gen/CodeGenerator.h"
 #include "stone/Public.h"
 
 using namespace stone;
@@ -23,7 +23,8 @@ std::unique_ptr<llvm::TargetMachine> stone::CreateTargetMachine(
     const CodeGenOptions &genOpts, ASTContext &astCtx) {
   return nullptr;
 }
-bool stone::GenObject(llvm::Module *llvmModule, const gen::CodeGenOptions &genOpts,
+bool stone::GenObject(llvm::Module *llvmModule,
+                      const gen::CodeGenOptions &genOpts,
                       syn::ASTContext &astCtx, llvm::StringRef outputFilename) {
   return true;
 }

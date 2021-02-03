@@ -2,9 +2,9 @@
 
 #include "stone/Compile/Compiler.h"
 #include "stone/Compile/CompilerUnit.h"
-#include "stone/Compile/Gen.h"
 #include "stone/Core/Defer.h"
 #include "stone/Core/Ret.h"
+#include "stone/Gen/Gen.h"
 #include "stone/Session/ExecutablePath.h"
 
 using namespace stone;

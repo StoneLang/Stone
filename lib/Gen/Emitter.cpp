@@ -1,4 +1,4 @@
-#include "stone/Compile/Emitter.h"
+#include "stone/Gen/Emitter.h"
 
 using namespace stone::gen;
 

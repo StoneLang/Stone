@@ -1,4 +1,4 @@
-#include "stone/Compile/CodeGenerator.h"
+#include "stone/Gen/CodeGenerator.h"
 
 #include "llvm/IR/Module.h"
 #include "stone/Core/Module.h"

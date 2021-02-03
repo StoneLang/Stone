@@ -3,10 +3,10 @@
 
 #include "llvm/ADT/ArrayRef.h"
 #include "stone/Compile/Compiler.h"
-#include "stone/Compile/CodeGenOptions.h"
 #include "stone/Core/FileSystemOptions.h"
 #include "stone/Core/SearchPathOptions.h"
 #include "stone/Core/SrcLoc.h"
+#include "stone/Gen/CodeGenOptions.h"
 #include "stone/Session/FileType.h"
 #include "stone/Session/Mode.h"
 #include "stone/Session/SessionOptions.h"

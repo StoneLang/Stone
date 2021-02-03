@@ -1,5 +1,5 @@
-#ifndef STONE_COMPILE_EMITTER_H
-#define STONE_COMPILE_EMITTER_H
+#ifndef STONE_GEN_CODEGENFUNCTION_H
+#define STONE_GEN_CODEGENFUNCTION_H
 
 namespace llvm {
 class raw_pwrite_stream;
@@ -13,19 +13,11 @@ class TargetMachine;
 namespace stone {
 namespace gen {
 
-class Emitter final {
+class CodeGenFunction {
  public:
-  Emitter();
-
- public:
-  void EmitStmt();
-
- public:
-  void EmitDecl();
-
- public:
-  void EmitExpr();
+  CodeGenFunction();
 };
+
 }  // namespace gen
 }  // namespace stone
-#endif 
+#endif
