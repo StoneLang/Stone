@@ -6,7 +6,7 @@
 #include "stone/Core/ASTScope.h"
 #include "stone/Core/Decl.h"
 #include "stone/Core/Identifier.h"
-#include "stone/Core/LLVM.h"
+#include "stone/Utils/LLVM.h"
 
 namespace stone {
 namespace syn {

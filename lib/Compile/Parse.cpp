@@ -1,6 +1,6 @@
 #include "stone/Compile/Analyze.h"
 #include "stone/Compile/Parser.h"
-#include "stone/Core/Ret.h"
+#include "stone/Utils/Ret.h"
 #include "stone/Public.h"
 
 using namespace stone::syn;

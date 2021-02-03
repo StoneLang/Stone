@@ -24,8 +24,8 @@
 #include "llvm/Support/StringSaver.h"
 #include "llvm/Support/TargetRegistry.h"
 #include "llvm/Support/raw_ostream.h"
-#include "stone/Core/Color.h"
-#include "stone/Core/Ret.h"
+#include "stone/Utils/Color.h"
+#include "stone/Utils/Ret.h"
 #include "stone/Driver/Driver.h"
 #include "stone/Driver/ToolChain.h"
 

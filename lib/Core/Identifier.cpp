@@ -1,6 +1,6 @@
 #include "stone/Core/Identifier.h"
 
-#include "stone/Core/Char.h"
+#include "stone/Utils/Char.h"
 #include "stone/Core/LangOptions.h"
 //#include "stone/Core/OperatorKinds.h"
 //#include "stone/Core/Specifiers.h"

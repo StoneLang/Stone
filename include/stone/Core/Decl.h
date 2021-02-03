@@ -23,8 +23,8 @@
 #include "stone/Core/DeclKind.h"
 #include "stone/Core/DeclName.h"
 #include "stone/Core/Identifier.h"
-#include "stone/Core/LLVM.h"
-#include "stone/Core/SrcLoc.h"
+#include "stone/Utils/LLVM.h"
+#include "stone/Utils/SrcLoc.h"
 
 namespace stone {
 namespace syn {

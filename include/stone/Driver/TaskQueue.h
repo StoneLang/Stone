@@ -9,8 +9,8 @@
 #include "llvm/Config/config.h"
 #include "llvm/Support/Program.h"
 #include "stone/Core/Context.h"
-#include "stone/Core/LLVM.h"
-#include "stone/Core/Stats.h"
+#include "stone/Utils/LLVM.h"
+#include "stone/Utils/Stats.h"
 
 namespace stone {
 namespace driver {

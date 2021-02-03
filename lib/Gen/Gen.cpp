@@ -67,7 +67,7 @@
 
 #include "stone/Core/ASTContext.h"
 #include "stone/Core/Module.h"
-#include "stone/Core/Ret.h"
+#include "stone/Utils/Ret.h"
 #include "stone/Gen/CodeGenOptions.h"
 #include "stone/Gen/CodeGenerator.h"
 #include "stone/Gen/Gen.h"

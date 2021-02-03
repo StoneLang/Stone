@@ -1,5 +1,5 @@
-#ifndef STONE_CORE_LANGOPTIONS_H
-#define STONE_CORE_LANGOPTIONS_H
+#ifndef STONE_LANGOPTIONS_H
+#define STONE_LANGOPTIONS_H
 
 #include <string>
 #include <vector>

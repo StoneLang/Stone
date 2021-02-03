@@ -1,7 +1,7 @@
 #include "stone/Compile/Lexer.h"
 
-#include "stone/Core/Char.h"
-#include "stone/Core/SrcMgr.h"
+#include "stone/Utils/Char.h"
+#include "stone/Utils/SrcMgr.h"
 
 using namespace stone;
 using namespace stone::syn;

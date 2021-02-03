@@ -5,7 +5,7 @@
 
 #include "llvm/ADT/DenseMapInfo.h"
 #include "llvm/ADT/StringRef.h"
-#include "stone/Core/LLVM.h"
+#include "stone/Utils/LLVM.h"
 
 namespace stone {
 namespace file {

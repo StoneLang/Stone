@@ -38,8 +38,8 @@
 #include "stone/Core/LangABI.h"
 #include "stone/Core/LangOptions.h"
 #include "stone/Core/SearchPathOptions.h"
-#include "stone/Core/SrcMgr.h"
-#include "stone/Core/Stats.h"
+#include "stone/Utils/SrcMgr.h"
+#include "stone/Utils/Stats.h"
 #include "stone/Core/Type.h"
 
 namespace stone {

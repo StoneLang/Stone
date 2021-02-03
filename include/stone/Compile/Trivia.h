@@ -3,7 +3,7 @@
 
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/SmallVector.h"
-#include "stone/Core/LLVM.h"
+#include "stone/Utils/LLVM.h"
 
 namespace stone {
 namespace syn {

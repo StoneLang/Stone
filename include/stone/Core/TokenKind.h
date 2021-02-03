@@ -1,7 +1,7 @@
-#ifndef STONE_ANALYZE_TOKENKINDS_H
-#define STONE_ANALYZE_TOKENKINDS_H
+#ifndef STONE_CORE_TOKENKINDS_H
+#define STONE_CORE_TOKENKINDS_H
 
-#include "stone/Core/LLVM.h"
+#include "stone/Utils/LLVM.h"
 
 namespace {
 enum { TOKON = 0x1, TOKOFF = 0x2, TOKRSV = 0x4 };

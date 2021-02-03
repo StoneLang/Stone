@@ -1,9 +1,9 @@
 #ifndef STONE_COMPILE_COMPILEOPTIONS_H
 #define STONE_COMPILE_COMPILEOPTIONS_H
 
-#include "stone/Core/FileSystemOptions.h"
+#include "stone/Utils/FileSystemOptions.h"
 #include "stone/Core/SearchPathOptions.h"
-#include "stone/Core/SrcLoc.h"
+#include "stone/Utils/SrcLoc.h"
 #include "stone/Gen/CodeGenOptions.h"
 #include "stone/Session/SessionOptions.h"
 

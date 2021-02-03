@@ -2,7 +2,7 @@
 
 #include "llvm/IR/Module.h"
 #include "stone/Core/Module.h"
-#include "stone/Core/Ret.h"
+#include "stone/Utils/Ret.h"
 #include "stone/Public.h"
 
 using namespace stone;

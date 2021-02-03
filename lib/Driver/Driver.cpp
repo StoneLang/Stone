@@ -2,8 +2,8 @@
 
 #include "llvm/Config/llvm-config.h"
 #include "llvm/Support/FormatVariadic.h"
-#include "stone/Core/LLVM.h"
-#include "stone/Core/Ret.h"
+#include "stone/Utils/LLVM.h"
+#include "stone/Utils/Ret.h"
 #include "stone/Driver/Job.h"
 #include "stone/Driver/ToolChain.h"
 #include "stone/Session/ModeKind.h"

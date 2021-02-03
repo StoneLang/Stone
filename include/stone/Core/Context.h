@@ -1,10 +1,10 @@
 #ifndef STONE_CORE_CONTEXT_H
 #define STONE_CORE_CONTEXT_H
 
-#include "stone/Core/DiagnosticOptions.h"
-#include "stone/Core/Diagnostics.h"
+#include "stone/Utils/DiagnosticOptions.h"
+#include "stone/Utils/Diagnostics.h"
 #include "stone/Core/LangOptions.h"
-#include "stone/Core/Stats.h"
+#include "stone/Utils/Stats.h"
 
 namespace stone {
 class Context {

@@ -2,7 +2,7 @@
 #define STONE_COMPILE_TOKEN_H
 
 #include "llvm/ADT/StringRef.h"
-#include "stone/Core/LLVM.h"
+#include "stone/Utils/LLVM.h"
 #include "stone/Core/TokenKind.h"
 
 namespace stone {

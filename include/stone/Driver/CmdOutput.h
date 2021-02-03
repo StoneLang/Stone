@@ -6,7 +6,7 @@
 #include "llvm/ADT/StringMap.h"
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Support/StringSaver.h"
-#include "stone/Core/LLVM.h"
+#include "stone/Utils/LLVM.h"
 #include "stone/Session/FileType.h"
 
 namespace stone {

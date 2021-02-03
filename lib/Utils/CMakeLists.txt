@@ -4,12 +4,23 @@ set( LLVM_LINK_COMPONENTS
 	BinaryFormat
   BitstreamReader
   Support
-  Core
+	Core
   )
 set(stone_utils_sources
+	BumpTable.cpp
+	Char.cpp
+	Clock.cpp
+	Diagnostics.cpp
 	DirWatcher.cpp
-	LINK_LIBS
-	StoneUtils
+	FileMgr.cpp
+	FileSystemStatCache.cpp
+	Fmt.cpp
+	LLVMContext.cpp
+	SrcLoc.cpp
+	SrcMgr.cpp
+	Stats.cpp
+	TextDiagnosticListener.cpp
+	Version.cpp
 )
 add_stone_library(StoneUtils
 	${stone_utils_sources}

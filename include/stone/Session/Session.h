@@ -26,7 +26,9 @@
 #include "llvm/Support/StringSaver.h"
 #include "llvm/Support/TargetRegistry.h"
 #include "llvm/Support/VirtualFileSystem.h"
-#include "stone/Core/Clock.h"
+
+
+#include "stone/Utils/Clock.h"
 #include "stone/Core/Context.h"
 #include "stone/Session/FileType.h"
 #include "stone/Session/Mode.h"

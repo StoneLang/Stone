@@ -11,30 +11,20 @@ set(stone_core_sources
 	ASTVisitor.cpp
 	ASTWalker.cpp
 	Builtin.cpp
-	BumpTable.cpp
-	Char.cpp
-	Clock.cpp
 	Comment.cpp
 	Context.cpp
 	Decl.cpp
-	Diagnostics.cpp
 	Expr.cpp
-	FileMgr.cpp
-	FileSystemStatCache.cpp
-	Fmt.cpp
 	Identifier.cpp
-	LLVMContext.cpp
 	Module.cpp
-	SrcLoc.cpp
-	SrcMgr.cpp
-	Stats.cpp
 	Stmt.cpp
 	Template.cpp
-	TextDiagnosticListener.cpp
 	TokenKind.cpp
 	Type.cpp
-	Version.cpp
 	VirtualTable.cpp
+
+	LINK_LIBS
+	StoneUtils
 
 )
 add_stone_library(StoneCore

@@ -3,7 +3,7 @@
 
 #include "llvm/Target/TargetMachine.h"
 #include "stone/Core/ASTContext.h"
-#include "stone/Core/LLVM.h"
+#include "stone/Utils/LLVM.h"
 
 namespace llvm {
 class raw_pwrite_stream;

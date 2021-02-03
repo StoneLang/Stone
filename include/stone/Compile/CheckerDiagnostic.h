@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "stone/Core/Diagnostics.h"
+#include "stone/Utils/Diagnostics.h"
 
 namespace stone {
 namespace sema {

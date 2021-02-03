@@ -1,7 +1,7 @@
 #include "stone/Analysis/Lexer.h"
 #include "stone/Core/LangOptions.h"
-#include "stone/Core/Mem.h"
-#include "stone/Core/SrcMgr.h"
+#include "stone/Utils/Mem.h"
+#include "stone/Utils/SrcMgr.h"
 
 #include "gtest/gtest.h"
 

@@ -1,6 +1,6 @@
 #include "stone/Compile/Parser.h"
 
-#include "stone/Core/Ret.h"
+#include "stone/Utils/Ret.h"
 
 using namespace stone;
 using namespace stone::syn;
