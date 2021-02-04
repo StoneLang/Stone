@@ -11,7 +11,9 @@ set(stone_utils_sources
 	Char.cpp
 	Clock.cpp
 	Context.cpp
+	DarwinDirWatcher.cpp
 	Diagnostics.cpp
+	DirScanner.cpp
 	DirWatcher.cpp
 	FileMgr.cpp
 	FileSystemStatCache.cpp
@@ -21,7 +23,9 @@ set(stone_utils_sources
 	SrcMgr.cpp
 	Stats.cpp
 	TextDiagnosticListener.cpp
+	UnixDirWatcher.cpp
 	Version.cpp
+	WinDirWatcher.cpp
 )
 add_stone_library(StoneUtils
 	${stone_utils_sources}

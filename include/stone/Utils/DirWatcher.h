@@ -1,8 +1,125 @@
 #ifndef STONE_UTILS_DIRWATCHER_H
 #define STONE_UTILS_DIRWATCHER_H
 
+#include <functional>
+#include <memory>
+#include <string>
+
+#include "llvm/ADT/ArrayRef.h"
+#include "llvm/ADT/StringRef.h"
+#include "llvm/Support/Error.h"
+#include "stone/Utils/DirScanner.h"
+
 namespace stone {
-class DirWatcher final {};
+/// Provides notifications for file changes in a directory.
+///
+/// Invokes client-provided function on every filesystem event in the watched
+/// directory. Initially the the watched directory is scanned and for every file
+/// found, an event is synthesized as if the file was added.
+///
+/// This is not a general purpose directory monitoring tool - list of
+/// limitations follows.
+///
+/// Only flat directories with no subdirectories are supported. In case
+/// subdirectories are present the behavior is unspecified - events *might* be
+/// passed to Receiver on macOS (due to FSEvents being used) while they
+/// *probably* won't be passed on Linux (due to inotify being used).
+///
+/// Known potential inconsistencies
+/// - For files that are deleted befor the initial scan processed them, clients
+/// might receive Removed notification without any prior Added notification.
+/// - Multiple notifications might be produced when a file is added to the
+/// watched directory during the initial scan. We are choosing the lesser evil
+/// here as the only known alternative strategy would be to invalidate the
+/// watcher instance and force user to create a new one whenever filesystem
+/// event occurs during the initial scan but that would introduce continuous
+/// restarting failure mode (watched directory is not always "owned" by the same
+/// process that is consuming it). Since existing clients can handle duplicate
+/// events well, we decided for simplicity.
+///
+/// Notifications are provided only for changes done through local user-space
+/// filesystem interface. Specifically, it's unspecified if notification would
+/// be provided in case of a:
+/// - a file mmap-ed and changed
+/// - a file changed via remote (NFS) or virtual (/proc) FS access to monitored
+/// directory
+/// - another filesystem mounted to the watched directory
+///
+/// No support for LLVM VFS.
+///
+/// It is unspecified whether notifications for files being deleted are sent in
+/// case the whole watched directory is sent.
+///
+/// Directories containing "too many" files and/or receiving events "too
+/// frequently" are not supported - if the initial scan can't be finished before
+/// the watcher instance gets invalidated (see WatcherGotInvalidated) there's no
+/// good error handling strategy - the only option for client is to destroy the
+/// watcher, restart watching with new instance and hope it won't repeat.
+class DirWatcher {
+ public:
+  struct Event {
+    enum class EventKind {
+      Removed,
+      /// Content of a file was modified.
+      Modified,
+      /// The watched directory got deleted.
+      WatchedDirRemoved,
+      /// The DirWatcher that originated this event is no longer valid and
+      /// its behavior is unspecified.
+      ///
+      /// The prime case is kernel signalling to OS-specific implementation of
+      /// DirWatcher some resource limit being hit.
+      /// *Usually* kernel starts dropping or squashing events together after
+      /// that and so would DirWatcher. This means that *some* events
+      /// might still be passed to Receiver but this behavior is unspecified.
+      ///
+      /// Another case is after the watched directory itself is deleted.
+      /// WatcherGotInvalidated will be received at least once during
+      /// DirWatcher instance lifetime - when handling errors this is done
+      /// on best effort basis, when an instance is being destroyed then this is
+      /// guaranteed.
+      ///
+      /// The only proper response to this kind of event is to destruct the
+      /// originating DirWatcher instance and create a new one.
+      WatcherGotInvalidated
+    };
+
+    EventKind Kind;
+    /// Filename that this event is related to or an empty string in
+    /// case this event is related to the watched directory itself.
+    std::string Filename;
+
+    Event(EventKind Kind, llvm::StringRef Filename)
+        : Kind(Kind), Filename(Filename) {}
+  };
+
+  /// llvm fatal_error if \param Path doesn't exist or isn't a directory.
+  /// Returns llvm::Expected Error if OS kernel API told us we can't start
+  /// watching. In such case it's unclear whether just retrying has any chance
+  /// to succeed.
+  static llvm::Expected<std::unique_ptr<DirWatcher>> create(
+      llvm::StringRef Path,
+      std::function<void(llvm::ArrayRef<DirWatcher::Event> Events,
+                         bool IsInitial)>
+          Receiver,
+      bool WaitForInitialSync);
+
+  virtual ~DirWatcher() = default;
+  DirWatcher(const DirWatcher &) = delete;
+  DirWatcher &operator=(const DirWatcher &) = delete;
+  DirWatcher(DirWatcher &&) = default;
+
+ protected:
+  DirWatcher() = default;
+};
+
+class DarwinDirWatcher final : public DirWatcher {};
+
+class UnixDirWatcher final : public DirWatcher {};
+class LinuxDirWatcher final : public DirWatcher {};
+
+class WinDirWatcher final : public DirWatcher {};
+
 }  // namespace stone
 
 #endif
