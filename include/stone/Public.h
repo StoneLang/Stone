@@ -14,14 +14,14 @@ class Pipeline {
   Pipeline() = default;
   virtual ~Pipeline() = default;
 
- public:
+public:
   virtual void OnCompilerConfigured(const Compiler &compiler) = 0;
 
- public:
+public:
   virtual void OnCompileStarted(const Compiler &compiler) = 0;
   virtual void OnCompileFinished(const Compiler &compiler) = 0;
 
- public:
+public:
   ///
   virtual void OnParseStarted(const Compiler &compiler) = 0;
   ///
@@ -32,7 +32,7 @@ class Pipeline {
   // virtual void OnToken(const syn::Token &token);
   // virtual void OnSourceFile(const syn::SourceUnit &unit);
 
- public:
+public:
   ///
   virtual void OnCheckStarted(const Compiler &compiler) = 0;
   ///
@@ -40,7 +40,7 @@ class Pipeline {
   ///
   virtual void OnCheckFinished(const Compiler &compiler) = 0;
 
- public:
+public:
   ///
   virtual void OnGenIRStarted(const Compiler &compiler) = 0;
   ///
@@ -48,7 +48,7 @@ class Pipeline {
   ///
   virtual void OnGenIRFinished(const Compiler &compiler) = 0;
 
- public:
+public:
   ///
   virtual void OnGenObjectStarted(const Compiler &compiler);
   ///
@@ -56,5 +56,5 @@ class Pipeline {
   ///
   virtual void OnGenObjectFinished(const Compiler &compiler);
 };
-}  // namespace stone
+} // namespace stone
 #endif

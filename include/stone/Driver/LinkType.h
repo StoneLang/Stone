@@ -5,5 +5,5 @@ namespace stone {
 namespace driver {
 enum class LinkType { None, Executable, DynamicLibrary, StaticLibrary };
 }
-}  // namespace stone
+} // namespace stone
 #endif

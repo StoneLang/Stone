@@ -1,3 +1,7 @@
+#include "stone/Compile/Compile.h"
+#include "stone/Driver/Run.h"
+#include "stone/Session/ExecutablePath.h"
+#include "stone/Utils/Ret.h"
 #include "llvm/ADT/Triple.h"
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/FileSystem.h"
@@ -6,10 +10,6 @@
 #include "llvm/Support/Program.h"
 #include "llvm/Support/StringSaver.h"
 #include "llvm/Support/TargetSelect.h"
-#include "stone/Compile/Compile.h"
-#include "stone/Driver/Run.h"
-#include "stone/Session/ExecutablePath.h"
-#include "stone/Utils/Ret.h"
 
 using namespace stone;
 

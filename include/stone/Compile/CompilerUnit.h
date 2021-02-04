@@ -1,7 +1,6 @@
 #ifndef STONE_COMPILE_COMPILERUNIT_H
 #define STONE_COMPILE_COMPILERUNIT_H
 
-#include "llvm/ADT/ArrayRef.h"
 #include "stone/AST/SearchPathOptions.h"
 #include "stone/Compile/Compiler.h"
 #include "stone/Gen/CodeGenOptions.h"
@@ -10,6 +9,7 @@
 #include "stone/Session/SessionOptions.h"
 #include "stone/Utils/FileSystemOptions.h"
 #include "stone/Utils/SrcLoc.h"
+#include "llvm/ADT/ArrayRef.h"
 
 namespace stone {
 class CompilerScope;
@@ -18,7 +18,7 @@ class SourceUnit;
 }
 
 class alignas(8) CompilerUnit final {
- public:
+public:
   struct Input final {
     SrcID srcID;
     llvm::StringRef filename;
@@ -30,7 +30,7 @@ class alignas(8) CompilerUnit final {
   };
   enum class Stage { None, Parsed, Checked };
 
- private:
+private:
   syn::SourceUnit &su;
   Compiler &compiler;
   CompilerScope &scope;
@@ -38,7 +38,7 @@ class alignas(8) CompilerUnit final {
   Output output;
   bool isPrimary = false;
 
- public:
+public:
   CompilerUnit(Compiler &compiler, syn::SourceUnit &su, CompilerScope &scope);
 
   CompilerUnit::Input &GetInput() { return input; }
@@ -49,7 +49,7 @@ class alignas(8) CompilerUnit final {
   void SetIsPrimary(bool primary) { isPrimary = primary; }
   bool IsPrimary() { return isPrimary; }
 
- public:
+public:
   // Make vanilla new/delete illegal for Decls.
   void *operator new(size_t bytes) = delete;
   void operator delete(void *data) = delete;
@@ -58,5 +58,5 @@ class alignas(8) CompilerUnit final {
   void *operator new(std::size_t bytes, const Compiler &compiler,
                      unsigned alignment = alignof(CompilerUnit));
 };
-}  // namespace stone
+} // namespace stone
 #endif

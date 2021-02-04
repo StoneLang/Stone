@@ -7,13 +7,13 @@ namespace stone {
 namespace gen {
 
 class CodeGenFunction final {
- public:
+public:
   CodeEmitter emitter;
 
- public:
-  CodeEmitter& GetEmitter() { return emitter; }
+public:
+  CodeEmitter &GetEmitter() { return emitter; }
 };
-}  // namespace gen
-}  // namespace stone
+} // namespace gen
+} // namespace stone
 
 #endif

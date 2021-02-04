@@ -19,16 +19,16 @@ void Job::AddInput(const InputFile input) { jobOpts.inputs.push_back(input); }
 
 const char *Job::GetNameByType(JobType jobType) {
   switch (jobType) {
-    case JobType::Compile:
-      return "compile";
-    case JobType::Backend:
-      return "backend";
-    case JobType::Assemble:
-      return "assemble";
-    case JobType::DynamicLink:
-      return "dynamic-link";
-    case JobType::StaticLink:
-      return "static-link";
+  case JobType::Compile:
+    return "compile";
+  case JobType::Backend:
+    return "backend";
+  case JobType::Assemble:
+    return "assemble";
+  case JobType::DynamicLink:
+    return "dynamic-link";
+  case JobType::StaticLink:
+    return "static-link";
   }
   llvm_unreachable("invalid class");
 }

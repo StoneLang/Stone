@@ -1,12 +1,12 @@
 #include "stone/Driver/Driver.h"
 
-#include "llvm/Config/llvm-config.h"
-#include "llvm/Support/FormatVariadic.h"
 #include "stone/Driver/Job.h"
 #include "stone/Driver/ToolChain.h"
 #include "stone/Session/ModeKind.h"
 #include "stone/Utils/LLVM.h"
 #include "stone/Utils/Ret.h"
+#include "llvm/Config/llvm-config.h"
+#include "llvm/Support/FormatVariadic.h"
 
 using namespace stone;
 using namespace stone::file;
@@ -14,11 +14,11 @@ using namespace stone::driver;
 using namespace llvm::opt;
 
 class DriverInternal final {
- public:
+public:
   static bool DoesInputExist(Driver &driver, const DerivedArgList &args,
                              llvm::StringRef input);
 
- public:
+public:
   /// Print the job
   static void PrintJob(const Job &job, Driver &driver);
 
@@ -57,7 +57,7 @@ class DriverInternal final {
 
   static std::unique_ptr<driver::TaskQueue> BuildTaskQueue(Driver &driver);
 
- public:
+public:
   /// Builds the compile jobs
   static void BuildCompileJobs(Driver &driver);
 
@@ -127,10 +127,10 @@ void DriverInternal::BuildLinkJob(Driver &driver) {
   if (driver.GetMode().IsLinkOnly()) {
     for (const auto &input : driver.GetDriverOptions().inputs) {
       switch (input.first) {
-        case FileType::Object:
-          break;
-        default:
-          break;
+      case FileType::Object:
+        break;
+      default:
+        break;
       }
     }
     return;
@@ -141,24 +141,24 @@ void DriverInternal::BuildLinkJob(Driver &driver) {
   if (driver.GetMode().CanLink()) {
     Job *linkJob = nullptr;
     switch (driver.GetOutputProfile().linkType) {
-      case LinkType::StaticLibrary: {
-        // TODO: This makes the most sense
-        // driver.GetToolChain().PickTool(JobType::StaticLink).CreateJob();
-        // linkJob = driver.GetCompilation().CreateJob<StaticLinkJob>(
-        //    driver.GetCompilation(), driver.GetOutputProfile().RequiresLTO(),
-        //    driver.GetOutputProfile().linkType);
-        break;
-      }
-      case LinkType::DynamicLibrary: {
-        // driver.GetToolChain().PickTool(JobType::DynamicLink).CreateJob();
-        // linkJob = driver.GetCompilation().CreateJob<DynamicLinkJob>(
-        //    driver.GetCompilation(), driver.GetOutputProfile().RequiresLTO(),
-        //    driver.GetOutputProfile().linkType);
-        // TODO: get the tool from the ToolChain and pass to CreateJob?
-        break;
-      }
-      default:
-        break;
+    case LinkType::StaticLibrary: {
+      // TODO: This makes the most sense
+      // driver.GetToolChain().PickTool(JobType::StaticLink).CreateJob();
+      // linkJob = driver.GetCompilation().CreateJob<StaticLinkJob>(
+      //    driver.GetCompilation(), driver.GetOutputProfile().RequiresLTO(),
+      //    driver.GetOutputProfile().linkType);
+      break;
+    }
+    case LinkType::DynamicLibrary: {
+      // driver.GetToolChain().PickTool(JobType::DynamicLink).CreateJob();
+      // linkJob = driver.GetCompilation().CreateJob<DynamicLinkJob>(
+      //    driver.GetCompilation(), driver.GetOutputProfile().RequiresLTO(),
+      //    driver.GetOutputProfile().linkType);
+      // TODO: get the tool from the ToolChain and pass to CreateJob?
+      break;
+    }
+    default:
+      break;
     }
     assert(linkJob && "LinkJob was not created -- requires linking.");
     /*
@@ -217,12 +217,10 @@ void DriverInternal::ComputeCompileType(const Driver &driver,
                                         const InputFiles &inputs) {}
 
 Driver::Driver(llvm::StringRef stoneExecutable, std::string driverName)
-    : Session(driverOpts),
-      stoneExecutablePath(stoneExecutablePath),
+    : Session(driverOpts), stoneExecutablePath(stoneExecutablePath),
       driverName(driverName),
       /*sysRoot(DEFAULT_SYSROOT),*/
-      driverTitle("Stone Compiler"),
-      checkInputFilesExist(true) {
+      driverTitle("Stone Compiler"), checkInputFilesExist(true) {
   stats.reset(new DriverStats(*this));
   GetStatEngine().Register(stats.get());
 
@@ -230,8 +228,8 @@ Driver::Driver(llvm::StringRef stoneExecutable, std::string driverName)
   GetDiagEngine().Register(std::move(diagnostics));
 }
 
-std::unique_ptr<driver::TaskQueue> DriverInternal::BuildTaskQueue(
-    Driver &driver) {
+std::unique_ptr<driver::TaskQueue>
+DriverInternal::BuildTaskQueue(Driver &driver) {
   // TODO:
   return llvm::make_unique<driver::UnixTaskQueue>(driver);
 }
@@ -256,36 +254,36 @@ void Driver::BuildToolChain(const llvm::opt::InputArgList &argList) {
   llvm::Triple target(targetTriple);
 
   switch (target.getOS()) {
-    case llvm::Triple::Darwin:
-    case llvm::Triple::MacOSX: {
-      llvm::Optional<llvm::Triple> targetVariant;
-      if (const llvm::opt::Arg *A = argList.getLastArg(opts::TargetVariant)) {
-        targetVariant = llvm::Triple(llvm::Triple::normalize(A->getValue()));
-      }
-      toolChain =
-          llvm::make_unique<DarwinToolChain>(*this, target, targetVariant);
-      toolChain->Build();
-      break;
+  case llvm::Triple::Darwin:
+  case llvm::Triple::MacOSX: {
+    llvm::Optional<llvm::Triple> targetVariant;
+    if (const llvm::opt::Arg *A = argList.getLastArg(opts::TargetVariant)) {
+      targetVariant = llvm::Triple(llvm::Triple::normalize(A->getValue()));
     }
-      /*
-          case llvm::Triple::Linux:
-            toolChain = llvm::make_unique<stone::Linux>(*this, target);
-            break;
-          case llvm::Triple::FreeBSD:
-            toolChain = llvm::make_unique<stone::FreeBSD>(*this, target);
-            break;
-          case llvm::Triple::OpenBSD:
-            toolChain = llvm::make_unique<stone::OpenBSD>(*this, target);
-            break;
-          case llvm::Triple::Win32:
-            toolChain = llvm::make_unique<stone::Win>(*this, target);
-            break;
-      */
-    default:
-      Out() << "D(SourceLoc(),"
-            << "msg::error_unknown_target,"
-            << "ArgList.getLastArg(opts::Target)->getValue());" << '\n';
-      break;
+    toolChain =
+        llvm::make_unique<DarwinToolChain>(*this, target, targetVariant);
+    toolChain->Build();
+    break;
+  }
+    /*
+        case llvm::Triple::Linux:
+          toolChain = llvm::make_unique<stone::Linux>(*this, target);
+          break;
+        case llvm::Triple::FreeBSD:
+          toolChain = llvm::make_unique<stone::FreeBSD>(*this, target);
+          break;
+        case llvm::Triple::OpenBSD:
+          toolChain = llvm::make_unique<stone::OpenBSD>(*this, target);
+          break;
+        case llvm::Triple::Win32:
+          toolChain = llvm::make_unique<stone::Win>(*this, target);
+          break;
+    */
+  default:
+    Out() << "D(SourceLoc(),"
+          << "msg::error_unknown_target,"
+          << "ArgList.getLastArg(opts::Target)->getValue());" << '\n';
+    break;
   }
 }
 void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
@@ -312,7 +310,8 @@ void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
 
   BuildInputs(GetToolChain(), *translatedArgs, GetInputs());
 
-  if (CutOff()) return;
+  if (CutOff())
+    return;
 
   if (GetInputs().size() == 0) {
     Out() << "msg::driver_error_no_input_files" << '\n';
@@ -321,7 +320,8 @@ void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
 
   BuildOutputProfile(*translatedArgs, GetOutputProfile());
 
-  if (CutOff()) return;
+  if (CutOff())
+    return;
 
   // TODO: ComputeCompileMod()
   //
@@ -336,7 +336,8 @@ void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
 
   BuildJobs();
 
-  if (CutOff()) return;
+  if (CutOff())
+    return;
 
   if (driverOpts.printJobs) {
     PrintJobs();
@@ -419,31 +420,31 @@ void Driver::BuildOutputProfile(const llvm::opt::DerivedArgList &args,
 
   // Basic for the time being
   switch (mode.GetKind()) {
-    case ModeKind::EmitLibrary: {
-      outputProfile.linkType = args.hasArg(opts::Static)
-                                   ? LinkType::StaticLibrary
-                                   : LinkType::DynamicLibrary;
-      outputProfile.compilerOutputFileType = compilerOutputType;
-    } break;
-    case ModeKind::EmitObject:
-      outputProfile.compilerOutputFileType = FileType::Object;
-      break;
-    case ModeKind::EmitAssembly:
-      outputProfile.compilerOutputFileType = FileType::Assembly;
-      break;
-    case ModeKind::EmitIR:
-      outputProfile.compilerOutputFileType = FileType::IR;
-      break;
-    case ModeKind::EmitBC:
-      outputProfile.compilerOutputFileType = FileType::BC;
-      break;
-    case ModeKind::Parse:
-    case ModeKind::Check:
-      outputProfile.compilerOutputFileType = FileType::None;
-      break;
-    default:
-      outputProfile.linkType = LinkType::Executable;
-      break;
+  case ModeKind::EmitLibrary: {
+    outputProfile.linkType = args.hasArg(opts::Static)
+                                 ? LinkType::StaticLibrary
+                                 : LinkType::DynamicLibrary;
+    outputProfile.compilerOutputFileType = compilerOutputType;
+  } break;
+  case ModeKind::EmitObject:
+    outputProfile.compilerOutputFileType = FileType::Object;
+    break;
+  case ModeKind::EmitAssembly:
+    outputProfile.compilerOutputFileType = FileType::Assembly;
+    break;
+  case ModeKind::EmitIR:
+    outputProfile.compilerOutputFileType = FileType::IR;
+    break;
+  case ModeKind::EmitBC:
+    outputProfile.compilerOutputFileType = FileType::BC;
+    break;
+  case ModeKind::Parse:
+  case ModeKind::Check:
+    outputProfile.compilerOutputFileType = FileType::None;
+    break;
+  default:
+    outputProfile.linkType = LinkType::Executable;
+    break;
   }
   assert(outputProfile.compilerOutputFileType != FileType::INVALID);
 }
@@ -517,7 +518,8 @@ int Driver::Run() {
   // auto compilationResult =
   //	GetCompilation().Run(DriverInternal::BuildTaskQueue(*this));
 
-  if (CutOff()) return ret::err;
+  if (CutOff())
+    return ret::err;
 
   return ret::ok;
 }

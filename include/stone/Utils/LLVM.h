@@ -14,38 +14,26 @@ namespace llvm {
 class StringRef;
 class Twine;
 class VersionTuple;
-template <typename T>
-class ArrayRef;
-template <typename T>
-class MutableArrayRef;
-template <typename T>
-class OwningArrayRef;
-template <unsigned InternalLen>
-class SmallString;
-template <typename T, unsigned N>
-class SmallVector;
-template <typename T>
-class SmallVectorImpl;
-template <typename T>
-class Optional;
-template <class T>
-class Expected;
+template <typename T> class ArrayRef;
+template <typename T> class MutableArrayRef;
+template <typename T> class OwningArrayRef;
+template <unsigned InternalLen> class SmallString;
+template <typename T, unsigned N> class SmallVector;
+template <typename T> class SmallVectorImpl;
+template <typename T> class Optional;
+template <class T> class Expected;
 
-template <typename T>
-struct SaveAndRestore;
+template <typename T> struct SaveAndRestore;
 
 // Reference counting.
-template <typename T>
-class IntrusiveRefCntPtr;
-template <typename T>
-struct IntrusiveRefCntPtrInfo;
-template <class Derived>
-class RefCountedBase;
+template <typename T> class IntrusiveRefCntPtr;
+template <typename T> struct IntrusiveRefCntPtrInfo;
+template <class Derived> class RefCountedBase;
 
 class raw_ostream;
 class raw_pwrite_stream;
 // TODO: DenseMap, ...
-}  // namespace llvm
+} // namespace llvm
 
 namespace stone {
 // Casting operators.
@@ -79,6 +67,6 @@ using llvm::RefCountedBase;
 
 using llvm::raw_ostream;
 using llvm::raw_pwrite_stream;
-}  // namespace stone
+} // namespace stone
 
 #endif

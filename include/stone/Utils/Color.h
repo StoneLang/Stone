@@ -11,13 +11,15 @@ class ColorOutputStream {
   llvm::raw_ostream &os;
   bool useColor;
 
- public:
+public:
   ColorOutputStream(llvm::raw_ostream &os) : os(os) {
     useColor = os.has_colors();
-    if (useColor) os.changeColor(llvm::raw_ostream::Colors::WHITE);
+    if (useColor)
+      os.changeColor(llvm::raw_ostream::Colors::WHITE);
   }
   ~ColorOutputStream() {
-    if (useColor) os.resetColor();
+    if (useColor)
+      os.resetColor();
   }
   llvm::raw_ostream &GetOS() { return os; }
   void Reset() { os.resetColor(); }
@@ -43,6 +45,6 @@ class ColorOutputStream {
   }
 };
 
-}  // namespace stone
+} // namespace stone
 
-#endif  // SWIFT_BASIC_COLORUTILS_H
+#endif // SWIFT_BASIC_COLORUTILS_H

@@ -6,6 +6,8 @@
 #include <memory>
 #include <string>
 
+#include "stone/Utils/FileSystemOptions.h"
+#include "stone/Utils/LLVM.h"
 #include "llvm/ADT/DenseMap.h"
 #include "llvm/ADT/IntrusiveRefCntPtr.h"
 #include "llvm/ADT/SmallVector.h"
@@ -15,14 +17,12 @@
 #include "llvm/Support/ErrorOr.h"
 #include "llvm/Support/FileSystem.h"
 #include "llvm/Support/VirtualFileSystem.h"
-#include "stone/Utils/FileSystemOptions.h"
-#include "stone/Utils/LLVM.h"
 
 namespace llvm {
 
 class MemoryBuffer;
 
-}  // end namespace llvm
+} // end namespace llvm
 
 namespace stone {
 
@@ -32,9 +32,9 @@ class FileSystemStatCache;
 /// the virtual file system).
 class SrcDir {
   friend class FileMgr;
-  llvm::StringRef Name;  // Name of the directory.
+  llvm::StringRef Name; // Name of the directory.
 
- public:
+public:
   StringRef getName() const { return Name; }
 };
 
@@ -46,20 +46,20 @@ class SrcDir {
 class SrcFile {
   friend class FileMgr;
 
-  StringRef Name;            // Name of the file.
-  std::string RealPathName;  // Real path to the file; could be empty.
-  off_t Size;                // File size in bytes.
-  time_t ModTime;            // Modification time of file.
-  const SrcDir *Dir;         // Directory file lives in.
-  unsigned UID;              // A unique (small) ID for the file.
+  StringRef Name;           // Name of the file.
+  std::string RealPathName; // Real path to the file; could be empty.
+  off_t Size;               // File size in bytes.
+  time_t ModTime;           // Modification time of file.
+  const SrcDir *Dir;        // Directory file lives in.
+  unsigned UID;             // A unique (small) ID for the file.
   llvm::sys::fs::UniqueID UniqueID;
   bool IsNamedPipe;
-  bool IsValid;  // Is this \c SrcFile initialized and valid?
+  bool IsValid; // Is this \c SrcFile initialized and valid?
 
   /// The open file, if it is owned by the \p SrcFile.
   mutable std::unique_ptr<llvm::vfs::File> File;
 
- public:
+public:
   SrcFile() : UniqueID(0, 0), IsNamedPipe(false), IsValid(false) {}
 
   SrcFile(const SrcFile &) = delete;
@@ -83,7 +83,7 @@ class SrcFile {
   bool isNamedPipe() const { return IsNamedPipe; }
 
   void closeFile() const {
-    File.reset();  // rely on destructor to close File
+    File.reset(); // rely on destructor to close File
   }
 
   // Only for use in tests to see if deferred opens are happening, rather than
@@ -159,7 +159,7 @@ class FileMgr : public RefCountedBase<FileMgr> {
   /// Fills the RealPathName in file entry.
   void fillRealPathName(SrcFile *UFE, llvm::StringRef FileName);
 
- public:
+public:
   /// Construct a file manager, optionally with a custom VFS.
   ///
   /// \param FS if non-null, the VFS to use.  Otherwise uses
@@ -216,11 +216,11 @@ class FileMgr : public RefCountedBase<FileMgr> {
 
   /// Open the specified file as a MemoryBuffer, returning a new
   /// MemoryBuffer if successful, otherwise returning null.
-  llvm::ErrorOr<std::unique_ptr<llvm::MemoryBuffer>> getBufferForFile(
-      const SrcFile *Entry, bool isVolatile = false,
-      bool ShouldCloseOpenFile = true);
-  llvm::ErrorOr<std::unique_ptr<llvm::MemoryBuffer>> getBufferForFile(
-      StringRef Filename, bool isVolatile = false);
+  llvm::ErrorOr<std::unique_ptr<llvm::MemoryBuffer>>
+  getBufferForFile(const SrcFile *Entry, bool isVolatile = false,
+                   bool ShouldCloseOpenFile = true);
+  llvm::ErrorOr<std::unique_ptr<llvm::MemoryBuffer>>
+  getBufferForFile(StringRef Filename, bool isVolatile = false);
 
   /// Get the 'stat' information for the given \p Path.
   ///
@@ -262,6 +262,6 @@ class FileMgr : public RefCountedBase<FileMgr> {
   void PrintStats() const;
 };
 
-}  // end namespace stone
+} // end namespace stone
 
-#endif  // LLVM_CLANG_BASIC_FILEMANAGER_H
+#endif // LLVM_CLANG_BASIC_FILEMANAGER_H

@@ -7,6 +7,13 @@
 #include <string>
 #include <utility>
 
+#include "stone/Driver/Job.h"
+#include "stone/Driver/LinkType.h"
+#include "stone/Session/FileType.h"
+#include "stone/Session/Mode.h"
+#include "stone/Session/Options.h"
+#include "stone/Utils/LLVM.h"
+#include "stone/Utils/Mem.h"
 #include "llvm/ADT/APFloat.h"
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/SmallVector.h"
@@ -16,13 +23,6 @@
 #include "llvm/Option/Option.h"
 #include "llvm/Support/VersionTuple.h"
 #include "llvm/Target/TargetOptions.h"
-#include "stone/Driver/Job.h"
-#include "stone/Driver/LinkType.h"
-#include "stone/Session/FileType.h"
-#include "stone/Session/Mode.h"
-#include "stone/Session/Options.h"
-#include "stone/Utils/LLVM.h"
-#include "stone/Utils/Mem.h"
 
 namespace llvm {
 namespace opt {
@@ -30,11 +30,11 @@ class Arg;
 class ArgList;
 class DerivedArgList;
 
-}  // namespace opt
+} // namespace opt
 namespace vfs {
 class FileSystem;
-}  // namespace vfs
-}  // namespace llvm
+} // namespace vfs
+} // namespace llvm
 
 namespace stone {
 namespace driver {
@@ -46,7 +46,7 @@ class OutputProfile;
 enum class ToolType { None, Assemble, Clang, GCC, LD, LLD, Stone };
 
 class ToolOptions final {
- public:
+public:
   bool canEmitIR = false;
   bool canAssemble = false;
   bool canLink = false;
@@ -62,7 +62,7 @@ class Tool {
   /// The tool chain this tool is a part of.
   const ToolChain &toolChain;
 
- public:
+public:
   /// Whether the tool is still on the system
   bool isOnSystem;
   /// Whether the tool is obsolete
@@ -70,16 +70,16 @@ class Tool {
   /// The version of the tool
   llvm::StringRef version;
 
- protected:
+protected:
   SafeList<Job> jobs;
   ToolOptions toolOpts;
 
- public:
+public:
   Tool(llvm::StringRef fullName, llvm::StringRef shortName, ToolType toolType,
        const ToolChain &toolChain);
   virtual ~Tool();
 
- public:
+public:
   /// Create a Job
   /// into account.
   ///
@@ -99,7 +99,7 @@ class Tool {
                          std::unique_ptr<CmdOutput> cmdOutput,
                          const OutputProfile &outputProfile) = 0;
 
- public:
+public:
   bool IsOnSystem() { return isOnSystem; }
   bool IsObsolete() { return isObsolete; }
   llvm::StringRef GetFullName() { return fullName; }
@@ -113,12 +113,12 @@ class Tool {
 };
 
 class StoneTool final : public Tool {
- public:
+public:
   StoneTool(llvm::StringRef fullName, llvm::StringRef shortName,
             const ToolChain &toolChain);
   ~StoneTool();
 
- public:
+public:
   /// Create a Job for the action \p JA, taking the given information
   /// into account.
   ///
@@ -140,16 +140,16 @@ class StoneTool final : public Tool {
 };
 
 class LinkTool : public Tool {
- protected:
+protected:
   LinkType linkType;
 
- public:
+public:
   LinkTool(llvm::StringRef fullName, llvm::StringRef shortName, ToolType toolTy,
            const ToolChain &toolChain, LinkType linkTy);
   ~LinkTool();
   LinkType GetLinkType() { return linkType; }
 
- public:
+public:
   /// Create a Job for the action \p JA, taking the given information
   /// into account.
   ///
@@ -171,26 +171,26 @@ class LinkTool : public Tool {
 };
 
 class LDLinkTool final : public LinkTool {
- public:
+public:
   LDLinkTool(llvm::StringRef fullName, llvm::StringRef shortName,
              const ToolChain &toolChain, LinkType linkTy);
   ~LDLinkTool();
 };
 
 class LLDLinkTool final : public LinkTool {
- public:
+public:
   LLDLinkTool(llvm::StringRef fullName, llvm::StringRef shortName,
               const ToolChain &toolChain, LinkType linkTy);
   ~LLDLinkTool();
 };
 
 class ClangTool : public LinkTool {
- public:
+public:
   ClangTool(llvm::StringRef fullName, llvm::StringRef shortName,
             const ToolChain &toolChain, LinkType linkTy);
   ~ClangTool();
 
- public:
+public:
   /// Create a Job for the action \p JA, taking the given information
   /// into account.
   ///
@@ -212,12 +212,12 @@ class ClangTool : public LinkTool {
 };
 
 class GCCTool final : public LinkTool {
- public:
+public:
   GCCTool(llvm::StringRef fullName, llvm::StringRef shortName,
           const ToolChain &toolChain, LinkType linkTy);
   ~GCCTool();
 
- public:
+public:
   /// Create a Job for the action \p JA, taking the given information
   /// into account.
   ///
@@ -239,12 +239,12 @@ class GCCTool final : public LinkTool {
 };
 
 class AssembleTool final : public Tool {
- public:
+public:
   AssembleTool(llvm::StringRef fullName, llvm::StringRef shortName,
                const ToolChain &toolChain);
   ~AssembleTool();
 
- public:
+public:
   /// Create a Job for the action \p JA, taking the given information
   /// into account.
   ///
@@ -272,17 +272,17 @@ class ToolChain {
   /// A special name used to identify the 'stone' executable itself.
   constexpr static const char *const stoneExecutableName = "stone";
 
- protected:
+protected:
   const Driver &driver;
   const llvm::Triple triple;
 
- public:
+public:
   using Paths = llvm::SmallVector<std::string, 16>;
 
- protected:
+protected:
   ToolChain(const Driver &driver, const llvm::Triple &triple);
 
- private:
+private:
   /// The list of toolchain specific path prefixes to search for libraries.
   Paths libraryPaths;
 
@@ -292,7 +292,7 @@ class ToolChain {
   /// The list of toolchain specific path prefixes to search for programs.
   Paths programPaths;
 
- protected:
+protected:
   /// Tools that stone supports and looks for
   std::unique_ptr<ClangTool> clangTool;
   std::unique_ptr<LinkTool> linkTool;
@@ -302,7 +302,7 @@ class ToolChain {
 
   // ToolCacheMap tools;
 
- public:
+public:
   virtual ~ToolChain() = default;
 
   const Driver &GetDriver() { return driver; }
@@ -320,12 +320,12 @@ class ToolChain {
   llvm::Triple::ArchType GetArchType() { return triple.getArch(); }
   const llvm::Triple::ArchType GetArchType() const { return triple.getArch(); }
 
- public:
+public:
   virtual bool Build();
   /// Pick a tool to use to handle the compilation event \p event.
   virtual Tool *PickTool(JobType jobType) const;
 
- protected:
+protected:
   virtual bool BuildClangTool() = 0;
   virtual bool BuildAssembleTool() = 0;
   virtual bool BuildLDLinkTool() = 0;
@@ -337,19 +337,19 @@ class ToolChain {
 class DarwinToolChain final : public ToolChain {
   const llvm::Optional<llvm::Triple> &targetVariant;
 
- public:
+public:
   DarwinToolChain(const Driver &driver, const llvm::Triple &triple,
                   const llvm::Optional<llvm::Triple> &targetVariant);
   ~DarwinToolChain() = default;
 
- public:
+public:
   /// Pick a tool to use to handle the compilation event \p event.
   ///
   /// This can be overridden when a particular ToolChain needs to use
   /// a compiler other than Clang.
   Tool *PickTool(JobType jobType) const override;
 
- protected:
+protected:
   // bool BuildTools() override;
 
   bool BuildClangTool() override;
@@ -420,6 +420,6 @@ public:
   Tool *GetTool(ModeType modeType) override const;
 };
 */
-}  // namespace driver
-}  // namespace stone
+} // namespace driver
+} // namespace stone
 #endif

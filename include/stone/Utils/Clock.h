@@ -9,7 +9,7 @@ namespace stone {
 
 // TODO: Replace with llvm/Support/Timer.h"
 class Clock final {
- public:
+public:
   enum class TimeType {
     None,
     Seconds,
@@ -19,19 +19,19 @@ class Clock final {
   };
   TimeType timeType = TimeType::Milliseconds;
 
- private:
+private:
   // TODO:
   llvm::Timer time;
   llvm::sys::TimePoint<> startTime;
   llvm::sys::TimePoint<> endTime = llvm::sys::TimePoint<>::min();
 
- public:
+public:
   void PrintSeconds();
   void PrintMinutes();
   void PrintMilliSeconds();
   void PrintMicroSeconds();
 
- public:
+public:
   Clock() {}
   void Start();
   void Stop();
@@ -40,5 +40,5 @@ class Clock final {
   llvm::sys::TimePoint<> GetDuration();
 };
 
-}  // namespace stone
+} // namespace stone
 #endif

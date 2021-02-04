@@ -13,5 +13,5 @@ class SourceUnit;
 /// Parse a source file
 void ParseSourceUnit(syn::SourceUnit &su, Pipeline *pipeline = nullptr);
 
-}  // namespace stone
+} // namespace stone
 #endif

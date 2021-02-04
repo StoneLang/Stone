@@ -34,7 +34,7 @@ class Lexer;
 class LexerStats final : public Stats {
   const Lexer &lexer;
 
- public:
+public:
   LexerStats(const Lexer &lexer) : Stats("lexer statistics:"), lexer(lexer) {}
   void Print() override;
 };
@@ -85,16 +85,16 @@ class Lexer final {
   /// `TriviaRetentionMode::With`.
   Trivia trailingTrivia;
 
- public:
+public:
   // Making this public for now
   TriviaRetentionMode triviaRetention;
 
- private:
+private:
   Lexer(const Lexer &) = delete;
   void operator=(const Lexer &) = delete;
   void Init(unsigned startOffset, unsigned endOffset);
 
- private:
+private:
   void Lex();
   void LexTrivia(Trivia trivia, bool isTrailing);
   void LexIdentifier();
@@ -107,11 +107,11 @@ class Lexer final {
 
   tk GetKindOfIdentifier(StringRef tokStr);
 
- public:
+public:
   Lexer(const SrcID srcID, SrcMgr &sm, Context &ctx,
         Pipeline *pipeline = nullptr);
 
- public:
+public:
   void Lex(Token &result) {
     Trivia leading, trailing;
     Lex(result, leading, trailing);
@@ -130,6 +130,6 @@ class Lexer final {
 
   SrcID GetSrcID() { return srcID; }
 };
-}  // namespace syn
-}  // namespace stone
+} // namespace syn
+} // namespace stone
 #endif

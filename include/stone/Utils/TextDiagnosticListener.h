@@ -5,8 +5,8 @@
 
 namespace stone {
 class TexDiagnosticListener final : public DiagnosticListener {
- public:
+public:
 };
-}  // namespace stone
+} // namespace stone
 
 #endif

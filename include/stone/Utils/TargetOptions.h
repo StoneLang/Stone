@@ -3,6 +3,6 @@
 
 namespace stone {
 struct TargetOptions final {};
-}  // namespace stone
+} // namespace stone
 
 #endif

@@ -3,9 +3,9 @@
 
 #include <functional>
 
+#include "stone/Utils/LLVM.h"
 #include "llvm/ADT/DenseMapInfo.h"
 #include "llvm/ADT/StringRef.h"
-#include "stone/Utils/LLVM.h"
 
 namespace stone {
 namespace file {
@@ -52,16 +52,14 @@ llvm::StringRef GetExt(llvm::StringRef name);
 
 llvm::StringRef GetPath(llvm::StringRef name);
 
-template <typename Fn>
-void forAllTypes(const Fn &fn);
+template <typename Fn> void forAllTypes(const Fn &fn);
 
-}  // namespace file
+} // namespace file
 
-}  // namespace stone
+} // namespace stone
 
 namespace llvm {
-template <>
-struct DenseMapInfo<stone::file::FileType> {
+template <> struct DenseMapInfo<stone::file::FileType> {
   using FT = stone::file::FileType;
   static inline FT getEmptyKey() { return FT::INVALID; }
   static inline FT getTombstoneKey() {
@@ -70,10 +68,9 @@ struct DenseMapInfo<stone::file::FileType> {
   static unsigned getHashValue(FT Val) { return (unsigned)Val * 37U; }
   static bool isEqual(FT LHS, FT RHS) { return LHS == RHS; }
 };
-}  // namespace llvm
+} // namespace llvm
 
-template <typename Fn>
-void stone::file::forAllTypes(const Fn &fn) {
+template <typename Fn> void stone::file::forAllTypes(const Fn &fn) {
   static_assert(
       std::is_constructible<std::function<void(stone::file::FileType)>,
                             Fn>::value,

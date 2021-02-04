@@ -7,9 +7,7 @@ using namespace stone::driver;
 
 Tool::Tool(llvm::StringRef fullName, llvm::StringRef shortName,
            ToolType toolType, const ToolChain &toolChain)
-    : fullName(fullName),
-      shortName(shortName),
-      toolType(toolType),
+    : fullName(fullName), shortName(shortName), toolType(toolType),
       toolChain(toolChain) {}
 
 Tool::~Tool() {}
@@ -19,13 +17,13 @@ ToolChain::ToolChain(const Driver &driver, const llvm::Triple &triple)
 
 Tool *ToolChain::PickTool(JobType jobType) const {
   switch (jobType) {
-    case JobType::Compile:
-      return stoneTool.get();
-    case JobType::StaticLink:
-    case JobType::DynamicLink:
-      return linkTool.get();
-    default:
-      llvm_unreachable("Invalid tool type.");
+  case JobType::Compile:
+    return stoneTool.get();
+  case JobType::StaticLink:
+  case JobType::DynamicLink:
+    return linkTool.get();
+  default:
+    llvm_unreachable("Invalid tool type.");
   }
 }
 

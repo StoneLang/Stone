@@ -11,6 +11,15 @@
 #include <tuple>
 #include <utility>
 
+#include "stone/AST/Identifier.h"
+#include "stone/AST/Module.h"
+#include "stone/AST/Stmt.h"
+#include "stone/AST/Template.h" //DeclTemplate
+#include "stone/AST/Type.h"
+#include "stone/Utils/LLVM.h"
+#include "stone/Utils/LangOptions.h"
+#include "stone/Utils/SrcLoc.h"
+#include "stone/Utils/Target.h"
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/PointerIntPair.h"
 #include "llvm/ADT/SmallVector.h"
@@ -20,15 +29,6 @@
 #include "llvm/Support/MathExtras.h"
 #include "llvm/Support/VersionTuple.h"
 #include "llvm/Support/raw_ostream.h"
-#include "stone/AST/Identifier.h"
-#include "stone/AST/Module.h"
-#include "stone/AST/Stmt.h"
-#include "stone/AST/Template.h"  //DeclTemplate
-#include "stone/AST/Type.h"
-#include "stone/Utils/LLVM.h"
-#include "stone/Utils/LangOptions.h"
-#include "stone/Utils/SrcLoc.h"
-#include "stone/Utils/Target.h"
 
 using namespace stone;
 using namespace stone::syn;

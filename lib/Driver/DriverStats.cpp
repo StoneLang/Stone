@@ -5,7 +5,7 @@
 using namespace stone;
 using namespace stone::driver;
 
-DriverStats::DriverStats(const Driver& driver)
+DriverStats::DriverStats(const Driver &driver)
     : Stats("driver statistics:"), driver(driver) {}
 
 void DriverStats::Print() {

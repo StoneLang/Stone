@@ -7,22 +7,22 @@
 #endif
 
 #ifndef ERROR
-#define ERROR(ID, Options, Text, Signature) \
+#define ERROR(ID, Options, Text, Signature)                                    \
   DIAG(ERROR, ID, Options, Text, Signature)
 #endif
 
 #ifndef WARNING
-#define WARNING(ID, Options, Text, Signature) \
+#define WARNING(ID, Options, Text, Signature)                                  \
   DIAG(WARNING, ID, Options, Text, Signature)
 #endif
 
 #ifndef NOTE
-#define NOTE(ID, Options, Text, Signature) \
+#define NOTE(ID, Options, Text, Signature)                                     \
   DIAG(NOTE, ID, Options, Text, Signature)
 #endif
 
 #ifndef REMARK
-#define REMARK(ID, Options, Text, Signature) \
+#define REMARK(ID, Options, Text, Signature)                                   \
   DIAG(REMARK, ID, Options, Text, Signature)
 #endif
 

@@ -18,6 +18,7 @@
 #include "llvm/Support/Compiler.h"
 #include "llvm/Support/PrettyStackTrace.h"
 #include "llvm/Support/VersionTuple.h"
+
 #include "stone/AST/ASTDiagnostics.h"
 #include "stone/AST/ASTNode.h"
 #include "stone/AST/DeclBits.h"
@@ -38,7 +39,7 @@ class ASTContext;
 class DeclStats final : public Stats {
   const Decl &declaration;
 
- public:
+public:
   DeclStats(const Decl &declaration)
       : Stats("ast-declaration stats:"), declaration(declaration) {}
   void Print() override;
@@ -50,7 +51,7 @@ class alignas(8) Decl : public ASTNode /*TODO: Object */ {
   SrcLoc loc;
   DeclContext *dc;
 
- protected:
+protected:
   /// Allocate memory for a deserialized declaration.
   ///
   /// This routine must be used to allocate memory for any declaration that is
@@ -67,7 +68,7 @@ class alignas(8) Decl : public ASTNode /*TODO: Object */ {
   void *operator new(std::size_t size, const ASTContext &astCtx,
                      DeclContext *parentDeclContext, std::size_t extra = 0);
 
- public:
+public:
   Decl() = delete;
   Decl(const Decl &) = delete;
   Decl(Decl &&) = delete;
@@ -83,20 +84,20 @@ class alignas(8) Decl : public ASTNode /*TODO: Object */ {
 
   llvm::PointerUnion<DeclContext *, MultipleDeclContext *> declCtx;
 
- public:
+public:
   decl::Kind GetKind() { return kind; }
 
- protected:
+protected:
   Decl(decl::Kind kind, DeclContext *dc, SrcLoc loc)
       : kind(kind), dc(dc), loc(loc) {}
 };
 
 class DeclContext {
- public:
+public:
   // TODO: Think about
   enum class Kind : unsigned { Module };
 
- protected:
+protected:
   /// This anonymous union stores the bits belonging to DeclContext and classes
   /// deriving from it. The goal is to use otherwise wasted
   /// space in DeclContext to store data belonging to derived classes.
@@ -133,7 +134,7 @@ class DeclContext {
     //              "BlockDeclBitfields is larger than 8 bytes!");
   };
 
- protected:
+protected:
   /// FirstDecl - The first declaration stored within this declaration
   /// context.
   mutable Decl *firstDecl = nullptr;
@@ -157,11 +158,11 @@ class NamingDecl : public Decl {
   /// constructor, etc.)
   DeclName name;
 
- protected:
+protected:
   NamingDecl(decl::Kind kind, DeclContext *dc, SrcLoc loc, DeclName name)
       : Decl(kind, dc, loc), name(name) {}
 
- public:
+public:
   /// Get the identifier that names this declaration, if there is one.
   ///
   /// This will return NULL if this declaration has no name (e.g., for
@@ -180,45 +181,45 @@ class NamingDecl : public Decl {
 };
 
 class TypeDecl : public NamingDecl {
- public:
+public:
 };
 
 class ValueDecl : public NamingDecl {
- public:
+public:
 };
 
 class SpaceDecl : public NamingDecl {
- public:
+public:
   SpaceDecl(DeclContext *dc, SrcLoc loc, DeclName name)
       : NamingDecl(decl::Kind::Space, dc, loc, name) {}
 };
 
 /// DeclaratorDecl
 class DDecl : public ValueDecl {
- public:
+public:
 };
 
 class FunctionDecl : public DDecl, public DeclContext {
- public:
+public:
 };
 
 class FunDecl : public FunctionDecl {
- public:
- public:
+public:
+public:
   static FunDecl *Create();
 };
 
 class ConstructorInitializer final {
- public:
+public:
 };
 
 class ConstructorDecl : public FunctionDecl {
- public:
+public:
 };
 
 class DestructorDecl : public FunctionDecl {
- public:
+public:
 };
-}  // namespace syn
-}  // namespace stone
+} // namespace syn
+} // namespace stone
 #endif

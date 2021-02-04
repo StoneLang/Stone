@@ -11,16 +11,16 @@ class MemoryBuffer;
 class Module;
 class TargetOptions;
 class TargetMachine;
-}  // namespace llvm
+} // namespace llvm
 
 namespace stone {
 namespace gen {
 class CodeGenModule;
 class CodeGenerator final {
- public:
+public:
   CodeGenerator();
 
- public:
+public:
   /// Return an opaque reference to the CodeGenModule object, which can
   /// be used in various secondary APIs.  It is valid as long as the
   /// Generator exists.
@@ -36,6 +36,6 @@ class CodeGenerator final {
   /// It will also return null if the module is released.
   llvm::Module *GetModule();
 };
-}  // namespace gen
-}  // namespace stone
+} // namespace gen
+} // namespace stone
 #endif

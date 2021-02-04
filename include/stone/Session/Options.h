@@ -1,17 +1,17 @@
 #ifndef STONE_SESSION_OPTIONS_H
 #define STONE_SESSION_OPTIONS_H
 
+#include "stone/Utils/Mem.h"
 #include "llvm/ADT/SetVector.h"
 #include "llvm/Option/ArgList.h"
 #include "llvm/Option/OptTable.h"
 #include "llvm/Option/Option.h"
-#include "stone/Utils/Mem.h"
 
 namespace llvm {
 namespace opt {
 class OptTable;
 }
-}  // namespace llvm
+} // namespace llvm
 namespace stone {
 namespace opts {
 
@@ -24,16 +24,16 @@ enum OptFlag {
 };
 
 enum OptID : unsigned {
-  INVALID = 0,  // This is not an option ID.
-#define OPTION(PREFIX, NAME, ID, KIND, GROUP, ALIAS, ALIASARGS, FLAGS, PARAM, \
-               HELPTEXT, METAVAR, VALUES)                                     \
+  INVALID = 0, // This is not an option ID.
+#define OPTION(PREFIX, NAME, ID, KIND, GROUP, ALIAS, ALIASARGS, FLAGS, PARAM,  \
+               HELPTEXT, METAVAR, VALUES)                                      \
   ID,
 #include "stone/Session/Options.inc"
   LAST
 #undef OPTION
 };
-}  // namespace opts
+} // namespace opts
 std::unique_ptr<llvm::opt::OptTable> CreateOptTable();
-}  // namespace stone
+} // namespace stone
 
 #endif

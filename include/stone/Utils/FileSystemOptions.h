@@ -6,10 +6,10 @@
 namespace stone {
 
 class FileSystemOptions final {
- public:
+public:
   std::string WorkingDir;
 };
 
-}  // namespace stone
+} // namespace stone
 
 #endif

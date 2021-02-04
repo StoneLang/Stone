@@ -11,8 +11,8 @@ auto operator+(DeferTask, F &&fn)
     -> decltype(llvm::make_scope_exit(std::forward<F>(fn))) {
   return llvm::make_scope_exit(std::forward<F>(fn));
 }
-}  // namespace detail
-}  // end namespace stone
+} // namespace detail
+} // end namespace stone
 
 #define DEFER_CONCAT_IMPL(x, y) x##y
 #define DEFER_MACRO_CONCAT(x, y) DEFER_CONCAT_IMPL(x, y)
@@ -24,8 +24,8 @@ auto operator+(DeferTask, F &&fn)
 ///     stuff
 ///   };
 ///
-#define STONE_DEFER                                  \
-  auto DEFER_MACRO_CONCAT(defer_func, __COUNTER__) = \
+#define STONE_DEFER                                                            \
+  auto DEFER_MACRO_CONCAT(defer_func, __COUNTER__) =                           \
       ::stone::detail::DeferTask() + [&]()
 
-#endif  // STONE_BASIC_DEFER_H
+#endif // STONE_BASIC_DEFER_H

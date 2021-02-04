@@ -12,9 +12,9 @@ using namespace llvm::opt;
 #undef PREFIX
 
 static const OptTable::Info InfoTable[] = {
-#define OPTION(PREFIX, NAME, ID, KIND, GROUP, ALIAS, ALIASARGS, FLAGS, PARAM, \
-               HELPTEXT, METAVAR, VALUES)                                     \
-  {PREFIX, NAME,  HELPTEXT, METAVAR, ID,        Option::KIND##Class,          \
+#define OPTION(PREFIX, NAME, ID, KIND, GROUP, ALIAS, ALIASARGS, FLAGS, PARAM,  \
+               HELPTEXT, METAVAR, VALUES)                                      \
+  {PREFIX, NAME,  HELPTEXT, METAVAR, ID,        Option::KIND##Class,           \
    PARAM,  FLAGS, GROUP,    ALIAS,   ALIASARGS, VALUES},
 #include "stone/Session/Options.inc"
 #undef OPTION
@@ -22,10 +22,10 @@ static const OptTable::Info InfoTable[] = {
 
 namespace {
 class StoneOptTable : public OptTable {
- public:
+public:
   StoneOptTable() : OptTable(InfoTable) {}
 };
-}  // end anonymous namespace
+} // end anonymous namespace
 
 std::unique_ptr<OptTable> stone::CreateOptTable() {
   return std::unique_ptr<OptTable>(new StoneOptTable());

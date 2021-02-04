@@ -9,7 +9,7 @@ namespace confusable {
 /// specification table of confusable characters and maps to punctuation,
 /// and either returns either the expected ASCII character or 0.
 char ConvertConfusableCharacterToASCII(uint32_t codepoint);
-}  // namespace confusable
-}  // namespace stone
+} // namespace confusable
+} // namespace stone
 
 #endif

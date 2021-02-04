@@ -8,9 +8,9 @@
 namespace stone {
 namespace driver {
 class DriverDiagnostics final : public Diagnostics {
- public:
+public:
 };
-}  // namespace driver
-}  // namespace stone
+} // namespace driver
+} // namespace stone
 
 #endif

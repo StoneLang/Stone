@@ -5,5 +5,5 @@ namespace stone {
 namespace ret {
 enum Kind : int { ok = 0, err = 1 };
 }
-}  // namespace stone
+} // namespace stone
 #endif

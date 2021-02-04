@@ -5,11 +5,11 @@
 #include <map>
 #include <vector>
 
+#include "stone/Utils/SrcLoc.h"
+#include "stone/Utils/SrcMgr.h"
 #include "llvm/ADT/StringMap.h"
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Support/Allocator.h"
-#include "stone/Utils/SrcLoc.h"
-#include "stone/Utils/SrcMgr.h"
 
 namespace stone {
 
@@ -78,7 +78,7 @@ class SrcLineTable {
   /// at which they occur in the file).
   std::map<SrcID, std::vector<SrcLine>> LineEntries;
 
- public:
+public:
   void clear() {
     FilenameIDs.clear();
     FilenamesByID.clear();
@@ -113,6 +113,6 @@ class SrcLineTable {
   void AddEntry(SrcID FID, const std::vector<SrcLine> &Entries);
 };
 
-}  // namespace stone
+} // namespace stone
 
-#endif  // LLVM_CLANG_BASIC_SOURCEMANAGERINTERNALS_H
+#endif // LLVM_CLANG_BASIC_SOURCEMANAGERINTERNALS_H

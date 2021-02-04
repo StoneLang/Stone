@@ -35,19 +35,19 @@ void Clock::PrintMinutes() {
 
 void Clock::Print() {
   switch (timeType) {
-    case TimeType::Microseconds:
-      PrintMicroSeconds();
-      break;
-    case TimeType::Milliseconds:
-      PrintMilliSeconds();
-      break;
-    case TimeType::Seconds:
-      PrintSeconds();
-      break;
-    case TimeType::Minutes:
-      PrintMinutes();
-      break;
-    default:
-      break;
+  case TimeType::Microseconds:
+    PrintMicroSeconds();
+    break;
+  case TimeType::Milliseconds:
+    PrintMilliSeconds();
+    break;
+  case TimeType::Seconds:
+    PrintSeconds();
+    break;
+  case TimeType::Minutes:
+    PrintMinutes();
+    break;
+  default:
+    break;
   }
 }

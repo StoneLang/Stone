@@ -8,9 +8,9 @@
 namespace stone {
 namespace syn {
 class LexerDiagnostics final : public Diagnostics {
- public:
+public:
 };
-}  // namespace syn
-}  // namespace stone
+} // namespace syn
+} // namespace stone
 
 #endif

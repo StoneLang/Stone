@@ -7,12 +7,12 @@
 #include <string>
 #include <utility>
 
+#include "stone/Utils/LLVM.h"
 #include "llvm/ADT/StringMap.h"
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Support/Allocator.h"
 #include "llvm/Support/FileSystem.h"
 #include "llvm/Support/VirtualFileSystem.h"
-#include "stone/Utils/LLVM.h"
 
 namespace stone {
 
@@ -22,7 +22,7 @@ namespace stone {
 class FileSystemStatCache {
   virtual void anchor();
 
- public:
+public:
   virtual ~FileSystemStatCache() = default;
 
   /// Get the 'stat' information for the specified path, using the cache
@@ -40,7 +40,7 @@ class FileSystemStatCache {
                              FileSystemStatCache *Cache,
                              llvm::vfs::FileSystem &FS);
 
- protected:
+protected:
   // FIXME: The pointer here is a non-owning/optional reference to the
   // unique_ptr. Optional<unique_ptr<vfs::File>&> might be nicer, but
   // Optional needs some work to support references so this isn't possible yet.
@@ -54,7 +54,7 @@ class FileSystemStatCache {
 /// track of the results of stat() calls that occur throughout the
 /// execution of the front end.
 class MemorizeStatCalls : public FileSystemStatCache {
- public:
+public:
   /// The set of stat() calls that have been seen.
   llvm::StringMap<llvm::vfs::Status, llvm::BumpPtrAllocator> StatCalls;
 
@@ -69,6 +69,6 @@ class MemorizeStatCalls : public FileSystemStatCache {
                           llvm::vfs::FileSystem &FS) override;
 };
 
-}  // namespace stone
+} // namespace stone
 
-#endif  // LLVM_CLANG_BASIC_FILESYSTEMSTATCACHE_H
+#endif // LLVM_CLANG_BASIC_FILESYSTEMSTATCACHE_H

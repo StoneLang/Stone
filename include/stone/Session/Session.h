@@ -1,6 +1,11 @@
 #ifndef STONE_SESSION_SESSION_H
 #define STONE_SESSION_SESSION_H
 
+#include "stone/Session/FileType.h"
+#include "stone/Session/Mode.h"
+#include "stone/Session/SessionOptions.h"
+#include "stone/Utils/Clock.h"
+#include "stone/Utils/Context.h"
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/IntrusiveRefCntPtr.h"
 #include "llvm/ADT/STLExtras.h"
@@ -26,11 +31,6 @@
 #include "llvm/Support/StringSaver.h"
 #include "llvm/Support/TargetRegistry.h"
 #include "llvm/Support/VirtualFileSystem.h"
-#include "stone/Session/FileType.h"
-#include "stone/Session/Mode.h"
-#include "stone/Session/SessionOptions.h"
-#include "stone/Utils/Clock.h"
-#include "stone/Utils/Context.h"
 
 namespace stone {
 
@@ -41,7 +41,7 @@ class Session : public Context {
   SessionOptions &sessionOpts;
   llvm::IntrusiveRefCntPtr<llvm::vfs::FileSystem> fileSystem;
 
- protected:
+protected:
   Mode mode;
   /// Bit flags for OptTable
   unsigned includedFlagsBitmask = 0;
@@ -69,7 +69,7 @@ class Session : public Context {
   /// Object that stores strings read from configuration file.
   llvm::StringSaver strSaver;
 
- public:
+public:
   void SetFS(llvm::IntrusiveRefCntPtr<llvm::vfs::FileSystem> fs) {
     fileSystem = fs;
   }
@@ -77,20 +77,20 @@ class Session : public Context {
 
   Clock clock;
 
- public:
+public:
   Session(SessionOptions &sessionOpts);
   virtual ~Session();
 
- protected:
-  std::unique_ptr<llvm::opt::InputArgList> ParseArgList(
-      llvm::ArrayRef<const char *> args);
+protected:
+  std::unique_ptr<llvm::opt::InputArgList>
+  ParseArgList(llvm::ArrayRef<const char *> args);
 
   /// TranslateInputArgs - Create a new derived argument list from the input
   /// arguments, after applying the standard argument translations.
-  virtual std::unique_ptr<llvm::opt::DerivedArgList> TranslateArgList(
-      const llvm::opt::InputArgList &args);
+  virtual std::unique_ptr<llvm::opt::DerivedArgList>
+  TranslateArgList(const llvm::opt::InputArgList &args);
 
- public:
+public:
   ///
   virtual bool Build(llvm::ArrayRef<const char *> args) = 0;
   ///
@@ -133,18 +133,18 @@ class Session : public Context {
   /// for representing CompileInstances
   size_t GetMemSize() const { return bumpAlloc.getTotalMemory(); }
 
- protected:
+protected:
   // Compute the mode id -- TODO: virtual
   virtual void ComputeMode(const llvm::opt::DerivedArgList &args);
   virtual ModeKind GetDefaultModeKind() = 0;
   virtual void BuildOptions() = 0;
 
- protected:
+protected:
   llvm::StringRef ComputeWorkingDir();
   void Purge();
   void PrintDiagnostics();
   void PrintStatistics();
 };
 
-}  // namespace stone
+} // namespace stone
 #endif

@@ -7,9 +7,9 @@ namespace stone {
 namespace driver {
 class JobProfile {};
 class CompileJobProfile final : public JobProfile {
- public:
+public:
 };
 
-}  // namespace driver
-}  // namespace stone
+} // namespace driver
+} // namespace stone
 #endif

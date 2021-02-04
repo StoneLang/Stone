@@ -5,6 +5,12 @@
 #include <set>
 #include <system_error>
 
+#include "stone/Driver/Compilation.h"
+#include "stone/Driver/Driver.h"
+#include "stone/Session/ExecutablePath.h"
+#include "stone/Utils/Defer.h"
+#include "stone/Utils/LLVM.h"
+#include "stone/Utils/Ret.h"
 #include "llvm/ADT/SmallString.h"
 #include "llvm/ADT/SmallVector.h"
 #include "llvm/ADT/Triple.h"
@@ -19,12 +25,6 @@
 #include "llvm/Support/Signals.h"
 #include "llvm/Support/StringSaver.h"
 #include "llvm/Support/TargetSelect.h"
-#include "stone/Driver/Compilation.h"
-#include "stone/Driver/Driver.h"
-#include "stone/Session/ExecutablePath.h"
-#include "stone/Utils/Defer.h"
-#include "stone/Utils/LLVM.h"
-#include "stone/Utils/Ret.h"
 
 using namespace stone;
 using namespace stone::driver;

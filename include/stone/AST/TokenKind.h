@@ -22,6 +22,6 @@ bool IsTokenTextDetermined(tk kind);
 llvm::StringRef GetTokenText(tk kind);
 
 void DumpTokenKind(llvm::raw_ostream &os, tk kind);
-}  // namespace stone
+} // namespace stone
 
 #endif

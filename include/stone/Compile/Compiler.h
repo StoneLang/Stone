@@ -18,7 +18,7 @@ class Compiler;
 class CompilerStats final : public Stats {
   const Compiler &compiler;
 
- public:
+public:
   CompilerStats(const Compiler &compiler)
       : Stats("compiler statistics:"), compiler(compiler) {}
   void Print() override;
@@ -36,7 +36,7 @@ class Compiler final : public Session {
   friend CompilerStats;
   std::unique_ptr<CompilerStats> stats;
 
- private:
+private:
   class Implementation;
   static int Run(Compiler &compiler);
   /*
@@ -53,10 +53,10 @@ class Compiler final : public Session {
     /// If \p BufID is already in the set, do nothing.
     void RecordPrimaryInputBuffer(SrcID fileID);
   */
- public:
+public:
   CompilerOptions compilerOpts;
 
- public:
+public:
   Compiler(const Compiler &) = delete;
   Compiler(Compiler &&) = delete;
   Compiler &operator=(const Compiler &) = delete;
@@ -64,7 +64,7 @@ class Compiler final : public Session {
 
   Compiler(Pipeline *pipeline = nullptr);
 
- public:
+public:
   /// Parse the given list of strings into an InputArgList.
   bool Build(llvm::ArrayRef<const char *> args) override;
 
@@ -103,7 +103,7 @@ class Compiler final : public Session {
 
   CompilerStats &GetStats() { return *stats.get(); }
 
- protected:
+protected:
   void ComputeMode(const llvm::opt::DerivedArgList &args) override;
 
   ModeKind GetDefaultModeKind() override;
@@ -116,20 +116,19 @@ class Compiler final : public Session {
   // TranslateInputArgs(const llvm::opt::InputArgList &args) override const;
   static std::unique_ptr<Compiler> Create();
 
- private:
+private:
   void BuildInputs();
 
- public:
+public:
   void *Allocate(size_t size, unsigned align) const {
     return bumpAlloc.Allocate(size, align);
   }
-  template <typename T>
-  T *Allocate(size_t num = 1) const {
+  template <typename T> T *Allocate(size_t num = 1) const {
     return static_cast<T *>(Allocate(num * sizeof(T), alignof(T)));
   }
   void Deallocate(void *ptr) const {}
 
- public:
+public:
   template <typename UnitTy, typename AllocatorTy>
   static void *Allocate(AllocatorTy &alloc, size_t baseSize) {
     static_assert(alignof(UnitTy) >= sizeof(void *),
@@ -138,7 +137,7 @@ class Compiler final : public Session {
     return (void *)alloc.Allocate(baseSize, alignof(UnitTy));
   }
 };
-}  // namespace stone
+} // namespace stone
 
 inline void *operator new(size_t bytes, const stone::Compiler &compiler,
                           size_t alignment) {

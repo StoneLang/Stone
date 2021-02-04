@@ -8,9 +8,9 @@
 namespace stone {
 namespace sema {
 class CheckerDiagnostics final : public Diagnostics {
- public:
+public:
 };
-}  // namespace sema
-}  // namespace stone
+} // namespace sema
+} // namespace stone
 
 #endif

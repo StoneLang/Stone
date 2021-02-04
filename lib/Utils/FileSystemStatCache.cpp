@@ -83,13 +83,15 @@ std::error_code FileSystemStatCache::get(StringRef Path,
   }
 
   // If the path doesn't exist, return failure.
-  if (RetCode) return RetCode;
+  if (RetCode)
+    return RetCode;
 
   // If the path exists, make sure that its "directoryness" matches the clients
   // demands.
   if (Status.isDirectory() != isForDir) {
     // If not, close the file if opened.
-    if (F) *F = nullptr;
+    if (F)
+      *F = nullptr;
     return std::make_error_code(Status.isDirectory()
                                     ? std::errc::is_a_directory
                                     : std::errc::not_a_directory);

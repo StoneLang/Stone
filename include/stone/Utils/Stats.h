@@ -3,11 +3,11 @@
 
 #include <iostream>
 
-#include "llvm/ADT/SmallVector.h"
-#include "llvm/Support/Chrono.h"
 #include "stone/Utils/Color.h"
 #include "stone/Utils/List.h"
 #include "stone/Utils/Mem.h"
+#include "llvm/ADT/SmallVector.h"
+#include "llvm/Support/Chrono.h"
 
 namespace stone {
 
@@ -18,11 +18,11 @@ class Stats {
   bool enabled = false;
   ConstList<Stats> deps;
 
- protected:
-  const char* name = nullptr;
+protected:
+  const char *name = nullptr;
   ColorOutputStream cos;
 
- public:
+public:
   /// When the session was started.
   ///
   /// This should be as close as possible to when the driver was invoked, since
@@ -34,31 +34,31 @@ class Stats {
   /// If unknown, this will be some time in the past.
   llvm::sys::TimePoint<> endTime = llvm::sys::TimePoint<>::min();
 
- public:
-  Stats(const char* name);
+public:
+  Stats(const char *name);
   virtual ~Stats() {}
-  const char* GetName() const { return name; }
+  const char *GetName() const { return name; }
   void Enable() { enabled = true; }
   void Disable() { enabled = false; }
-  void AddDep(const Stats* stats) { deps.Add(stats); }
+  void AddDep(const Stats *stats) { deps.Add(stats); }
   ConstList<Stats> GetDeps() { return deps; }
 
- public:
+public:
   virtual void Print() = 0;
 };
 
 class StatEngine final {
-  llvm::SmallVector<Stats*, 4> entries;
+  llvm::SmallVector<Stats *, 4> entries;
 
- public:
+public:
   StatEngine();
   ~StatEngine();
 
- public:
-  void Register(Stats* stats);
+public:
+  void Register(Stats *stats);
   /// Print all groups and entries in groups
   void Print();
 };
-}  // namespace stone
+} // namespace stone
 
 #endif

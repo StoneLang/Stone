@@ -5,10 +5,10 @@
 #include <memory>
 #include <string>
 
+#include "stone/Utils/DirScanner.h"
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Support/Error.h"
-#include "stone/Utils/DirScanner.h"
 
 namespace stone {
 /// Provides notifications for file changes in a directory.
@@ -56,7 +56,7 @@ namespace stone {
 /// good error handling strategy - the only option for client is to destroy the
 /// watcher, restart watching with new instance and hope it won't repeat.
 class DirWatcher {
- public:
+public:
   struct Event {
     enum class EventKind {
       Removed,
@@ -97,29 +97,38 @@ class DirWatcher {
   /// Returns llvm::Expected Error if OS kernel API told us we can't start
   /// watching. In such case it's unclear whether just retrying has any chance
   /// to succeed.
-  static llvm::Expected<std::unique_ptr<DirWatcher>> create(
-      llvm::StringRef Path,
-      std::function<void(llvm::ArrayRef<DirWatcher::Event> Events,
-                         bool IsInitial)>
-          Receiver,
-      bool WaitForInitialSync);
+  static llvm::Expected<std::unique_ptr<DirWatcher>>
+  create(llvm::StringRef Path,
+         std::function<void(llvm::ArrayRef<DirWatcher::Event> Events,
+                            bool IsInitial)>
+             Receiver,
+         bool WaitForInitialSync);
 
   virtual ~DirWatcher() = default;
   DirWatcher(const DirWatcher &) = delete;
   DirWatcher &operator=(const DirWatcher &) = delete;
   DirWatcher(DirWatcher &&) = default;
 
- protected:
+protected:
   DirWatcher() = default;
 };
 
-class DarwinDirWatcher final : public DirWatcher {};
+class DarwinDirWatcher final : public DirWatcher {
+public:
+};
 
-class UnixDirWatcher final : public DirWatcher {};
-class LinuxDirWatcher final : public DirWatcher {};
+class UnixDirWatcher final : public DirWatcher {
+public:
+};
 
-class WinDirWatcher final : public DirWatcher {};
+class LinuxDirWatcher final : public DirWatcher {
+public:
+};
 
-}  // namespace stone
+class WinDirWatcher final : public DirWatcher {
+public:
+};
+
+} // namespace stone
 
 #endif

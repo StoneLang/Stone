@@ -9,5 +9,5 @@ namespace stone {
 namespace fmt {
 void Print();
 }
-}  // namespace stone
+} // namespace stone
 #endif

@@ -8,6 +8,9 @@
 #include <string>
 #include <utility>
 
+#include "stone/AST/TokenKind.h"
+#include "stone/Utils/LLVM.h"
+#include "stone/Utils/Stats.h"
 #include "llvm/ADT/DenseMapInfo.h"
 #include "llvm/ADT/SmallString.h"
 #include "llvm/ADT/StringMap.h"
@@ -15,9 +18,6 @@
 #include "llvm/Support/Allocator.h"
 #include "llvm/Support/PointerLikeTypeTraits.h"
 #include "llvm/Support/type_traits.h"
-#include "stone/AST/TokenKind.h"
-#include "stone/Utils/LLVM.h"
-#include "stone/Utils/Stats.h"
 
 namespace stone {
 class LangOptions;
@@ -97,21 +97,13 @@ class alignas(IdentifierAlignment) Identifier {
   llvm::StringMapEntry<Identifier *> *entry = nullptr;
 
   Identifier()
-      : kind(tk::identifier),
-        BuiltinID(0),
-        IsExtension(false),
-        isKeywordReserved(false),
-        IsPoisoned(false),
-        IsOperatorKeyword(false),
-        NeedsHandleIdentifier(false),
-        IsFromAST(false),
-        ChangedAfterLoad(false),
-        FEChangedAfterLoad(false),
-        RevertedTokenID(false),
-        OutOfDate(false),
+      : kind(tk::identifier), BuiltinID(0), IsExtension(false),
+        isKeywordReserved(false), IsPoisoned(false), IsOperatorKeyword(false),
+        NeedsHandleIdentifier(false), IsFromAST(false), ChangedAfterLoad(false),
+        FEChangedAfterLoad(false), RevertedTokenID(false), OutOfDate(false),
         IsModulesImport(false) {}
 
- public:
+public:
   Identifier(const Identifier &) = delete;
   Identifier &operator=(const Identifier &) = delete;
   Identifier(Identifier &&) = delete;
@@ -120,8 +112,7 @@ class alignas(IdentifierAlignment) Identifier {
   /// Return true if this is the identifier for the specified string.
   ///
   /// This is intended to be used for string literals only: II->isStr("foo").
-  template <std::size_t StrLen>
-  bool isStr(const char (&Str)[StrLen]) const {
+  template <std::size_t StrLen> bool isStr(const char (&Str)[StrLen]) const {
     return getLength() == StrLen - 1 &&
            memcmp(getNameStart(), Str, StrLen - 1) == 0;
   }
@@ -326,7 +317,7 @@ class alignas(IdentifierAlignment) Identifier {
     return GetName() < RHS.GetName();
   }
 
- private:
+private:
   /// The Preprocessor::HandleIdentifier does several special (but rare)
   /// things to identifiers of various sorts.  For example, it changes the
   /// \c for keyword token from tk::identifier to tok::for.
@@ -350,14 +341,16 @@ class PoisonIdentifierRAIIObject {
   Identifier *const II;
   const bool OldValue;
 
- public:
+public:
   PoisonIdentifierRAIIObject(Identifier *II, bool NewValue)
       : II(II), OldValue(II ? II->isPoisoned() : false) {
-    if (II) II->setIsPoisoned(NewValue);
+    if (II)
+      II->setIsPoisoned(NewValue);
   }
 
   ~PoisonIdentifierRAIIObject() {
-    if (II) II->setIsPoisoned(OldValue);
+    if (II)
+      II->setIsPoisoned(OldValue);
   }
 };
 
@@ -372,10 +365,10 @@ class PoisonIdentifierRAIIObject {
 /// operation. Subclasses of this iterator type will provide the
 /// actual functionality.
 class IdentifierIterator {
- protected:
+protected:
   IdentifierIterator() = default;
 
- public:
+public:
   IdentifierIterator(const IdentifierIterator &) = delete;
   IdentifierIterator &operator=(const IdentifierIterator &) = delete;
 
@@ -393,7 +386,7 @@ class IdentifierTable;
 class IdentifierTableStats final : public Stats {
   const IdentifierTable &table;
 
- public:
+public:
   IdentifierTableStats(const IdentifierTable &table)
       : Stats("identifier table statistics:"), table(table) {}
   void Print() override;
@@ -411,7 +404,7 @@ class IdentifierTable final {
   using Entries = llvm::StringMap<Identifier *, llvm::BumpPtrAllocator>;
   Entries entries;
 
- public:
+public:
   /// Create the identifier table, populating it with info about the
   /// language keywords for the language specified by \p LangOpts.
   explicit IdentifierTable(const LangOptions &langOpts);
@@ -490,7 +483,7 @@ class alignas(IdentifierAlignment) SpecialDeclName {
   friend class stone::syn::DeclName;
   friend class stone::syn::DeclNameTable;
 
- protected:
+protected:
   /// The kind of "extra" information stored in the DeclName. See
   /// @c ExtraKindOrNumArgs for an explanation of how these enumerator values
   /// are used. Note that DeclName depends on the numerical values
@@ -516,15 +509,14 @@ class alignas(IdentifierAlignment) SpecialDeclName {
   SpecialKind GetKind() const { return kind; }
 };
 
-}  // namespace detail
-}  // namespace syn
-}  // namespace stone
+} // namespace detail
+} // namespace syn
+} // namespace stone
 
 namespace llvm {
 // Provide PointerLikeTypeTraits for Identifier pointers, which
 // are not guaranteed to be 8-byte aligned.
-template <>
-struct PointerLikeTypeTraits<stone::syn::Identifier *> {
+template <> struct PointerLikeTypeTraits<stone::syn::Identifier *> {
   static void *getAsVoidPointer(stone::syn::Identifier *P) { return P; }
 
   static stone::syn::Identifier *getFromVoidPointer(void *P) {
@@ -534,8 +526,7 @@ struct PointerLikeTypeTraits<stone::syn::Identifier *> {
   enum { NumLowBitsAvailable = 1 };
 };
 
-template <>
-struct PointerLikeTypeTraits<const stone::syn::Identifier *> {
+template <> struct PointerLikeTypeTraits<const stone::syn::Identifier *> {
   static const void *getAsVoidPointer(const stone::syn::Identifier *P) {
     return P;
   }
@@ -547,6 +538,6 @@ struct PointerLikeTypeTraits<const stone::syn::Identifier *> {
   enum { NumLowBitsAvailable = 1 };
 };
 
-}  // namespace llvm
+} // namespace llvm
 
 #endif

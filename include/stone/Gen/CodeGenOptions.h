@@ -4,7 +4,7 @@
 namespace stone {
 namespace gen {
 class CodeGenOptions final {};
-}  // namespace gen
-}  // namespace stone
+} // namespace gen
+} // namespace stone
 
 #endif

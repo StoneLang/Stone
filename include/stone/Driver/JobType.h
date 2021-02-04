@@ -12,5 +12,5 @@ enum class JobType {
   Assemble
 };
 }
-}  // namespace stone
+} // namespace stone
 #endif

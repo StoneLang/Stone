@@ -17,12 +17,12 @@ class Builtin final {
 
   BuiltinID builtinID;
 
- public:
+public:
   Builtin() = default;
   ~Builtin();
 
   void Init(ASTContext &astCtx);
 };
-}  // namespace syn
-}  // namespace stone
+} // namespace syn
+} // namespace stone
 #endif

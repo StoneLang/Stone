@@ -50,15 +50,15 @@ class OutputFile final {};
 */
 
 class CompilerOptions final : public SessionOptions {
- public:
+public:
   CodeGenOptions genOpts;
   SearchPathOptions spOpts;
   FileSystemOptions fsOpts;
   bool wholeModuleCheck = false;
 
- public:
+public:
   CompilerOptions() {}
 };
 
-}  // namespace stone
+} // namespace stone
 #endif

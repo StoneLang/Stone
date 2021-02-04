@@ -4,8 +4,8 @@
 namespace stone {
 namespace syn {
 class ASTVisitor {
- public:
+public:
 };
-}  // namespace syn
-}  // namespace stone
+} // namespace syn
+} // namespace stone
 #endif

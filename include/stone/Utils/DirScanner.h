@@ -7,7 +7,7 @@
 
 namespace stone {
 class DirScanner {
- public:
+public:
 };
-}  // namespace stone
+} // namespace stone
 #endif

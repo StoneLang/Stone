@@ -1,46 +1,46 @@
 #ifndef STONE_AST_MODULE_H
 #define STONE_AST_MODULE_H
 
-#include "llvm/ADT/SmallVector.h"
 #include "stone/AST/ASTContext.h"
 #include "stone/AST/ASTScope.h"
 #include "stone/AST/Decl.h"
 #include "stone/AST/Identifier.h"
 #include "stone/Utils/LLVM.h"
+#include "llvm/ADT/SmallVector.h"
 
 namespace stone {
 namespace syn {
 class Module;
 
 class ModuleUnit {
- public:
+public:
   enum class Kind { Source, Builtin };
 
- private:
+private:
   ModuleUnit::Kind kind;
 
- public:
+public:
   ModuleUnit(ModuleUnit::Kind kind, Module &owner) : kind(kind) {}
 
- public:
+public:
   ModuleUnit::Kind GetKind() const { return kind; }
 
- public:
+public:
 };
 
 class SourceUnit final : public ModuleUnit {
- private:
+private:
   friend ASTContext;
   bool isMain;
   // llvm::NullablePtr<ASTScope> scope = nullptr;
 
- public:
+public:
   enum class Kind { Library };
 
- public:
+public:
   SourceUnit::Kind kind;
 
- public:
+public:
   SourceUnit(Module &owner, SourceUnit::Kind kind, bool isMain = false);
   ~SourceUnit();
 
@@ -50,16 +50,16 @@ class SourceUnit final : public ModuleUnit {
 };
 
 class BuiltinUnit final : public ModuleUnit {
- public:
+public:
 };
 
 class Module final : public DeclContext, public TypeDecl {
- private:
+private:
   Module(Identifier name, ASTContext &astContext);
 
   llvm::SmallVector<ModuleUnit *, 2> units;
 
- public:
+public:
   llvm::ArrayRef<ModuleUnit *> GetUnits() {
     assert(!units.empty());
     return units;
@@ -74,7 +74,7 @@ class Module final : public DeclContext, public TypeDecl {
   ModuleUnit &GetMainUnit(ModuleUnit::Kind kind) const;
 };
 
-}  // namespace syn
-}  // namespace stone
+} // namespace syn
+} // namespace stone
 
 #endif

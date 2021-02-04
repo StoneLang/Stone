@@ -8,23 +8,23 @@
 #include <utility>
 #include <vector>
 
-#include "llvm/ADT/ArrayRef.h"
-#include "llvm/ADT/DenseMap.h"
-#include "llvm/ADT/Optional.h"
-#include "llvm/ADT/StringRef.h"
-#include "llvm/Option/Option.h"
 #include "stone/Driver/Job.h"
 #include "stone/Driver/TaskQueue.h"
 #include "stone/Utils/Clock.h"
 #include "stone/Utils/LLVM.h"
 #include "stone/Utils/Stats.h"
+#include "llvm/ADT/ArrayRef.h"
+#include "llvm/ADT/DenseMap.h"
+#include "llvm/ADT/Optional.h"
+#include "llvm/ADT/StringRef.h"
+#include "llvm/Option/Option.h"
 
 namespace llvm {
 namespace opt {
 class DerivedArgList;
 class InputArgList;
-}  // namespace opt
-}  // namespace llvm
+} // namespace opt
+} // namespace llvm
 
 namespace stone {
 namespace driver {
@@ -38,7 +38,7 @@ class Compilation;
 class CompilationStats final : public Stats {
   const Compilation &compilation;
 
- public:
+public:
   CompilationStats(const Compilation &compilation)
       : Stats("compilation statistics:"), compilation(compilation) {}
   void Print() override;
@@ -72,11 +72,11 @@ class Compilation final {
   /// only be removed if we crash.
   ArgStringMap failureResultFiles;
 
- public:
+public:
   Compilation(Driver &driver);
   ~Compilation();
 
- public:
+public:
   void AddJob(const Job *job);
 
   TaskQueue &GetQueue() { return *queue.get(); }
@@ -125,7 +125,7 @@ class Compilation final {
   void ExecuteJobs(
       llvm::SmallVectorImpl<std::pair<int, const Job *>> &fallBackJob) const;
 
- public:
+public:
   /// Asks the Compilation to perform the Jobs which it knows about.
   ///
   /// \param TQ The TaskQueue used to schedule jobs for execution.
@@ -134,6 +134,6 @@ class Compilation final {
   /// -2 indicates that one of the Compilation's Jobs crashed during execution
   CompilationResult Run(std::unique_ptr<driver::TaskQueue> &&queue);
 };
-}  // namespace driver
-}  // namespace stone
+} // namespace driver
+} // namespace stone
 #endif

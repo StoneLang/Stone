@@ -4,6 +4,6 @@
 namespace stone {
 namespace sema {
 class Ownership {};
-}  // namespace sema
-}  // namespace stone
+} // namespace sema
+} // namespace stone
 #endif

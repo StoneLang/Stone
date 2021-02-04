@@ -18,11 +18,11 @@
 #include <string>
 #include <utility>
 
+#include "stone/Utils/SrcMgr.h"
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Support/Compiler.h"
 #include "llvm/Support/MemoryBuffer.h"
 #include "llvm/Support/raw_ostream.h"
-#include "stone/Utils/SrcMgr.h"
 
 using namespace stone;
 
@@ -157,7 +157,8 @@ FullSrcLoc FullSrcLoc::getFileLoc() const {
 }
 
 PresumedLoc FullSrcLoc::getPresumedLoc(bool UseLineDirectives) const {
-  if (!isValid()) return PresumedLoc();
+  if (!isValid())
+    return PresumedLoc();
 
   return srcMgr->getPresumedLoc(*this, UseLineDirectives);
 }
@@ -173,7 +174,8 @@ FullSrcLoc FullSrcLoc::getImmediateMacroCallerLoc() const {
 }
 
 std::pair<FullSrcLoc, StringRef> FullSrcLoc::getModuleImportLoc() const {
-  if (!isValid()) return std::make_pair(FullSrcLoc(), StringRef());
+  if (!isValid())
+    return std::make_pair(FullSrcLoc(), StringRef());
 
   std::pair<SrcLoc, StringRef> ImportLoc = srcMgr->getModuleImportLoc(*this);
   return std::make_pair(FullSrcLoc(ImportLoc.first, *srcMgr), ImportLoc.second);

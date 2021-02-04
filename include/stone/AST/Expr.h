@@ -9,6 +9,8 @@
 #include <type_traits>
 #include <utility>
 
+#include "stone/AST/ExprKind.h"
+#include "stone/AST/Stmt.h"
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/PointerIntPair.h"
 #include "llvm/ADT/PointerUnion.h"
@@ -18,8 +20,6 @@
 #include "llvm/Support/Compiler.h"
 #include "llvm/Support/PrettyStackTrace.h"
 #include "llvm/Support/VersionTuple.h"
-#include "stone/AST/ExprKind.h"
-#include "stone/AST/Stmt.h"
 
 namespace stone {
 namespace syn {
@@ -27,15 +27,15 @@ namespace syn {
 class Expr : public ValueStmt {
   expr::Kind kind;
 
- public:
+public:
   Expr() = delete;
   Expr(const Expr &) = delete;
   Expr(Expr &&) = delete;
   Expr &operator=(const Expr &) = delete;
   Expr &operator=(Expr &&) = delete;
 
- public:
+public:
 };
-}  // namespace syn
-}  // namespace stone
+} // namespace syn
+} // namespace stone
 #endif

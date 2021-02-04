@@ -8,16 +8,16 @@ namespace driver {
 
 // TODO: a lot of what is in DriverOutputProfile can go here
 class DriverOptions final : public SessionOptions {
- public:
+public:
   bool printJobs = false;
   bool useLDLinker = true;
   bool useLLDLinker = false;
   bool showJobLifecycle = false;
 
- public:
+public:
   DriverOptions() {}
 };
-}  // namespace driver
-}  // namespace stone
+} // namespace driver
+} // namespace stone
 
 #endif

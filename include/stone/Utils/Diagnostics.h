@@ -12,6 +12,10 @@
 #include <utility>
 #include <vector>
 
+#include "stone/Utils/DiagnosticOptions.h"
+#include "stone/Utils/LangOptions.h"
+#include "stone/Utils/List.h"
+#include "stone/Utils/SrcLoc.h"
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/DenseMap.h"
 #include "llvm/ADT/IntrusiveRefCntPtr.h"
@@ -20,16 +24,12 @@
 #include "llvm/ADT/iterator_range.h"
 #include "llvm/Support/Compiler.h"
 #include "llvm/Support/Error.h"
-#include "stone/Utils/DiagnosticOptions.h"
-#include "stone/Utils/LangOptions.h"
-#include "stone/Utils/List.h"
-#include "stone/Utils/SrcLoc.h"
 
 namespace stone {
 
 class Diagnostics;
 class DiagnosticEngine;
-class DiagnosticBuilder;
+class InflightDiagnostic;
 
 enum class DiagnosticLevel {
   None,
@@ -42,17 +42,17 @@ enum class DiagnosticLevel {
 };
 
 class FixIt final {
- public:
+public:
 };
 
 class DiagnosticPrinter {};
 
 class DiagnosticListener {
- protected:
-  unsigned numWarnings = 0;  ///< Number of warnings reported
-  unsigned numErrors = 0;    ///< Number of errors reported
+protected:
+  unsigned numWarnings = 0; ///< Number of warnings reported
+  unsigned numErrors = 0;   ///< Number of errors reported
 
- public:
+public:
   DiagnosticListener() = default;
   virtual ~DiagnosticListener();
 
@@ -98,28 +98,24 @@ class DiagnosticListener {
   ///
   /// The default implementation just keeps track of the total number of
   /// warnings and errors.
-  virtual void HandleDiagnostic(DiagnosticLevel level,
-                                const Diagnostics &diagnostics);
+  virtual void HandleDiagnostics(DiagnosticLevel level,
+                                 const Diagnostics &diagnostics);
 };
 
 class FakeDiagnosticListener final : public DiagnosticListener {
- public:
+public:
 };
 
-/*
-struct Diagnostic final {
- public:
-  Diagnostic() {}
-};
-
-*/
 enum DiagID : uint32_t;
+
+enum MsgID : uint32_t;
+
 enum FixItID : uint32_t;
 
 class Diagnostics {
   friend DiagnosticEngine;
   // bool isActive;
- protected:
+protected:
   unsigned int uniqueID = 0;
   unsigned int maxMessages = 0;
   unsigned int startID = 0;
@@ -128,17 +124,17 @@ class Diagnostics {
   // llvm::DenseMap<unsigned, Diagnostic> entries;
   // List<Diagnostic> entries;
 
- public:
+public:
   unsigned GetUniqueID() const { return uniqueID; }
 
- protected:
+protected:
   // Only for Diagnostics
   void Init();
   unsigned int GetStartID() const { return startID; }
   unsigned int GetEndID() const { return endID; }
 
   // const DiagnosticLine DiagnosticLines[100];
- public:
+public:
 };
 
 enum class DiagnosticArgumentKind {
@@ -164,14 +160,14 @@ enum class DiagnosticArgumentKind {
 class DiagnosticArgument {
   DiagnosticArgumentKind kind;
 
- public:
+public:
   DiagnosticArgument(DiagnosticArgumentKind kind) : kind(kind) {}
 
- public:
+public:
   DiagnosticArgumentKind GetKind() { return kind; }
 };
 class CustomDiagnosticArgument : public DiagnosticArgument {
- public:
+public:
   CustomDiagnosticArgument()
       : DiagnosticArgument(DiagnosticArgumentKind::Custom) {}
 };
@@ -189,7 +185,7 @@ class DiagnosticEngine final {
   // unsigned int maxDiagnosticMessages = 1000;
   llvm::DenseMap<unsigned int, std::unique_ptr<Diagnostics>> entries;
 
- public:
+public:
   explicit DiagnosticEngine(const DiagnosticOptions &diagOpts,
                             DiagnosticListener *listener = nullptr,
                             bool ownsListener = true);
@@ -198,7 +194,7 @@ class DiagnosticEngine final {
   DiagnosticEngine &operator=(const DiagnosticEngine &) = delete;
   ~DiagnosticEngine();
 
- public:
+public:
   /// Owns the Diagnostics
   // NOTE: when you add, check for existing, calculate id, start, and end and
   // then load message; diagnostic.messageID = diagnostics.size() +1;
@@ -217,7 +213,7 @@ class DiagnosticEngine final {
   void AddCustomArgument(const CustomDiagnosticArgument *argument);
 };
 
-class DiagnosticBuilder final {
+class InflightDiagnostic final {
   friend class DiagnosticEngine;
   // friend class PartialDiagnostic;
 
@@ -235,31 +231,30 @@ class DiagnosticBuilder final {
   /// call to ForceEmit.
   mutable bool isForceEmit = false;
 
-  DiagnosticBuilder() = default;
+  InflightDiagnostic() = default;
 
-  explicit DiagnosticBuilder(DiagnosticEngine *de) : de(de), isActive(true) {
-    assert(de && "DiagnosticBuilder requires a valid DiagnosticsEngine!");
+  explicit InflightDiagnostic(DiagnosticEngine *de) : de(de), isActive(true) {
+    assert(de && "InflightDiagnostic requires a valid DiagnosticsEngine!");
 
     // diagnostics->diagnosticRanges.clear();
     // diagnostics->diagnosticFixIts.clear();
   }
 
- public:
+public:
   /// Issue the message to the client.
   ///
-  /// This actually returns an instance of DiagnosticBuilder which emits the
+  /// This actually returns an instance of InflightDiagnostic which emits the
   /// diagnostics (through @c ProcessDiag) when it is destroyed.
   ///
   /// \param DiagID A member of the @c diag::kind enum.
   /// \param Loc Represents the source location associated with the diagnostic,
   /// which can be an invalid location if no position information is available.
-  inline DiagnosticBuilder Diagnose(const SrcLoc loc,
-                                    const unsigned diagnosticID,
-                                    const unsigned messageID);
+  inline InflightDiagnostic
+  Diagnose(const SrcLoc loc, const unsigned diagnosticID, const unsigned msgID);
 
-  inline DiagnosticBuilder Diagnose(const unsigned diagnosticID,
-                                    const unsigned messageID);
+  inline InflightDiagnostic Diagnose(const unsigned diagnosticID,
+                                     const unsigned msgID);
 };
 
-}  // namespace stone
+} // namespace stone
 #endif

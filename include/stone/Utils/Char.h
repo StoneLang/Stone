@@ -1,32 +1,32 @@
 #ifndef STONE_CHAR_H
 #define STONE_CHAR_H
 
+#include "stone/Utils/LLVM.h"
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Support/Compiler.h"
 #include "llvm/Support/DataTypes.h"
-#include "stone/Utils/LLVM.h"
 
 namespace stone {
 namespace ch {
 extern const uint16_t CharTable[256];
 enum {
-  CHAR_HORZ_WS = 0x0001,  // '\t', '\f', '\v'.  Note, no '\0'
-  CHAR_VERT_WS = 0x0002,  // '\r', '\n'
-  CHAR_SPACE = 0x0004,    // ' '
-  CHAR_DIGIT = 0x0008,    // 0-9
-  CHAR_XLETTER = 0x0010,  // a-f,A-F
-  CHAR_UPPER = 0x0020,    // A-Z
-  CHAR_LOWER = 0x0040,    // a-z
-  CHAR_UNDER = 0x0080,    // _
-  CHAR_PERIOD = 0x0100,   // .
-  CHAR_RAWDEL = 0x0200,   // {}[]#<>%:;?*+-/^&|~!=,"'
-  CHAR_PUNCT = 0x0400     // `$@()
+  CHAR_HORZ_WS = 0x0001, // '\t', '\f', '\v'.  Note, no '\0'
+  CHAR_VERT_WS = 0x0002, // '\r', '\n'
+  CHAR_SPACE = 0x0004,   // ' '
+  CHAR_DIGIT = 0x0008,   // 0-9
+  CHAR_XLETTER = 0x0010, // a-f,A-F
+  CHAR_UPPER = 0x0020,   // A-Z
+  CHAR_LOWER = 0x0040,   // a-z
+  CHAR_UNDER = 0x0080,   // _
+  CHAR_PERIOD = 0x0100,  // .
+  CHAR_RAWDEL = 0x0200,  // {}[]#<>%:;?*+-/^&|~!=,"'
+  CHAR_PUNCT = 0x0400    // `$@()
 };
 enum {
   CHAR_XUPPER = CHAR_XLETTER | CHAR_UPPER,
   CHAR_XLOWER = CHAR_XLETTER | CHAR_LOWER
 };
-}  // end namespace ch
+} // end namespace ch
 
 /// Returns true if this is an ASCII character.
 LLVM_READNONE inline bool isASCII(char c) {
@@ -38,7 +38,8 @@ LLVM_READNONE inline bool isASCII(char c) {
 LLVM_READONLY inline bool isIdentifierHead(unsigned char c,
                                            bool AllowDollar = false) {
   using namespace ch;
-  if (CharTable[c] & (CHAR_UPPER | CHAR_LOWER | CHAR_UNDER)) return true;
+  if (CharTable[c] & (CHAR_UPPER | CHAR_LOWER | CHAR_UNDER))
+    return true;
   return AllowDollar && c == '$';
 }
 
@@ -152,14 +153,16 @@ LLVM_READONLY inline bool isRawStringDelimBody(unsigned char c) {
 ///
 /// If the character is not an uppercase character, it is returned as is.
 LLVM_READONLY inline char toLowercase(char c) {
-  if (isUppercase(c)) return c + 'a' - 'A';
+  if (isUppercase(c))
+    return c + 'a' - 'A';
   return c;
 }
 /// Converts the given ASCII character to its uppercase equivalent.
 ///
 /// If the character is not a lowercase character, it is returned as is.
 LLVM_READONLY inline char toUppercase(char c) {
-  if (isLowercase(c)) return c + 'A' - 'a';
+  if (isLowercase(c))
+    return c + 'A' - 'a';
   return c;
 }
 
@@ -169,14 +172,16 @@ LLVM_READONLY inline char toUppercase(char c) {
 /// identifier characters.
 LLVM_READONLY inline bool isValidIdentifier(StringRef S,
                                             bool AllowDollar = false) {
-  if (S.empty() || !isIdentifierHead(S[0], AllowDollar)) return false;
+  if (S.empty() || !isIdentifierHead(S[0], AllowDollar))
+    return false;
 
   for (StringRef::iterator I = S.begin(), E = S.end(); I != E; ++I)
-    if (!isIdentifierBody(*I, AllowDollar)) return false;
+    if (!isIdentifierBody(*I, AllowDollar))
+      return false;
 
   return true;
 }
 
-}  // end namespace stone
+} // end namespace stone
 
 #endif

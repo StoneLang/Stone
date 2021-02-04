@@ -21,6 +21,6 @@ std::string GetFullRepoVersion();
 /// and the vendor tag.
 std::string GetFullVersion();
 
-}  // namespace stone
+} // namespace stone
 
 #endif

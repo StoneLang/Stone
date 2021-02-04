@@ -24,5 +24,5 @@ class DeclSpecifier {};
 
 class SpecifierContext final {};
 
-}  // namespace stone
+} // namespace stone
 #endif

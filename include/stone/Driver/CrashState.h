@@ -4,9 +4,9 @@
 namespace stone {
 namespace driver {
 class CrashState final {
- public:
+public:
 };
-}  // namespace driver
-}  // namespace stone
+} // namespace driver
+} // namespace stone
 
 #endif

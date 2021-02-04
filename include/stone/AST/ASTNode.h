@@ -4,8 +4,8 @@
 namespace stone {
 namespace syn {
 class ASTNode {
- public:
+public:
 };
-}  // namespace syn
-}  // namespace stone
+} // namespace syn
+} // namespace stone
 #endif

@@ -9,6 +9,7 @@
 #include <cstring>
 #include <string>
 
+#include "stone/AST/TokenKind.h"
 #include "llvm/ADT/DenseMapInfo.h"
 #include "llvm/ADT/FoldingSet.h"
 #include "llvm/ADT/SmallString.h"
@@ -17,7 +18,6 @@
 #include "llvm/Support/Allocator.h"
 #include "llvm/Support/ErrorHandling.h"
 #include "llvm/Support/raw_ostream.h"
-#include "stone/AST/TokenKind.h"
 
 using namespace stone;
 using namespace stone::syn;
@@ -40,12 +40,12 @@ static KeywordStatus GetKeywordStatus(const LangOptions &langOpts,
 /// Returns true if the identifier is a keyword
 bool Identifier::IsKeyword(const LangOptions &langOpts) const {
   switch (kind) {
-#define KEYWORD(NAME, FLAG) \
-  case tk::kw_##NAME:       \
+#define KEYWORD(NAME, FLAG)                                                    \
+  case tk::kw_##NAME:                                                          \
     return GetKeywordStatus(langOpts, FLAG) == KeywordStatus::On;
 #include "stone/AST/TokenKind.def"
-    default:
-      return false;
+  default:
+    return false;
   }
 }
 
@@ -71,7 +71,7 @@ static void AddKeyword(llvm::StringRef keyword, tk kind, unsigned flag,
 
 void IdentifierTable::AddKeywords(const LangOptions &LangOpts) {
   // Add keywords and tokens for the current language.
-#define KEYWORD(NAME, FLAG) \
+#define KEYWORD(NAME, FLAG)                                                    \
   AddKeyword(llvm::StringRef(#NAME), tk::kw_##NAME, FLAG, langOpts, *this);
 #include "stone/AST/TokenKind.def"
 }
@@ -95,7 +95,8 @@ void IdentifierTableStats::Print() {
        I != E; ++I) {
     unsigned idLen = I->getKeyLength();
     averageIdentifierSize += idLen;
-    if (maxIdentifierLength < idLen) maxIdentifierLength = idLen;
+    if (maxIdentifierLength < idLen)
+      maxIdentifierLength = idLen;
   }
 
   cos << GetName() << '\n';

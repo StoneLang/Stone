@@ -4,5 +4,5 @@
 namespace stone {
 namespace gen {
 class Address {};
-}  // namespace gen
-}  // namespace stone
+} // namespace gen
+} // namespace stone

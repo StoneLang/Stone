@@ -17,11 +17,10 @@
 #include "llvm/Support/type_traits.h"
 
 namespace stone {
-template <typename T>
-class BumpTable {
+template <typename T> class BumpTable {
   llvm::StringMap<T *, llvm::BumpPtrAllocator> entries;
 
- public:
+public:
   llvm::BumpPtrAllocator &GetAllocator() { return entries.getAllocator(); }
   /// Return the identifier token info for the specified named
   /// identifier.
@@ -37,6 +36,6 @@ class BumpTable {
     return *second;
   }
 };
-}  // namespace stone
+} // namespace stone
 
 #endif

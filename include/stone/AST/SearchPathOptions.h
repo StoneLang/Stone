@@ -6,6 +6,6 @@ namespace stone {
 /// Options for controlling diagnostics.
 class SearchPathOptions {};
 
-}  // namespace stone
+} // namespace stone
 
 #endif

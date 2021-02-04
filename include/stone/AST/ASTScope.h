@@ -4,6 +4,6 @@
 namespace stone {
 namespace syn {
 class ASTScope {};
-}  // namespace syn
-}  // namespace stone
+} // namespace syn
+} // namespace stone
 #endif

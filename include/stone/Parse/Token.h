@@ -1,9 +1,9 @@
 #ifndef STONE_PARSE_TOKEN_H
 #define STONE_PARSE_TOKEN_H
 
-#include "llvm/ADT/StringRef.h"
 #include "stone/AST/TokenKind.h"
 #include "stone/Utils/LLVM.h"
+#include "llvm/ADT/StringRef.h"
 
 namespace stone {
 namespace syn {
@@ -38,15 +38,11 @@ class Token final {
     return rawStr.trim();
   }
 
- public:
+public:
   Token(tk kind, StringRef text, unsigned commentLength = 0)
-      : kind(kind),
-        atStartOfLine(false),
-        escapedIdentifier(false),
-        multilineString(false),
-        customDelimiterLen(0),
-        commentLength(commentLength),
-        text(text) {}
+      : kind(kind), atStartOfLine(false), escapedIdentifier(false),
+        multilineString(false), customDelimiterLen(0),
+        commentLength(commentLength), text(text) {}
 
   Token() : Token(tk::MAX, {}, 0) {}
 
@@ -62,15 +58,14 @@ class Token final {
   // Predicates to check to see if the token is any of a list of tokens.
 
   bool IsAny(tk K1) const { return Is(K1); }
-  template <typename... T>
-  bool IsAny(tk K1, tk K2, T... K) const {
-    if (Is(K1)) return true;
+  template <typename... T> bool IsAny(tk K1, tk K2, T... K) const {
+    if (Is(K1))
+      return true;
     return IsAny(K2, K...);
   }
 
   // Predicates to check to see if the token is not the same as any of a list.
-  template <typename... T>
-  bool IsNot(tk K1, T... K) const {
+  template <typename... T> bool IsNot(tk K1, T... K) const {
     return !IsAny(K1, K...);
   }
 
@@ -120,35 +115,35 @@ class Token final {
   /// True if the token is any keyword.
   bool IsKeyword() const {
     switch (kind) {
-#define KEYWORD(X, S) \
-  case tk::kw_##X:    \
+#define KEYWORD(X, S)                                                          \
+  case tk::kw_##X:                                                             \
     return true;
 #include "stone/AST/TokenKind.def"
-      default:
-        return false;
+    default:
+      return false;
     }
   }
 
   /// True if the token is any literal.
   bool IsLiteral() const {
     switch (kind) {
-      case tk::integer_literal:
-      case tk::floating_literal:
-      case tk::string_literal:
-        return true;
-      default:
-        return false;
+    case tk::integer_literal:
+    case tk::floating_literal:
+    case tk::string_literal:
+      return true;
+    default:
+      return false;
     }
   }
 
   bool IsPunctuation() const {
     switch (kind) {
-#define PUNCTUATOR(Name, Str) \
-  case tk::Name:              \
+#define PUNCTUATOR(Name, Str)                                                  \
+  case tk::Name:                                                               \
     return true;
 #include "stone/AST/TokenKind.def"
-      default:
-        return false;
+    default:
+      return false;
     }
   }
 
@@ -217,16 +212,14 @@ class Token final {
            "custom string delimiter length > 255");
   }
 };
-}  // namespace syn
-}  // namespace stone
+} // namespace syn
+} // namespace stone
 
 namespace llvm {
-template <typename T>
-struct isPodLike;
-template <>
-struct isPodLike<stone::syn::Token> {
+template <typename T> struct isPodLike;
+template <> struct isPodLike<stone::syn::Token> {
   static const bool value = true;
 };
-}  // end namespace llvm
+} // end namespace llvm
 
 #endif

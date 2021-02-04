@@ -4,7 +4,7 @@
 namespace stone {
 namespace stmt {
 enum Kind { None };
-}  // namespace stmt
-}  // namespace stone
+} // namespace stmt
+} // namespace stone
 
 #endif

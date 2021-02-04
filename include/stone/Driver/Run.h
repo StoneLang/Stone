@@ -4,6 +4,6 @@
 
 namespace stone {
 int Run(llvm::ArrayRef<const char *> args, const char *arg0, void *mainAddr);
-}  // namespace stone
+} // namespace stone
 
 #endif

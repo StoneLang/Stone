@@ -5,29 +5,28 @@
 #include <string>
 #include <utility>
 
+#include "stone/Utils/LLVM.h"
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/Optional.h"
 #include "llvm/ADT/SmallVector.h"
 #include "llvm/ADT/StringRef.h"
 #include "llvm/ADT/iterator.h"
-#include "stone/Utils/LLVM.h"
 
 namespace stone {
 
 /// JobList - A sequence of jobs to perform.
-template <typename T>
-class SafeList {
- public:
+template <typename T> class SafeList {
+public:
   using list_type = llvm::SmallVector<std::unique_ptr<T>, 4>;
   using size_type = typename list_type::size_type;
   using iterator = llvm::pointee_iterator<typename list_type::iterator>;
   using const_iterator =
       llvm::pointee_iterator<typename list_type::const_iterator>;
 
- private:
+private:
   list_type entries;
 
- public:
+public:
   /// Add a job to the list (taking ownership).
   void Add(std::unique_ptr<T> entry) { entries.push_back(std::move(entry)); }
   /// Clear the list
@@ -44,19 +43,18 @@ class SafeList {
 };
 
 /// JobList - A sequence of jobs to perform.
-template <typename T>
-class UnsafeList {
- public:
+template <typename T> class UnsafeList {
+public:
   using list_type = llvm::SmallVector<T *, 4>;
   using size_type = typename list_type::size_type;
   using iterator = llvm::pointee_iterator<typename list_type::iterator>;
   using const_iterator =
       llvm::pointee_iterator<typename list_type::const_iterator>;
 
- private:
+private:
   list_type entries;
 
- public:
+public:
   /// Add a job to the list (taking ownership).
   void Add(T *entry) { entries.push_back(entry); }
   /// Clear the list
@@ -73,19 +71,18 @@ class UnsafeList {
 };
 
 /// JobList - A sequence of jobs to perform.
-template <typename T>
-class ConstList {
- public:
+template <typename T> class ConstList {
+public:
   using list_type = llvm::SmallVector<const T *, 4>;
   using size_type = typename list_type::size_type;
   using iterator = llvm::pointee_iterator<typename list_type::iterator>;
   using const_iterator =
       llvm::pointee_iterator<typename list_type::const_iterator>;
 
- private:
+private:
   list_type entries;
 
- public:
+public:
   /// Add a job to the list (taking ownership).
   void Add(const T *entry) { entries.push_back(entry); }
   /// Clear the list
@@ -101,5 +98,5 @@ class ConstList {
   const_iterator end() const { return entries.end(); }
 };
 
-}  // namespace stone
+} // namespace stone
 #endif

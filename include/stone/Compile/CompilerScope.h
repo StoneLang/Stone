@@ -8,13 +8,13 @@ class CompilerScope final {
   CompilerScope &operator=(const CompilerScope &) = delete;
   CompilerScope &operator=(CompilerScope &&) = delete;
 
- public:
+public:
   CompilerScope();
   ~CompilerScope();
 
- public:
+public:
   void Enter();
   void Exit();
 };
-}  // namespace stone
+} // namespace stone
 #endif

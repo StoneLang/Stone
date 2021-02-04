@@ -7,7 +7,7 @@ namespace stone {
 
 /// Options for controlling diagnostics.
 class DiagnosticOptions final {
- public:
+public:
   /// Indicates whether textual diagnostics should use color.
   bool useColor = false;
 
@@ -21,6 +21,6 @@ class DiagnosticOptions final {
   FormattingStyle textFormattingStyle = FormattingStyle::LLVM;
 };
 
-}  // namespace stone
+} // namespace stone
 
 #endif

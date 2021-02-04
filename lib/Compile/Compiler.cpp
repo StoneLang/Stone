@@ -10,9 +10,7 @@ using namespace stone::opts;
 using namespace stone::syn;
 
 Compiler::Compiler(Pipeline *pipeline)
-    : Session(compilerOpts),
-      pipeline(pipeline),
-      fm(compilerOpts.fsOpts),
+    : Session(compilerOpts), pipeline(pipeline), fm(compilerOpts.fsOpts),
       sm(GetDiagEngine(), fm) {
   ac.reset(new ASTContext(*this, compilerOpts.spOpts, sm));
 

@@ -8,17 +8,17 @@
 
 namespace stone {
 class Context {
- protected:
+protected:
   LangOptions langOpts;
   DiagnosticOptions diagOpts;
   DiagnosticEngine de;
   StatEngine se;
   ColorOutputStream cos;
 
- public:
+public:
   Context();
 
- public:
+public:
   ColorOutputStream &Out() { return cos; }
 
   DiagnosticEngine &GetDiagEngine() { return de; }
@@ -34,5 +34,5 @@ class Context {
   const DiagnosticOptions &GetDiagOptions() const { return diagOpts; }
 };
 
-}  // namespace stone
+} // namespace stone
 #endif

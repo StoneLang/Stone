@@ -16,5 +16,5 @@ void CheckSourceUnit(syn::SourceUnit &su, Pipeline *pipeline = nullptr);
 /// Perform type checking
 void CheckWholeModule(syn::SourceUnit &su, Pipeline *pipeline = nullptr);
 
-}  // namespace stone
+} // namespace stone
 #endif

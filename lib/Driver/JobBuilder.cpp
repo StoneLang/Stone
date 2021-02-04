@@ -11,48 +11,48 @@ namespace stone {
 namespace driver {
 struct JobBuilder final {
   /// Build jobs for compiling
-  static int BuildJobsForCompile(Driver& driver);
-  static Job* BuildJobForCompile(Driver& driver, const InputFile input);
+  static int BuildJobsForCompile(Driver &driver);
+  static Job *BuildJobForCompile(Driver &driver, const InputFile input);
 
   /// Build jobs for linking
-  static int BuildJobForLinking(Driver& driver);
+  static int BuildJobForLinking(Driver &driver);
 
   // TODO: Think about
-  static int BuildJobForLinking(Driver& driver, Job* dep);
-  static int BuildJobForLinking(Driver& driver, const InputFile input);
+  static int BuildJobForLinking(Driver &driver, Job *dep);
+  static int BuildJobForLinking(Driver &driver, const InputFile input);
 
-  static Job* BuildJobForLinkingImpl(Driver& driver);
+  static Job *BuildJobForLinkingImpl(Driver &driver);
 
-  static Job* BuildJobForStaticLinking(Driver& driver);
-  static Job* BuildJobForDynamicLinking(Driver& driver);
-
-  /// Build a jobs for compiling, and linking.
-  static int BuildJobsForExecutable(Driver& driver);
-
-  static int BuildJobForAssemble(Driver& driver);
+  static Job *BuildJobForStaticLinking(Driver &driver);
+  static Job *BuildJobForDynamicLinking(Driver &driver);
 
   /// Build a jobs for compiling, and linking.
-  static int BuildJobForBackend(Driver& driver);
+  static int BuildJobsForExecutable(Driver &driver);
+
+  static int BuildJobForAssemble(Driver &driver);
+
+  /// Build a jobs for compiling, and linking.
+  static int BuildJobForBackend(Driver &driver);
 };
-}  // namespace driver
-}  // namespace stone
+} // namespace driver
+} // namespace stone
 
-int JobBuilder::BuildJobsForCompile(Driver& driver) {
+int JobBuilder::BuildJobsForCompile(Driver &driver) {
   assert(driver.GetMode().IsCompileOnly() &&
          "Can only be called directly for compiling only.");
 
-  for (const auto& input : driver.GetDriverOptions().inputs) {
+  for (const auto &input : driver.GetDriverOptions().inputs) {
     auto job = JobBuilder::BuildJobForCompile(driver, input);
     driver.AddJobForCompilation(job);
   }
   return ret::ok;
 }
 
-Job* JobBuilder::BuildJobForCompile(Driver& driver, const InputFile input) {
+Job *JobBuilder::BuildJobForCompile(Driver &driver, const InputFile input) {
   assert(driver.GetMode().CanCompile() &&
          "The 'mode-type' does not support compiling.");
 
-  Job* result = nullptr;
+  Job *result = nullptr;
   assert(input.first == FileType::Stone && "Incorrect file for compiling.");
   auto tool = driver.GetToolChain().PickTool(JobType::Compile);
   assert(tool && "Could not find a tool for CompileJob.");
@@ -63,37 +63,37 @@ Job* JobBuilder::BuildJobForCompile(Driver& driver, const InputFile input) {
   return result;
 }
 
-int JobBuilder::BuildJobForLinking(Driver& driver) {
+int JobBuilder::BuildJobForLinking(Driver &driver) {
   assert(driver.GetMode().IsLinkOnly() &&
          "Can only be called directly for linking only");
 
   auto job = JobBuilder::BuildJobForLinkingImpl(driver);
-  for (const auto& input : driver.GetDriverOptions().inputs) {
+  for (const auto &input : driver.GetDriverOptions().inputs) {
     assert(input.first == FileType::Object && "Incorrect file for linking.");
     job->AddInput(input);
   }
   driver.AddJobForCompilation(job);
   return ret::ok;
 }
-Job* JobBuilder::BuildJobForLinkingImpl(Driver& driver) {
+Job *JobBuilder::BuildJobForLinkingImpl(Driver &driver) {
   assert(driver.GetMode().CanLink() &&
          "The 'mode-type' does not support linking.");
 
-  Job* result = nullptr;
+  Job *result = nullptr;
   switch (driver.GetOutputProfile().linkType) {
-    case LinkType::StaticLibrary:
-      result = JobBuilder::BuildJobForStaticLinking(driver);
-      break;
-    case LinkType::DynamicLibrary:
-      result = JobBuilder::BuildJobForDynamicLinking(driver);
-      break;
-    default:
-      break;
+  case LinkType::StaticLibrary:
+    result = JobBuilder::BuildJobForStaticLinking(driver);
+    break;
+  case LinkType::DynamicLibrary:
+    result = JobBuilder::BuildJobForDynamicLinking(driver);
+    break;
+  default:
+    break;
   }
   return result;
 }
 
-Job* JobBuilder::BuildJobForStaticLinking(Driver& driver) {
+Job *JobBuilder::BuildJobForStaticLinking(Driver &driver) {
   auto tool = driver.GetToolChain().PickTool(JobType::StaticLink);
   assert(tool && "Could not find a tool for static linking.");
 
@@ -103,7 +103,7 @@ Job* JobBuilder::BuildJobForStaticLinking(Driver& driver) {
   //
   return nullptr;
 }
-Job* JobBuilder::BuildJobForDynamicLinking(Driver& driver) {
+Job *JobBuilder::BuildJobForDynamicLinking(Driver &driver) {
   auto tool = driver.GetToolChain().PickTool(JobType::DynamicLink);
   assert(tool && "Could not find a tool for dynamic linking.");
   // result = driver.GetCompilation().CreateJob<DynamicLinkJob>(
@@ -114,11 +114,11 @@ Job* JobBuilder::BuildJobForDynamicLinking(Driver& driver) {
   return nullptr;
 }
 
-int JobBuilder::BuildJobsForExecutable(Driver& driver) {
+int JobBuilder::BuildJobsForExecutable(Driver &driver) {
   auto linkJob = JobBuilder::BuildJobForLinkingImpl(driver);
   assert(linkJob && "Could not create 'LinkJob'");
 
-  for (const auto& input : driver.GetDriverOptions().inputs) {
+  for (const auto &input : driver.GetDriverOptions().inputs) {
     auto compileJob = JobBuilder::BuildJobForCompile(driver, input);
     assert(compileJob && "Could not create 'CompileJob'");
     linkJob->AddDep(compileJob);
@@ -135,23 +135,23 @@ int Driver::BuildJobs() {
     return ret::err;
   }
   switch (GetMode().GetKind()) {
-    case ModeKind::Check:
-    case ModeKind::EmitLibrary:
-    case ModeKind::EmitObject:
-    case ModeKind::EmitAssembly:
-    case ModeKind::EmitModuleOnly:
-    case ModeKind::EmitIR:
-    case ModeKind::EmitBC:
-    case ModeKind::Parse:
-      return JobBuilder::BuildJobsForCompile(*this);
-      break;
-    case ModeKind::EmitExecutable:
-      return JobBuilder::BuildJobsForExecutable(*this);
-      break;
-    case ModeKind::Link:
-      return JobBuilder::BuildJobForLinking(*this);
-    default:
-      return ret::err;
-      break;
+  case ModeKind::Check:
+  case ModeKind::EmitLibrary:
+  case ModeKind::EmitObject:
+  case ModeKind::EmitAssembly:
+  case ModeKind::EmitModuleOnly:
+  case ModeKind::EmitIR:
+  case ModeKind::EmitBC:
+  case ModeKind::Parse:
+    return JobBuilder::BuildJobsForCompile(*this);
+    break;
+  case ModeKind::EmitExecutable:
+    return JobBuilder::BuildJobsForExecutable(*this);
+    break;
+  case ModeKind::Link:
+    return JobBuilder::BuildJobForLinking(*this);
+  default:
+    return ret::err;
+    break;
   }
 }

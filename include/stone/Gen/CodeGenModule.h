@@ -6,7 +6,7 @@ namespace gen {
 
 class CodeGenModule final {};
 
-}  // namespace gen
-}  // namespace stone
+} // namespace gen
+} // namespace stone
 
 #endif

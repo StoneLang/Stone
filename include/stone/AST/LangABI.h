@@ -5,6 +5,6 @@ namespace stone {
 
 class LangABI final {};
 
-}  // namespace stone
+} // namespace stone
 
 #endif

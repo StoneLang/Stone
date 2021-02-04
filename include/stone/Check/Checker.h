@@ -24,7 +24,7 @@ class Checker;
 class CheckerStats final : public Stats {
   const Checker &checker;
 
- public:
+public:
   CheckerStats(const Checker &checker)
       : Stats("checker statistics:"), checker(checker) {}
   void Print() override;
@@ -39,19 +39,19 @@ class Checker final {
   Pipeline *pipeline;
   Context &ctx;
 
- public:
+public:
   // TODO: CompileUnit
   Checker(syn::SourceUnit &su, Context &ctx, Pipeline *pipeline = nullptr);
 
- public:
+public:
   void CheckDecl();
 
- public:
+public:
   void CheckStmt();
 
- public:
+public:
   void CheckExpr();
 };
-}  // namespace sema
-}  // namespace stone
+} // namespace sema
+} // namespace stone
 #endif

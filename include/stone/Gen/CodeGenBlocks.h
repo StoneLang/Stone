@@ -8,16 +8,16 @@ class MemoryBuffer;
 class Module;
 class TargetOptions;
 class TargetMachine;
-}  // namespace llvm
+} // namespace llvm
 
 namespace stone {
 namespace gen {
 
 class CodeGenBlocks {
- public:
+public:
   CodeGenBlocks();
 };
 
-}  // namespace gen
-}  // namespace stone
+} // namespace gen
+} // namespace stone
 #endif

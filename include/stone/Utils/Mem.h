@@ -13,6 +13,6 @@ namespace mem {
 void Allocate();
 ///
 void DeAllocate();
-}  // namespace mem
-}  // namespace stone
+} // namespace mem
+} // namespace stone
 #endif

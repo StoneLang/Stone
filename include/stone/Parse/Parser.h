@@ -17,7 +17,7 @@ class Parser;
 class ParserStats final : public Stats {
   const Parser &parser;
 
- public:
+public:
   ParserStats(const Parser &parser)
       : Stats("parser statistics:"), parser(parser) {}
   void Print() override;
@@ -31,14 +31,14 @@ class Parser final {
   std::unique_ptr<Lexer> lexer;
   std::unique_ptr<ParserStats> stats;
 
- public:
+public:
   Parser(Context &ctx, Pipeline *pipeline = nullptr);
   ~Parser();
 
- public:
+public:
   ParserStats &GetStats() { return *stats.get(); }
 
- public:
+public:
   // Decl
   int ParseTopDecl();
 
@@ -47,14 +47,14 @@ class Parser final {
 
   void ParseSpaceDecl();
 
- public:
+public:
   // Stmt
   void ParseStmt();
 
- public:
+public:
   // Expr
   void ParseExpr();
 };
-}  // namespace syn
-}  // namespace stone
+} // namespace syn
+} // namespace stone
 #endif

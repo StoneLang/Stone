@@ -8,7 +8,7 @@ class MemoryBuffer;
 class Module;
 class TargetOptions;
 class TargetMachine;
-}  // namespace llvm
+} // namespace llvm
 
 namespace stone {
 namespace syn {
@@ -17,18 +17,18 @@ class Decl;
 namespace gen {
 
 class CodeEmitter final {
- public:
+public:
   CodeEmitter();
 
- public:
+public:
   void EmitStmt();
 
- public:
-  void EmitDecl(const syn::Decl& decl);
+public:
+  void EmitDecl(const syn::Decl &decl);
 
- public:
+public:
   void EmitExpr();
 };
-}  // namespace gen
-}  // namespace stone
+} // namespace gen
+} // namespace stone
 #endif

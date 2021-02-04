@@ -10,14 +10,14 @@ namespace driver {
 using OutputFileType = file::FileType;
 
 class JobOptions final {
- public:
+public:
   InputFiles inputs;
   OutputFileType outputFileType = file::FileType::None;
 
- public:
+public:
   JobOptions() {}
 };
-}  // namespace driver
-}  // namespace stone
+} // namespace driver
+} // namespace stone
 
 #endif

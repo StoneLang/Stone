@@ -28,8 +28,8 @@ class ArgList;
 class OptTable;
 class InputArgList;
 class DerivedArgList;
-}  // namespace opt
-}  // namespace llvm
+} // namespace opt
+} // namespace llvm
 
 namespace stone {
 namespace driver {
@@ -50,7 +50,7 @@ enum class CompileType {
 enum class LTOKind { None, Full, Thin, Unknown };
 
 class DriverCache final {
- public:
+public:
   /// A map for caching Jobs for a given ToolChain pair
   llvm::DenseMap<const ToolChain *, Job *> jobCache;
   /// Cache of all the ToolChains in use by the driver.
@@ -62,7 +62,7 @@ class DriverCache final {
 };
 
 class OutputProfile final {
- public:
+public:
   /// Default compiler invocation mode -- one file per CompileJob
   CompileType compileType = CompileType::Multiple;
 
@@ -108,7 +108,7 @@ class Driver final : public Session {
   std::unique_ptr<Compilation> compilation;
   std::unique_ptr<DriverDiagnostics> diagnostics;
 
- public:
+public:
   /// The options for the driver
   DriverOptions driverOpts;
 
@@ -149,7 +149,7 @@ class Driver final : public Session {
   /// User directory for config files.
   std::string userConfigDir;
 
- private:
+private:
   /// Name of configuration file if used.
   std::string cfgFile;
 
@@ -160,7 +160,7 @@ class Driver final : public Session {
   /// Arguments originated from configuration file.
   std::unique_ptr<llvm::opt::InputArgList> cfgOpts;
 
- private:
+private:
   /// This uses a std::unique_ptr instead of returning a toolchain by value
   /// because ToolChain has virtual methods.
   void BuildToolChain(const llvm::opt::InputArgList &args);
@@ -192,7 +192,7 @@ class Driver final : public Session {
 
   void ComputeCmdOutput();
 
- public:
+public:
   Driver(llvm::StringRef executablePath, std::string driverName);
 
   /// Parse the given list of strings into an InputArgList.
@@ -201,7 +201,7 @@ class Driver final : public Session {
   void PrintLifecycle() override;
   void PrintHelp(bool showHidden) override;
 
- public:
+public:
   const std::string &GetConfigFile() const { return cfgFile; }
 
   bool GetCheckInputFilesExist() const { return checkInputFilesExist; }
@@ -212,7 +212,8 @@ class Driver final : public Session {
 
   /// Get the path to where the clang executable was installed.
   const char *GetInstalledDir() const {
-    if (!installedDir.empty()) return installedDir.c_str();
+    if (!installedDir.empty())
+      return installedDir.c_str();
     return driverDir.c_str();
   }
   void SetInstalledDir(llvm::StringRef v) { installedDir = std::string(v); }
@@ -230,7 +231,7 @@ class Driver final : public Session {
 
   DriverStats &GetStats() { return *stats.get(); }
 
- protected:
+protected:
   void ComputeMode(const llvm::opt::DerivedArgList &args) override;
   ModeKind GetDefaultModeKind() override;
   void BuildOptions() override;
@@ -239,16 +240,16 @@ class Driver final : public Session {
   /// arguments, after applying the standard argument translations.
   // llvm::opt::DerivedArgList *
   // TranslateInputArgs(const llvm::opt::InputArgList &args) override;
- private:
+private:
   bool CutOff() { return de.HasError(); }
   int BuildJobs();
   void PrintJobs();
   void BuildJobQueue();
   void AddJobForCompilation(const Job *job);
 
- private:
+private:
   static llvm::StringRef GetOutputFileName();
 };
-}  // namespace driver
-}  // namespace stone
+} // namespace driver
+} // namespace stone
 #endif

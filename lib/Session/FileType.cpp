@@ -34,7 +34,8 @@ llvm::StringRef file::GetTypeTempSuffix(file::FileType FK) {
 }
 
 file::FileType file::GetTypeByExt(llvm::StringRef Ext) {
-  if (Ext.empty()) return file::INVALID;
+  if (Ext.empty())
+    return file::INVALID;
   assert(Ext.front() == '.' && "not a file extension");
   return llvm::StringSwitch<file::FileType>(Ext.drop_front())
 #define FILE_TYPE(NAME, TYPE, SUFFIX, FLAGS) .Case(SUFFIX, TYPE)
@@ -51,17 +52,17 @@ file::FileType file::GetTypeByName(llvm::StringRef Name) {
 
 bool file::IsTextual(file::FileType ty) {
   switch (ty) {
-    case file::FileType::Stone:
-    case file::FileType::Assembly:
-    case file::FileType::IR:
-      return true;
-    case file::FileType::Image:
-    case file::FileType::Object:
-    case file::FileType::BC:
-    case file::FileType::None:
-      return false;
-    case file::FileType::INVALID:
-      llvm_unreachable("Invalid type ID.");
+  case file::FileType::Stone:
+  case file::FileType::Assembly:
+  case file::FileType::IR:
+    return true;
+  case file::FileType::Image:
+  case file::FileType::Object:
+  case file::FileType::BC:
+  case file::FileType::None:
+    return false;
+  case file::FileType::INVALID:
+    llvm_unreachable("Invalid type ID.");
   }
 
   // Work around MSVC warning: not all control paths return a value
@@ -70,17 +71,17 @@ bool file::IsTextual(file::FileType ty) {
 
 bool file::IsAfterLLVM(file::FileType ty) {
   switch (ty) {
-    case file::FileType::Assembly:
-    case file::FileType::IR:
-    case file::FileType::BC:
-    case file::FileType::Object:
-      return true;
-    case file::FileType::Stone:
-    case file::FileType::Image:
-    case file::FileType::None:
-      return false;
-    case file::FileType::INVALID:
-      llvm_unreachable("Invalid type ID.");
+  case file::FileType::Assembly:
+  case file::FileType::IR:
+  case file::FileType::BC:
+  case file::FileType::Object:
+    return true;
+  case file::FileType::Stone:
+  case file::FileType::Image:
+  case file::FileType::None:
+    return false;
+  case file::FileType::INVALID:
+    llvm_unreachable("Invalid type ID.");
   }
 
   // Work around MSVC warning: not all control paths return a value
@@ -89,17 +90,17 @@ bool file::IsAfterLLVM(file::FileType ty) {
 
 bool file::IsPartOfCompilation(file::FileType ty) {
   switch (ty) {
-    case file::FileType::Stone:
-      return true;
-    case file::FileType::Assembly:
-    case file::FileType::IR:
-    case file::FileType::BC:
-    case file::FileType::Object:
-    case file::FileType::Image:
-    case file::FileType::None:
-      return false;
-    case file::FileType::INVALID:
-      llvm_unreachable("Invalid type ID.");
+  case file::FileType::Stone:
+    return true;
+  case file::FileType::Assembly:
+  case file::FileType::IR:
+  case file::FileType::BC:
+  case file::FileType::Object:
+  case file::FileType::Image:
+  case file::FileType::None:
+    return false;
+  case file::FileType::INVALID:
+    llvm_unreachable("Invalid type ID.");
   }
   // Work around MSVC warning: not all control paths return a value
   llvm_unreachable("All switch cases are covered");

@@ -7,12 +7,12 @@ namespace stone {
 namespace driver {
 class Driver;
 class DriverStats final : public Stats {
-  const Driver& driver;
+  const Driver &driver;
 
- public:
-  DriverStats(const Driver& driver);
+public:
+  DriverStats(const Driver &driver);
   void Print() override;
 };
-}  // namespace driver
-}  // namespace stone
+} // namespace driver
+} // namespace stone
 #endif

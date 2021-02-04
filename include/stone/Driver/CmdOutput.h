@@ -1,13 +1,13 @@
 #ifndef STONE_DRIVER_CMDOUTPUT_H
 #define STONE_DRIVER_CMDOUTPUT_H
 
+#include "stone/Session/FileType.h"
+#include "stone/Utils/LLVM.h"
 #include "llvm/ADT/SmallSet.h"
 #include "llvm/ADT/SmallVector.h"
 #include "llvm/ADT/StringMap.h"
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Support/StringSaver.h"
-#include "stone/Session/FileType.h"
-#include "stone/Utils/LLVM.h"
 
 namespace stone {
 namespace driver {
@@ -76,7 +76,7 @@ class CmdOutput final {
   void EnsureEntry(llvm::StringRef primaryInputFile, file::FileType fileType,
                    llvm::StringRef outputFile, bool overwrite);
 
- public:
+public:
   CmdOutput(file::FileType primaryOutputType, OutputFileMap &derived);
 
   /// For testing dependency graphs that use Jobs
@@ -140,8 +140,8 @@ class CmdOutput final {
   /// length is _either_ zero, one, or equal to the size of the set of inputs,
   /// as these are the only valid arity relationships between primary and
   /// additional outputs.
-  llvm::SmallVector<llvm::StringRef, 16> GetAdditionalOutputsForType(
-      file::FileType fileType) const;
+  llvm::SmallVector<llvm::StringRef, 16>
+  GetAdditionalOutputsForType(file::FileType fileType) const;
 
   /// Assuming (and asserting) that there is only one input pair, return any
   /// output -- primary or additional -- of type \p type associated with that
@@ -162,7 +162,7 @@ class CmdOutput final {
   /// its invariants.
   void CheckInvariants() const;
 };
-}  // namespace driver
-}  // namespace stone
+} // namespace driver
+} // namespace stone
 
 #endif

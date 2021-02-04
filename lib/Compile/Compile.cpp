@@ -18,11 +18,11 @@ class Compiler::Implementation final {
   CompilerUnit *currentUnit = nullptr;
   std::vector<CompilerUnit *> units;
 
- public:
+public:
   Implementation(Compiler &compiler);
   ~Implementation();
 
- public:
+public:
   /// Setup the units
   void Build();
 
@@ -32,7 +32,7 @@ class Compiler::Implementation final {
   /// The the record of all files that were compiled.
   std::vector<CompilerUnit *> &GetCompilerUnits() { return units; }
 
- public:
+public:
   int Parse();
   int Parse(bool check);
   int Check();
@@ -98,23 +98,23 @@ int Compiler::Run(Compiler &compiler) {
   implementation->Build();
 
   switch (compiler.GetMode().GetKind()) {
-    case ModeKind::Parse:
-      return implementation->Parse();
-    case ModeKind::Check:
-      return implementation->Check();
-    case ModeKind::EmitIR:
-      return implementation->EmitIR();
-    case ModeKind::EmitObject:
-      return implementation->EmitObject();
-    case ModeKind::EmitModuleOnly:
-      return implementation->EmitModuleOnly();
-    case ModeKind::EmitBC:
-      return implementation->EmitBitCode();
-    case ModeKind::EmitLibrary:
-      return implementation->EmitLibrary();
+  case ModeKind::Parse:
+    return implementation->Parse();
+  case ModeKind::Check:
+    return implementation->Check();
+  case ModeKind::EmitIR:
+    return implementation->EmitIR();
+  case ModeKind::EmitObject:
+    return implementation->EmitObject();
+  case ModeKind::EmitModuleOnly:
+    return implementation->EmitModuleOnly();
+  case ModeKind::EmitBC:
+    return implementation->EmitBitCode();
+  case ModeKind::EmitLibrary:
+    return implementation->EmitLibrary();
 
-    default:
-      break;
+  default:
+    break;
   }
   return ret::ok;
 }

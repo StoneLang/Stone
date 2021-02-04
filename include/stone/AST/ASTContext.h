@@ -31,6 +31,8 @@
 #include "llvm/Support/Allocator.h"
 #include "llvm/Support/Casting.h"
 #include "llvm/Support/Compiler.h"
+
+
 #include "stone/AST/ASTContextAlloc.h"
 #include "stone/AST/Builtin.h"
 #include "stone/AST/Identifier.h"
@@ -62,7 +64,7 @@ class DiagnosticEngine;
 class ASTContextStats final : public Stats {
   const ASTContext &ac;
 
- public:
+public:
   ASTContextStats(const ASTContext &ac) : Stats("ast-context stats:"), ac(ac) {}
   void Print() override;
 };
@@ -92,14 +94,14 @@ class ASTContext final {
 
   mutable llvm::SmallVector<Type *, 0> types;
 
- public:
+public:
   ASTContext(Context &ctx, const SearchPathOptions &pathOpts, SrcMgr &sm);
   ~ASTContext();
 
   ASTContext(const ASTContext &) = delete;
   ASTContext &operator=(const ASTContext &) = delete;
 
- public:
+public:
   ///
   Identifier &GetIdentifier(llvm::StringRef name);
   ///
@@ -115,7 +117,7 @@ class ASTContext final {
 
   ASTContextStats &GetStats() { return *stats.get(); }
 
- public:
+public:
   /// Return the total amount of physical memory allocated for representing
   /// AST nodes and type information.
   size_t GetSizeOfMemUsed() const;
@@ -123,16 +125,15 @@ class ASTContext final {
   void *Allocate(size_t size, unsigned align = 8) const {
     return bumpAlloc.Allocate(size, align);
   }
-  template <typename T>
-  T *Allocate(size_t num = 1) const {
+  template <typename T> T *Allocate(size_t num = 1) const {
     return static_cast<T *>(Allocate(num * sizeof(T), alignof(T)));
   }
   void Deallocate(void *Ptr) const {}
 
- public:
+public:
 };
-}  // namespace syn
-}  // namespace stone
+} // namespace syn
+} // namespace stone
 /// Placement new for using the ASTContext's allocator.
 ///
 /// This placement form of operator new uses the ASTContext's allocator for

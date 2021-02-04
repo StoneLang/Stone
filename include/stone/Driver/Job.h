@@ -1,11 +1,6 @@
 #ifndef STONE_DRIVER_JOB_H
 #define STONE_DRIVER_JOB_H
 
-#include "llvm/ADT/StringMap.h"
-#include "llvm/ADT/StringRef.h"
-#include "llvm/Option/Arg.h"
-#include "llvm/Option/ArgList.h"
-#include "llvm/Support/StringSaver.h"
 #include "stone/Driver/CmdOutput.h"
 #include "stone/Driver/CrashState.h"
 #include "stone/Driver/JobOptions.h"
@@ -15,6 +10,11 @@
 #include "stone/Session/SessionOptions.h"
 #include "stone/Utils/List.h"
 #include "stone/Utils/Stats.h"
+#include "llvm/ADT/StringMap.h"
+#include "llvm/ADT/StringRef.h"
+#include "llvm/Option/Arg.h"
+#include "llvm/Option/ArgList.h"
+#include "llvm/Support/StringSaver.h"
 
 namespace stone {
 namespace driver {
@@ -23,21 +23,21 @@ class Compilation;
 using JobID = int64_t;
 
 class JobStats final : public Stats {
-  const Job& job;
+  const Job &job;
 
- public:
-  JobStats(const Job& compilation) : Stats("job statistics:"), job(job) {}
+public:
+  JobStats(const Job &compilation) : Stats("job statistics:"), job(job) {}
   void Print() override;
 };
 
 class Job {
   friend JobStats;
 
- protected:
+protected:
   bool isAsync;
   JobType jobType;
   JobOptions jobOpts;
-  Compilation& compilation;
+  Compilation &compilation;
   JobID jobID;
   /// Inputs
   ConstList<Job> deps;
@@ -47,7 +47,7 @@ class Job {
   std::unique_ptr<JobStats> stats;
 
   /// The executable to run.
-  const char* executable = nullptr;
+  const char *executable = nullptr;
 
   /// The list of program arguments (not including the implicit first argument,
   /// which will be the Executable).
@@ -55,25 +55,25 @@ class Job {
   /// These argument strings must be kept alive as long as the Job is alive.
   llvm::opt::ArgStringList arguments;
 
- public:
-  Job(JobType jobType, Compilation& compilation);
+public:
+  Job(JobType jobType, Compilation &compilation);
   virtual ~Job();
 
- public:
+public:
   JobType GetType() const { return jobType; }
-  const ConstList<Job>& GetDeps() const { return deps; }
+  const ConstList<Job> &GetDeps() const { return deps; }
 
   void AddInput(const InputFile input);
-  void AddDep(const Job* job);
+  void AddDep(const Job *job);
   void AddArgument();
 
-  const JobOptions& GetJobOptions() const { return jobOpts; }
-  Compilation& GetCompilation() { return compilation; }
+  const JobOptions &GetJobOptions() const { return jobOpts; }
+  Compilation &GetCompilation() { return compilation; }
   bool IsAsync() { return isAsync; }
 
-  void Print(const char* terminator, bool quote, CrashState* crashState) const;
+  void Print(const char *terminator, bool quote, CrashState *crashState) const;
 
-  const char* GetName() { return Job::GetNameByType(jobType); }
+  const char *GetName() { return Job::GetNameByType(jobType); }
 
   llvm::StringRef GetOutputTypeName() {
     return file::GetTypeName(jobOpts.outputFileType);
@@ -90,101 +90,101 @@ class Job {
   void SetCmdOutput(std::unique_ptr<CmdOutput> output) {
     cmdOutput = std::move(output);
   }
-  void SetExecutable(const char* exec) { executable = exec; }
+  void SetExecutable(const char *exec) { executable = exec; }
 
-  JobStats& GetStats() { return *stats.get(); }
+  JobStats &GetStats() { return *stats.get(); }
 
   void SetToSync() { isAsync = false; }
 
   //	void Wait();
   //	void Schedule();
 
- public:
-  static const char* GetNameByType(JobType jobType);
+public:
+  static const char *GetNameByType(JobType jobType);
 
- public:
+public:
   friend class Tool;
   /// Jobs are creaed through Tool::CreateJob(...)
-  void* operator new(size_t size) { return ::operator new(size); };
+  void *operator new(size_t size) { return ::operator new(size); };
 };
 
 class AssembleJob final : public Job {
- public:
+public:
   // Some job depend on other jobs -- For example, LinkJob
-  AssembleJob(Compilation& compilation);
+  AssembleJob(Compilation &compilation);
 
   void BuildCmdOutput() override;
 
- public:
-  static bool classof(const Job* j) {
+public:
+  static bool classof(const Job *j) {
     return j->GetType() == JobType::Assemble;
   }
 };
 
 class BackendJob final : public Job {
- public:
+public:
   // Some job depend on other jobs -- For example, LinkJob
-  BackendJob(Compilation& compilation);
+  BackendJob(Compilation &compilation);
 
   void BuildCmdOutput() override;
 
- public:
-  static bool classof(const Job* j) { return j->GetType() == JobType::Backend; }
+public:
+  static bool classof(const Job *j) { return j->GetType() == JobType::Backend; }
 };
 
 class CompileJob final : public Job {
- public:
+public:
   // Some job depend on other jobs -- For example, LinkJob
-  CompileJob(Compilation& compilation);
+  CompileJob(Compilation &compilation);
 
   void BuildCmdOutput() override;
 
- public:
-  static bool classof(const Job* j) { return j->GetType() == JobType::Compile; }
+public:
+  static bool classof(const Job *j) { return j->GetType() == JobType::Compile; }
 };
 
 class LinkJob : public Job {
   LinkType linkType;
   bool requiresLTO;
 
- public:
+public:
   // Some jobs only consume inputs -- For example, LinkJob
-  LinkJob(JobType jobType, Compilation& compilation, bool requiresLTO,
+  LinkJob(JobType jobType, Compilation &compilation, bool requiresLTO,
           LinkType linkType);
 
   virtual void BuildCmdOutput() = 0;
 
- public:
+public:
   LinkType GetLinkType() { return linkType; }
   bool RequiresLTO() { return requiresLTO; }
 };
 
 class DynamicLinkJob final : public LinkJob {
- public:
+public:
   // Some jobs only consume inputs -- For example, LinkJob
-  DynamicLinkJob(Compilation& compilation, bool requiresLTO, LinkType linkType);
+  DynamicLinkJob(Compilation &compilation, bool requiresLTO, LinkType linkType);
 
   void BuildCmdOutput() override;
 
- public:
-  static bool classof(const Job* j) {
+public:
+  static bool classof(const Job *j) {
     return j->GetType() == JobType::DynamicLink;
   }
 };
 
 class StaticLinkJob final : public LinkJob {
- public:
+public:
   // Some jobs only consume inputs -- For example, LinkJob
-  StaticLinkJob(Compilation& compilation, bool requiresLTO, LinkType linkType);
+  StaticLinkJob(Compilation &compilation, bool requiresLTO, LinkType linkType);
 
   void BuildCmdOutput() override;
 
- public:
-  static bool classof(const Job* j) {
+public:
+  static bool classof(const Job *j) {
     return j->GetType() == JobType::StaticLink;
   }
 };
 
-}  // namespace driver
-}  // namespace stone
+} // namespace driver
+} // namespace stone
 #endif

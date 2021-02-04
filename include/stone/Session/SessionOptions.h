@@ -16,7 +16,7 @@ using InputFiles = llvm::SmallVector<InputFile, 16>;
 class SessionOptions {
   std::unique_ptr<llvm::opt::OptTable> optTable;
 
- public:
+public:
   bool printHelp = false;
   bool printHelpHidden = false;
   bool printVersion = false;
@@ -33,16 +33,16 @@ class SessionOptions {
 
   InputFiles inputs;
 
- public:
+public:
   SessionOptions() : optTable(stone::CreateOptTable()) {}
 
- public:
+public:
   llvm::opt::OptTable &GetOpts() const { return *optTable.get(); }
 
   void AddInput(file::FileType ty, llvm::StringRef name) {
     inputs.push_back(std::make_pair(ty, name));
   }
 };
-}  // namespace stone
+} // namespace stone
 
 #endif

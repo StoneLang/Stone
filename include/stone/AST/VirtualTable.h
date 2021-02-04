@@ -5,5 +5,5 @@ namespace stone {
 
 class VirtualTable {};
 
-}  // namespace stone
+} // namespace stone
 #endif

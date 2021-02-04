@@ -6,11 +6,11 @@ namespace decl {
 enum Kind {
 #define DECL(Id, Parent) Id,
 #define LAST_DECL(Id) LastDecl = Id,
-#define DECL_RANGE(Id, FirstId, LastId) \
+#define DECL_RANGE(Id, FirstId, LastId)                                        \
   First##Id##Decl = FirstId, Last##Id##Decl = LastId,
 #include "stone/AST/DeclKind.def"
 };
-}  // namespace decl
-}  // namespace stone
+} // namespace decl
+} // namespace stone
 
 #endif

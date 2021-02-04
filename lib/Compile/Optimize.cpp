@@ -1,7 +1,7 @@
 #include "stone/Compile/Optimize.h"
 
-#include "llvm/IR/Module.h"
 #include "stone/Gen/CodeGenOptions.h"
+#include "llvm/IR/Module.h"
 
 using namespace stone;
 

@@ -84,8 +84,8 @@ llvm::Module *stone::GenIR(syn::Module *moduleDecl, const Context &ctx,
   return nullptr;
 }
 
-std::unique_ptr<llvm::TargetMachine> stone::CreateTargetMachine(
-    const CodeGenOptions &genOpts, ASTContext &astCtx) {
+std::unique_ptr<llvm::TargetMachine>
+stone::CreateTargetMachine(const CodeGenOptions &genOpts, ASTContext &astCtx) {
   return nullptr;
 }
 bool stone::GenObject(llvm::Module *llvmModule,

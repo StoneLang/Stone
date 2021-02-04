@@ -14,9 +14,9 @@ class IdentifierCustomDiagnosticArgument : public CustomDiagnosticArgument {};
 class NamedDeclCustomDiagnosticArgument : public CustomDiagnosticArgument {};
 
 class ASTDiagnostics final : public Diagnostics {
- public:
+public:
 };
-}  // namespace syn
-}  // namespace stone
+} // namespace syn
+} // namespace stone
 
 #endif

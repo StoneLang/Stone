@@ -5,7 +5,7 @@
 
 namespace stone {
 class Compiler;
-}  // namespace stone
+} // namespace stone
 
 // Defined in ASTContext.h
 void *operator new(size_t bytes, const stone::Compiler &compiler,

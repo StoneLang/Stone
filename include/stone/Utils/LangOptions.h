@@ -15,9 +15,8 @@
 #include "llvm/Support/raw_ostream.h"
 
 namespace stone {
-
 class LangOptions final {
- public:
+public:
   /// The target we are building for.
   ///
   /// This represents the minimum deployment target.
@@ -35,6 +34,6 @@ class LangOptions final {
   llvm::Optional<llvm::Triple> targetVariant;
 };
 
-}  // namespace stone
+} // namespace stone
 
 #endif

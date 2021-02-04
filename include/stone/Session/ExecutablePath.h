@@ -8,5 +8,5 @@ inline std::string GetExecutablePath(const char *arg0) {
   void *mainPath = (void *)(intptr_t)stone::GetExecutablePath;
   return llvm::sys::fs::getMainExecutable(arg0, mainPath);
 }
-}  // namespace stone
+} // namespace stone
 #endif

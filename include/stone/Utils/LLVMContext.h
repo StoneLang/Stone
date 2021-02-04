@@ -5,6 +5,6 @@
 
 namespace stone {
 llvm::LLVMContext &GetLLVMContext();
-}  // namespace stone
+} // namespace stone
 
 #endif

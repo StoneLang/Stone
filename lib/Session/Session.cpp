@@ -6,18 +6,16 @@ using namespace stone;
 using namespace llvm::opt;
 
 Session::Session(SessionOptions &sessionOpts)
-    : sessionOpts(sessionOpts),
-      mode(ModeKind::None),
+    : sessionOpts(sessionOpts), mode(ModeKind::None),
       targetTriple(llvm::sys::getDefaultTargetTriple()),
-      fileSystem(llvm::vfs::getRealFileSystem()),
-      strSaver(bumpAlloc) {
+      fileSystem(llvm::vfs::getRealFileSystem()), strSaver(bumpAlloc) {
   clock.Start();
 }
 
 Session::~Session() {}
 
-std::unique_ptr<llvm::opt::InputArgList> Session::ParseArgList(
-    llvm::ArrayRef<const char *> args) {
+std::unique_ptr<llvm::opt::InputArgList>
+Session::ParseArgList(llvm::ArrayRef<const char *> args) {
   auto argList = llvm::make_unique<llvm::opt::InputArgList>(
       sessionOpts.GetOpts().ParseArgs(args, missingArgIndex, missingArgCount,
                                       includedFlagsBitmask,
@@ -43,8 +41,8 @@ std::unique_ptr<llvm::opt::InputArgList> Session::ParseArgList(
   }
   return argList;
 }
-std::unique_ptr<llvm::opt::DerivedArgList> Session::TranslateArgList(
-    const llvm::opt::InputArgList &args) {
+std::unique_ptr<llvm::opt::DerivedArgList>
+Session::TranslateArgList(const llvm::opt::InputArgList &args) {
   auto dArgList = llvm::make_unique<llvm::opt::DerivedArgList>(args);
 
   for (Arg *arg : args) {
@@ -67,29 +65,29 @@ void Session::ComputeMode(const llvm::opt::DerivedArgList &args) {
   // TODO: may have to claim
   if (modeArg) {
     switch (modeArg->getOption().getID()) {
-      case opts::Parse:
-        mode.SetKind(ModeKind::Parse);
-        break;
-      case opts::Check:
-        mode.SetKind(ModeKind::Check);
-        break;
-      case opts::EmitIR:
-        mode.SetKind(ModeKind::EmitIR);
-        break;
-      case opts::EmitBC:
-        mode.SetKind(ModeKind::EmitBC);
-        break;
-      case opts::EmitObject:
-        mode.SetKind(ModeKind::EmitObject);
-        break;
-      case opts::EmitAssembly:
-        mode.SetKind(ModeKind::EmitAssembly);
-        break;
-      case opts::EmitLibrary:
-        mode.SetKind(ModeKind::EmitLibrary);
-        break;
-      default:
-        break;
+    case opts::Parse:
+      mode.SetKind(ModeKind::Parse);
+      break;
+    case opts::Check:
+      mode.SetKind(ModeKind::Check);
+      break;
+    case opts::EmitIR:
+      mode.SetKind(ModeKind::EmitIR);
+      break;
+    case opts::EmitBC:
+      mode.SetKind(ModeKind::EmitBC);
+      break;
+    case opts::EmitObject:
+      mode.SetKind(ModeKind::EmitObject);
+      break;
+    case opts::EmitAssembly:
+      mode.SetKind(ModeKind::EmitAssembly);
+      break;
+    case opts::EmitLibrary:
+      mode.SetKind(ModeKind::EmitLibrary);
+      break;
+    default:
+      break;
     }
   }
   if (mode.GetKind() == ModeKind::None) {

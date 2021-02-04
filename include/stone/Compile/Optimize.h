@@ -6,11 +6,11 @@
 namespace llvm {
 class Module;
 class TargetMachine;
-}  // namespace llvm
+} // namespace llvm
 
 namespace stone {
 class CodeGenOptions;
 void OptimizeIR(llvm::Module *llvmModule, const CodeGenOptions &go,
                 llvm::TargetMachine *tm);
-}  // namespace stone
+} // namespace stone
 #endif
