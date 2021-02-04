@@ -2,7 +2,7 @@
 #define STONE_GEN_BACKEND_H
 
 #include "llvm/Target/TargetMachine.h"
-#include "stone/Core/ASTContext.h"
+#include "stone/AST/ASTContext.h"
 #include "stone/Utils/LLVM.h"
 
 namespace llvm {

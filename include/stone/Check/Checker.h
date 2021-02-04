@@ -4,9 +4,9 @@
 #include <memory>
 
 #include "stone/Check/CheckerDiagnostics.h"
-#include "stone/Core/ASTContext.h"
-#include "stone/Core/Context.h"
-#include "stone/Core/Module.h"
+#include "stone/AST/ASTContext.h"
+#include "stone/Utils/Context.h"
+#include "stone/AST/Module.h"
 #include "stone/Utils/Stats.h"
 
 using namespace stone::syn;

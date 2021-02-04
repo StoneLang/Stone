@@ -1,9 +1,0 @@
-
-
-public interface Node {
-
-}
-
-public struct Decl : Node {
-
-}

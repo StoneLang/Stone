@@ -490,7 +490,7 @@ void Lexer::LexIdentifier() {
 tk Lexer::GetKindOfIdentifier(StringRef tokStr) {
 #define KEYWORD(kw, S) \
   if (tokStr == #kw) return tk::kw_##kw;
-#include "stone/Core/TokenKind.def"
+#include "stone/AST/TokenKind.def"
   return tk::identifier;
 }
 void Lexer::LexTrivia(Trivia trivia, bool isTrailing) {}

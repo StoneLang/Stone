@@ -13,7 +13,7 @@ set(stone_check_sources
 	CheckerDiagnostics.cpp
 
 	LINK_LIBS
-	StoneCore
+	StoneAST
 )
 add_stone_library(StoneCheck
 	${stone_check_sources}

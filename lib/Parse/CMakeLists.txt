@@ -16,7 +16,7 @@ set(stone_parse_sources
 	ParserDiagnostics.cpp
 
 	LINK_LIBS
-	StoneCore
+	StoneAST
 
 )
 add_stone_library(StoneParse

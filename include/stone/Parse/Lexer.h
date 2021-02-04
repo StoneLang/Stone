@@ -1,7 +1,7 @@
 #ifndef STONE_PARSE_LEXER_H
 #define STONE_PARSE_LEXER_H
 
-#include "stone/Core/Context.h"
+#include "stone/Utils/Context.h"
 #include "stone/Parse/LexerDiagnostics.h"
 #include "stone/Parse/Token.h"
 #include "stone/Parse/Trivia.h"

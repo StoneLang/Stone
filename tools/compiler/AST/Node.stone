@@ -1,0 +1,16 @@
+
+public enum NodeType {
+	Decl,
+	Stmt, 
+	Expr
+}
+public interface Node {
+
+}
+public enum DeclType {
+	Fun,
+	Struct,
+}
+public struct Decl : Node {
+}
+

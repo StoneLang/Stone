@@ -3,9 +3,9 @@
 
 #include "stone/Compile/CompilerAlloc.h"
 #include "stone/Compile/CompilerOptions.h"
-#include "stone/Core/ASTContext.h"
-#include "stone/Core/Module.h"
-#include "stone/Core/SearchPathOptions.h"
+#include "stone/AST/ASTContext.h"
+#include "stone/AST/Module.h"
+#include "stone/AST/SearchPathOptions.h"
 #include "stone/Session/Session.h"
 #include "stone/Utils/Stats.h"
 

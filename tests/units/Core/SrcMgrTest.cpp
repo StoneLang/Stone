@@ -1,7 +1,7 @@
 #include "stone/Utils/SrcMgr.h"
-#include "stone/Core/DiagnosticOptions.h"
-#include "stone/Core/Diagnostics.h"
-#include "stone/Core/FileMgr.h"
+#include "stone/AST/DiagnosticOptions.h"
+#include "stone/AST/Diagnostics.h"
+#include "stone/AST/FileMgr.h"
 #include "stone/Utils/FileSystemOptions.h"
 
 #include "llvm/ADT/SmallString.h"

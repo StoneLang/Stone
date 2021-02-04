@@ -1,6 +1,6 @@
 #include "stone/Gen/CodeEmitter.h"
 
-#include "stone/Core/Decl.h"
+#include "stone/AST/Decl.h"
 
 using namespace stone;
 using namespace stone::gen;

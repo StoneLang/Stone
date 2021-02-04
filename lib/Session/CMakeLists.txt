@@ -10,9 +10,8 @@ set(stone_session_sources
 	Options.cpp
 	Session.cpp
 
-	LINK_LIBS
-	#TODO: Should only need StoneUtils 
-	StoneCore
+	LINK_LIBS 
+	StoneUtils
 )
 add_stone_library(StoneSession
 	${stone_session_sources}

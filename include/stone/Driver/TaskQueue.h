@@ -8,7 +8,7 @@
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/Config/config.h"
 #include "llvm/Support/Program.h"
-#include "stone/Core/Context.h"
+#include "stone/Utils/Context.h"
 #include "stone/Utils/LLVM.h"
 #include "stone/Utils/Stats.h"
 

@@ -65,8 +65,8 @@
 // TODO: #include "llvm/Transforms/Utils/UniqueInternalLinkageNames.h"
 #include <memory>
 
-#include "stone/Core/ASTContext.h"
-#include "stone/Core/Module.h"
+#include "stone/AST/ASTContext.h"
+#include "stone/AST/Module.h"
 #include "stone/Gen/CodeGenOptions.h"
 #include "stone/Gen/CodeGenerator.h"
 #include "stone/Gen/Gen.h"

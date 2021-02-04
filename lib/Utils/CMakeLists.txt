@@ -10,6 +10,7 @@ set(stone_utils_sources
 	BumpTable.cpp
 	Char.cpp
 	Clock.cpp
+	Context.cpp
 	Diagnostics.cpp
 	DirWatcher.cpp
 	FileMgr.cpp

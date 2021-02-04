@@ -2,7 +2,7 @@
 #define STONE_PARSE_TOKEN_H
 
 #include "llvm/ADT/StringRef.h"
-#include "stone/Core/TokenKind.h"
+#include "stone/AST/TokenKind.h"
 #include "stone/Utils/LLVM.h"
 
 namespace stone {
@@ -123,7 +123,7 @@ class Token final {
 #define KEYWORD(X, S) \
   case tk::kw_##X:    \
     return true;
-#include "stone/Core/TokenKind.def"
+#include "stone/AST/TokenKind.def"
       default:
         return false;
     }
@@ -146,7 +146,7 @@ class Token final {
 #define PUNCTUATOR(Name, Str) \
   case tk::Name:              \
     return true;
-#include "stone/Core/TokenKind.def"
+#include "stone/AST/TokenKind.def"
       default:
         return false;
     }

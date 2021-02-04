@@ -3,8 +3,8 @@
 
 #include <memory>
 
-#include "stone/Core/ASTContext.h"
-#include "stone/Core/Module.h"
+#include "stone/AST/ASTContext.h"
+#include "stone/AST/Module.h"
 #include "stone/Utils/Stats.h"
 
 namespace stone {

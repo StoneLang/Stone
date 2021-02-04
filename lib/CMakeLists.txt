@@ -1,6 +1,6 @@
+add_subdirectory(AST)
 add_subdirectory(Check)
 add_subdirectory(Compile)
-add_subdirectory(Core)
 add_subdirectory(Driver)
 add_subdirectory(Gen)
 add_subdirectory(Parse)
