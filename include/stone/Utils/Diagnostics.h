@@ -105,10 +105,16 @@ class DiagnosticListener {
 class FakeDiagnosticListener final : public DiagnosticListener {
  public:
 };
+
+/*
 struct Diagnostic final {
  public:
   Diagnostic() {}
 };
+
+*/
+enum DiagID : uint32_t;
+enum FixItID : uint32_t;
 
 class Diagnostics {
   friend DiagnosticEngine;
@@ -119,10 +125,7 @@ class Diagnostics {
   unsigned int startID = 0;
   unsigned int endID = 0;
 
-  enum MsgID : uint32_t;
-
   // llvm::DenseMap<unsigned, Diagnostic> entries;
-
   // List<Diagnostic> entries;
 
  public:
