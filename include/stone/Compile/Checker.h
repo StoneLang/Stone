@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "stone/Compile/CheckerDiagnostic.h"
+#include "stone/Compile/CheckerDiagnostics.h"
 #include "stone/Core/ASTContext.h"
 #include "stone/Core/Context.h"
 #include "stone/Core/Module.h"

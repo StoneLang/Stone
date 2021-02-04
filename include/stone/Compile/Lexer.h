@@ -1,15 +1,13 @@
 #ifndef STONE_COMPILE_LEXER_H
 #define STONE_COMPILE_LEXER_H
 
-#include "stone/Compile/LexerDiagnostic.h"
+#include "stone/Compile/LexerDiagnostics.h"
 #include "stone/Compile/Token.h"
 #include "stone/Compile/Trivia.h"
 #include "stone/Core/Context.h"
 #include "stone/Utils/Clock.h"
+#include "stone/Utils/Diagnostics.h"
 #include "stone/Utils/SrcLoc.h"
-
-//	#include "stone/Utils/SrcLoc.h"
-//	#include "stone/Utils/Diagnostics.h"
 
 namespace stone {
 

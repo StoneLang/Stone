@@ -1,0 +1,5 @@
+#define DEFINE_DIAGNOSTIC_MACROS
+#include "stone/Utils/DiagnosticDefs.h"
+
+#define UNDEFINE_DIAGNOSTIC_MACROS
+#include "stone/Utils/DiagnosticDefs.h"

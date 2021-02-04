@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "stone/Compile/Lexer.h"
-#include "stone/Compile/ParserDiagnostic.h"
+#include "stone/Compile/ParserDiagnostics.h"
 #include "stone/Core/ASTContext.h"
 #include "stone/Core/Context.h"
 #include "stone/Core/Module.h"
