@@ -1,4 +1,4 @@
-#include "stone/Compile/Checker.h"
+#include "stone/Check/Checker.h"
 
 #include "stone/Utils/Ret.h"
 

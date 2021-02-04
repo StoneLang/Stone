@@ -1,5 +1,5 @@
-#ifndef STONE_COMPILE_TOKEN_H
-#define STONE_COMPILE_TOKEN_H
+#ifndef STONE_PARSE_TOKEN_H
+#define STONE_PARSE_TOKEN_H
 
 #include "llvm/ADT/StringRef.h"
 #include "stone/Core/TokenKind.h"

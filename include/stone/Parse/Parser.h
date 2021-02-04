@@ -1,13 +1,13 @@
-#ifndef STONE_COMPILE_PARSER_H
-#define STONE_COMPILE_PARSER_H
+#ifndef STONE_PARSE_PARSER_H
+#define STONE_PARSE_PARSER_H
 
 #include <memory>
 
-#include "stone/Compile/Lexer.h"
-#include "stone/Compile/ParserDiagnostics.h"
 #include "stone/Core/ASTContext.h"
 #include "stone/Core/Context.h"
 #include "stone/Core/Module.h"
+#include "stone/Parse/Lexer.h"
+#include "stone/Parse/ParserDiagnostics.h"
 #include "stone/Utils/Stats.h"
 
 namespace stone {

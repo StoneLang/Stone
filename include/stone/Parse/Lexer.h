@@ -1,10 +1,10 @@
-#ifndef STONE_COMPILE_LEXER_H
-#define STONE_COMPILE_LEXER_H
+#ifndef STONE_PARSE_LEXER_H
+#define STONE_PARSE_LEXER_H
 
-#include "stone/Compile/LexerDiagnostics.h"
-#include "stone/Compile/Token.h"
-#include "stone/Compile/Trivia.h"
 #include "stone/Core/Context.h"
+#include "stone/Parse/LexerDiagnostics.h"
+#include "stone/Parse/Token.h"
+#include "stone/Parse/Trivia.h"
 #include "stone/Utils/Clock.h"
 #include "stone/Utils/Diagnostics.h"
 #include "stone/Utils/SrcLoc.h"

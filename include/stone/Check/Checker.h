@@ -1,9 +1,9 @@
-#ifndef STONE_COMPILE_CHECKER_H
-#define STONE_COMPILE_CHECKER_H
+#ifndef STONE_CHECK_CHECKER_H
+#define STONE_CHECK_CHECKER_H
 
 #include <memory>
 
-#include "stone/Compile/CheckerDiagnostics.h"
+#include "stone/Check/CheckerDiagnostics.h"
 #include "stone/Core/ASTContext.h"
 #include "stone/Core/Context.h"
 #include "stone/Core/Module.h"

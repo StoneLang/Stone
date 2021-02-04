@@ -9,22 +9,15 @@ set( LLVM_LINK_COMPONENTS
   Option
   )
 set(stone_compile_sources
-	Check.cpp
-	Checker.cpp
-	CheckerDiagnostics.cpp
 	Compile.cpp
 	Compiler.cpp
 	CompilerScope.cpp
 	CompilerUnit.cpp
-	Lexer.cpp
-	LexerDiagnostics.cpp
 	Optimize.cpp
-	Parse.cpp
-	Parser.cpp
-	ParserDiagnostics.cpp
 
 	LINK_LIBS
-	StoneCore
+	StoneCheck
+	StoneParse
 	StoneGen
 	StoneSession
 

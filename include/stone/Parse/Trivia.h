@@ -1,5 +1,5 @@
-#ifndef STONE_COMPILE_TRIVIA_H
-#define STONE_COMPILE_TRIVIA_H
+#ifndef STONE_PARSE_TRIVIA_H
+#define STONE_PARSE_TRIVIA_H
 
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/SmallVector.h"

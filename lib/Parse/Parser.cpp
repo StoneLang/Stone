@@ -1,4 +1,4 @@
-#include "stone/Compile/Parser.h"
+#include "stone/Parse/Parser.h"
 
 #include "stone/Utils/Ret.h"
 
