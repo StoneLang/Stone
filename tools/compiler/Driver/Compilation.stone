@@ -1,13 +1,4 @@
-module Stone.Driver
-use Stone.Session; 
 
-class Compilaiton {
-		Driver* driver = null; 
-}
-fun Compilation::Init(Driver* driver) {
-	me.driver = driver;
-}
-fun Compilation::GetDriver() -> Driver* {
-	return me.driver; 
+public struct Compilaiton {	
 }
 

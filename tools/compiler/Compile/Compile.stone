@@ -1,8 +1,7 @@
-module Stone.Compile;
 
-public fun Compile(string[] args) -> i32 {
-	auto compiler = new Compiler();
-	free compiler; 
-	return 0;
+
+public fun Compile(string[] args) -> bool {
+
+	return true; 
 }
 

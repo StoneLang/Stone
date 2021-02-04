@@ -1,9 +1,4 @@
-module Stone.Main;  
-
-using Stone.Compile;
-using Stone.Driver; 
-
 
 fun Main() -> i32 {
-
+	return 0; 
 }

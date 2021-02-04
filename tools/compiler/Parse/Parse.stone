@@ -1,0 +1,6 @@
+
+
+
+public fun Parse() -> bool {
+	return true; 
+}

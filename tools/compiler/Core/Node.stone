@@ -1,7 +1,9 @@
-module Stone.Syntax;
 
-space Stone.Syntax {
 
-	public interface Node {
-	}
+public interface Node {
+
+}
+
+public struct Decl : Node {
+
 }

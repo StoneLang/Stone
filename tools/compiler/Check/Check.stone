@@ -1,0 +1,6 @@
+
+
+public fun Check() -> bool {
+	return true;
+}
+

@@ -1,20 +1,11 @@
-module Stone.Session; 
 
 public enum ModeType {
 	None,
 	Parse,
 	Check
 }
-public class Mode {
+public struct Mode {
 	public ModeType modeType = ModeType::None; 
 }
 
-public fun Mode::IsCompileOnly() -> bool {
-	match (me.modeType) {
-		case ModeType::Parse:
-		case ModeType::Check:
-			return true; 
-		default:
-				break;
-		}
-}
+
