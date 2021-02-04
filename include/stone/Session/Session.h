@@ -26,11 +26,11 @@
 #include "llvm/Support/StringSaver.h"
 #include "llvm/Support/TargetRegistry.h"
 #include "llvm/Support/VirtualFileSystem.h"
-#include "stone/Utils/Context.h"
 #include "stone/Session/FileType.h"
 #include "stone/Session/Mode.h"
 #include "stone/Session/SessionOptions.h"
 #include "stone/Utils/Clock.h"
+#include "stone/Utils/Context.h"
 
 namespace stone {
 

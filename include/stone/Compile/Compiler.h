@@ -1,11 +1,11 @@
 #ifndef STONE_COMPILE_COMPILER_H
 #define STONE_COMPILE_COMPILER_H
 
-#include "stone/Compile/CompilerAlloc.h"
-#include "stone/Compile/CompilerOptions.h"
 #include "stone/AST/ASTContext.h"
 #include "stone/AST/Module.h"
 #include "stone/AST/SearchPathOptions.h"
+#include "stone/Compile/CompilerAlloc.h"
+#include "stone/Compile/CompilerOptions.h"
 #include "stone/Session/Session.h"
 #include "stone/Utils/Stats.h"
 

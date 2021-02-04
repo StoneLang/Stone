@@ -2,8 +2,8 @@
 #define STONE_COMPILE_COMPILERUNIT_H
 
 #include "llvm/ADT/ArrayRef.h"
-#include "stone/Compile/Compiler.h"
 #include "stone/AST/SearchPathOptions.h"
+#include "stone/Compile/Compiler.h"
 #include "stone/Gen/CodeGenOptions.h"
 #include "stone/Session/FileType.h"
 #include "stone/Session/Mode.h"

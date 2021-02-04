@@ -4,10 +4,10 @@
 #include <memory>
 
 #include "stone/AST/ASTContext.h"
-#include "stone/Utils/Context.h"
 #include "stone/AST/Module.h"
 #include "stone/Parse/Lexer.h"
 #include "stone/Parse/ParserDiagnostics.h"
+#include "stone/Utils/Context.h"
 #include "stone/Utils/Stats.h"
 
 namespace stone {
