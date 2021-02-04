@@ -3,10 +3,10 @@
 
 #include <memory>
 
-#include "stone/Check/CheckerDiagnostics.h"
 #include "stone/AST/ASTContext.h"
-#include "stone/Utils/Context.h"
 #include "stone/AST/Module.h"
+#include "stone/Check/CheckerDiagnostics.h"
+#include "stone/Utils/Context.h"
 #include "stone/Utils/Stats.h"
 
 using namespace stone::syn;

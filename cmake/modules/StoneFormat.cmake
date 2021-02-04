@@ -1,7 +1,7 @@
 set(stone_include_files
 
 	${STONE_SOURCE_DIR}/include/stone/AST/*.h
-	#${STONE_SOURCE_DIR}/include/stone/Check/*.h
+	${STONE_SOURCE_DIR}/include/stone/Check/*.h
 	#${STONE_SOURCE_DIR}/include/stone/Compile/*.h
 	#${STONE_SOURCE_DIR}/include/stone/Compile/*.def
 	#${STONE_SOURCE_DIR}/include/stone/Driver/*.h
@@ -14,7 +14,7 @@ set(stone_include_files
 )
 set(stone_lib_files
 	${STONE_SOURCE_DIR}/lib/AST/*.cpp
-	#${STONE_SOURCE_DIR}/lib/Check/*.cpp
+	${STONE_SOURCE_DIR}/lib/Check/*.cpp
 	#${STONE_SOURCE_DIR}/lib/Compile/*.cpp
 	#${STONE_SOURCE_DIR}/lib/Driver/*.cpp
 	#${STONE_SOURCE_DIR}/lib/Gen/*.cpp
