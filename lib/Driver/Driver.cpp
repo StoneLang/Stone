@@ -223,8 +223,12 @@ Driver::Driver(llvm::StringRef stoneExecutable, std::string driverName)
       /*sysRoot(DEFAULT_SYSROOT),*/
       driverTitle("Stone Compiler"),
       checkInputFilesExist(true) {
+
   stats.reset(new DriverStats(*this));
   GetStatEngine().Register(stats.get());
+
+  diagnostics.reset(new DriverDiagnostics());
+	GetDiagEngine().Register(std::move(diagnostics)); 
 }
 
 std::unique_ptr<driver::TaskQueue> DriverInternal::BuildTaskQueue(

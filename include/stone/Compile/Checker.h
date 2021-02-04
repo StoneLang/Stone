@@ -34,6 +34,8 @@ class Checker final {
   friend CheckerStats;
   syn::SourceUnit &su;
   std::unique_ptr<CheckerStats> stats;
+  std::unique_ptr<CheckerDiagnostics> diagnostics;
+
   Pipeline *pipeline;
   Context &ctx;
 
