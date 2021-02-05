@@ -42,7 +42,7 @@ enum class DiagnosticLevel {
   Fatal
 };
 
-class FixIt {
+class FixHint {
 public:
   /// Code that should be replaced to correct the error. Empty for an
   /// insertion hint.
@@ -60,15 +60,15 @@ public:
 
   /// Empty code modification hint, indicating that no code
   /// modification is known.
-  FixIt() = default;
+  FixHint() = default;
 
   bool IsNull() const { return !removeRange.isValid(); }
 
   /// Create a code modification hint that inserts the given
   /// code string at a specific location.
-  static FixIt CreateInsertion(SrcLoc insertionLoc, StringRef code,
-                               bool beforePreviousInsertions = false) {
-    FixIt fix;
+  static FixHint CreateInsertion(SrcLoc insertionLoc, StringRef code,
+                                 bool beforePreviousInsertions = false) {
+    FixHint fix;
     fix.removeRange = CharSrcRange::getCharRange(insertionLoc, insertionLoc);
     fix.codeToInsert = std::string(code);
     fix.beforePreviousInsertions = beforePreviousInsertions;
@@ -77,10 +77,10 @@ public:
 
   /// Create a code modification hint that inserts the given
   /// code from \p FromRange at a specific location.
-  static FixIt CreateInsertionFromRange(SrcLoc insertionLoc,
-                                        CharSrcRange fromRange,
-                                        bool beforePreviousInsertions = false) {
-    FixIt fix;
+  static FixHint
+  CreateInsertionFromRange(SrcLoc insertionLoc, CharSrcRange fromRange,
+                           bool beforePreviousInsertions = false) {
+    FixHint fix;
     fix.removeRange = CharSrcRange::getCharRange(insertionLoc, insertionLoc);
     fix.insertFromRange = fromRange;
     fix.beforePreviousInsertions = beforePreviousInsertions;
@@ -89,26 +89,26 @@ public:
 
   /// Create a code modification hint that removes the given
   /// source range.
-  static FixIt CreateRemoval(CharSrcRange removeRange) {
-    FixIt fix;
+  static FixHint CreateRemoval(CharSrcRange removeRange) {
+    FixHint fix;
     fix.removeRange = removeRange;
     return fix;
   }
-  static FixIt CreateRemoval(SrcRange removeRange) {
+  static FixHint CreateRemoval(SrcRange removeRange) {
     return CreateRemoval(CharSrcRange::getTokenRange(removeRange));
   }
 
   /// Create a code modification hint that replaces the given
   /// source range with the given code string.
-  static FixIt CreateReplacement(CharSrcRange removeRange,
-                                 llvm::StringRef code) {
-    FixIt fix;
+  static FixHint CreateReplacement(CharSrcRange removeRange,
+                                   llvm::StringRef code) {
+    FixHint fix;
     fix.removeRange = removeRange;
     fix.codeToInsert = std::string(code);
     return fix;
   }
 
-  static FixIt CreateReplacement(SrcRange removeRange, llvm::StringRef code) {
+  static FixHint CreateReplacement(SrcRange removeRange, llvm::StringRef code) {
     return CreateReplacement(CharSrcRange::getTokenRange(removeRange), code);
   }
 };
@@ -146,8 +146,8 @@ public:
   ///
   /// The default implementation just keeps track of the total number of
   /// warnings and errors.
-  virtual void HandleDiagnostics(DiagnosticLevel level,
-                                 const Diagnostics &diagnostics);
+  virtual void OnDiagnostics(DiagnosticLevel level,
+                             const Diagnostics &diagnostics);
 };
 
 class FakeDiagnosticListener final : public DiagnosticListener {
@@ -158,16 +158,16 @@ enum DiagID : uint32_t;
 
 enum MsgID : uint32_t;
 
-enum FixItID : uint32_t;
+enum FixHintID : uint32_t;
 
 class Diagnostics {
   friend DiagnosticEngine;
   // bool isActive;
 protected:
   unsigned int uniqueID = 0;
-  unsigned int maxMessages = 0;
-  unsigned int startID = 0;
-  unsigned int endID = 0;
+  unsigned maxID = 0;
+  unsigned firstID = 0;
+  unsigned lastID = 0;
 
   // llvm::DenseMap<unsigned, Diagnostic> entries;
   // List<Diagnostic> entries;
@@ -178,8 +178,9 @@ public:
 protected:
   // Only for Diagnostics
   void Init();
-  unsigned int GetStartID() const { return startID; }
-  unsigned int GetEndID() const { return endID; }
+  unsigned GetMaxID() const { return maxID; }
+  unsigned GetFirstID() const { return firstID; }
+  unsigned GetLastID() const { return lastID; }
 
   // const DiagnosticLine DiagnosticLines[100];
 public:
@@ -233,12 +234,10 @@ class DiagnosticEngine final {
   // unsigned int maxDiagnosticMessages = 1000;
   llvm::DenseMap<unsigned int, std::unique_ptr<Diagnostics>> entries;
 
-
-
   /// If valid, provides a hint with some code to insert, remove,
   /// or modify at a particular position.
-	llvm::SmallVector<FixIt, 8> fixIts;  //TODO: This may have to be on the dagnostics 
-
+  llvm::SmallVector<FixHint, 8>
+      fixHints; // TODO: This may have to be on the dagnostics
 
 public:
   explicit DiagnosticEngine(const DiagnosticOptions &diagOpts,
@@ -267,7 +266,7 @@ public:
 
   void AddCustomArgument(const CustomDiagnosticArgument *argument);
 
-	/// Issue the message to the client.
+  /// Issue the message to the client.
   ///
   /// This actually returns an instance of InflightDiagnostic which emits the
   /// diagnostics (through @c ProcessDiag) when it is destroyed.
@@ -277,7 +276,6 @@ public:
   /// which can be an invalid location if no position information is available.
   inline InflightDiagnostic Issue(SrcLoc loc, unsigned diagID);
   inline InflightDiagnostic Issue(unsigned diagID);
-
 };
 
 class InflightDiagnostic final {
@@ -304,7 +302,7 @@ class InflightDiagnostic final {
     assert(de && "InflightDiagnostic requires a valid DiagnosticsEngine!");
 
     // diagnostics->diagnosticRanges.clear();
-    // diagnostics->diagnosticFixIts.clear();
+    // diagnostics->diagnosticFixHints.clear();
   }
 
 public:

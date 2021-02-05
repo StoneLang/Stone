@@ -3,8 +3,11 @@
 using namespace stone;
 using namespace stone::driver;
 
-enum DriverDiagID : uint32_t {
+enum DriverDiagnostics::DiagID : uint32_t {
+  firstID,
 #define DIAG(Kind, ID, Options, Text, Signature) ID,
 #include "stone/Driver/DriverDiagnostics.def"
-  MaxID
+  lastID
 };
+
+DriverDiagnostics::DriverDiagnostics() { maxID = 200; }

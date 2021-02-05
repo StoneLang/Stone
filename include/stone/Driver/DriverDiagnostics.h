@@ -9,6 +9,10 @@ namespace stone {
 namespace driver {
 class DriverDiagnostics final : public Diagnostics {
 public:
+  enum DiagID : uint32_t;
+
+public:
+  DriverDiagnostics();
 };
 } // namespace driver
 } // namespace stone
