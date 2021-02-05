@@ -1,15 +1,16 @@
-#include "stone/AST/ASTContext.h"
-
 #include <algorithm>
 #include <memory>
 
-#include "stone/Utils/Diagnostics.h"
 #include "llvm/ADT/DenseMap.h"
 #include "llvm/ADT/Statistic.h"
 #include "llvm/ADT/StringMap.h"
 #include "llvm/ADT/StringSwitch.h"
 #include "llvm/Support/Allocator.h"
 #include "llvm/Support/Compiler.h"
+
+#include "stone/AST/ASTContext.h"
+#include "stone/Utils/Diagnostics.h"
+
 
 using namespace stone;
 using namespace stone::syn;

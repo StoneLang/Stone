@@ -12,10 +12,6 @@
 #include <utility>
 #include <vector>
 
-#include "stone/Utils/DiagnosticOptions.h"
-#include "stone/Utils/LangOptions.h"
-#include "stone/Utils/List.h"
-#include "stone/Utils/SrcLoc.h"
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/DenseMap.h"
 #include "llvm/ADT/IntrusiveRefCntPtr.h"
@@ -24,6 +20,11 @@
 #include "llvm/ADT/iterator_range.h"
 #include "llvm/Support/Compiler.h"
 #include "llvm/Support/Error.h"
+
+#include "stone/Utils/DiagnosticOptions.h"
+#include "stone/Utils/LangOptions.h"
+#include "stone/Utils/List.h"
+#include "stone/Utils/SrcLoc.h"
 
 namespace stone {
 
