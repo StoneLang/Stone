@@ -1,4 +1,4 @@
-#include "stone/Utils/Diagnostics.h"
+#include "stone/Utils/DiagnosticEngine.h"
 #include "gtest/gtest.h"
 
 using namespace stone;

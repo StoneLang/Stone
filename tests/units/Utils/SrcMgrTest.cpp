@@ -1,6 +1,6 @@
 #include "stone/Utils/SrcMgr.h"
 #include "stone/Utils/DiagnosticOptions.h"
-#include "stone/Utils/Diagnostics.h"
+#include "stone/Utils/DiagnosticEngine.h"
 #include "stone/Utils/FileMgr.h"
 #include "stone/Utils/FileSystemOptions.h"
 

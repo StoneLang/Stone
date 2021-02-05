@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "stone/Utils/Diagnostics.h"
+#include "stone/Utils/DiagnosticEngine.h"
 
 namespace stone {
 namespace driver {

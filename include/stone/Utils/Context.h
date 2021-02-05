@@ -1,8 +1,8 @@
 #ifndef STONE_UTILS_CONTEXT_H
 #define STONE_UTILS_CONTEXT_H
 
+#include "stone/Utils/DiagnosticEngine.h"
 #include "stone/Utils/DiagnosticOptions.h"
-#include "stone/Utils/Diagnostics.h"
 #include "stone/Utils/LangOptions.h"
 #include "stone/Utils/Stats.h"
 

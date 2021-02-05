@@ -9,7 +9,7 @@
 #include "llvm/Support/Compiler.h"
 
 #include "stone/AST/ASTContext.h"
-#include "stone/Utils/Diagnostics.h"
+#include "stone/Utils/DiagnosticEngine.h"
 
 using namespace stone;
 using namespace stone::syn;

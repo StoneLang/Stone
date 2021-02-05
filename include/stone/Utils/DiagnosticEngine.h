@@ -1,5 +1,5 @@
-#ifndef STONE_UTILS_DIAGNOSTICS_H
-#define STONE_UTILS_DIAGNOSTICS_H
+#ifndef STONE_UTILS_DIAGNOSTICENGINE_H
+#define STONE_UTILS_DIAGNOSTICENGINE_H
 
 #include <cassert>
 #include <cstdint>

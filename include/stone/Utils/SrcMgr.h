@@ -42,7 +42,7 @@
 #include <utility>
 #include <vector>
 
-#include "stone/Utils/Diagnostics.h"
+#include "stone/Utils/DiagnosticEngine.h"
 #include "stone/Utils/FileMgr.h"
 #include "stone/Utils/SrcLoc.h"
 #include "llvm/ADT/ArrayRef.h"

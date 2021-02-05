@@ -6,7 +6,7 @@
 #include "stone/Parse/Trivia.h"
 #include "stone/Utils/Clock.h"
 #include "stone/Utils/Context.h"
-#include "stone/Utils/Diagnostics.h"
+#include "stone/Utils/DiagnosticEngine.h"
 #include "stone/Utils/SrcLoc.h"
 
 namespace stone {
