@@ -128,7 +128,7 @@ public:
 
   /// Clear all warnings and errors.
   virtual void Clear() { numWarnings = numErrors = 0; }
- 
+
   /// Callback to inform the diagnostic client that processing of all
   /// source files has ended.
   virtual void Finish() {}
@@ -140,7 +140,7 @@ public:
   /// The default implementation returns true.
   virtual bool IncludeInDiagnosticCounts() const;
 
-	//TODO: May consider pasing source manager -- or pass Context in Diagnostics  
+  // TODO: May consider pasing source manager -- or pass Context in Diagnostics
   /// Handle this diagnostic, reporting it to the user or
   /// capturing it to a log as needed.
   ///
@@ -148,7 +148,6 @@ public:
   /// warnings and errors.
   virtual void HandleDiagnostics(DiagnosticLevel level,
                                  const Diagnostics &diagnostics);
- 
 };
 
 class FakeDiagnosticListener final : public DiagnosticListener {
@@ -234,6 +233,13 @@ class DiagnosticEngine final {
   // unsigned int maxDiagnosticMessages = 1000;
   llvm::DenseMap<unsigned int, std::unique_ptr<Diagnostics>> entries;
 
+
+
+  /// If valid, provides a hint with some code to insert, remove,
+  /// or modify at a particular position.
+	llvm::SmallVector<FixIt, 8> fixIts;  //TODO: This may have to be on the dagnostics 
+
+
 public:
   explicit DiagnosticEngine(const DiagnosticOptions &diagOpts,
                             DiagnosticListener *listener = nullptr,
@@ -260,6 +266,18 @@ public:
   void Print();
 
   void AddCustomArgument(const CustomDiagnosticArgument *argument);
+
+	/// Issue the message to the client.
+  ///
+  /// This actually returns an instance of InflightDiagnostic which emits the
+  /// diagnostics (through @c ProcessDiag) when it is destroyed.
+  ///
+  /// \param DiagID A member of the @c diag::kind enum.
+  /// \param Loc Represents the source location associated with the diagnostic,
+  /// which can be an invalid location if no position information is available.
+  inline InflightDiagnostic Issue(SrcLoc loc, unsigned diagID);
+  inline InflightDiagnostic Issue(unsigned diagID);
+
 };
 
 class InflightDiagnostic final {
@@ -303,7 +321,73 @@ public:
 
   inline InflightDiagnostic Diagnose(const unsigned diagnosticID,
                                      const unsigned msgID);
+
+protected:
+  void FlushCounts() {}
+
+  /// Clear out the current diagnostic.
+  void Clear() const {}
+
+  /// Determine whether this diagnostic is still active.
+  bool IsActive() const { return isActive; }
+
+  bool Emit() {
+    // If this diagnostic is inactive, then its soul was stolen by the copy ctor
+    // (or by a subclass, as in SemaInflightDiagnostic).
+    if (!IsActive())
+      return false;
+
+    // When emitting diagnostics, we set the final argument count into
+    // the DiagnosticsEngine object.
+    FlushCounts();
+    // Process the diagnostic.
+    // bool result = diagObj->EmitCurrentDiagnostic(IsForceEmit);
+
+    // This diagnostic is dead.
+    Clear();
+    // return Result;
+    return false;
+  }
+
+public:
+  /// Copy constructor.  When copied, this "takes" the diagnostic info from the
+  /// input and neuters it.
+  InflightDiagnostic(const InflightDiagnostic &inflight) {}
+  InflightDiagnostic &operator=(const InflightDiagnostic &) = delete;
+
+  /// Emits the diagnostic.
+  ~InflightDiagnostic() { Emit(); }
 };
+
+/*
+/// Register a value for the flag in the current diagnostic. This
+/// value will be shown as the suffix "=value" after the flag name. It is
+/// useful in cases where the diagnostic flag accepts values (e.g.,
+/// -Rpass or -Wframe-larger-than).
+inline const InflightDiagnostic &operator<<(const InflightDiagnostic &inflight,
+                                           const AddFlagValue V) {
+  inflight.AddFlagValue(V.Val);
+  return inflight;
+}
+
+inline const InflightDiagnostic &operator<<(const InflightDiagnostic &inflight,
+                                           llvm::StringRef data) {
+  inflight.AddString(data);
+  return inflight;
+}
+
+inline const InflightDiagnostic &operator<<(const InflightDiagnostic &inflight,
+                                           const char *Str) {
+  inflight.AddTaggedVal(reinterpret_cast<intptr_t>(Str),
+                  DiagnosticArgumentKind::CStr);
+  return inflight;
+}
+
+inline const InflightDiagnostic &operator<<(const InflightDiagnostic &inflight,
+int data) { inflight.AddTaggedVal(data, DiagnosticArgumentKind::SInt); return
+inflight;
+}
+*/
 
 } // namespace stone
 #endif
