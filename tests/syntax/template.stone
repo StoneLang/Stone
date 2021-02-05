@@ -24,7 +24,7 @@ fun Main() -> u8 {
 	q0.Push(23);
 
 	Particle* p = new Particle();
-	real(string) Queue* q1 = new PriorityQueue(); 
+	use(string) Queue* q1 = new PriorityQueue(); 
 	q1.Push(p);
 
 	//real(int, string) 

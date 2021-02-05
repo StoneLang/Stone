@@ -42,10 +42,76 @@ enum class DiagnosticLevel {
   Fatal
 };
 
-class FixIt final {
+class FixIt {
 public:
-};
+  /// Code that should be replaced to correct the error. Empty for an
+  /// insertion hint.
+  CharSrcRange removeRange;
 
+  /// Code in the specific range that should be inserted in the insertion
+  /// location.
+  CharSrcRange insertFromRange;
+
+  /// The actual code to insert at the insertion location, as a
+  /// string.
+  std::string codeToInsert;
+
+  bool beforePreviousInsertions = false;
+
+  /// Empty code modification hint, indicating that no code
+  /// modification is known.
+  FixIt() = default;
+
+  bool IsNull() const { return !removeRange.isValid(); }
+
+  /// Create a code modification hint that inserts the given
+  /// code string at a specific location.
+  static FixIt CreateInsertion(SrcLoc insertionLoc, StringRef code,
+                               bool beforePreviousInsertions = false) {
+    FixIt fix;
+    fix.removeRange = CharSrcRange::getCharRange(insertionLoc, insertionLoc);
+    fix.codeToInsert = std::string(code);
+    fix.beforePreviousInsertions = beforePreviousInsertions;
+    return fix;
+  }
+
+  /// Create a code modification hint that inserts the given
+  /// code from \p FromRange at a specific location.
+  static FixIt CreateInsertionFromRange(SrcLoc insertionLoc,
+                                        CharSrcRange fromRange,
+                                        bool beforePreviousInsertions = false) {
+    FixIt fix;
+    fix.removeRange = CharSrcRange::getCharRange(insertionLoc, insertionLoc);
+    fix.insertFromRange = fromRange;
+    fix.beforePreviousInsertions = beforePreviousInsertions;
+    return fix;
+  }
+
+  /// Create a code modification hint that removes the given
+  /// source range.
+  static FixIt CreateRemoval(CharSrcRange removeRange) {
+    FixIt fix;
+    fix.removeRange = removeRange;
+    return fix;
+  }
+  static FixIt CreateRemoval(SrcRange removeRange) {
+    return CreateRemoval(CharSrcRange::getTokenRange(removeRange));
+  }
+
+  /// Create a code modification hint that replaces the given
+  /// source range with the given code string.
+  static FixIt CreateReplacement(CharSrcRange removeRange,
+                                 llvm::StringRef code) {
+    FixIt fix;
+    fix.removeRange = removeRange;
+    fix.codeToInsert = std::string(code);
+    return fix;
+  }
+
+  static FixIt CreateReplacement(SrcRange removeRange, llvm::StringRef code) {
+    return CreateReplacement(CharSrcRange::getTokenRange(removeRange), code);
+  }
+};
 class DiagnosticPrinter {};
 
 class DiagnosticListener {
@@ -62,27 +128,7 @@ public:
 
   /// Clear all warnings and errors.
   virtual void Clear() { numWarnings = numErrors = 0; }
-
-  /// Callback to inform the diagnostic client that processing
-  /// of a source file is beginning.
-  ///
-  /// Note that diagnostics may be emitted outside the processing of a source
-  /// file, for example during the parsing of command line options. However,
-  /// diagnostics with source range information are required to only be emitted
-  /// in between BeginSourceFile() and EndSourceFile().
-  ///
-  /// \param LangOpts The language options for the source file being processed.
-  /// \param PP The preprocessor object being used for the source; this is
-  /// optional, e.g., it may not be present when processing AST source files.
-  virtual void BeginSourceFile(const LangOptions &langOpts) {}
-
-  /// Callback to inform the diagnostic client that processing
-  /// of a source file has ended.
-  ///
-  /// The diagnostic client should assume that any objects made available via
-  /// BeginSourceFile() are inaccessible.
-  virtual void EndSourceFile() {}
-
+ 
   /// Callback to inform the diagnostic client that processing of all
   /// source files has ended.
   virtual void Finish() {}
@@ -94,6 +140,7 @@ public:
   /// The default implementation returns true.
   virtual bool IncludeInDiagnosticCounts() const;
 
+	//TODO: May consider pasing source manager -- or pass Context in Diagnostics  
   /// Handle this diagnostic, reporting it to the user or
   /// capturing it to a log as needed.
   ///
@@ -101,6 +148,7 @@ public:
   /// warnings and errors.
   virtual void HandleDiagnostics(DiagnosticLevel level,
                                  const Diagnostics &diagnostics);
+ 
 };
 
 class FakeDiagnosticListener final : public DiagnosticListener {

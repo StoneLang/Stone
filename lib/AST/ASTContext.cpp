@@ -11,7 +11,6 @@
 #include "stone/AST/ASTContext.h"
 #include "stone/Utils/Diagnostics.h"
 
-
 using namespace stone;
 using namespace stone::syn;
 

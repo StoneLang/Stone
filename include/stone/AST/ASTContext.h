@@ -32,7 +32,6 @@
 #include "llvm/Support/Casting.h"
 #include "llvm/Support/Compiler.h"
 
-
 #include "stone/AST/ASTContextAlloc.h"
 #include "stone/AST/Builtin.h"
 #include "stone/AST/Identifier.h"
