@@ -1,5 +1,4 @@
 #include "stone/Compile/Compile.h"
-
 #include "stone/Check/Check.h"
 #include "stone/Compile/Compiler.h"
 #include "stone/Compile/CompilerUnit.h"

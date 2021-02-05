@@ -1,8 +1,8 @@
-#ifndef STONE_GEN_ADDRESS_H
-#define STONE_GEN_ADDRESS_H
+#ifndef STONE_AST_ADDRESS_H
+#define STONE_AST_ADDRESS_H
 
 namespace stone {
-namespace gen {
+namespace syn {
 class Address {};
 } // namespace gen
 } // namespace stone
