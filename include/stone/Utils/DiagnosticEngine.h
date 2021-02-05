@@ -21,13 +21,12 @@
 #include "llvm/Support/Compiler.h"
 #include "llvm/Support/Error.h"
 
-#include "stone/Utils/LangOptions.h"
-#include "stone/Utils/List.h"
-#include "stone/Utils/SrcLoc.h"
 #include "stone/Utils/DiagnosticFixHint.h"
 #include "stone/Utils/DiagnosticListener.h"
 #include "stone/Utils/DiagnosticPrinter.h"
-
+#include "stone/Utils/LangOptions.h"
+#include "stone/Utils/List.h"
+#include "stone/Utils/SrcLoc.h"
 
 namespace stone {
 
@@ -36,8 +35,6 @@ class DiagnosticEngine;
 class InflightDiagnostic;
 
 enum DiagID : uint32_t;
-
-enum MsgID : uint32_t;
 
 enum FixHintID : uint32_t;
 
@@ -108,22 +105,32 @@ public:
 /// the user. Diagnostics is tied to one translation unit and one
 /// SrcMgr.
 class DiagnosticEngine final {
+
+  friend class InFlightDiagnostic;
   /// The
   unsigned int diagnosticSeen = 0;
 
   /// The maximum diagnostic messages per diagnostic
   // unsigned int maxDiagnosticMessages = 1000;
-  llvm::DenseMap<unsigned int, std::unique_ptr<Diagnostics>> entries;
+  llvm::DenseMap<unsigned int, Diagnostics *> diagnostics;
 
+  // TODO: This may have to be on the dagnostics
   /// If valid, provides a hint with some code to insert, remove,
   /// or modify at a particular position.
-  llvm::SmallVector<FixHint, 8>
-      fixHints; // TODO: This may have to be on the dagnostics
+  llvm::SmallVector<FixHint, 8> fixHints;
+
+  /// The diagnostic listeners(s) that will be responsible for actually
+  /// emitting diagnostics.
+  llvm::SmallVector<DiagnosticListener *, 2> listeners;
+
+  /// The diagnostic listeners(s) that will be responsible for actually
+  /// emitting diagnostics.
+  // llvm::SmallVector<CustomDiagnosticArgument *, 2> customArguments;
+
+  const DiagnosticOptions &diagOpts;
 
 public:
-  explicit DiagnosticEngine(const DiagnosticOptions &diagOpts,
-                            DiagnosticListener *listener = nullptr,
-                            bool ownsListener = true);
+  explicit DiagnosticEngine(const DiagnosticOptions &diagOpts);
 
   DiagnosticEngine(const DiagnosticEngine &) = delete;
   DiagnosticEngine &operator=(const DiagnosticEngine &) = delete;
@@ -137,15 +144,19 @@ public:
   // (d2Start = d1End + 1  , d2End = d1End + max)
   // update: use maxMessages from Diagnostic to calculate startMsgID, and
   // endMsgID
-  void Register(std::unique_ptr<Diagnostics> diagnostics);
+  void AddDiagnostic(Diagnostics *diagnostic);
 
-  // void AddDiagnosticListener(std::unique_ptr<DiagnosticListener> diagnostic);
-  //
+  /// Remove a specific DiagnosticConsumer.
+  // void RemoveDiagnostic(Diagnostics *diagnostic) {
+  //    diagnostics.erase(
+  //        std::remove(diagnostics.begin(), Consumers.end(), diagnostic));
+  //}
+
+  void AddListener(DiagnosticListener *listener);
+  void AddArgument(DiagnosticArgument *argument);
+
   bool HasError();
-
   void Print();
-
-  void AddCustomArgument(const CustomDiagnosticArgument *argument);
 
   /// Issue the message to the client.
   ///
@@ -248,13 +259,15 @@ inline const InflightDiagnostic &operator<<(const InflightDiagnostic &inflight,
   inflight.AddFlagValue(V.Val);
   return inflight;
 }
+*/
 
 inline const InflightDiagnostic &operator<<(const InflightDiagnostic &inflight,
-                                           llvm::StringRef data) {
-  inflight.AddString(data);
+                                            llvm::StringRef data) {
+  // inflight.AddString(data);
   return inflight;
 }
 
+/*
 inline const InflightDiagnostic &operator<<(const InflightDiagnostic &inflight,
                                            const char *Str) {
   inflight.AddTaggedVal(reinterpret_cast<intptr_t>(Str),

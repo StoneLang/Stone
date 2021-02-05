@@ -25,7 +25,7 @@ public:
   // (d2Start = d1End + 1  , d2End = d1End + max)
   unsigned int maxMessagesPerDiagnostic = 100;
 
-  enum FormattingStyle { LLVM, stone };
+  enum FormattingStyle { LLVM, Stone };
   // If set to true, use the more descriptive experimental formatting style for
   // diagnostics.
   FormattingStyle textFormattingStyle = FormattingStyle::LLVM;

@@ -75,6 +75,5 @@ public:
   }
 };
 
-}
-#endif 
-
+} // namespace stone
+#endif

@@ -45,6 +45,5 @@ public:
 class FakeDiagnosticListener final : public DiagnosticListener {
 public:
 };
-}
-#endif 
-
+} // namespace stone
+#endif

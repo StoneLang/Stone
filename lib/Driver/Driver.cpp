@@ -225,7 +225,7 @@ Driver::Driver(llvm::StringRef stoneExecutable, std::string driverName)
   GetStatEngine().Register(stats.get());
 
   diagnostics.reset(new DriverDiagnostics());
-  GetDiagEngine().Register(std::move(diagnostics));
+  GetDiagEngine().AddDiagnostic(diagnostics.get());
 }
 
 std::unique_ptr<driver::TaskQueue>
