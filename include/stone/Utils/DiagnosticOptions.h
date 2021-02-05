@@ -5,6 +5,16 @@
 
 namespace stone {
 
+enum class DiagnosticLevel {
+  None,
+  Ignore,
+  Note,
+  Remark,
+  Warning,
+  Error,
+  Fatal
+};
+
 /// Options for controlling diagnostics.
 class DiagnosticOptions final {
 public:

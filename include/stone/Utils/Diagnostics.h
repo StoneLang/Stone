@@ -32,16 +32,6 @@ class Diagnostics;
 class DiagnosticEngine;
 class InflightDiagnostic;
 
-enum class DiagnosticLevel {
-  None,
-  Ignore,
-  Note,
-  Remark,
-  Warning,
-  Error,
-  Fatal
-};
-
 class FixHint {
 public:
   /// Code that should be replaced to correct the error. Empty for an
