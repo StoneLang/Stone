@@ -38,7 +38,7 @@ public:
   ///
   /// The default implementation just keeps track of the total number of
   /// warnings and errors.
-  virtual void OnDiagnostics(DiagnosticLevel level,
+  virtual void OnDiagnostics(diag::Severity severity,
                              const Diagnostics &diagnostics);
 };
 

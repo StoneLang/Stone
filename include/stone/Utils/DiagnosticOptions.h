@@ -4,16 +4,17 @@
 #include "llvm/ADT/Hashing.h"
 
 namespace stone {
-
-enum class DiagnosticLevel {
-  None,
-  Ignore,
-  Note,
-  Remark,
-  Warning,
-  Error,
-  Fatal
+namespace diag {
+enum class Severity {
+  None = 0,
+  Ignore = 1,
+  Note = 2,
+  Remark = 3,
+  Warn = 4,
+  Error = 5,
+  Fatal = 6
 };
+}
 
 /// Options for controlling diagnostics.
 class DiagnosticOptions final {

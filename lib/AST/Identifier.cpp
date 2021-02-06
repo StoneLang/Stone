@@ -1,15 +1,8 @@
-#include "stone/AST/Identifier.h"
-
-#include "stone/Utils/Char.h"
-#include "stone/Utils/LangOptions.h"
-//#include "stone/AST/OperatorKinds.h"
-//#include "stone/AST/Specifiers.h"
 #include <cassert>
 #include <cstdio>
 #include <cstring>
 #include <string>
 
-#include "stone/AST/TokenKind.h"
 #include "llvm/ADT/DenseMapInfo.h"
 #include "llvm/ADT/FoldingSet.h"
 #include "llvm/ADT/SmallString.h"
@@ -18,6 +11,13 @@
 #include "llvm/Support/Allocator.h"
 #include "llvm/Support/ErrorHandling.h"
 #include "llvm/Support/raw_ostream.h"
+
+#include "stone/AST/Identifier.h"
+#include "stone/Utils/Char.h"
+#include "stone/Utils/LangOptions.h"
+#include "stone/Utils/TokenKind.h"
+//#include "stone/AST/OperatorKinds.h"
+//#include "stone/AST/Specifiers.h"
 
 using namespace stone;
 using namespace stone::syn;
@@ -43,7 +43,7 @@ bool Identifier::IsKeyword(const LangOptions &langOpts) const {
 #define KEYWORD(NAME, FLAG)                                                    \
   case tk::kw_##NAME:                                                          \
     return GetKeywordStatus(langOpts, FLAG) == KeywordStatus::On;
-#include "stone/AST/TokenKind.def"
+#include "stone/Utils/TokenKind.def"
   default:
     return false;
   }
@@ -73,7 +73,7 @@ void IdentifierTable::AddKeywords(const LangOptions &LangOpts) {
   // Add keywords and tokens for the current language.
 #define KEYWORD(NAME, FLAG)                                                    \
   AddKeyword(llvm::StringRef(#NAME), tk::kw_##NAME, FLAG, langOpts, *this);
-#include "stone/AST/TokenKind.def"
+#include "stone/Utils/TokenKind.def"
 }
 
 //===----------------------------------------------------------------------===//

@@ -34,8 +34,7 @@ class Diagnostics;
 class DiagnosticEngine;
 class InflightDiagnostic;
 
-enum DiagID : uint32_t;
-
+enum DiagnosticID : uint32_t;
 enum FixHintID : uint32_t;
 
 class Diagnostics {

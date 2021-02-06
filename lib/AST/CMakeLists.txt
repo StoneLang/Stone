@@ -19,7 +19,6 @@ set(stone_ast_sources
 	Module.cpp
 	Stmt.cpp
 	Template.cpp
-	TokenKind.cpp
 	Type.cpp
 	VirtualTable.cpp
 

@@ -1,5 +1,5 @@
-#ifndef STONE_AST_TOKENKINDS_H
-#define STONE_AST_TOKENKINDS_H
+#ifndef STONE_UTILS_TOKENKINDS_H
+#define STONE_UTILS_TOKENKINDS_H
 
 #include "stone/Utils/LLVM.h"
 
@@ -10,7 +10,7 @@ namespace stone {
 
 enum class tk {
 #define TOKEN(X) X,
-#include "stone/AST/TokenKind.def"
+#include "stone/Utils/TokenKind.def"
   MAX
 };
 

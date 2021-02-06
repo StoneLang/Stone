@@ -1,8 +1,8 @@
 #ifndef STONE_PARSE_TOKEN_H
 #define STONE_PARSE_TOKEN_H
 
-#include "stone/AST/TokenKind.h"
 #include "stone/Utils/LLVM.h"
+#include "stone/Utils/TokenKind.h"
 #include "llvm/ADT/StringRef.h"
 
 namespace stone {
@@ -118,7 +118,7 @@ public:
 #define KEYWORD(X, S)                                                          \
   case tk::kw_##X:                                                             \
     return true;
-#include "stone/AST/TokenKind.def"
+#include "stone/Utils/TokenKind.def"
     default:
       return false;
     }
@@ -141,7 +141,7 @@ public:
 #define PUNCTUATOR(Name, Str)                                                  \
   case tk::Name:                                                               \
     return true;
-#include "stone/AST/TokenKind.def"
+#include "stone/Utils/TokenKind.def"
     default:
       return false;
     }

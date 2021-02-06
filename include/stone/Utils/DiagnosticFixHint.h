@@ -3,7 +3,6 @@
 
 #include "stone/Utils/SrcLoc.h"
 namespace stone {
-
 class FixHint final {
 public:
   /// Code that should be replaced to correct the error. Empty for an

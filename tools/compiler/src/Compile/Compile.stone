@@ -4,4 +4,3 @@ public fun Compile(string[] args) -> bool {
 
 	return true; 
 }
-

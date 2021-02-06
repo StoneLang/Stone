@@ -4,5 +4,5 @@
 namespace stone {
 namespace syn {
 class Address {};
-} // namespace gen
+} // namespace syn
 } // namespace stone
