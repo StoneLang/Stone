@@ -39,6 +39,7 @@ public:
   int EmitObject();
   int EmitAssembly();
   int EmitLibrary();
+  /// Emit '.stonemodule'
   int EmitModuleOnly();
   int EmitBitCode();
 };
@@ -93,27 +94,25 @@ int Compiler::Implementation::EmitLibrary() { return ret::ok; }
 int Compiler::Implementation::EmitBitCode() { return ret::ok; }
 
 int Compiler::Run(Compiler &compiler) {
-  auto implementation = llvm::make_unique<Compiler::Implementation>(compiler);
-  implementation->Build();
-
+  auto impl = llvm::make_unique<Compiler::Implementation>(compiler);
+  impl->Build();
   switch (compiler.GetMode().GetKind()) {
   case ModeKind::Parse:
-    return implementation->Parse();
+    return impl->Parse();
   case ModeKind::Check:
-    return implementation->Check();
+    return impl->Check();
   case ModeKind::EmitIR:
-    return implementation->EmitIR();
+    return impl->EmitIR();
   case ModeKind::EmitObject:
-    return implementation->EmitObject();
+    return impl->EmitObject();
   case ModeKind::EmitModuleOnly:
-    return implementation->EmitModuleOnly();
+    return impl->EmitModuleOnly();
   case ModeKind::EmitBC:
-    return implementation->EmitBitCode();
+    return impl->EmitBitCode();
   case ModeKind::EmitLibrary:
-    return implementation->EmitLibrary();
-
+    return impl->EmitLibrary();
   default:
-    break;
+    llvm_unreachable("Invalide compiler mode.");
   }
   return ret::ok;
 }

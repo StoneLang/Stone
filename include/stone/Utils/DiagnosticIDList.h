@@ -7,11 +7,11 @@ namespace stone {
 namespace diag {
 
 class DiagnosticIDList final {
-	public:
-		diag::Severity severity; 
+public:
+  diag::Severity severity;
 };
-}
+} // namespace diag
 } // namespace stone
 #endif
 
-
+class

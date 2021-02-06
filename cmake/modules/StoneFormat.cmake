@@ -28,13 +28,11 @@ set(stone_lib_files
 )
 set(stone_tools_files
 	${STONE_SOURCE_DIR}/tools/stone/*.cpp
+	${STONE_SOURCE_DIR}/tools/try/*.cpp
 )
 
-set(stone_def_files
-	${STONE_SOURCE_DIR}/include/stone/*.def
-)
-	find_program(CLANG_FORMAT clang-format)
-if(CLANG_FORMAT)
+find_program(CLANG_FORMAT clang-format)
+	if(CLANG_FORMAT)
 	add_custom_target(
 		stone-fmt
 		clang-format
@@ -42,9 +40,6 @@ if(CLANG_FORMAT)
 		-style=llvm
 		${stone_lib_files}
 		${stone_include_files}
-		${stone_def_files}
 		${stone_tools_files}
-
-
 	)
 endif()

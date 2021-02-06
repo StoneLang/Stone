@@ -106,6 +106,7 @@ Job *JobBuilder::BuildJobForStaticLinking(Driver &driver) {
 Job *JobBuilder::BuildJobForDynamicLinking(Driver &driver) {
   auto tool = driver.GetToolChain().PickTool(JobType::DynamicLink);
   assert(tool && "Could not find a tool for dynamic linking.");
+
   // result = driver.GetCompilation().CreateJob<DynamicLinkJob>(
   //    driver.GetCompilation(), driver.GetOutputProfile().RequiresLTO(),
   //    driver.GetOutputProfile().linkType);
