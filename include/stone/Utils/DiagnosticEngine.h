@@ -230,7 +230,7 @@ protected:
     // the DiagnosticsEngine object.
     FlushCounts();
     // Process the diagnostic.
-    // bool result = diagObj->EmitCurrentDiagnostic(IsForceEmit);
+    // bool result = de->EmitCurrentDiagnostic(IsForceEmit);
 
     // This diagnostic is dead.
     Clear();
