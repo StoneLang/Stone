@@ -2,5 +2,23 @@
 #include "DefineDiagnostic.h"
 
 
+
+// LEXER
+
+WARNING(warn_nul_character,none,
+        "nul character embedded in middle of file", ())
+
+// PARSER  
+NOTE(note_opening_brace,none,
+     "to match this opening '{'", ())
+NOTE(note_opening_bracket,none,
+     "to match this opening '['", ())
+NOTE(note_opening_paren,none,
+     "to match this opening '('", ())
+NOTE(note_opening_angle,none,
+     "to match this opening '<'", ())
+
+// CHECKER 
+
 #define UNDEFINE_DIAGNOSTIC_MACROS
 #include "DefineDiagnostic.h"

@@ -1,6 +1,11 @@
 #define DEFINE_DIAGNOSTIC_MACROS
 #include "DefineDiagnostic.h"
 
+ERROR(erro_no_llvm_target,none,
+      "error loading LLVM target for triple '%0': %1", (StringRef, StringRef))
+
+ERROR(error_codegen_init_fail,none,
+      "cannot initialize code generation passes for target", ())
 
 #define UNDEFINE_DIAGNOSTIC_MACROS
 #include "DefineDiagnostic.h"

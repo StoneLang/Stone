@@ -1,6 +1,8 @@
 #define DEFINE_DIAGNOSTIC_MACROS
 #include "DefineDiagnostic.h"
 
+ERROR(error_no_compile_args, none,
+      "no arguments provided to '-compile'", ())
 
 #define UNDEFINE_DIAGNOSTIC_MACROS
 #include "DefineDiagnostic.h"
