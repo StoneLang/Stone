@@ -52,8 +52,8 @@ public fun Fire(Particle* particle) -> bool {
 }
 
 // Main
-using System.Core;
-using System.Physics; 
+use Stone.Core;
+use Stone.Physics; 
 
 fun Main() -> int {	
 	Particle* particle = new Particle();
@@ -62,3 +62,21 @@ fun Main() -> int {
 
 	return 0; 
 }
+
+
+// Update
+
+// File Math.stone
+
+
+space Stone.Math {
+	
+	public fun Cos() -> {
+	}
+	public fun Sine() -> {
+	}
+}
+
+/// Creates Stone.Math.stonemodule  
+use Stone.Math;  
+

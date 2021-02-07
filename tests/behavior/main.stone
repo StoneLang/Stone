@@ -1,0 +1,5 @@
+
+public fun Main(string[] args) -> int {
+	return 0; 
+}
+

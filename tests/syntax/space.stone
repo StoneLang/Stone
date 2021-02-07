@@ -1,10 +1,16 @@
 
-// Accelerator.stone 
+// File CM.stone
+space System.Physics.CM; 
+
+public fun Fire(Projectile* projectile) -> bool {
+	return true; 
+}
+
+
+// QM.stone 
 // Every file belongs to one space which is different from a module -- 
 // The module this file belongs to is System.Physics; 
 space System.Physics.QM; 
-using System.Core; // This is a module  
-
 
 public struct Particle {
 

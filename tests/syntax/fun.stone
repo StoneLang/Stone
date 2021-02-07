@@ -13,7 +13,7 @@ public fun F2() -> void {
 }
 
 
-temp(T) fun Max(T* first, T* second) -> T* {
+any(T) fun Max(T* first, T* second) -> T* {
 
 	if(first > second) {
 		return first;
@@ -22,7 +22,7 @@ temp(T) fun Max(T* first, T* second) -> T* {
 }
 fun Main() -> int {
 
-	auto result = real(int) Max(25, 26); 
+	auto result = use(int) Max(25, 26); 
 }
 
 

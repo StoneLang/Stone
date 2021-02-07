@@ -14,26 +14,26 @@ class C0 :  CI {
 	public System* system = null;  
 }
 
-C0::new(Options* options, Context* context) {
+C0::init(Options* options, Context* context) {
 
 	this.options = options;
 	this.context = context; 
 	this.system = new System(); 
 }
-C0::defer(){ 
+C0::end(){ 
 	free system;
 	free options; 
 }
 
 
 // Leaning this way
-init fun C0::Init(const Options* options, Context* context) {
+init public fun C0::Init(const Options* options, Context* context) {
 	me.options = options;
 	me.context = context; 
 	me.system = new System(); 
 }
 [test]
-defer fun C0::Defer() { 
+end public fun C0::End() { 
 	free {
 		system;
 		options;
@@ -42,8 +42,9 @@ defer fun C0::Defer() {
 
 
 
-module Physics; 
-space Physics.Physics {
+module Physics;
+
+space Physics.QM {
 	interface Accelerator<T> {
 			Fire(const T* particle != null) -> bool;
 	}
@@ -53,10 +54,8 @@ space Physics.Physics {
 	}
 
 	init fun LinearAccelerator::Init() {
-
 	}
-
-	defer fun LinearAccelerator::Defer() {
+	end fun LinearAccelerator::End() {
 
 	}
 
@@ -100,7 +99,7 @@ space Physics {
 	}
 	init public fun LinearAccelerator::Init() {
 	}
-	defer public fun LinearAccelerator::Defer() {
+	end public fun LinearAccelerator::End() {
 	}
 	public fun LinearAccelerator::Fire(const P* particle) -> bool {
 		return true; 
@@ -111,6 +110,7 @@ space Physics {
 	}
 
 	public struct Electron : Particle {
+	 
 	}
 
 	any(P) interface Accelerator {
@@ -121,20 +121,31 @@ space Physics {
 		public string name = "some name";  
 	}
 
+	init private fun LinearAccelerator::Int(int i) {
+
+	}
 	init public fun LinearAccelerator::Init() {
+		Init(10); 
 	}
 
-	defer public fun LinearAccelerator::Defer() {
+	end public fun LinearAccelerator::End() {
 	}
 
 	public fun LinearAccelerator::Fire(const P* particle) -> bool {
 		return true; 
 	}
 	
-  with(Electron) auto a = new LinearAccelerator();
-  auto e = new Electron(); 
+  use(Electron) auto a = new LinearAccelerator();
+  auto e = new Electron();
+	
   a.Fire(electron);
 }
+
+public fun Pass(use(int) Queue q) -> {
+
+}
+
+
 fun Main() -> int {
 
 	use(LinearAccelerator) 

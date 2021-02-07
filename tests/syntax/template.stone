@@ -44,6 +44,8 @@ any(T) fun Max(T* first, T* second) -> T {
 	}
 	return second;
 }
-auto max = use(i32) Max(23, 25); 
+auto max = use(i32) Max(23, 25);
+
+
 
 

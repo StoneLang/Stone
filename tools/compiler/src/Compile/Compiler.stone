@@ -1,3 +1,11 @@
 
 public struct Compiler {
-}	
+}
+
+init public fun Compiler::Init() {
+}
+
+
+end public fun Compiler::End() {
+
+}
