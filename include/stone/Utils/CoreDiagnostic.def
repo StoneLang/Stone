@@ -1,0 +1,8 @@
+#define DEFINE_DIAGNOSTIC_MACROS
+#include "DefineDiagnostic.h"
+
+ERROR(invalid_diagnostic,none,
+      "INTERNAL ERROR: this diagnostic should not be produced", ())
+
+#define UNDEFINE_DIAGNOSTIC_MACROS
+#include "DefineDiagnostic.h"

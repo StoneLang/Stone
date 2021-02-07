@@ -1,0 +1,10 @@
+
+
+public fun Max(ref int first, ref int second) -> ref int {
+
+	if(first < second){
+		return first; 
+	}
+	return second; 
+
+}

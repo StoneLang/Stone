@@ -48,7 +48,7 @@ space Physics.Physics {
 			Fire(const T* particle != null) -> bool;
 	}
 
-	class LinearAccelerator : Accelerator<LinearAccelerator> {
+	struct LinearAccelerator : Accelerator<LinearAccelerator> {
 		public string name = "some name";  
 	}
 
@@ -86,23 +86,61 @@ space Physics.Physics {
 
 
 space Physics {
-	temp(T) interface Accelerator {
-			fun Fire(const Particle* particle) -> bool;
+
+	public interface Particle {
 	}
-	class LinearAccelerator : real(LinearAccelerator) Accelerator {
+	public struct Electron : Particle {
+	}
+
+	any(A) interface Accelerator {
+			any(P:Particle) fun Fire(const P* particle) -> bool;
+	}
+	public struct LinearAccelerator : use(LinearAccelerator) Accelerator {
 		public string name = "some name";  
 	}
 	init public fun LinearAccelerator::Init() {
 	}
 	defer public fun LinearAccelerator::Defer() {
 	}
-	public fun LinearAccelerator::Fire(const Particle* particle) -> bool {
+	public fun LinearAccelerator::Fire(const P* particle) -> bool {
 		return true; 
 	}
+
+	//OR 
+	public interface Particle {
+	}
+
+	public struct Electron : Particle {
+	}
+
+	any(P) interface Accelerator {
+		fun Fire(const P* particle) -> bool;
+	}
+
+	public any(P) struct LinearAccelerator : any(P) Accelerator {
+		public string name = "some name";  
+	}
+
+	init public fun LinearAccelerator::Init() {
+	}
+
+	defer public fun LinearAccelerator::Defer() {
+	}
+
+	public fun LinearAccelerator::Fire(const P* particle) -> bool {
+		return true; 
+	}
+	
+  with(Electron) auto a = new LinearAccelerator();
+  auto e = new Electron(); 
+  a.Fire(electron);
 }
 fun Main() -> int {
-	real(LinearAccelerator) Accelerator* a = new LinearAccelerator();
-	Particle* p = new Particle();
+
+	use(LinearAccelerator) 
+		Accelerator* a = new LinearAccelerator();
+
+	Particle* p = new Electron();
 	a.Fire(p); 
 
 	free p; 

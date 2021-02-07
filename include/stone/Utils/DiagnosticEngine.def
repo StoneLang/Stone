@@ -1,0 +1,15 @@
+#define DEFINE_DIAGNOSTIC_MACROS
+#include "DefineDiagnostic.h"
+
+#define DIAG_NO_UNDEF
+
+#include "CoreDiagnostic.def"
+#include "CodeGenDiagnostic.def"
+#include "CompileDiagnostic.def"
+#include "DriverDiagnostic.def"
+#include "SynDiagnostic.def"
+
+#undef DIAG_NO_UNDEF
+
+#define UNDEFINE_DIAGNOSTIC_MACROS
+#include "DefineDiagnostic.h"
