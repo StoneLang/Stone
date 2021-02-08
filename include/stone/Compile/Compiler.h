@@ -1,9 +1,9 @@
 #ifndef STONE_COMPILE_COMPILER_H
 #define STONE_COMPILE_COMPILER_H
 
-#include "stone/AST/ASTContext.h"
-#include "stone/AST/Module.h"
-#include "stone/AST/SearchPathOptions.h"
+#include "stone/Syntax/ASTContext.h"
+#include "stone/Syntax/Module.h"
+#include "stone/Syntax/SearchPathOptions.h"
 #include "stone/Compile/CompilerAlloc.h"
 #include "stone/Compile/CompilerOptions.h"
 #include "stone/Session/Session.h"

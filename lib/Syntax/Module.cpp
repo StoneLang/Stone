@@ -1,4 +1,4 @@
-#include "stone/AST/Module.h"
+#include "stone/Syntax/Module.h"
 
 #include "llvm/ADT/DenseMap.h"
 #include "llvm/ADT/DenseSet.h"

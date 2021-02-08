@@ -1,7 +1,7 @@
 #ifndef STONE_AST_SPECIFIER_H
 #define STONE_AST_SPECIFIER_H
 
-#include "stone/AST/Decl.h"
+#include "stone/Syntax/Decl.h"
 
 namespace stone {
 namespace syn {

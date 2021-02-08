@@ -3,8 +3,8 @@
 
 #include <memory>
 
-#include "stone/AST/ASTContext.h"
-#include "stone/AST/Module.h"
+#include "stone/Syntax/ASTContext.h"
+#include "stone/Syntax/Module.h"
 #include "stone/Check/CheckerDiagnostics.h"
 #include "stone/Utils/Context.h"
 #include "stone/Utils/Stats.h"

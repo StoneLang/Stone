@@ -1,7 +1,7 @@
 #ifndef STONE_GEN_BACKEND_H
 #define STONE_GEN_BACKEND_H
 
-#include "stone/AST/ASTContext.h"
+#include "stone/Syntax/ASTContext.h"
 #include "stone/Utils/LLVM.h"
 #include "llvm/Target/TargetMachine.h"
 

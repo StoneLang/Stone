@@ -1,4 +1,4 @@
-#include "stone/AST/Builtin.h"
+#include "stone/Syntax/Builtin.h"
 
 using namespace stone;
 using namespace stone::syn;

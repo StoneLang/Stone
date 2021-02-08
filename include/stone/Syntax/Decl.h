@@ -19,12 +19,12 @@
 #include "llvm/Support/PrettyStackTrace.h"
 #include "llvm/Support/VersionTuple.h"
 
-#include "stone/AST/ASTDiagnostics.h"
-#include "stone/AST/ASTNode.h"
-#include "stone/AST/DeclBits.h"
-#include "stone/AST/DeclKind.h"
-#include "stone/AST/DeclName.h"
-#include "stone/AST/Identifier.h"
+#include "stone/Syntax/ASTDiagnostics.h"
+#include "stone/Syntax/ASTNode.h"
+#include "stone/Syntax/DeclBits.h"
+#include "stone/Syntax/DeclKind.h"
+#include "stone/Syntax/DeclName.h"
+#include "stone/Syntax/Identifier.h"
 #include "stone/Utils/LLVM.h"
 #include "stone/Utils/SrcLoc.h"
 

@@ -17,7 +17,7 @@ set(stone_gen_sources
 	CodeGenFunction.cpp
 
 	LINK_LIBS
-	StoneAST
+	StoneSyntax
 )
 add_stone_library(StoneGen
 	${stone_gen_sources}

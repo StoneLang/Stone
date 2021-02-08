@@ -9,8 +9,8 @@
 #include <type_traits>
 #include <utility>
 
-#include "stone/AST/ASTNode.h"
-#include "stone/AST/StmtKind.h"
+#include "stone/Syntax/ASTNode.h"
+#include "stone/Syntax/StmtKind.h"
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/PointerIntPair.h"
 #include "llvm/ADT/PointerUnion.h"

@@ -1,7 +1,7 @@
 #ifndef STONE_AST_COMMENT_H
 #define STONE_AST_COMMENT_H
 
-#include "stone/AST/Identifier.h"
+#include "stone/Syntax/Identifier.h"
 
 namespace stone {
 namespace syn {

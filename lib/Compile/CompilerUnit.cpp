@@ -1,6 +1,6 @@
 #include "stone/Compile/CompilerUnit.h"
 
-#include "stone/AST/Module.h"
+#include "stone/Syntax/Module.h"
 
 using namespace stone;
 using namespace stone::syn;

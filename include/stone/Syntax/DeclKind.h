@@ -8,7 +8,7 @@ enum Kind {
 #define LAST_DECL(Id) LastDecl = Id,
 #define DECL_RANGE(Id, FirstId, LastId)                                        \
   First##Id##Decl = FirstId, Last##Id##Decl = LastId,
-#include "stone/AST/DeclKind.def"
+#include "stone/Syntax/DeclKind.def"
 };
 } // namespace decl
 } // namespace stone

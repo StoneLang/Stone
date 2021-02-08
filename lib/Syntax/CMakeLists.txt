@@ -4,7 +4,7 @@ set(LLVM_LINK_COMPONENTS
   Support
   )
 
-set(stone_ast_sources
+set(stone_syn_sources
 	ASTContext.cpp
 	ASTDiagnostics.cpp
 	ASTListener.cpp
@@ -25,8 +25,8 @@ set(stone_ast_sources
 	LINK_LIBS
 	StoneUtils
 )
-add_stone_library(StoneAST
-	${stone_ast_sources}
+add_stone_library(StoneSyntax
+	${stone_syn_sources}
 )
 
 

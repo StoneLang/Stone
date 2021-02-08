@@ -9,8 +9,8 @@
 #include <type_traits>
 #include <utility>
 
-#include "stone/AST/ExprKind.h"
-#include "stone/AST/Stmt.h"
+#include "stone/Syntax/ExprKind.h"
+#include "stone/Syntax/Stmt.h"
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/PointerIntPair.h"
 #include "llvm/ADT/PointerUnion.h"

@@ -1,6 +1,6 @@
 #ifndef STONE_AST_DECLNAME_H
 #define STONE_AST_DECLNAME_H
-#include "stone/AST/Identifier.h"
+#include "stone/Syntax/Identifier.h"
 namespace stone {
 namespace syn {
 

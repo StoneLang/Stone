@@ -32,12 +32,12 @@
 #include "llvm/Support/Casting.h"
 #include "llvm/Support/Compiler.h"
 
-#include "stone/AST/ASTContextAlloc.h"
-#include "stone/AST/Builtin.h"
-#include "stone/AST/Identifier.h"
-#include "stone/AST/LangABI.h"
-#include "stone/AST/SearchPathOptions.h"
-#include "stone/AST/Type.h"
+#include "stone/Syntax/ASTContextAlloc.h"
+#include "stone/Syntax/Builtin.h"
+#include "stone/Syntax/Identifier.h"
+#include "stone/Syntax/LangABI.h"
+#include "stone/Syntax/SearchPathOptions.h"
+#include "stone/Syntax/Type.h"
 #include "stone/Utils/Context.h"
 #include "stone/Utils/LangOptions.h"
 #include "stone/Utils/SrcMgr.h"
@@ -138,7 +138,7 @@ public:
 /// This placement form of operator new uses the ASTContext's allocator for
 /// obtaining memory.
 ///
-/// IMPORTANT: These are also declared in stone/AST/ASTContextAllocate.h!
+/// IMPORTANT: These are also declared in stone/Syntax/ASTContextAllocate.h!
 /// Any changes here need to also be made there.
 ///
 /// We intentionally avoid using a nothrow specification here so that the calls

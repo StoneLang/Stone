@@ -12,12 +12,12 @@
 #include "llvm/Support/ErrorHandling.h"
 #include "llvm/Support/raw_ostream.h"
 
-#include "stone/AST/Identifier.h"
+#include "stone/Syntax/Identifier.h"
 #include "stone/Utils/Char.h"
 #include "stone/Utils/LangOptions.h"
 #include "stone/Utils/TokenKind.h"
-//#include "stone/AST/OperatorKinds.h"
-//#include "stone/AST/Specifiers.h"
+//#include "stone/Syntax/OperatorKinds.h"
+//#include "stone/Syntax/Specifiers.h"
 
 using namespace stone;
 using namespace stone::syn;

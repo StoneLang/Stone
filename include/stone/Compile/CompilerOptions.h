@@ -1,7 +1,7 @@
 #ifndef STONE_COMPILE_COMPILEOPTIONS_H
 #define STONE_COMPILE_COMPILEOPTIONS_H
 
-#include "stone/AST/SearchPathOptions.h"
+#include "stone/Syntax/SearchPathOptions.h"
 #include "stone/Gen/CodeGenOptions.h"
 #include "stone/Session/SessionOptions.h"
 #include "stone/Utils/FileSystemOptions.h"

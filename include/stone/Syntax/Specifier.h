@@ -1,10 +1,10 @@
 #ifndef STONE_AST_SPECIFIER_H
 #define STONE_AST_SPECIFIER_H
 
-#include "stone/AST/ASTContext.h"
-#include "stone/AST/ASTScope.h"
-#include "stone/AST/Decl.h"
-#include "stone/AST/Identifier.h"
+#include "stone/Syntax/ASTContext.h"
+#include "stone/Syntax/ASTScope.h"
+#include "stone/Syntax/Decl.h"
+#include "stone/Syntax/Identifier.h"
 #include "stone/Utils/LLVM.h"
 #include "llvm/ADT/SmallVector.h"
 

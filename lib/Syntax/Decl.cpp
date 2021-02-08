@@ -1,9 +1,9 @@
-#include "stone/AST/Decl.h"
+#include "stone/Syntax/Decl.h"
 
-#include "stone/AST/ASTContext.h"
-#include "stone/AST/Decl.h"
-//#include "stone/AST/DeclContextInternals.h"
-// TODO: #include "stone/AST/Friend.h"
+#include "stone/Syntax/ASTContext.h"
+#include "stone/Syntax/Decl.h"
+//#include "stone/Syntax/DeclContextInternals.h"
+// TODO: #include "stone/Syntax/Friend.h"
 #include <algorithm>
 #include <cassert>
 #include <cstddef>
@@ -11,11 +11,11 @@
 #include <tuple>
 #include <utility>
 
-#include "stone/AST/Identifier.h"
-#include "stone/AST/Module.h"
-#include "stone/AST/Stmt.h"
-#include "stone/AST/Template.h" //DeclTemplate
-#include "stone/AST/Type.h"
+#include "stone/Syntax/Identifier.h"
+#include "stone/Syntax/Module.h"
+#include "stone/Syntax/Stmt.h"
+#include "stone/Syntax/Template.h" //DeclTemplate
+#include "stone/Syntax/Type.h"
 #include "stone/Utils/LLVM.h"
 #include "stone/Utils/LangOptions.h"
 #include "stone/Utils/SrcLoc.h"

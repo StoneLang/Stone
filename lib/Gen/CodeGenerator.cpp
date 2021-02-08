@@ -1,6 +1,6 @@
 #include "stone/Gen/CodeGenerator.h"
 
-#include "stone/AST/Module.h"
+#include "stone/Syntax/Module.h"
 #include "stone/Public.h"
 #include "stone/Utils/Ret.h"
 #include "llvm/IR/Module.h"

@@ -1,7 +1,7 @@
 #ifndef STONE_COMPILE_COMPILERUNIT_H
 #define STONE_COMPILE_COMPILERUNIT_H
 
-#include "stone/AST/SearchPathOptions.h"
+#include "stone/Syntax/SearchPathOptions.h"
 #include "stone/Compile/Compiler.h"
 #include "stone/Gen/CodeGenOptions.h"
 #include "stone/Session/FileType.h"
