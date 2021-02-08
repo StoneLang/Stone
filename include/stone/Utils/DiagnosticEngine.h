@@ -31,7 +31,7 @@ namespace stone {
 
 class Diagnostics;
 class DiagnosticEngine;
-class Inflight;
+class InflightDiagnostic;
 
 class Diagnostics {
   friend DiagnosticEngine;
@@ -254,17 +254,17 @@ public:
 
   /// Issue the message to the client.
   ///
-  /// This actually returns an instance of Inflight which emits the
+  /// This actually returns an instance of InflightDiagnostic which emits the
   /// diagnostics (through @c ProcessDiag) when it is destroyed.
   ///
   /// \param DiagID A member of the @c diag::kind enum.
   /// \param Loc Represents the source location associated with the diagnostic,
   /// which can be an invalid location if no position information is available.
-  inline Inflight Issue(SrcLoc loc, unsigned diagID);
-  inline Inflight Issue(unsigned diagID);
+  inline InflightDiagnostic Issue(SrcLoc loc, unsigned diagID);
+  inline InflightDiagnostic Issue(unsigned diagID);
 };
 
-class Inflight final {
+class InflightDiagnostic final {
   friend class DiagnosticEngine;
   // friend class PartialDiagnostic;
 
@@ -282,10 +282,10 @@ class Inflight final {
   /// call to ForceEmit.
   mutable bool isForceEmit = false;
 
-  Inflight() = default;
+  InflightDiagnostic() = default;
 
-  explicit Inflight(DiagnosticEngine *de) : de(de), isActive(true) {
-    assert(de && "Inflight requires a valid DiagnosticsEngine!");
+  explicit InflightDiagnostic(DiagnosticEngine *de) : de(de), isActive(true) {
+    assert(de && "InflightDiagnostic requires a valid DiagnosticsEngine!");
 
     // diagnostics->diagnosticRanges.clear();
     // diagnostics->diagnosticFixHints.clear();
@@ -294,16 +294,17 @@ class Inflight final {
 public:
   /// Issue the message to the client.
   ///
-  /// This actually returns an instance of Inflight which emits the
+  /// This actually returns an instance of InflightDiagnostic which emits the
   /// diagnostics (through @c ProcessDiag) when it is destroyed.
   ///
   /// \param DiagID A member of the @c diag::kind enum.
   /// \param Loc Represents the source location associated with the diagnostic,
   /// which can be an invalid location if no position information is available.
-  inline Inflight Diagnose(const SrcLoc loc, const unsigned diagnosticID,
-                           const unsigned msgID);
+  inline InflightDiagnostic
+  Diagnose(const SrcLoc loc, const unsigned diagnosticID, const unsigned msgID);
 
-  inline Inflight Diagnose(const unsigned diagnosticID, const unsigned msgID);
+  inline InflightDiagnostic Diagnose(const unsigned diagnosticID,
+                                     const unsigned msgID);
 
 protected:
   void FlushCounts() {}
@@ -316,7 +317,7 @@ protected:
 
   bool Emit() {
     // If this diagnostic is inactive, then its soul was stolen by the copy ctor
-    // (or by a subclass, as in SemaInflight).
+    // (or by a subclass, as in SemaInflightDiagnostic).
     if (!IsActive())
       return false;
 
@@ -335,11 +336,11 @@ protected:
 public:
   /// Copy constructor.  When copied, this "takes" the diagnostic info from the
   /// input and neuters it.
-  Inflight(const Inflight &inflight) {}
-  Inflight &operator=(const Inflight &) = delete;
+  InflightDiagnostic(const InflightDiagnostic &inflight) {}
+  InflightDiagnostic &operator=(const InflightDiagnostic &) = delete;
 
   /// Emits the diagnostic.
-  ~Inflight() { Emit(); }
+  ~InflightDiagnostic() { Emit(); }
 };
 
 /*
@@ -347,28 +348,28 @@ public:
 /// value will be shown as the suffix "=value" after the flag name. It is
 /// useful in cases where the diagnostic flag accepts values (e.g.,
 /// -Rpass or -Wframe-larger-than).
-inline const Inflight &operator<<(const Inflight &inflight,
+inline const InflightDiagnostic &operator<<(const InflightDiagnostic &inflight,
                                            const AddFlagValue V) {
   inflight.AddFlagValue(V.Val);
   return inflight;
 }
 */
 
-inline const Inflight &operator<<(const Inflight &inflight,
-                                  llvm::StringRef data) {
+inline const InflightDiagnostic &operator<<(const InflightDiagnostic &inflight,
+                                            llvm::StringRef data) {
   // inflight.AddString(data);
   return inflight;
 }
 
 /*
-inline const Inflight &operator<<(const Inflight &inflight,
+inline const InflightDiagnostic &operator<<(const InflightDiagnostic &inflight,
                                            const char *Str) {
   inflight.AddTaggedVal(reinterpret_cast<intptr_t>(Str),
                   DiagnosticArgumentKind::CStr);
   return inflight;
 }
 
-inline const Inflight &operator<<(const Inflight &inflight,
+inline const InflightDiagnostic &operator<<(const InflightDiagnostic &inflight,
 int data) { inflight.AddTaggedVal(data, DiagnosticArgumentKind::SInt); return
 inflight;
 }
