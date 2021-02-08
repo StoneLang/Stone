@@ -5,12 +5,11 @@ set(LLVM_LINK_COMPONENTS
   )
 
 set(stone_syn_sources
-	ASTContext.cpp
-	ASTDiagnostics.cpp
-	ASTListener.cpp
-	ASTScope.cpp
-	ASTVisitor.cpp
-	ASTWalker.cpp
+	TreeContext.cpp
+	TreeListener.cpp
+	TreeScope.cpp
+	TreeVisitor.cpp
+	TreeWalker.cpp
 	Builtin.cpp
 	Comment.cpp
 	Decl.cpp

@@ -1,7 +1,7 @@
 #ifndef STONE_COMPILE_COMPILER_H
 #define STONE_COMPILE_COMPILER_H
 
-#include "stone/Syntax/ASTContext.h"
+#include "stone/Syntax/TreeContext.h"
 #include "stone/Syntax/Module.h"
 #include "stone/Syntax/SearchPathOptions.h"
 #include "stone/Compile/CompilerAlloc.h"
@@ -31,7 +31,7 @@ class Compiler final : public Session {
   FileMgr fm;
   Pipeline *pipeline = nullptr;
   mutable Module *mainModule = nullptr;
-  std::unique_ptr<ASTContext> ac;
+  std::unique_ptr<TreeContext> ac;
 
   friend CompilerStats;
   std::unique_ptr<CompilerStats> stats;
@@ -83,7 +83,7 @@ public:
 
   SrcMgr &GetSrcMgr() { return sm; }
 
-  ASTContext &GetASTContext() { return *ac.get(); }
+  TreeContext &GetTreeContext() { return *ac.get(); }
   // stone::syn::Module &GetModule() { return *md.get(); }
   //
   /// Retrieve the main module containing the files being compiled.

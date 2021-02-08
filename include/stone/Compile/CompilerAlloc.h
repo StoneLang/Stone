@@ -7,7 +7,7 @@ namespace stone {
 class Compiler;
 } // namespace stone
 
-// Defined in ASTContext.h
+// Defined in TreeContext.h
 void *operator new(size_t bytes, const stone::Compiler &compiler,
                    size_t alignment = 8);
 void *operator new[](size_t bytes, const stone::Compiler &compiler,

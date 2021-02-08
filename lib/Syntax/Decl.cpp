@@ -1,6 +1,6 @@
 #include "stone/Syntax/Decl.h"
 
-#include "stone/Syntax/ASTContext.h"
+#include "stone/Syntax/TreeContext.h"
 #include "stone/Syntax/Decl.h"
 //#include "stone/Syntax/DeclContextInternals.h"
 // TODO: #include "stone/Syntax/Friend.h"
@@ -33,7 +33,7 @@
 using namespace stone;
 using namespace stone::syn;
 
-void *Decl::operator new(std::size_t size, const ASTContext &astCtx,
+void *Decl::operator new(std::size_t size, const TreeContext &astCtx,
                          unsigned globalDeclID, std::size_t extra) {
   // Allocate an extra 8 bytes worth of storage, which ensures that the
   // resulting pointer will still be 8-byte aligned.
@@ -53,10 +53,10 @@ void *Decl::operator new(std::size_t size, const ASTContext &astCtx,
   return result;
 }
 
-void *Decl::operator new(std::size_t size, const ASTContext &astCtx,
+void *Decl::operator new(std::size_t size, const TreeContext &astCtx,
                          DeclContext *parentDeclContext, std::size_t extra) {
   /*TODO:
-    assert(!parent || &parent->GetParentASTContext() == &astCtx);
+    assert(!parent || &parent->GetParentTreeContext() == &astCtx);
     // With local visibility enabled, we track the owning module even for local
     // declarations. We create the TU decl early and may not yet know what the
     // LangOpts are, so conservatively allocate the storage.
@@ -84,7 +84,7 @@ void *Decl::operator new(std::size_t size, const ASTContext &astCtx,
 
 // stone::Module *Decl::GetOwningModule() const {
 //  assert(IsFromASTFile() && "Not from AST file?");
-//  return GetASTContext().GetExternalSource()->GetModule(GetOwningModuleID());
+//  return GetTreeContext().GetExternalSource()->GetModule(GetOwningModuleID());
 //}
 //
 //

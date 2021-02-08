@@ -1,8 +1,8 @@
 #ifndef STONE_SYNTAX_MODULE_H
 #define STONE_SYNTAX_MODULE_H
 
-#include "stone/Syntax/ASTContext.h"
-#include "stone/Syntax/ASTScope.h"
+#include "stone/Syntax/TreeContext.h"
+#include "stone/Syntax/TreeScope.h"
 #include "stone/Syntax/Decl.h"
 #include "stone/Syntax/Identifier.h"
 #include "stone/Utils/LLVM.h"
@@ -30,9 +30,9 @@ public:
 
 class SourceUnit final : public ModuleUnit {
 private:
-  friend ASTContext;
+  friend TreeContext;
   bool isMain;
-  // llvm::NullablePtr<ASTScope> scope = nullptr;
+  // llvm::NullablePtr<TreeScope> scope = nullptr;
 
 public:
   enum class Kind { Library };
@@ -55,7 +55,7 @@ public:
 
 class Module final : public DeclContext, public TypeDecl {
 private:
-  Module(Identifier name, ASTContext &astContext);
+  Module(Identifier name, TreeContext &astContext);
 
   llvm::SmallVector<ModuleUnit *, 2> units;
 

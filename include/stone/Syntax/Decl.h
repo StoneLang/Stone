@@ -34,7 +34,7 @@ namespace syn {
 class Decl;
 class BraceStmt;
 class DeclContext;
-class ASTContext;
+class TreeContext;
 
 class DeclStats final : public Stats {
   const Decl &declaration;
@@ -61,11 +61,11 @@ protected:
   /// \param astCtx The context in which we will allocate memory.
   /// \param declID The global ID of the deserialized declaration.
   /// \param extra The amount of extra space to allocate after the object.
-  void *operator new(std::size_t size, const ASTContext &astCtx,
+  void *operator new(std::size_t size, const TreeContext &astCtx,
                      unsigned declID, std::size_t extra = 0);
 
   /// Allocate memory for a non-deserialized declaration.
-  void *operator new(std::size_t size, const ASTContext &astCtx,
+  void *operator new(std::size_t size, const TreeContext &astCtx,
                      DeclContext *parentDeclContext, std::size_t extra = 0);
 
 public:

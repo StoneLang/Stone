@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "stone/Syntax/ASTContext.h"
+#include "stone/Syntax/TreeContext.h"
 #include "stone/Syntax/Module.h"
 #include "stone/Parse/Lexer.h"
 #include "stone/Parse/ParserDiagnostics.h"

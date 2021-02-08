@@ -3,7 +3,7 @@
 
 namespace stone {
 namespace syn {
-class ASTContext;
+class TreeContext;
 
 class Builtin final {
   enum BuiltinID {
@@ -12,8 +12,8 @@ class Builtin final {
   Builtin(const Builtin &) = delete;
   void operator=(const Builtin &) = delete;
 
-  void InitType(ASTContext &astCtx);
-  void InitTypes(ASTContext &astCtx);
+  void InitType(TreeContext &astCtx);
+  void InitTypes(TreeContext &astCtx);
 
   BuiltinID builtinID;
 
@@ -21,7 +21,7 @@ public:
   Builtin() = default;
   ~Builtin();
 
-  void Init(ASTContext &astCtx);
+  void Init(TreeContext &astCtx);
 };
 } // namespace syn
 } // namespace stone

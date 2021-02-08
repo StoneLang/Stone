@@ -1,5 +1,5 @@
-#ifndef STONE_SYNTAX_ASTCTX_H
-#define STONE_SYNTAX_ASTCTX_H
+#ifndef STONE_SYNTAXSYNTAXCTX_H
+#define STONE_SYNTAXSYNTAXCTX_H
 
 #include <cassert>
 #include <cstddef>
@@ -32,7 +32,7 @@
 #include "llvm/Support/Casting.h"
 #include "llvm/Support/Compiler.h"
 
-#include "stone/Syntax/ASTContextAlloc.h"
+#include "stone/Syntax/TreeContextAlloc.h"
 #include "stone/Syntax/Builtin.h"
 #include "stone/Syntax/Identifier.h"
 #include "stone/Syntax/LangABI.h"
@@ -57,26 +57,26 @@ class MangleCtx;
 class Module;
 class Stmt;
 class Builtin;
-class ASTContext;
+class TreeContext;
 class DiagnosticEngine;
 
-class ASTContextStats final : public Stats {
-  const ASTContext &ac;
+class TreeContextStats final : public Stats {
+  const TreeContext &ac;
 
 public:
-  ASTContextStats(const ASTContext &ac) : Stats("ast-context stats:"), ac(ac) {}
+  TreeContextStats(const TreeContext &ac) : Stats("tree-context stats:"), ac(ac) {}
   void Print() override;
 };
-class ASTContext final {
-  friend ASTContextStats;
+class TreeContext final {
+  friend TreeContextStats;
 
-  std::unique_ptr<ASTContextStats> stats;
+  std::unique_ptr<TreeContextStats> stats;
 
   /// The associated SourceManager object.
   SrcMgr &sm;
 
   /// The language options used to create the AST associated with
-  ///  this ASTContext object.
+  ///  this TreeContext object.
   Context &ctx;
 
   /// The search path options
@@ -85,7 +85,7 @@ class ASTContext final {
   Builtin builtin;
   /// The allocator used to create AST objects.
   /// AST objects are never destructed; rather, all memory associated with the
-  /// AST objects will be released when the ASTContext itself is destroyed.
+  /// AST objects will be released when the TreeContext itself is destroyed.
   mutable llvm::BumpPtrAllocator bumpAlloc;
 
   /// Table for all
@@ -94,11 +94,11 @@ class ASTContext final {
   mutable llvm::SmallVector<Type *, 0> types;
 
 public:
-  ASTContext(Context &ctx, const SearchPathOptions &pathOpts, SrcMgr &sm);
-  ~ASTContext();
+  TreeContext(Context &ctx, const SearchPathOptions &pathOpts, SrcMgr &sm);
+  ~TreeContext();
 
-  ASTContext(const ASTContext &) = delete;
-  ASTContext &operator=(const ASTContext &) = delete;
+  TreeContext(const TreeContext &) = delete;
+  TreeContext &operator=(const TreeContext &) = delete;
 
 public:
   ///
@@ -114,7 +114,7 @@ public:
   /// Retrieve the allocator for the given arena.
   llvm::BumpPtrAllocator &GetAllocator() const;
 
-  ASTContextStats &GetStats() { return *stats.get(); }
+  TreeContextStats &GetStats() { return *stats.get(); }
 
 public:
   /// Return the total amount of physical memory allocated for representing
@@ -133,19 +133,19 @@ public:
 };
 } // namespace syn
 } // namespace stone
-/// Placement new for using the ASTContext's allocator.
+/// Placement new for using the TreeContext's allocator.
 ///
-/// This placement form of operator new uses the ASTContext's allocator for
+/// This placement form of operator new uses the TreeContext's allocator for
 /// obtaining memory.
 ///
-/// IMPORTANT: These are also declared in stone/Syntax/ASTContextAllocate.h!
+/// IMPORTANT: These are also declared in stone/Syntax/TreeContextAllocate.h!
 /// Any changes here need to also be made there.
 ///
 /// We intentionally avoid using a nothrow specification here so that the calls
 /// to this operator will not perform a null check on the result -- the
 /// underlying allocator never returns null pointers.
 ///
-/// Usage looks like this (assuming there's an ASTContext 'Context' in scope):
+/// Usage looks like this (assuming there's an TreeContext 'Context' in scope):
 /// @code
 /// // Default alignment (8)
 /// IntegerLiteral *Ex = new (Context) IntegerLiteral(arguments);
@@ -153,15 +153,15 @@ public:
 /// IntegerLiteral *Ex2 = new (Context, 4) IntegerLiteral(arguments);
 /// @endcode
 /// Memory allocated through this placement new operator does not need to be
-/// explicitly freed, as ASTContext will free all of this memory when it gets
+/// explicitly freed, as TreeContext will free all of this memory when it gets
 /// destroyed. Please note that you cannot use delete on the pointer.
 ///
 /// @param Bytes The number of bytes to allocate. Calculated by the compiler.
-/// @param C The ASTContext that provides the allocator.
+/// @param C The TreeContext that provides the allocator.
 /// @param Alignment The alignment of the allocated memory (if the underlying
 ///                  allocator supports it).
 /// @return The allocated memory. Could be nullptr.
-inline void *operator new(size_t bytes, const stone::syn::ASTContext &C,
+inline void *operator new(size_t bytes, const stone::syn::TreeContext &C,
                           size_t alignment /* = 8 */) {
   return C.Allocate(bytes, alignment);
 }
@@ -171,20 +171,20 @@ inline void *operator new(size_t bytes, const stone::syn::ASTContext &C,
 /// This operator is just a companion to the new above. There is no way of
 /// invoking it directly; see the new operator for more details. This operator
 /// is called implicitly by the compiler if a placement new expression using
-/// the ASTContext throws in the object constructor.
-inline void operator delete(void *Ptr, const stone::syn::ASTContext &C,
+/// the TreeContext throws in the object constructor.
+inline void operator delete(void *Ptr, const stone::syn::TreeContext &C,
                             size_t) {
   C.Deallocate(Ptr);
 }
 
-/// This placement form of operator new[] uses the ASTContext's allocator for
+/// This placement form of operator new[] uses the TreeContext's allocator for
 /// obtaining memory.
 ///
 /// We intentionally avoid using a nothrow specification here so that the calls
 /// to this operator will not perform a null check on the result -- the
 /// underlying allocator never returns null pointers.
 ///
-/// Usage looks like this (assuming there's an ASTContext 'Context' in scope):
+/// Usage looks like this (assuming there's an TreeContext 'Context' in scope):
 /// @code
 /// // Default alignment (8)
 /// char *data = new (Context) char[10];
@@ -192,15 +192,15 @@ inline void operator delete(void *Ptr, const stone::syn::ASTContext &C,
 /// char *data = new (Context, 4) char[10];
 /// @endcode
 /// Memory allocated through this placement new[] operator does not need to be
-/// explicitly freed, as ASTContext will free all of this memory when it gets
+/// explicitly freed, as TreeContext will free all of this memory when it gets
 /// destroyed. Please note that you cannot use delete on the pointer.
 ///
 /// @param Bytes The number of bytes to allocate. Calculated by the compiler.
-/// @param C The ASTContext that provides the allocator.
+/// @param C The TreeContext that provides the allocator.
 /// @param Alignment The alignment of the allocated memory (if the underlying
 ///                  allocator supports it).
 /// @return The allocated memory. Could be nullptr.
-inline void *operator new[](size_t bytes, const stone::syn::ASTContext &astCtx,
+inline void *operator new[](size_t bytes, const stone::syn::TreeContext &astCtx,
                             size_t alignment /* = 8 */) {
   return astCtx.Allocate(bytes, alignment);
 }
@@ -210,8 +210,8 @@ inline void *operator new[](size_t bytes, const stone::syn::ASTContext &astCtx,
 /// This operator is just a companion to the new[] above. There is no way of
 /// invoking it directly; see the new[] operator for more details. This operator
 /// is called implicitly by the compiler if a placement new[] expression using
-/// the ASTContext throws in the object constructor.
-inline void operator delete[](void *Ptr, const stone::syn::ASTContext &astCtx,
+/// the TreeContext throws in the object constructor.
+inline void operator delete[](void *Ptr, const stone::syn::TreeContext &astCtx,
                               size_t) {
   astCtx.Deallocate(Ptr);
 }

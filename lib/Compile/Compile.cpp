@@ -83,7 +83,7 @@ int Compiler::Implementation::EmitObject() {
   }
   bool status =
       stone::GenObject(llvmModule, compiler.GetCompilerOptions().genOpts,
-                       compiler.GetASTContext(), /*TODO*/ {});
+                       compiler.GetTreeContext(), /*TODO*/ {});
   return ret::ok;
 }
 

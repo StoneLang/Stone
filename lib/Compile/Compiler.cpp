@@ -12,7 +12,7 @@ using namespace stone::syn;
 Compiler::Compiler(Pipeline *pipeline)
     : Session(compilerOpts), pipeline(pipeline), fm(compilerOpts.fsOpts),
       sm(GetDiagEngine(), fm) {
-  ac.reset(new ASTContext(*this, compilerOpts.spOpts, sm));
+  ac.reset(new TreeContext(*this, compilerOpts.spOpts, sm));
 
   stats.reset(new CompilerStats(*this));
   GetStatEngine().Register(stats.get());

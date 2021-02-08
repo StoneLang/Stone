@@ -36,7 +36,7 @@ class alignas(8) InputFile final {
   // Make vanilla new/delete illegal for Decls.
   void *operator new(size_t bytes) = delete;
   void operator delete(void *data) = delete;
-  // Only allow allocation of Decls using the allocator in ASTContext
+  // Only allow allocation of Decls using the allocator in TreeContext
   // or by doing a placement new.
   void *operator new(std::size_t bytes, const Compiler &compiler,
                      unsigned alignment = alignof(InputFile));

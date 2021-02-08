@@ -1,5 +1,5 @@
-#ifndef STONE_SYNTAX_ASTNODE_H
-#define STONE_SYNTAX_ASTNODE_H
+#ifndef STONE_SYNTAXSYNTAXNODE_H
+#define STONE_SYNTAXSYNTAXNODE_H
 
 namespace stone {
 namespace syn {

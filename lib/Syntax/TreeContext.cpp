@@ -8,29 +8,29 @@
 #include "llvm/Support/Allocator.h"
 #include "llvm/Support/Compiler.h"
 
-#include "stone/Syntax/ASTContext.h"
+#include "stone/Syntax/TreeContext.h"
 #include "stone/Utils/DiagnosticEngine.h"
 
 using namespace stone;
 using namespace stone::syn;
 
-ASTContext::ASTContext(Context &ctx, const SearchPathOptions &spOpts,
+TreeContext::TreeContext(Context &ctx, const SearchPathOptions &spOpts,
                        SrcMgr &sm)
     : ctx(ctx), searchPathOpts(spOpts), sm(sm),
       identifiers(ctx.GetLangOptions()) {
-  stats.reset(new ASTContextStats(*this));
+  stats.reset(new TreeContextStats(*this));
   ctx.GetStatEngine().Register(stats.get());
 
   builtin.Init(*this);
 }
 
-ASTContext::~ASTContext() {}
+TreeContext::~TreeContext() {}
 
-Identifier &ASTContext::GetIdentifier(llvm::StringRef name) {
+Identifier &TreeContext::GetIdentifier(llvm::StringRef name) {
   return identifiers.Get(name);
 }
-size_t ASTContext::GetSizeOfMemUsed() const {
+size_t TreeContext::GetSizeOfMemUsed() const {
   return bumpAlloc.getTotalMemory();
 }
 
-void ASTContextStats::Print() {}
+void TreeContextStats::Print() {}
