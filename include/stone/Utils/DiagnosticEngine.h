@@ -29,35 +29,8 @@
 
 namespace stone {
 
-class Diagnostics;
 class DiagnosticEngine;
 class InflightDiagnostic;
-
-class Diagnostics {
-  friend DiagnosticEngine;
-  // bool isActive;
-protected:
-  unsigned int uniqueID = 0;
-  unsigned maxID = 0;
-  unsigned firstID = 0;
-  unsigned lastID = 0;
-
-  // llvm::DenseMap<unsigned, Diagnostic> entries;
-  // List<Diagnostic> entries;
-
-public:
-  unsigned GetUniqueID() const { return uniqueID; }
-
-protected:
-  // Only for Diagnostics
-  void Init();
-  unsigned GetMaxID() const { return maxID; }
-  unsigned GetFirstID() const { return firstID; }
-  unsigned GetLastID() const { return lastID; }
-
-  // const DiagnosticLine DiagnosticLines[100];
-public:
-};
 
 /// Enumeration describing all of possible diagnostics.
 ///
@@ -191,6 +164,31 @@ public:
     return CreateReplacement(CharSrcRange::getTokenRange(removeRange), code);
   }
 };
+class DiagnosticMapping {
+public:
+};
+
+class DiagnosticState final {
+  llvm::DenseMap<unsigned, DiagnosticMapping> diagMapping;
+
+public:
+};
+
+class DiagnosticStateMap {
+public:
+private:
+  /// Represents a point in source where the diagnostic state was
+  /// modified because of a pragma.
+  ///
+  /// 'Loc' can be null if the point represents the diagnostic state
+  /// modifications done through the command-line.
+  struct DiagnosticStatePoint {
+    DiagnosticState *state;
+    unsigned offset;
+    DiagnosticStatePoint(DiagnosticState *state, unsigned offset)
+        : state(state), offset(offset) {}
+  };
+};
 
 /// Concrete class used by the front-end to report problems and issues.
 ///
@@ -200,13 +198,12 @@ public:
 /// SrcMgr.
 class DiagnosticEngine final {
 
-  friend class InFlight;
+  friend class InFlightDiagnostic;
+  friend class DiagnosticErrorTrap;
+  friend class PartialDiagnostic;
+
   /// The
   unsigned int diagnosticSeen = 0;
-
-  /// The maximum diagnostic messages per diagnostic
-  // unsigned int maxDiagnosticMessages = 1000;
-  llvm::DenseMap<unsigned int, Diagnostics *> diagnostics;
 
   // TODO: This may have to be on the dagnostics
   /// If valid, provides a hint with some code to insert, remove,
@@ -223,29 +220,45 @@ class DiagnosticEngine final {
 
   const DiagnosticOptions &diagOpts;
 
+  SrcMgr *sm = nullptr;
+
+private:
+  // Treat fatal errors like errors.
+  bool fatalsAsError = false;
+
+  // Suppress all diagnostics.
+  bool suppressAllDiagnostics = false;
+
+  // Elide common types of templates.
+  bool elideType = true;
+
+  // Print a tree when comparing templates.
+  bool printTemplateTree = false;
+
+  // Color printing is enabled.
+  bool showColors = false;
+
+  // Which overload candidates to show.
+  // OverloadsShown ShowOverloads = Ovl_All;
+
+  // Cap of # errors emitted, 0 -> no limit.
+  unsigned errorLimit = 0;
+
+  // Cap on depth of template backtrace stack, 0 -> no limit.
+  // unsigned TemplateBacktraceLimit = 0;
+
+  // Cap on depth of constexpr evaluation backtrace stack, 0 -> no limit.
+  // unsigned ConstexprBacktraceLimit = 0;
+
 public:
-  explicit DiagnosticEngine(const DiagnosticOptions &diagOpts);
+  explicit DiagnosticEngine(const DiagnosticOptions &diagOpts,
+                            SrcMgr *sm = nullptr);
 
   DiagnosticEngine(const DiagnosticEngine &) = delete;
   DiagnosticEngine &operator=(const DiagnosticEngine &) = delete;
   ~DiagnosticEngine();
 
 public:
-  /// Owns the Diagnostics
-  // NOTE: when you add, check for existing, calculate id, start, and end and
-  // then load message; diagnostic.messageID = diagnostics.size() +1;
-  ////TODO: remove this note: (d1Start = 1, d1End = d1Start + max)
-  // (d2Start = d1End + 1  , d2End = d1End + max)
-  // update: use maxMessages from Diagnostic to calculate startMsgID, and
-  // endMsgID
-  void AddDiagnostic(Diagnostics *diagnostic);
-
-  /// Remove a specific DiagnosticConsumer.
-  // void RemoveDiagnostic(Diagnostics *diagnostic) {
-  //    diagnostics.erase(
-  //        std::remove(diagnostics.begin(), Consumers.end(), diagnostic));
-  //}
-
   void AddListener(DiagnosticListener *listener);
   void AddArgument(DiagnosticArgument *argument);
 
@@ -262,6 +275,72 @@ public:
   /// which can be an invalid location if no position information is available.
   inline InflightDiagnostic Issue(SrcLoc loc, unsigned diagID);
   inline InflightDiagnostic Issue(unsigned diagID);
+
+private:
+  /// Sticky flag set to \c true when an error is emitted.
+  bool errorOccurred;
+
+  /// Sticky flag set to \c true when an "uncompilable error" occurs.
+  /// I.e. an error that was not upgraded from a warning by -Werror.
+  bool uncompilableErrorOccurred;
+
+  /// Sticky flag set to \c true when a fatal error is emitted.
+  bool fatalErrorOccurred;
+
+  /// Indicates that an unrecoverable error has occurred.
+  bool unrecoverableErrorOccurred;
+
+  /// Counts for DiagnosticErrorTrap to check whether an error occurred
+  /// during a parsing section, e.g. during parsing a function.
+  unsigned trapNumErrorsOccurred;
+  unsigned trapNumUnrecoverableErrorsOccurred;
+
+  /// The level of the last diagnostic emitted.
+  ///
+  /// This is used to emit continuation diagnostics with the same level as the
+  /// diagnostic that they follow.
+  diag::Severity lastSeverity;
+
+  /// Number of warnings reported
+  unsigned numWarnings;
+
+  /// Number of errors reported
+  unsigned numErrors;
+
+public:
+};
+
+/// RAII class that determines when any errors have occurred
+/// between the time the instance was created and the time it was
+/// queried.
+///
+/// Note that you almost certainly do not want to use this. It's usually
+/// meaningless to ask whether a particular scope triggered an error message,
+/// because error messages outside that scope can mark things invalid (or cause
+/// us to reach an error limit), which can suppress errors within that scope.
+class DiagnosticErrorTrap {
+  DiagnosticEngine &de;
+  unsigned numErrors;
+  unsigned numUnrecoverableErrors;
+
+public:
+  explicit DiagnosticErrorTrap(DiagnosticEngine &de) : de(de) { reset(); }
+
+  /// Determine whether any errors have occurred since this
+  /// object instance was created.
+  bool hasErrorOccurred() const { return de.trapNumErrorsOccurred > numErrors; }
+
+  /// Determine whether any unrecoverable errors have occurred since this
+  /// object instance was created.
+  bool hasUnrecoverableErrorOccurred() const {
+    return de.trapNumUnrecoverableErrorsOccurred > numUnrecoverableErrors;
+  }
+
+  /// Set to initial state of "no errors occurred".
+  void reset() {
+    numErrors = de.trapNumErrorsOccurred;
+    numUnrecoverableErrors = de.trapNumUnrecoverableErrorsOccurred;
+  }
 };
 
 class InflightDiagnostic final {
@@ -285,7 +364,7 @@ class InflightDiagnostic final {
   InflightDiagnostic() = default;
 
   explicit InflightDiagnostic(DiagnosticEngine *de) : de(de), isActive(true) {
-    assert(de && "InflightDiagnostic requires a valid DiagnosticsEngine!");
+    assert(de && "InflightDiagnostic requires a valid DiagnosticEngine!");
 
     // diagnostics->diagnosticRanges.clear();
     // diagnostics->diagnosticFixHints.clear();
@@ -322,7 +401,7 @@ protected:
       return false;
 
     // When emitting diagnostics, we set the final argument count into
-    // the DiagnosticsEngine object.
+    // the DiagnosticEngine object.
     FlushCounts();
     // Process the diagnostic.
     // bool result = de->EmitCurrentDiagnostic(IsForceEmit);

@@ -7,6 +7,7 @@ enum class JobType {
   None,
   Compile,
   Backend,
+  MergeModule,
   DynamicLink,
   StaticLink,
   Assemble

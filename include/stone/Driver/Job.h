@@ -185,6 +185,17 @@ public:
   }
 };
 
+class MergeModuleJob final : public Job {
+public:
+  // Some job depend on other jobs -- For example, LinkJob
+  MergeModuleJob(Compilation &compilation);
+
+public:
+  static bool classof(const Job *j) {
+    return j->GetType() == JobType::MergeModule;
+  }
+};
+
 } // namespace driver
 } // namespace stone
 #endif

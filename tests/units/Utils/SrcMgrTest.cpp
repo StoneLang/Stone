@@ -22,7 +22,7 @@ protected:
   SrcMgr sm;
 
 protected:
-  SrcMgrTest() : de(diagOpts, nullptr, false), fm(fmOpts), sm(de, fm) {}
+  SrcMgrTest() : de(diagOpts), fm(fmOpts), sm(de, fm) {}
 };
 
 TEST_F(SrcMgrTest, GetColNumber) {

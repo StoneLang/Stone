@@ -3,6 +3,7 @@
 
 #include "stone/Syntax/Expr.h"
 #include "stone/Syntax/Ownership.h"
+#include "stone/Syntax/Type.h"
 
 namespace stone {
 namespace syn {
