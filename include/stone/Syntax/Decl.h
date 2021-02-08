@@ -19,8 +19,7 @@
 #include "llvm/Support/PrettyStackTrace.h"
 #include "llvm/Support/VersionTuple.h"
 
-#include "stone/Syntax/ASTDiagnostics.h"
-#include "stone/Syntax/ASTNode.h"
+#include "stone/Syntax/TreeNode.h"
 #include "stone/Syntax/DeclBits.h"
 #include "stone/Syntax/DeclKind.h"
 #include "stone/Syntax/DeclName.h"
@@ -45,7 +44,7 @@ public:
   void Print() override;
 };
 
-class alignas(8) Decl : public ASTNode /*TODO: Object */ {
+class alignas(8) Decl : public TreeNode /*TODO: Object */ {
   friend DeclStats;
   decl::Kind kind;
   SrcLoc loc;

@@ -3,7 +3,7 @@
 
 namespace stone {
 namespace syn {
-class ASTListener final {};
+class TreeListener final {};
 } // namespace syn
 } // namespace stone
 

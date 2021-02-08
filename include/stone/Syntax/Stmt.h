@@ -9,7 +9,7 @@
 #include <type_traits>
 #include <utility>
 
-#include "stone/Syntax/ASTNode.h"
+#include "stone/Syntax/TreeNode.h"
 #include "stone/Syntax/StmtKind.h"
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/PointerIntPair.h"
@@ -23,7 +23,7 @@
 
 namespace stone {
 namespace syn {
-class Stmt : public ASTNode {
+class Stmt : public TreeNode {
   stmt::Kind kind;
 
 public:

@@ -5,7 +5,6 @@
 
 #include "stone/Syntax/TreeContext.h"
 #include "stone/Syntax/Module.h"
-#include "stone/Check/CheckerDiagnostics.h"
 #include "stone/Utils/Context.h"
 #include "stone/Utils/Stats.h"
 
@@ -34,8 +33,7 @@ class Checker final {
   friend CheckerStats;
   syn::SourceUnit &su;
   std::unique_ptr<CheckerStats> stats;
-  std::unique_ptr<CheckerDiagnostics> diagnostics;
-
+ 
   Pipeline *pipeline;
   Context &ctx;
 

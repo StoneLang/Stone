@@ -1,7 +1,6 @@
 #ifndef STONE_PARSE_LEXER_H
 #define STONE_PARSE_LEXER_H
 
-#include "stone/Parse/LexerDiagnostics.h"
 #include "stone/Parse/Token.h"
 #include "stone/Parse/Trivia.h"
 #include "stone/Utils/Clock.h"
@@ -46,8 +45,7 @@ class Lexer final {
   Clock clock;
   const Context &ctx;
   std::unique_ptr<LexerStats> stats;
-  std::unique_ptr<LexerDiagnostics> diagnostics;
-
+  
   /// Pointer to the first character of the buffer, even in a lexer that
   /// scans a subrange of the buffer.
   const char *bufferStart;

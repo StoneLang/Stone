@@ -11,7 +11,6 @@ set( LLVM_LINK_COMPONENTS
 set(stone_gen_sources
 	Gen.cpp
 	CodeGenBlocks.cpp
-	CodeGenDiagnostics.cpp
 	CodeGenerator.cpp
 	CodeEmitter.cpp
 	CodeGenFunction.cpp

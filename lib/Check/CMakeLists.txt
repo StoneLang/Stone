@@ -10,7 +10,6 @@ set( LLVM_LINK_COMPONENTS
 set(stone_check_sources
 	Check.cpp
 	Checker.cpp
-	CheckerDiagnostics.cpp
 
 	LINK_LIBS
 	StoneSyntax

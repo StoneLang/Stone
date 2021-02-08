@@ -10,10 +10,8 @@ set( LLVM_LINK_COMPONENTS
   )
 set(stone_parse_sources
 	Lexer.cpp
-	LexerDiagnostics.cpp
 	Parse.cpp
 	Parser.cpp
-	ParserDiagnostics.cpp
 
 	LINK_LIBS
 	StoneSyntax

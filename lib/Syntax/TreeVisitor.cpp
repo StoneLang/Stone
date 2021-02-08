@@ -1,1 +1,1 @@
-#include "stone/Syntax/ASTVisitor.h"
+#include "stone/Syntax/TreeVisitor.h"
