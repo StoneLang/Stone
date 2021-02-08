@@ -1,5 +1,5 @@
-#ifndef STONE_ANALYSIS_PARSINGSCOPE_H
-#define STONE_ANALYSIS_PARSINGSCOPE_H
+#ifndef STONE_ANALYSIS_SCOPE_H
+#define STONE_ANALYSIS_SCOPE_H
 
 #include "llvm/ADT/ArrayRef.h"
 
@@ -7,7 +7,7 @@ namespace stone {
 namespace analysis {
 
 // TODO:
-class ParsingScope final {
+class Scope final {
 public:
   enum ScopeBits {
     /// This indicates that the scope corresponds to a function, which
@@ -65,6 +65,9 @@ public:
     InterfaceScope = 0x800000,
   };
 };
+
+class ScopeProfile {};
+
 } // namespace analysis
 } // namespace stone
 #endif

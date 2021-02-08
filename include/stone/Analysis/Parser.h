@@ -31,6 +31,22 @@ class Parser final {
   std::unique_ptr<ParserStats> stats;
 
 public:
+  /// Control flags for SkipUntil functions.
+  enum SkipUntilFlags {
+    ///< Stop skipping at semicolon
+    StopAtSemi = 1 << 0,
+    /// Stop skipping at specified token, but don't skip the token itself
+    StopBeforeMatch = 1 << 1,
+    ///< Stop at code completion
+    StopAtCodeCompletion = 1 << 2
+  };
+
+public:
+  class ParsingScope {};
+
+  class MultiParsingScope {};
+
+public:
   Parser(Context &ctx, Pipeline *pipeline = nullptr);
   ~Parser();
 
