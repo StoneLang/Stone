@@ -15,7 +15,7 @@ using namespace stone;
 using namespace stone::syn;
 
 TreeContext::TreeContext(Context &ctx, const SearchPathOptions &spOpts,
-                       SrcMgr &sm)
+                         SrcMgr &sm)
     : ctx(ctx), searchPathOpts(spOpts), sm(sm),
       identifiers(ctx.GetLangOptions()) {
   stats.reset(new TreeContextStats(*this));

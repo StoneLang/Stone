@@ -223,7 +223,6 @@ Driver::Driver(llvm::StringRef stoneExecutable, std::string driverName)
       driverTitle("Stone Compiler"), checkInputFilesExist(true) {
   stats.reset(new DriverStats(*this));
   GetStatEngine().Register(stats.get());
-
 }
 
 std::unique_ptr<driver::TaskQueue>

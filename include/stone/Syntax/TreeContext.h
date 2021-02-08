@@ -32,11 +32,11 @@
 #include "llvm/Support/Casting.h"
 #include "llvm/Support/Compiler.h"
 
-#include "stone/Syntax/TreeContextAlloc.h"
 #include "stone/Syntax/Builtin.h"
 #include "stone/Syntax/Identifier.h"
 #include "stone/Syntax/LangABI.h"
 #include "stone/Syntax/SearchPathOptions.h"
+#include "stone/Syntax/TreeContextAlloc.h"
 #include "stone/Syntax/Type.h"
 #include "stone/Utils/Context.h"
 #include "stone/Utils/LangOptions.h"
@@ -64,7 +64,8 @@ class TreeContextStats final : public Stats {
   const TreeContext &ac;
 
 public:
-  TreeContextStats(const TreeContext &ac) : Stats("tree-context stats:"), ac(ac) {}
+  TreeContextStats(const TreeContext &ac)
+      : Stats("tree-context stats:"), ac(ac) {}
   void Print() override;
 };
 class TreeContext final {

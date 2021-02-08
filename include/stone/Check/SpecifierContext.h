@@ -3,8 +3,8 @@
 
 #include <memory>
 
-#include "stone/Syntax/TreeContext.h"
 #include "stone/Syntax/Module.h"
+#include "stone/Syntax/TreeContext.h"
 #include "stone/Utils/Stats.h"
 
 namespace stone {

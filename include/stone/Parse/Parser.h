@@ -3,9 +3,9 @@
 
 #include <memory>
 
-#include "stone/Syntax/TreeContext.h"
-#include "stone/Syntax/Module.h"
 #include "stone/Parse/Lexer.h"
+#include "stone/Syntax/Module.h"
+#include "stone/Syntax/TreeContext.h"
 #include "stone/Utils/Context.h"
 #include "stone/Utils/Stats.h"
 

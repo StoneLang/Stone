@@ -1,10 +1,10 @@
 #ifndef STONE_SYNTAX_SPECIFIER_H
 #define STONE_SYNTAX_SPECIFIER_H
 
-#include "stone/Syntax/TreeContext.h"
-#include "stone/Syntax/TreeScope.h"
 #include "stone/Syntax/Decl.h"
 #include "stone/Syntax/Identifier.h"
+#include "stone/Syntax/TreeContext.h"
+#include "stone/Syntax/TreeScope.h"
 #include "stone/Utils/LLVM.h"
 #include "llvm/ADT/SmallVector.h"
 

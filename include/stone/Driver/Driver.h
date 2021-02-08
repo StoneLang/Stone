@@ -105,7 +105,7 @@ class Driver final : public Session {
   std::unique_ptr<DriverStats> stats;
   std::unique_ptr<ToolChain> toolChain;
   std::unique_ptr<Compilation> compilation;
- 
+
 public:
   /// The options for the driver
   DriverOptions driverOpts;

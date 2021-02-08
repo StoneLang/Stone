@@ -65,12 +65,12 @@
 // TODO: #include "llvm/Transforms/Utils/UniqueInternalLinkageNames.h"
 #include <memory>
 
-#include "stone/Syntax/TreeContext.h"
-#include "stone/Syntax/Module.h"
 #include "stone/Gen/CodeGenOptions.h"
 #include "stone/Gen/CodeGenerator.h"
 #include "stone/Gen/Gen.h"
 #include "stone/Public.h"
+#include "stone/Syntax/Module.h"
+#include "stone/Syntax/TreeContext.h"
 #include "stone/Utils/Ret.h"
 
 using namespace stone;
@@ -90,6 +90,7 @@ stone::CreateTargetMachine(const CodeGenOptions &genOpts, TreeContext &astCtx) {
 }
 bool stone::GenObject(llvm::Module *llvmModule,
                       const gen::CodeGenOptions &genOpts,
-                      syn::TreeContext &astCtx, llvm::StringRef outputFilename) {
+                      syn::TreeContext &astCtx,
+                      llvm::StringRef outputFilename) {
   return true;
 }

@@ -1,12 +1,12 @@
 #ifndef STONE_COMPILE_COMPILER_H
 #define STONE_COMPILE_COMPILER_H
 
-#include "stone/Syntax/TreeContext.h"
-#include "stone/Syntax/Module.h"
-#include "stone/Syntax/SearchPathOptions.h"
 #include "stone/Compile/CompilerAlloc.h"
 #include "stone/Compile/CompilerOptions.h"
 #include "stone/Session/Session.h"
+#include "stone/Syntax/Module.h"
+#include "stone/Syntax/SearchPathOptions.h"
+#include "stone/Syntax/TreeContext.h"
 #include "stone/Utils/Stats.h"
 
 using namespace stone::syn;

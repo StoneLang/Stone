@@ -1,12 +1,12 @@
 #ifndef STONE_COMPILE_COMPILERUNIT_H
 #define STONE_COMPILE_COMPILERUNIT_H
 
-#include "stone/Syntax/SearchPathOptions.h"
 #include "stone/Compile/Compiler.h"
 #include "stone/Gen/CodeGenOptions.h"
 #include "stone/Session/FileType.h"
 #include "stone/Session/Mode.h"
 #include "stone/Session/SessionOptions.h"
+#include "stone/Syntax/SearchPathOptions.h"
 #include "stone/Utils/FileSystemOptions.h"
 #include "stone/Utils/SrcLoc.h"
 #include "llvm/ADT/ArrayRef.h"

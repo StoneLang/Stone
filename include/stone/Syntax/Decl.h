@@ -19,11 +19,11 @@
 #include "llvm/Support/PrettyStackTrace.h"
 #include "llvm/Support/VersionTuple.h"
 
-#include "stone/Syntax/TreeNode.h"
 #include "stone/Syntax/DeclBits.h"
 #include "stone/Syntax/DeclKind.h"
 #include "stone/Syntax/DeclName.h"
 #include "stone/Syntax/Identifier.h"
+#include "stone/Syntax/TreeNode.h"
 #include "stone/Utils/LLVM.h"
 #include "stone/Utils/SrcLoc.h"
 

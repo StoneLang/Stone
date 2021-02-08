@@ -45,7 +45,7 @@ class Lexer final {
   Clock clock;
   const Context &ctx;
   std::unique_ptr<LexerStats> stats;
-  
+
   /// Pointer to the first character of the buffer, even in a lexer that
   /// scans a subrange of the buffer.
   const char *bufferStart;
