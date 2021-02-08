@@ -4,7 +4,7 @@
 namespace stone {
 class Compiler;
 namespace syn {
-class SourceUnit;
+class SourceFile;
 }
 namespace syn {
 class Token;
@@ -30,7 +30,7 @@ public:
   virtual void OnParseFinished(const Compiler &compiler) = 0;
 
   // virtual void OnToken(const syn::Token &token);
-  // virtual void OnSourceFile(const syn::SourceUnit &unit);
+  // virtual void OnSourceFile(const syn::SourceFile &unit);
 
 public:
   ///

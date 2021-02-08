@@ -14,14 +14,14 @@
 
 using namespace stone::syn;
 
-void Module::AddUnit(ModuleUnit &unit) {
+void Module::AddFile(ModuleFile &file) {
   // If this is a LoadedFile, make sure it loaded without error.
   // assert(!(isa<LoadedFile>(newFile) &&
   //         cast<LoadedFile>(newFile).hadLoadError()));
   // Require Main and REPL files to be the first file added.
-  assert(units.empty() || !isa<SourceUnit>(unit) ||
-         cast<SourceUnit>(unit).kind == SourceUnit::Kind::Library
-         /*||cast<SourceUnit>(unit).Kind == SourceUnit::Kind::SIL*/);
-  units.push_back(&unit);
+  assert(files.empty() || !isa<SourceFile>(file) ||
+         cast<SourceFile>(file).kind == SourceFile::Kind::Library
+         /*||cast<SourceFile>(unit).Kind == SourceFile::Kind::SIL*/);
+  files.push_back(&file);
   // ClearLookupCache();
 }

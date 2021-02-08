@@ -7,11 +7,11 @@ namespace stone {
 class Pipeline;
 
 namespace syn {
-class SourceUnit;
+class SourceFile;
 }
 
 /// Parse a source file
-void ParseSourceUnit(syn::SourceUnit &su, Pipeline *pipeline = nullptr);
+void ParseSourceFile(syn::SourceFile &su, Pipeline *pipeline = nullptr);
 
 } // namespace stone
 #endif

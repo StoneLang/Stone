@@ -14,7 +14,7 @@
 namespace stone {
 class CompilerScope;
 namespace syn {
-class SourceUnit;
+class SourceFile;
 }
 
 class alignas(8) CompilerUnit final {
@@ -31,7 +31,7 @@ public:
   enum class Stage { None, Parsed, Checked };
 
 private:
-  syn::SourceUnit &su;
+  syn::SourceFile &su;
   Compiler &compiler;
   CompilerScope &scope;
   Input input;
@@ -39,7 +39,7 @@ private:
   bool isPrimary = false;
 
 public:
-  CompilerUnit(Compiler &compiler, syn::SourceUnit &su, CompilerScope &scope);
+  CompilerUnit(Compiler &compiler, syn::SourceFile &su, CompilerScope &scope);
 
   CompilerUnit::Input &GetInput() { return input; }
   CompilerUnit::Output &GetOutput() { return output; }

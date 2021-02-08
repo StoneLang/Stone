@@ -12,23 +12,23 @@ namespace stone {
 namespace syn {
 class Module;
 
-class ModuleUnit {
+class ModuleFile {
 public:
   enum class Kind { Source, Builtin };
 
 private:
-  ModuleUnit::Kind kind;
+  ModuleFile::Kind kind;
 
 public:
-  ModuleUnit(ModuleUnit::Kind kind, Module &owner) : kind(kind) {}
+  ModuleFile(ModuleFile::Kind kind, Module &owner) : kind(kind) {}
 
 public:
-  ModuleUnit::Kind GetKind() const { return kind; }
+  ModuleFile::Kind GetKind() const { return kind; }
 
 public:
 };
 
-class SourceUnit final : public ModuleUnit {
+class SourceFile final : public ModuleFile {
 private:
   friend TreeContext;
   bool isMain;
@@ -38,40 +38,40 @@ public:
   enum class Kind { Library };
 
 public:
-  SourceUnit::Kind kind;
+  SourceFile::Kind kind;
 
 public:
-  SourceUnit(Module &owner, SourceUnit::Kind kind, bool isMain = false);
-  ~SourceUnit();
+  SourceFile(Module &owner, SourceFile::Kind kind, bool isMain = false);
+  ~SourceFile();
 
-  static bool classof(const ModuleUnit *unit) {
-    return unit->GetKind() == ModuleUnit::Kind::Source;
+  static bool classof(const ModuleFile *file) {
+    return file->GetKind() == ModuleFile::Kind::Source;
   }
 };
 
-class BuiltinUnit final : public ModuleUnit {
+class BuiltinFile final : public ModuleFile {
 public:
 };
 
 class Module final : public DeclContext, public TypeDecl {
 private:
-  Module(Identifier name, TreeContext &astContext);
+  Module(Identifier name, TreeContext &tree);
 
-  llvm::SmallVector<ModuleUnit *, 2> units;
+  llvm::SmallVector<ModuleFile *, 2> files;
 
 public:
-  llvm::ArrayRef<ModuleUnit *> GetUnits() {
-    assert(!units.empty());
-    return units;
+  llvm::ArrayRef<ModuleFile *> GetUnits() {
+    assert(!files.empty());
+    return files;
   }
-  llvm::ArrayRef<const ModuleUnit *> GetUnits() const {
-    return {units.begin(), units.size()};
+  llvm::ArrayRef<const ModuleFile *> GetFiles() const {
+    return {files.begin(), files.size()};
   }
-  void AddUnit(ModuleUnit &unit);
+  void AddFile(ModuleFile &file);
 
-  SourceUnit &GetMainSourceUnit() const;
+  SourceFile &GetMainSourceFile() const;
 
-  ModuleUnit &GetMainUnit(ModuleUnit::Kind kind) const;
+  ModuleFile &GetMainFile(ModuleFile::Kind kind) const;
 };
 
 } // namespace syn

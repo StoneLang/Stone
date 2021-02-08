@@ -7,10 +7,10 @@
 using namespace stone::syn;
 using namespace stone::sema;
 
-void stone::CheckSourceUnit(SourceUnit &su, Pipeline *pipeline) {
+void stone::CheckSourceFile(SourceFile &su, Pipeline *pipeline) {
   // Checker checker(su, pipeline);
 }
 
-void stone::CheckWholeModule(SourceUnit &su, Pipeline *pipeline) {
+void stone::CheckWholeModule(SourceFile &su, Pipeline *pipeline) {
   // Checker checker
 }

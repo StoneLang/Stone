@@ -18,7 +18,7 @@ class OutputFile;
 
 // TODO: Replace with CompileUnit
 class alignas(8) InputFile final {
-  syn::SourceUnit *su = nullptr;
+  syn::SourceFile *su = nullptr;
   OutputFile *outputFile = nullptr;
   CompilerScope *scope = nullptr;
   Compiler &compiler;

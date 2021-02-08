@@ -14,7 +14,7 @@ namespace stone {
 class Pipeline;
 
 namespace syn {
-class SourceUnit;
+class SourceFile;
 }
 
 namespace sema {
@@ -31,7 +31,7 @@ public:
 
 class Checker final {
   friend CheckerStats;
-  syn::SourceUnit &su;
+  syn::SourceFile &su;
   std::unique_ptr<CheckerStats> stats;
 
   Pipeline *pipeline;
@@ -39,7 +39,7 @@ class Checker final {
 
 public:
   // TODO: CompileUnit
-  Checker(syn::SourceUnit &su, Context &ctx, Pipeline *pipeline = nullptr);
+  Checker(syn::SourceFile &su, Context &ctx, Pipeline *pipeline = nullptr);
 
 public:
   void CheckDecl();
