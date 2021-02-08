@@ -1,6 +1,5 @@
 #include "stone/Syntax/Decl.h"
-
-#include "stone/Syntax/Decl.h"
+#include "stone/Syntax/Syntax.h"
 #include "stone/Syntax/TreeContext.h"
 //#include "stone/Syntax/DeclContextInternals.h"
 // TODO: #include "stone/Syntax/Friend.h"
@@ -89,5 +88,7 @@ void *Decl::operator new(std::size_t size, const TreeContext &astCtx,
 //
 //
 //
+
+FunDecl *Syntax::CreateFunDecl() { return nullptr; }
 
 void DeclStats::Print() {}

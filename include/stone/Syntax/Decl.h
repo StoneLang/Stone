@@ -193,30 +193,27 @@ public:
       : NamingDecl(decl::Kind::Space, dc, loc, name) {}
 };
 
-/// DeclaratorDecl
-class DDecl : public ValueDecl {
+class DeclaratorDecl : public ValueDecl {
 public:
 };
 
-class FunctionDecl : public DDecl, public DeclContext {
+class FunctionDecl : public DeclaratorDecl, public DeclContext {
 public:
 };
 
 class FunDecl : public FunctionDecl {
 public:
-public:
-  static FunDecl *Create();
 };
 
-class ConstructorInitializer final {
+class CtorInitializer final {
 public:
 };
 
-class ConstructorDecl : public FunctionDecl {
+class CtorDecl : public FunctionDecl {
 public:
 };
 
-class DestructorDecl : public FunctionDecl {
+class DtorDecl : public FunctionDecl {
 public:
 };
 } // namespace syn

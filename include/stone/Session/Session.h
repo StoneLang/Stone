@@ -34,7 +34,7 @@
 
 namespace stone {
 
-enum class SessionKind { Compiler, Driver };
+enum class SessionType { Compiler, Driver };
 
 class Session : public Context {
   /// The mode id for this session
