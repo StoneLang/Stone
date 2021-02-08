@@ -2,7 +2,7 @@
 #define STONE_CHECK_OWNERSHIP_H
 
 namespace stone {
-namespace sema {
+namespace analysis {
 class Ownership {};
 } // namespace sema
 } // namespace stone

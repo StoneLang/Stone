@@ -1,9 +1,9 @@
-#include "stone/Parse/Parser.h"
-
+#include "stone/Analysis/Parser.h"
 #include "stone/Utils/Ret.h"
 
 using namespace stone;
 using namespace stone::syn;
+using namespace stone::analysis;
 
 Parser::Parser(Context &ctx, Pipeline *pipeline)
     : ctx(ctx), pipeline(pipeline) {

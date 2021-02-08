@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "stone/Parse/Lexer.h"
+#include "stone/Analysis/Lexer.h"
 #include "stone/Syntax/Module.h"
 #include "stone/Syntax/TreeContext.h"
 #include "stone/Utils/Context.h"
@@ -11,7 +11,7 @@
 
 namespace stone {
 class Pipeline;
-namespace syn {
+namespace analysis {
 class Parser;
 class ParserStats final : public Stats {
   const Parser &parser;
@@ -54,6 +54,6 @@ public:
   // Expr
   void ParseExpr();
 };
-} // namespace syn
+} // namespace analysis
 } // namespace stone
 #endif

@@ -1,8 +1,8 @@
 #ifndef STONE_PARSE_LEXER_H
 #define STONE_PARSE_LEXER_H
 
-#include "stone/Parse/Token.h"
-#include "stone/Parse/Trivia.h"
+#include "stone/Analysis/Token.h"
+#include "stone/Analysis/Trivia.h"
 #include "stone/Utils/Clock.h"
 #include "stone/Utils/Context.h"
 #include "stone/Utils/DiagnosticEngine.h"
@@ -16,7 +16,7 @@ class Token;
 class LangOptions;
 class Pipeline;
 
-namespace syn {
+namespace analysis {
 class Token;
 
 enum class TriviaRetentionMode {
@@ -128,6 +128,6 @@ public:
 
   SrcID GetSrcID() { return srcID; }
 };
-} // namespace syn
+} // namespace analysis
 } // namespace stone
 #endif
