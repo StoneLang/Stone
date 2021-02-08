@@ -1,5 +1,5 @@
-#include "stone/Analysis/Parse.h"
-#include "stone/Analysis/Parser.h"
+#include "stone/Parse/Parse.h"
+#include "stone/Parse/Parser.h"
 #include "stone/Public.h"
 #include "stone/Syntax/Module.h"
 #include "stone/Utils/Ret.h"

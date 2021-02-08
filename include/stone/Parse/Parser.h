@@ -1,9 +1,9 @@
-#ifndef STONE_ANALYSIS_PARSER_H
-#define STONE_ANALYSIS_PARSER_H
+#ifndef STONE_PARSE_PARSER_H
+#define STONE_PARSE_PARSER_H
 
 #include <memory>
 
-#include "stone/Analysis/Lexer.h"
+#include "stone/Parse/Lexer.h"
 #include "stone/Syntax/Module.h"
 #include "stone/Syntax/TreeContext.h"
 #include "stone/Utils/Context.h"

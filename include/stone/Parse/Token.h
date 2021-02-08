@@ -1,5 +1,5 @@
-#ifndef STONE_ANALYSIS_TOKEN_H
-#define STONE_ANALYSIS_TOKEN_H
+#ifndef STONE_PARSE_TOKEN_H
+#define STONE_PARSE_TOKEN_H
 
 #include "stone/Utils/LLVM.h"
 #include "stone/Utils/TokenKind.h"

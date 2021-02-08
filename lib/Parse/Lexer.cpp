@@ -1,4 +1,4 @@
-#include "stone/Analysis/Lexer.h"
+#include "stone/Parse/Lexer.h"
 #include "stone/Utils/Char.h"
 #include "stone/Utils/SrcMgr.h"
 

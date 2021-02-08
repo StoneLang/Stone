@@ -16,8 +16,9 @@ set(stone_compile_sources
 	Optimize.cpp
 
 	LINK_LIBS
-	StoneAnalysis
+	StoneCheck
 	StoneGen
+	StoneParse
 	StoneSession
 
 	DEPENDS

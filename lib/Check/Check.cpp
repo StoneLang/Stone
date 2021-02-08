@@ -1,5 +1,5 @@
-#include "stone/Analysis/Check.h"
-#include "stone/Analysis/Checker.h"
+#include "stone/Check/Check.h"
+#include "stone/Check/Checker.h"
 #include "stone/Public.h"
 #include "stone/Utils/Ret.h"
 

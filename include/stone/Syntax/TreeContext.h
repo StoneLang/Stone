@@ -1,5 +1,5 @@
-#ifndef STONE_SYNTAXSYNTAXCTX_H
-#define STONE_SYNTAXSYNTAXCTX_H
+#ifndef STONE_SYNTAX_TREECONTEXT_H
+#define STONE_SYNTAX_TREECONTEXT_H
 
 #include <cassert>
 #include <cstddef>
