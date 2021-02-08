@@ -1,5 +1,5 @@
-#ifndef STONE_PARSE_PARSER_H
-#define STONE_PARSE_PARSER_H
+#ifndef STONE_ANALYSIS_PARSER_H
+#define STONE_ANALYSIS_PARSER_H
 
 #include <memory>
 
