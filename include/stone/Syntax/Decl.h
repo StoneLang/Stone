@@ -187,6 +187,10 @@ class ValueDecl : public NamingDecl {
 public:
 };
 
+class LabelDecl : public NamingDecl {
+public:
+};
+
 class SpaceDecl : public NamingDecl {
 public:
   SpaceDecl(DeclContext *dc, SrcLoc loc, DeclName name)

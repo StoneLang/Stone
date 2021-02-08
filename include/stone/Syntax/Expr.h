@@ -36,6 +36,37 @@ public:
 
 public:
 };
+
+/// FullExpr - Represents a "full-expression" node.
+class FullExpr : public Expr {
+protected:
+  Stmt *subExpr;
+};
+
+/// Represents a new-expression for memory allocation and constructor
+/// calls, e.g: "new NewExpr(foo)".
+class NewExpr final : public Expr,
+                      private llvm::TrailingObjects<NewExpr, Stmt *, SrcRange> {
+  friend TrailingObjects;
+};
+
+class MeExpr : public Expr {
+public:
+};
+
+/// Represents a call to a constructor.
+class CtorExpr : public Expr {
+public:
+};
+/// Represents a call to a destructor.
+class DtorExpr : public Expr {
+public:
+};
+
+class NullLiteralExpr : public Expr {
+public:
+};
+
 } // namespace syn
 } // namespace stone
 #endif

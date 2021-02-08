@@ -64,7 +64,33 @@ protected:
   SrcLoc colonLoc;
 };
 
+/// CaseStmt - Represent a case statement. It can optionally be a GNU case
+/// statement of the form LHS ... RHS representing a range of cases.
+class CaseStmt final : public MatchCase,
+                       private llvm::TrailingObjects<CaseStmt, Stmt *, SrcLoc> {
+  friend TrailingObjects;
+};
+
+// TODO: fallthrough
+class DefaultStmt : public MatchCase {
+  Stmt *subStmt;
+};
+
 class ValueStmt : public Stmt {};
+
+/// LabelStmt - Represents a label, which has a substatement.  For example:
+///    foo: return;
+class LabelStmt : public ValueStmt {
+  // LabelDecl *labelDecl;
+  Stmt *subStmt;
+};
+
+/// IfStmt - This represents an if/then/else.
+class IfStmt final : public Stmt,
+                     private llvm::TrailingObjects<IfStmt, Stmt *, SrcLoc> {
+  friend TrailingObjects;
+};
+
 } // namespace syn
 } // namespace stone
 #endif
