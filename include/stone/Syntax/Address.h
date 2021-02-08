@@ -1,5 +1,5 @@
-#ifndef STONE_AST_ADDRESS_H
-#define STONE_AST_ADDRESS_H
+#ifndef STONE_SYNTAX_ADDRESS_H
+#define STONE_SYNTAX_ADDRESS_H
 
 namespace stone {
 namespace syn {

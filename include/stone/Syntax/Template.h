@@ -1,5 +1,5 @@
-#ifndef STONE_AST_TEMPLATEDECL_H
-#define STONE_AST_TEMPLATEDECL_H
+#ifndef STONE_SYNTAX_TEMPLATEDECL_H
+#define STONE_SYNTAX_TEMPLATEDECL_H
 
 #include <algorithm>
 #include <cassert>

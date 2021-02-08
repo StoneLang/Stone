@@ -1,5 +1,5 @@
-#ifndef STONE_AST_SPECIFIER_H
-#define STONE_AST_SPECIFIER_H
+#ifndef STONE_SYNTAX_SPECIFIER_H
+#define STONE_SYNTAX_SPECIFIER_H
 
 #include "stone/Syntax/ASTContext.h"
 #include "stone/Syntax/ASTScope.h"

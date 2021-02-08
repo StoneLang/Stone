@@ -1,5 +1,5 @@
-#ifndef STONE_AST_DECLBITS_H
-#define STONE_AST_DECLBITS_H
+#ifndef STONE_SYNTAX_DECLBITS_H
+#define STONE_SYNTAX_DECLBITS_H
 
 #include <algorithm>
 #include <cassert>

@@ -1,5 +1,5 @@
-#ifndef STONE_AST_EXPRKIND_H
-#define STONE_AST_EXPRKIND_H
+#ifndef STONE_SYNTAX_EXPRKIND_H
+#define STONE_SYNTAX_EXPRKIND_H
 
 namespace stone {
 namespace expr {

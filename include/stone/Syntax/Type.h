@@ -1,5 +1,5 @@
-#ifndef STONE_AST_TYPES_H
-#define STONE_AST_TYPES_H
+#ifndef STONE_SYNTAX_TYPES_H
+#define STONE_SYNTAX_TYPES_H
 #include <string>
 
 namespace stone {

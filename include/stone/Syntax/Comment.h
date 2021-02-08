@@ -1,5 +1,5 @@
-#ifndef STONE_AST_COMMENT_H
-#define STONE_AST_COMMENT_H
+#ifndef STONE_SYNTAX_COMMENT_H
+#define STONE_SYNTAX_COMMENT_H
 
 #include "stone/Syntax/Identifier.h"
 

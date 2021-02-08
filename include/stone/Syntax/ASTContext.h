@@ -1,5 +1,5 @@
-#ifndef STONE_AST_ASTCTX_H
-#define STONE_AST_ASTCTX_H
+#ifndef STONE_SYNTAX_ASTCTX_H
+#define STONE_SYNTAX_ASTCTX_H
 
 #include <cassert>
 #include <cstddef>

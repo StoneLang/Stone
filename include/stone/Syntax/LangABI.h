@@ -1,5 +1,5 @@
-#ifndef STONE_AST_LANG_ABI_H
-#define STONE_AST_LANG_ABI_H
+#ifndef STONE_SYNTAX_LANG_ABI_H
+#define STONE_SYNTAX_LANG_ABI_H
 
 namespace stone {
 

@@ -1,5 +1,5 @@
-#ifndef STONE_AST_STMTKIND_H
-#define STONE_AST_STMTKIND_H
+#ifndef STONE_SYNTAX_STMTKIND_H
+#define STONE_SYNTAX_STMTKIND_H
 
 namespace stone {
 namespace stmt {

@@ -1,5 +1,5 @@
-#ifndef STONE_AST_EXPR_H
-#define STONE_AST_EXPR_H
+#ifndef STONE_SYNTAX_EXPR_H
+#define STONE_SYNTAX_EXPR_H
 
 #include <algorithm>
 #include <cassert>
