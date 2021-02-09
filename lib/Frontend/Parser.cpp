@@ -3,7 +3,6 @@
 
 using namespace stone;
 using namespace stone::syn;
-using namespace stone::analysis;
 
 Parser::Parser(Context &ctx, Pipeline *pipeline)
     : ctx(ctx), pipeline(pipeline) {

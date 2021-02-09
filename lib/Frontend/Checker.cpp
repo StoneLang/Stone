@@ -2,7 +2,7 @@
 #include "stone/Utils/Ret.h"
 
 using namespace stone;
-using namespace stone::analysis;
+using namespace stone::sema;
 using namespace stone::syn;
 
 Checker::Checker(SourceFile &su, Context &ctx, Pipeline *pipeline)

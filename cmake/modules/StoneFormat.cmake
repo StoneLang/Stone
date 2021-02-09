@@ -1,10 +1,9 @@
 set(stone_include_files
 
-	${STONE_SOURCE_DIR}/include/stone/Check/*.h
+	${STONE_SOURCE_DIR}/include/stone/Frontend/*.h
 	${STONE_SOURCE_DIR}/include/stone/Compile/*.h
 	${STONE_SOURCE_DIR}/include/stone/Driver/*.h
 	${STONE_SOURCE_DIR}/include/stone/Gen/*.h
-	${STONE_SOURCE_DIR}/include/stone/Parse/*.h
 	${STONE_SOURCE_DIR}/include/stone/Session/*.h
 	${STONE_SOURCE_DIR}/include/stone/Syntax/*.h
 	${STONE_SOURCE_DIR}/include/stone/Utils/*.h
@@ -12,11 +11,10 @@ set(stone_include_files
 
 )
 set(stone_lib_files
-	${STONE_SOURCE_DIR}/lib/Check/*.cpp
+	${STONE_SOURCE_DIR}/lib/Frontend/*.cpp
 	${STONE_SOURCE_DIR}/lib/Compile/*.cpp
 	${STONE_SOURCE_DIR}/lib/Driver/*.cpp
 	${STONE_SOURCE_DIR}/lib/Gen/*.cpp
-	${STONE_SOURCE_DIR}/lib/Parse/*.cpp
 	${STONE_SOURCE_DIR}/lib/Session/*.cpp
 	${STONE_SOURCE_DIR}/lib/Syntax/*.cpp
 	${STONE_SOURCE_DIR}/lib/Utils/*.cpp

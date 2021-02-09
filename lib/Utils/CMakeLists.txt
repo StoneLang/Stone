@@ -19,6 +19,7 @@ set(stone_utils_sources
 	FileMgr.cpp
 	FileSystemStatCache.cpp
 	Fmt.cpp
+	InputFile.cpp
 	LLVMContext.cpp
 	SrcLoc.cpp
 	SrcMgr.cpp

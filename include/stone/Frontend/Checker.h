@@ -17,7 +17,7 @@ namespace syn {
 class SourceFile;
 }
 
-namespace analysis {
+namespace sema {
 class Checker;
 
 class CheckerStats final : public Stats {
@@ -50,6 +50,6 @@ public:
 public:
   void CheckExpr();
 };
-} // namespace analysis
+} // namespace sema
 } // namespace stone
 #endif

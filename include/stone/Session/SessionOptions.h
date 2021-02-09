@@ -4,15 +4,10 @@
 #include "stone/Session/FileType.h"
 #include "stone/Session/ModeKind.h"
 #include "stone/Session/Options.h"
+#include "stone/Utils/InputFile.h"
 #include "stone/Utils/LangOptions.h"
 
 namespace stone {
-
-/// An input argument from the command line and its inferred type.
-using InputFile = std::pair<file::FileType, const llvm::StringRef>;
-/// Type used for a list of input arguments.
-using InputFiles = llvm::SmallVector<InputFile, 16>;
-
 class SessionOptions {
   std::unique_ptr<llvm::opt::OptTable> optTable;
 

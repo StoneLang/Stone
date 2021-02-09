@@ -16,7 +16,7 @@ class Token;
 class LangOptions;
 class Pipeline;
 
-namespace analysis {
+namespace syn {
 class Token;
 
 enum class TriviaRetentionMode {
@@ -128,6 +128,6 @@ public:
 
   SrcID GetSrcID() { return srcID; }
 };
-} // namespace analysis
+} // namespace syn
 } // namespace stone
 #endif

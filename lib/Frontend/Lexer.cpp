@@ -3,7 +3,7 @@
 #include "stone/Utils/SrcMgr.h"
 
 using namespace stone;
-using namespace stone::analysis;
+using namespace stone::syn;
 
 /// CLO8 - Return the number of leading ones in the specified 8-bit value.
 static unsigned CLO8(unsigned char C) {
@@ -21,8 +21,7 @@ static bool IsStartOfUTF8Char(unsigned char C) {
 /// validateUTF8CharacterAndAdvance - Given a pointer to the starting byte of a
 /// UTF8 character, validate it and advance the lexer past it.  This returns the
 /// encoded character or ~0U if the encoding is invalid.
-uint32_t analysis::ValidateUTF8CharAndAdvance(const char *&Ptr,
-                                              const char *End) {
+uint32_t syn::ValidateUTF8CharAndAdvance(const char *&Ptr, const char *End) {
   if (Ptr >= End)
     return ~0U;
 

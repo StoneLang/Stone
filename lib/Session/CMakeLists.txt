@@ -6,7 +6,6 @@ set(LLVM_LINK_COMPONENTS
   Target
 )
 set(stone_session_sources
-	FileType.cpp
 	Options.cpp
 	Session.cpp
 

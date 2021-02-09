@@ -4,6 +4,6 @@
 #include "llvm/ADT/ArrayRef.h"
 
 namespace stone {
-namespace analysis {}
+namespace syn {}
 } // namespace stone
 #endif

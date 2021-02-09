@@ -4,7 +4,7 @@
 #include "stone/Utils/Ret.h"
 
 using namespace stone::syn;
-using namespace stone::analysis;
+using namespace stone::sema;
 
 void stone::CheckSourceFile(SourceFile &su, Pipeline *pipeline) {
   // Checker checker(su, pipeline);

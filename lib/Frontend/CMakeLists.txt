@@ -10,8 +10,8 @@ set( LLVM_LINK_COMPONENTS
 set(stone_frontend_sources
 	Check.cpp
 	Checker.cpp
+	FrontendInputFile.cpp
 	Lexer.cpp
-	Optimize.cpp
 	Parse.cpp
 	Parser.cpp
 
