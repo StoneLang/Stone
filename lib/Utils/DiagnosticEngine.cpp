@@ -41,7 +41,7 @@ struct LocalDiagnostic {
 enum LocalDiagID : uint32_t {
 #define DIAG(KIND, ID, Options, Text, Signature) ID,
 #include "stone/Utils/DiagnosticEngine.def"
-  Max
+  Last
 };
 } // end anonymous namespace
 
@@ -59,7 +59,7 @@ static const constexpr LocalDiagnostic LocalDiagnostics[] = {
 };
 
 static_assert((sizeof(LocalDiagnostics) / sizeof(LocalDiagnostic)) ==
-                  LocalDiagID::Max,
+                  LocalDiagID::Last,
               "array size mismatch");
 
 DiagnosticEngine::DiagnosticEngine(const DiagnosticOptions &diagOpts,
@@ -71,6 +71,6 @@ DiagnosticEngine::~DiagnosticEngine() {}
 // TODO
 bool DiagnosticEngine::HasError() { return false; }
 
-void DiagnosticEngine::AddListener(DiagnosticListener *listerner) {}
+void DiagnosticEngine::SetListener(DiagnosticListener *listerner) {}
 
 void DiagnosticEngine::Print() {}

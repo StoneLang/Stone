@@ -78,6 +78,16 @@ enum class DiagnosticArgumentKind {
   Custom,
 };
 
+/*
+template <typename T> class CustomDianosticValue {
+  T v;
+public:
+  CustomDiagnosticValue(T v) : v(v) {}
+public:
+  T GetValue() { return v; }
+};
+*/
+
 class DiagnosticArgument {
   DiagnosticArgumentKind kind;
 
@@ -168,10 +178,54 @@ class DiagnosticMapping {
 public:
 };
 
-class DiagnosticState final {
+class DiagnosticState {
   llvm::DenseMap<unsigned, DiagnosticMapping> diagMapping;
 
 public:
+  // "Global" configuration state that can actually vary between modules.
+
+  // Ignore all warnings: -w
+  unsigned ignoreAllWarnings : 1;
+
+  // Enable all warnings.
+  unsigned enableAllWarnings : 1;
+
+  // Treat warnings like errors.
+  unsigned warningsAsErrors : 1;
+
+  // Treat errors like fatal errors.
+  unsigned errorsAsFatal : 1;
+
+  // Suppress warnings in system headers.
+  unsigned suppressSystemWarnings : 1;
+
+  // Map extensions to warnings or errors?
+  diag::Severity extBehavior = diag::Severity::Ignore;
+
+  DiagnosticState()
+      : ignoreAllWarnings(false), enableAllWarnings(false),
+        warningsAsErrors(false), errorsAsFatal(false),
+        suppressSystemWarnings(false) {}
+
+  using iterator = llvm::DenseMap<unsigned, DiagnosticMapping>::iterator;
+  using const_iterator =
+      llvm::DenseMap<unsigned, DiagnosticMapping>::const_iterator;
+
+  /*
+      void SetMapping(diag::kind Diag, DiagnosticMapping Info) {
+        DiagMap[Diag] = Info;
+      }
+
+      DiagnosticMapping PickMapping(diag::kind Diag) const {
+        return DiagMap.lookup(Diag);
+      }
+
+      DiagnosticMapping &GetOrAddMapping(diag::kind Diag);
+
+      const_iterator begin() const { return DiagMap.begin(); }
+      const_iterator end() const { return DiagMap.end(); }
+
+  */
 };
 
 class DiagnosticStateMap {
@@ -249,6 +303,17 @@ private:
 
   // Cap on depth of constexpr evaluation backtrace stack, 0 -> no limit.
   // unsigned ConstexprBacktraceLimit = 0;
+  //
+  //
+  //
+  /// The initial diagnostic state.
+  DiagnosticState *firstDiagnosticState;
+
+  /// The current diagnostic state.
+  DiagnosticState *curDiagnosticState;
+
+  /// The location at which the current diagnostic state was established.
+  SrcLoc curDiagnosticStateLoc;
 
 public:
   explicit DiagnosticEngine(const DiagnosticOptions &diagOpts,
@@ -259,9 +324,6 @@ public:
   ~DiagnosticEngine();
 
 public:
-  void AddListener(DiagnosticListener *listener);
-  void AddArgument(DiagnosticArgument *argument);
-
   bool HasError();
   void Print();
 
@@ -307,7 +369,49 @@ private:
   /// Number of errors reported
   unsigned numErrors;
 
+private:
+  /// Grab the most-recently-added state point.
+  DiagnosticState *GetCurDiagnosticState() const { return curDiagnosticState; }
+
 public:
+  bool HasSrcMgr() const { return sm != nullptr; }
+
+  void SetSrgMgr(SrcMgr *sm) { this->sm = sm; }
+  SrcMgr &GetSrcMgr() const {
+    assert(sm && "SourceManager not set!");
+    return *sm;
+  }
+
+  /// Copies the current DiagMappings and pushes the new copy
+  /// onto the top of the stack.
+  void PushMappings(SrcLoc loc);
+
+  /// Pops the current DiagMappings off the top of the stack,
+  /// causing the new top of the stack to be the active mappings.
+  ///
+  /// \returns \c true if the pop happens, \c false if there is only one
+  /// DiagMapping on the stack.
+  bool PopMappings(SrcLoc loc);
+
+  void SetListener(DiagnosticListener *listener);
+
+  // void AddArgument(DiagnosticArgument *argument);
+
+  /// Specify a limit for the number of errors we should
+  /// emit before giving up.
+  ///
+  /// Zero disables the limit.
+  void SetErrorLimit(unsigned limit) { errorLimit = limit; }
+
+  /// When set to true, any unmapped warnings are ignored.
+  ///
+  /// If this and WarningsAsErrors are both set, then this one wins.
+  void SetIgnoreAllWarnings(bool status) {
+    GetCurDiagnosticState()->ignoreAllWarnings = status;
+  }
+  // bool GetIgnoreAllWarnings() const {
+  //  return GetCurDiagState()->IgnoreAllWarnings;
+  // }
 };
 
 /// RAII class that determines when any errors have occurred

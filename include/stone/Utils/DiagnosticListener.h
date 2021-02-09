@@ -4,7 +4,7 @@
 #include "stone/Utils/DiagnosticOptions.h"
 
 namespace stone {
-class Diagnostics;
+class Diagnostic;
 
 class DiagnosticListener {
 protected:
@@ -38,12 +38,17 @@ public:
   ///
   /// The default implementation just keeps track of the total number of
   /// warnings and errors.
-  virtual void OnDiagnostics(diag::Severity severity,
-                             const Diagnostics &diagnostics);
+  virtual void OnDiagnostic(diag::Severity severity,
+                            const Diagnostic &diagnostic);
 };
 
 class FakeDiagnosticListener final : public DiagnosticListener {
 public:
+  void OnDiagnostic(diag::Severity severity,
+                    const Diagnostic &diagnostic) override {
+    // Ignore
+  }
 };
+
 } // namespace stone
 #endif
