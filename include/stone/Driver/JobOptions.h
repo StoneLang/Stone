@@ -1,18 +1,18 @@
 #ifndef STONE_DRIVER_JOBOPTIONS_H
 #define STONE_DRIVER_JOBOPTIONS_H
 
-#include "stone/Session/FileType.h"
 #include "stone/Session/SessionOptions.h"
+#include "stone/Utils/InputFile.h"
 
 namespace stone {
 namespace driver {
 
-using OutputFileType = file::FileType;
+using OutputType = file::Type;
 
 class JobOptions final {
 public:
-  InputFiles inputs;
-  OutputFileType outputFileType = file::FileType::None;
+  file::InputFiles inputs;
+  OutputType outputType = file::Type::None;
 
 public:
   JobOptions() {}

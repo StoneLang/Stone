@@ -1,11 +1,6 @@
 #ifndef STONE_SESSION_SESSION_H
 #define STONE_SESSION_SESSION_H
 
-#include "stone/Session/FileType.h"
-#include "stone/Session/Mode.h"
-#include "stone/Session/SessionOptions.h"
-#include "stone/Utils/Clock.h"
-#include "stone/Utils/Context.h"
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/IntrusiveRefCntPtr.h"
 #include "llvm/ADT/STLExtras.h"
@@ -31,6 +26,12 @@
 #include "llvm/Support/StringSaver.h"
 #include "llvm/Support/TargetRegistry.h"
 #include "llvm/Support/VirtualFileSystem.h"
+
+#include "stone/Session/Mode.h"
+#include "stone/Session/SessionOptions.h"
+#include "stone/Utils/Clock.h"
+#include "stone/Utils/Context.h"
+#include "stone/Utils/InputFile.h"
 
 namespace stone {
 
@@ -127,7 +128,7 @@ public:
   // TODO: You want to say
   void AddFile();
 
-  InputFiles &GetInputs() { return sessionOpts.inputs; }
+  file::InputFiles &GetInputs() { return sessionOpts.inputs; }
 
   /// Return the total amount of physical memory allocated
   /// for representing CompileInstances

@@ -9,9 +9,9 @@
 
 #include "stone/Driver/Job.h"
 #include "stone/Driver/LinkType.h"
-#include "stone/Session/FileType.h"
 #include "stone/Session/Mode.h"
 #include "stone/Session/Options.h"
+#include "stone/Utils/InputFile.h"
 #include "stone/Utils/LLVM.h"
 #include "stone/Utils/Mem.h"
 #include "llvm/ADT/APFloat.h"

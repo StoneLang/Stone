@@ -1,8 +1,8 @@
 #ifndef STONE_UTILS_INPUTFILE_H
 #define STONE_UTILS_INPUTFILE_H
 
-#include <stdio.h>
 #include <functional>
+#include <stdio.h>
 
 #include "llvm/ADT/DenseMapInfo.h"
 #include "llvm/ADT/StringRef.h"

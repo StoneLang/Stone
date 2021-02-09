@@ -53,7 +53,7 @@ Job *JobBuilder::BuildJobForCompile(Driver &driver, const InputFile input) {
          "The 'mode-type' does not support compiling.");
 
   Job *result = nullptr;
-  assert(input.first == FileType::Stone && "Incorrect file for compiling.");
+  assert(input.first == Type::Stone && "Incorrect file for compiling.");
   auto tool = driver.GetToolChain().PickTool(JobType::Compile);
   assert(tool && "Could not find a tool for CompileJob.");
   // result = tool->CreateJob(driver.GetCompilation(), std::move(cmdOutput),
@@ -69,7 +69,7 @@ int JobBuilder::BuildJobForLinking(Driver &driver) {
 
   auto job = JobBuilder::BuildJobForLinkingImpl(driver);
   for (const auto &input : driver.GetDriverOptions().inputs) {
-    assert(input.first == FileType::Object && "Incorrect file for linking.");
+    assert(input.first == Type::Object && "Incorrect file for linking.");
     job->AddInput(input);
   }
   driver.AddJobForCompilation(job);

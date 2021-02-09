@@ -9,28 +9,28 @@
 using namespace stone;
 using namespace stone::file;
 
-struct LocalFileType {
+struct LocalType {
   const char *Name;
   const char *Flags;
   const char *TempSuffix;
 };
 
-static const LocalFileType LocalFileTypes[] = {
+static const LocalType LocalTypes[] = {
 #define FILE_TYPE(NAME, TYPE, TEMP_SUFFIX, FLAGS) {NAME, FLAGS, TEMP_SUFFIX},
 #include "stone/Utils/InputFile.def"
 };
 
-static const LocalFileType &GetLocalFileType(unsigned ty) {
+static const LocalType &GetLocalType(unsigned ty) {
   assert(ty >= 0 && ty < file::INVALID && "Invalid Type ID.");
-  return LocalFileTypes[ty];
+  return LocalTypes[ty];
 }
 
 llvm::StringRef file::GetTypeName(file::Type ty) {
-  return GetLocalFileType(ty).Name;
+  return GetLocalType(ty).Name;
 }
 
 llvm::StringRef file::GetTypeTempSuffix(file::Type ty) {
-  return GetLocalFileType(ty).TempSuffix;
+  return GetLocalType(ty).TempSuffix;
 }
 
 file::Type file::GetTypeByExt(llvm::StringRef Ext) {

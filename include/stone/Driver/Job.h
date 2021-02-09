@@ -1,6 +1,12 @@
 #ifndef STONE_DRIVER_JOB_H
 #define STONE_DRIVER_JOB_H
 
+#include "llvm/ADT/StringMap.h"
+#include "llvm/ADT/StringRef.h"
+#include "llvm/Option/Arg.h"
+#include "llvm/Option/ArgList.h"
+#include "llvm/Support/StringSaver.h"
+
 #include "stone/Driver/CmdOutput.h"
 #include "stone/Driver/CrashState.h"
 #include "stone/Driver/JobOptions.h"
@@ -10,11 +16,8 @@
 #include "stone/Session/SessionOptions.h"
 #include "stone/Utils/List.h"
 #include "stone/Utils/Stats.h"
-#include "llvm/ADT/StringMap.h"
-#include "llvm/ADT/StringRef.h"
-#include "llvm/Option/Arg.h"
-#include "llvm/Option/ArgList.h"
-#include "llvm/Support/StringSaver.h"
+
+using namespace stone::file;
 
 namespace stone {
 namespace driver {
@@ -76,7 +79,7 @@ public:
   const char *GetName() { return Job::GetNameByType(jobType); }
 
   llvm::StringRef GetOutputTypeName() {
-    return file::GetTypeName(jobOpts.outputFileType);
+    return file::GetTypeName(jobOpts.outputType);
   }
 
   /// TODO

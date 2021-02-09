@@ -104,7 +104,7 @@ void DriverInternal::BuildCompileJobs(Driver &driver) {
   auto cmdOutput = llvm::make_unique<CmdOutput>("todo", fileMap);
 
   for (const auto &input : driver.GetDriverOptions().inputs) {
-    if (input.first == FileType::Stone) {
+    if (input.first == Type::Stone) {
       assert(file::IsPartOfCompilation(input.first));
 
       auto job = tool->CreateJob(driver.GetCompilation(), std::move(cmdOutput),
@@ -127,7 +127,7 @@ void DriverInternal::BuildLinkJob(Driver &driver) {
   if (driver.GetMode().IsLinkOnly()) {
     for (const auto &input : driver.GetDriverOptions().inputs) {
       switch (input.first) {
-      case FileType::Object:
+      case Type::Object:
         break;
       default:
         break;
@@ -198,7 +198,7 @@ void DriverInternal::BuildJobsForSingleCompileType(Driver &driver) {
 
     for (const auto &input : driver.GetDriverOptions().inputs) {
       switch (input.first) {
-        case file::FileType::Stone: {
+        case file::Type::Stone: {
           assert(file::IsPartOfCompilation(input.first));
           job->AddInput(input);
           break;
@@ -362,19 +362,19 @@ void Driver::BuildInputs(const ToolChain &tc, const DerivedArgList &args,
   for (Arg *arg : args) {
     if (arg->getOption().getKind() == Option::InputClass) {
       llvm::StringRef argValue = arg->getValue();
-      file::FileType ft = file::FileType::INVALID;
+      file::Type ft = file::Type::INVALID;
       // stdin must be handled specially.
       if (argValue.equals("-")) {
         // By default, treat stdin as Swift input.
-        ft = file::FileType::Stone;
+        ft = file::Type::Stone;
       } else {
         // Otherwise lookup by internal.
         ft = file::GetTypeByExt(file::GetExt(argValue));
 
-        if (ft == file::FileType::INVALID) {
+        if (ft == file::Type::INVALID) {
           // By default, treat inputs with no internal, or with an
           // internal that isn't recognized, as object files.
-          ft = file::FileType::Object;
+          ft = file::Type::Object;
         }
       }
 
@@ -382,7 +382,7 @@ void Driver::BuildInputs(const ToolChain &tc, const DerivedArgList &args,
         driverOpts.AddInput(ft, argValue);
       }
 
-      if (ft == FileType::Stone) {
+      if (ft == Type::Stone) {
         auto basename = llvm::sys::path::filename(argValue);
         if (!seenSourceFiles.insert({basename, argValue}).second) {
           Out() << "de.D(SourceLoc(),"
@@ -400,13 +400,12 @@ void Driver::BuildInputs(const ToolChain &tc, const DerivedArgList &args,
 
 void Driver::BuildOutputProfile(const llvm::opt::DerivedArgList &args,
                                 OutputProfile &outputProfile) const {
-  auto compilerOutputType = outputProfile.ltoVariant != LTOKind::None
-                                ? FileType::BC
-                                : FileType::Object;
+  auto compilerOutputType =
+      outputProfile.ltoVariant != LTOKind::None ? Type::BC : Type::Object;
   // By default, the driver does not link its outputProfile. this will be
   // updated appropriately below if linking is required.
   //
-  outputProfile.compilerOutputFileType = compilerOutputType;
+  outputProfile.compilerOutputType = compilerOutputType;
 
   // if (const Arg *numThreads = args.getLastArg(opts::NumThreads)) {
   // if (StringRef(A->getValue()).getAsInteger(10, outputProfile.numThreads)) {
@@ -421,29 +420,29 @@ void Driver::BuildOutputProfile(const llvm::opt::DerivedArgList &args,
     outputProfile.linkType = args.hasArg(opts::Static)
                                  ? LinkType::StaticLibrary
                                  : LinkType::DynamicLibrary;
-    outputProfile.compilerOutputFileType = compilerOutputType;
+    outputProfile.compilerOutputType = compilerOutputType;
   } break;
   case ModeKind::EmitObject:
-    outputProfile.compilerOutputFileType = FileType::Object;
+    outputProfile.compilerOutputType = Type::Object;
     break;
   case ModeKind::EmitAssembly:
-    outputProfile.compilerOutputFileType = FileType::Assembly;
+    outputProfile.compilerOutputType = Type::Assembly;
     break;
   case ModeKind::EmitIR:
-    outputProfile.compilerOutputFileType = FileType::IR;
+    outputProfile.compilerOutputType = Type::IR;
     break;
   case ModeKind::EmitBC:
-    outputProfile.compilerOutputFileType = FileType::BC;
+    outputProfile.compilerOutputType = Type::BC;
     break;
   case ModeKind::Parse:
   case ModeKind::Check:
-    outputProfile.compilerOutputFileType = FileType::None;
+    outputProfile.compilerOutputType = Type::None;
     break;
   default:
     outputProfile.linkType = LinkType::Executable;
     break;
   }
-  assert(outputProfile.compilerOutputFileType != FileType::INVALID);
+  assert(outputProfile.compilerOutputType != Type::INVALID);
 }
 
 ModeKind Driver::GetDefaultModeKind() { return ModeKind::EmitExecutable; }

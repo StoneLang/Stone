@@ -3,11 +3,11 @@
 
 #include "stone/Compile/Compiler.h"
 #include "stone/Gen/CodeGenOptions.h"
-#include "stone/Session/FileType.h"
 #include "stone/Session/Mode.h"
 #include "stone/Session/SessionOptions.h"
 #include "stone/Syntax/SearchPathOptions.h"
 #include "stone/Utils/FileSystemOptions.h"
+#include "stone/Utils/InputFile.h"
 #include "stone/Utils/SrcLoc.h"
 #include "llvm/ADT/ArrayRef.h"
 
@@ -22,11 +22,11 @@ public:
   struct Input final {
     SrcID srcID;
     llvm::StringRef filename;
-    file::FileType fileType;
+    file::Type fileType;
   };
   struct Output final {
     llvm::StringRef filename;
-    file::FileType fileType;
+    file::Type fileType;
   };
   enum class Stage { None, Parsed, Checked };
 

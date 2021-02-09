@@ -84,7 +84,7 @@ public:
   bool generateModule = false;
 
   /// The output type which should be used for the compiler
-  file::FileType compilerOutputFileType = file::FileType::INVALID;
+  file::Type compilerOutputType = file::Type::INVALID;
 
   /// Whether or not the driver should generate a module.
   bool shouldGenerateModule = false;

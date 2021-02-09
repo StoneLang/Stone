@@ -93,8 +93,8 @@ public:
   /// cached code completion.
   void SetMainModule(Module *moduleDecl);
 
-  void SetInputType(file::FileType ty) { compilerOpts.inputFileType = ty; }
-  file::FileType GetInputKind() const { return compilerOpts.inputFileType; }
+  void SetInputType(file::Type ty) { compilerOpts.inputType = ty; }
+  file::Type GetInputKind() const { return compilerOpts.inputType; }
 
   void SetModuleName(llvm::StringRef name) { compilerOpts.moduleName = name; }
   const llvm::StringRef GetModuleName() const {

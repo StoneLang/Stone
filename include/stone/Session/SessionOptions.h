@@ -1,7 +1,6 @@
 #ifndef STONE_SESSION_SESSIONOPTIONS_H
 #define STONE_SESSION_SESSIONOPTIONS_H
 
-#include "stone/Session/FileType.h"
 #include "stone/Session/ModeKind.h"
 #include "stone/Session/Options.h"
 #include "stone/Utils/InputFile.h"
@@ -24,9 +23,9 @@ public:
   llvm::StringRef moduleName;
 
   /// The file input kind
-  file::FileType inputFileType = file::FileType::None;
+  file::Type inputType = file::Type::None;
 
-  InputFiles inputs;
+  file::InputFiles inputs;
 
 public:
   SessionOptions() : optTable(stone::CreateOptTable()) {}
@@ -34,7 +33,7 @@ public:
 public:
   llvm::opt::OptTable &GetOpts() const { return *optTable.get(); }
 
-  void AddInput(file::FileType ty, llvm::StringRef name) {
+  void AddInput(file::Type ty, llvm::StringRef name) {
     inputs.push_back(std::make_pair(ty, name));
   }
 };
