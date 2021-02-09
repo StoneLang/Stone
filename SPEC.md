@@ -2,7 +2,6 @@
 
 ## Introduction 
 
-
 ## Lexical Structure
 	##Whitespace and Comments
 
@@ -20,7 +19,6 @@
 
 
 ## Declarations
-
 
 ## Built-in
 
