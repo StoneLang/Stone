@@ -13,12 +13,10 @@ set(stone_compile_sources
 	Compiler.cpp
 	CompilerScope.cpp
 	CompilerUnit.cpp
-	Optimize.cpp
 
 	LINK_LIBS
-	StoneCheck
+	StoneFrontend
 	StoneGen
-	StoneParse
 	StoneSession
 
 	DEPENDS

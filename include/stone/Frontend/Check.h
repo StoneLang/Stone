@@ -1,5 +1,5 @@
-#ifndef STONE_CHECK_CHECK_H
-#define STONE_CHECK_CHECK_H
+#ifndef STONE_FRONTEND_CHECK_H
+#define STONE_FRONTEND_CHECK_H
 
 #include "llvm/ADT/ArrayRef.h"
 

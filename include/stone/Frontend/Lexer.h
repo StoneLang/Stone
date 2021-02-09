@@ -1,8 +1,8 @@
-#ifndef STONE_PARSE_LEXER_H
-#define STONE_PARSE_LEXER_H
+#ifndef STONE_FRONTEND_LEXER_H
+#define STONE_FRONTEND_LEXER_H
 
-#include "stone/Parse/Token.h"
-#include "stone/Parse/Trivia.h"
+#include "stone/Frontend/Token.h"
+#include "stone/Frontend/Trivia.h"
 #include "stone/Utils/Clock.h"
 #include "stone/Utils/Context.h"
 #include "stone/Utils/DiagnosticEngine.h"

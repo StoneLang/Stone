@@ -7,15 +7,19 @@ set( LLVM_LINK_COMPONENTS
   Core
   IPO
   )
-set(stone_check_sources
+set(stone_frontend_sources
 	Check.cpp
 	Checker.cpp
+	Lexer.cpp
+	Optimize.cpp
+	Parse.cpp
+	Parser.cpp
 
 	LINK_LIBS
 	StoneSyntax
 )
-add_stone_library(StoneCheck
-	${stone_check_sources}
+add_stone_library(StoneFrontend
+	${stone_frontend_sources}
 )
 
 
