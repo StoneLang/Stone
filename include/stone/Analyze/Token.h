@@ -8,9 +8,8 @@
 namespace stone {
 namespace syn {
 class Token final {
-  /// kind - The actual flavor of token this is.
-  ///
-  tk kind;
+  /// The token type
+  tk ty;
 
   /// Whether this token is the first token on the line.
   unsigned atStartOfLine : 1;
@@ -39,21 +38,21 @@ class Token final {
   }
 
 public:
-  Token(tk kind, StringRef text, unsigned commentLength = 0)
-      : kind(kind), atStartOfLine(false), escapedIdentifier(false),
+  Token(tk ty, StringRef text, unsigned commentLength = 0)
+      : ty(ty), atStartOfLine(false), escapedIdentifier(false),
         multilineString(false), customDelimiterLen(0),
         commentLength(commentLength), text(text) {}
 
   Token() : Token(tk::MAX, {}, 0) {}
 
-  tk GetKind() const { return kind; }
-  void SetKind(tk k) { kind = k; }
+  tk GetKind() const { return ty; }
+  void SetKind(tk k) { ty = k; }
   void ClearCommentLength() { commentLength = 0; }
 
-  /// is/isNot - Predicates to check if this token is a specific kind, as in
+  /// is/isNot - Predicates to check if this token is a specific ty, as in
   /// "if (Tok.is(tok::l_brace)) {...}".
-  bool Is(tk K) const { return kind == K; }
-  bool IsNot(tk K) const { return kind != K; }
+  bool Is(tk K) const { return ty == K; }
+  bool IsNot(tk K) const { return ty != K; }
 
   // Predicates to check to see if the token is any of a list of tokens.
 
@@ -70,12 +69,12 @@ public:
   }
 
   bool IsBinaryOperator() const {
-    return kind == tk::oper_binary_spaced || kind == tk::oper_binary_unspaced;
+    return ty == tk::oper_binary_spaced || ty == tk::oper_binary_unspaced;
   }
 
   bool IsAnyOperator() const {
-    return IsBinaryOperator() || kind == tk::oper_postfix ||
-           kind == tk::oper_prefix;
+    return IsBinaryOperator() || ty == tk::oper_postfix ||
+           ty == tk::oper_prefix;
   }
   bool IsNotAnyOperator() const { return !IsAnyOperator(); }
 
@@ -92,7 +91,7 @@ public:
   bool IsEscapedIdentifier() const { return escapedIdentifier; }
   /// Set whether this token is an escaped identifier token.
   void SetEscapedIdentifier(bool value) {
-    assert((!value || kind == tk::identifier) &&
+    assert((!value || ty == tk::identifier) &&
            "only identifiers can be escaped identifiers");
     escapedIdentifier = value;
   }
@@ -104,17 +103,17 @@ public:
 
   /// True if the token is an l_paren token that does not start a new line.
   bool IsFollowingLParen() const {
-    return !IsAtStartOfLine() && kind == tk::l_paren;
+    return !IsAtStartOfLine() && ty == tk::l_paren;
   }
 
   /// True if the token is an l_square token that does not start a new line.
   bool IsFollowingLSquare() const {
-    return !IsAtStartOfLine() && kind == tk::l_square;
+    return !IsAtStartOfLine() && ty == tk::l_square;
   }
 
   /// True if the token is any keyword.
   bool IsKeyword() const {
-    switch (kind) {
+    switch (ty) {
 #define KEYWORD(X, S)                                                          \
   case tk::kw_##X:                                                             \
     return true;
@@ -126,7 +125,7 @@ public:
 
   /// True if the token is any literal.
   bool IsLiteral() const {
-    switch (kind) {
+    switch (ty) {
     case tk::integer_literal:
     case tk::floating_literal:
     case tk::string_literal:
@@ -137,7 +136,7 @@ public:
   }
 
   bool IsPunctuation() const {
-    switch (kind) {
+    switch (ty) {
 #define PUNCTUATOR(Name, Str)                                                  \
   case tk::Name:                                                               \
     return true;
@@ -153,7 +152,7 @@ public:
   unsigned GetCustomDelimiterLen() const { return customDelimiterLen; }
   /// Set characteristics of string literal token.
   void setStringLiteral(bool isMultilineString, unsigned customDelimiterLen) {
-    assert(kind == tk::string_literal);
+    assert(ty == tk::string_literal);
     this->multilineString = isMultilineString;
     this->customDelimiterLen = customDelimiterLen;
   }
@@ -200,9 +199,9 @@ public:
 
   void SetText(StringRef T) { text = T; }
 
-  /// Set the token to the specified kind and source range.
+  /// Set the token to the specified ty and source range.
   void SetToken(tk K, StringRef T, unsigned commentLength = 0) {
-    kind = K;
+    ty = K;
     text = T;
     this->commentLength = commentLength;
     escapedIdentifier = false;
