@@ -1,4 +1,4 @@
-#include "stone/Frontend/Checker.h"
+#include "stone/Analyze/Checker.h"
 #include "stone/Utils/Ret.h"
 
 using namespace stone;

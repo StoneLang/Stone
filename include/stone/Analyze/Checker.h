@@ -1,5 +1,5 @@
-#ifndef STONE_FRONTEND_CHECKER_H
-#define STONE_FRONTEND_CHECKER_H
+#ifndef STONE_ANALYZE_CHECKER_H
+#define STONE_ANALYZE_CHECKER_H
 
 #include <memory>
 
