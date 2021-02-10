@@ -515,14 +515,14 @@ void Lexer::LexStrLiteral() {}
 
 void Lexer::Diagnose() {}
 
-void Lexer::CreateToken(tk::Type kind, const char *tokenStart) {
+void Lexer::CreateToken(tk::Type ty, const char *tokenStart) {
   assert(curPtr >= bufferStart && curPtr <= bufferEnd &&
          "Cannot create token -- the current pointer is out of range!");
   // When we are lexing a subrange from the middle of a file buffer, we will
   // run past the end of the range, but will stay within the file.  Check if
   // we are past the imaginary EOF, and synthesize a tok::eof in this case.
-  if (kind != tk::Type::eof && tokenStart >= artificialEOF) {
-    kind = tk::Type::eof;
+  if (ty != tk::Type::eof && tokenStart >= artificialEOF) {
+    ty = tk::Type::eof;
   }
   // TODO:
   unsigned commentLength = 0;
@@ -530,11 +530,11 @@ void Lexer::CreateToken(tk::Type kind, const char *tokenStart) {
   llvm::StringRef tokenText{tokenStart,
                             static_cast<size_t>(curPtr - tokenStart)};
 
-  if (triviaRetention == TriviaRetentionMode::With && kind != tk::Type::eof) {
+  if (triviaRetention == TriviaRetentionMode::With && ty != tk::Type::eof) {
     assert(trailingTrivia.empty() && "TrailingTrivia is empty here");
     LexTrivia(trailingTrivia, /* IsForTrailingTrivia */ true);
   }
-  nextToken.SetToken(kind, tokenText, commentLength);
+  nextToken.SetToken(ty, tokenText, commentLength);
 }
 
 void LexerStats::Print() {}

@@ -136,7 +136,7 @@ public:
   /// If this is a source-language token (e.g. 'for'), this API
   /// can be used to cause the lexer to map identifiers to source-language
   /// tokens.
-	tk::Type getTokenKind() const { return ty; }
+	tk::Type GetTokenType() const { return ty; }
 
   /// True if revertTokenIDToIdentifier() was called.
   bool hasRevertedTokenIDToIdentifier() const { return RevertedTokenID; }

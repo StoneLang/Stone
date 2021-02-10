@@ -6,7 +6,7 @@
 
 using namespace stone::syn;
 
-void stone::ParseSourceFile(syn::SourceFile &su, Pipeline *pipeline) {
+void stone::ParseSourceFile(syn::SourceFile &sf, Pipeline *pipeline) {
   // Parser parser(pipeline);
   //
 }
