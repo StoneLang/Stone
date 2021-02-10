@@ -2,7 +2,7 @@
 #define STONE_ANALYZE_TOKEN_H
 
 #include "stone/Utils/LLVM.h"
-#include "stone/Utils/TokenKind.h"
+#include "stone/Utils/TokenType.h"
 #include "llvm/ADT/StringRef.h"
 
 namespace stone {
@@ -118,7 +118,7 @@ public:
 #define KEYWORD(X, S)                                                          \
   case tk::kw_##X:                                                             \
     return true;
-#include "stone/Utils/TokenKind.def"
+#include "stone/Utils/TokenType.def"
     default:
       return false;
     }
@@ -141,7 +141,7 @@ public:
 #define PUNCTUATOR(Name, Str)                                                  \
   case tk::Name:                                                               \
     return true;
-#include "stone/Utils/TokenKind.def"
+#include "stone/Utils/TokenType.def"
     default:
       return false;
     }

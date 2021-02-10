@@ -15,7 +15,7 @@
 #include "stone/Syntax/Identifier.h"
 #include "stone/Utils/Char.h"
 #include "stone/Utils/LangOptions.h"
-#include "stone/Utils/TokenKind.h"
+#include "stone/Utils/TokenType.h"
 //#include "stone/Syntax/OperatorKinds.h"
 //#include "stone/Syntax/Specifiers.h"
 
@@ -43,7 +43,7 @@ bool Identifier::IsKeyword(const LangOptions &langOpts) const {
 #define KEYWORD(NAME, FLAG)                                                    \
   case tk::kw_##NAME:                                                          \
     return GetKeywordStatus(langOpts, FLAG) == KeywordStatus::On;
-#include "stone/Utils/TokenKind.def"
+#include "stone/Utils/TokenType.def"
   default:
     return false;
   }
@@ -73,7 +73,7 @@ void IdentifierTable::AddKeywords(const LangOptions &LangOpts) {
   // Add keywords and tokens for the current language.
 #define KEYWORD(NAME, FLAG)                                                    \
   AddKeyword(llvm::StringRef(#NAME), tk::kw_##NAME, FLAG, langOpts, *this);
-#include "stone/Utils/TokenKind.def"
+#include "stone/Utils/TokenType.def"
 }
 
 //===----------------------------------------------------------------------===//

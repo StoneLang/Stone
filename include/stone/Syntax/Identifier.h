@@ -10,7 +10,7 @@
 
 #include "stone/Utils/LLVM.h"
 #include "stone/Utils/Stats.h"
-#include "stone/Utils/TokenKind.h"
+#include "stone/Utils/TokenType.h"
 #include "llvm/ADT/DenseMapInfo.h"
 #include "llvm/ADT/SmallString.h"
 #include "llvm/ADT/StringMap.h"
