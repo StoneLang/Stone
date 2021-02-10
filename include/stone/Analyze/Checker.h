@@ -16,7 +16,6 @@ class Pipeline;
 namespace syn {
 class SourceFile;
 }
-
 namespace sema {
 class Checker;
 

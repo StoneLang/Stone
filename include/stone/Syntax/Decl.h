@@ -20,7 +20,6 @@
 #include "llvm/Support/VersionTuple.h"
 
 #include "stone/Syntax/DeclBits.h"
-#include "stone/Syntax/DeclKind.h"
 #include "stone/Syntax/DeclName.h"
 #include "stone/Syntax/Identifier.h"
 #include "stone/Syntax/TreeNode.h"
@@ -44,9 +43,19 @@ public:
   void Print() override;
 };
 
-class alignas(8) Decl : public TreeNode /*TODO: Object */ {
+class alignas(8) Decl : public TreeNode {
+public:
+  enum Type {
+#define DECL(Id, Parent) Id,
+#define LAST_DECL(Id) LastDecl = Id,
+#define DECL_RANGE(Id, FirstId, LastId)                                        \
+  First##Id##Decl = FirstId, Last##Id##Decl = LastId,
+#include "stone/Syntax/DeclType.def"
+  };
+
+private:
   friend DeclStats;
-  decl::Kind kind;
+  Decl::Type ty;
   SrcLoc loc;
   DeclContext *dc;
 
@@ -84,17 +93,16 @@ public:
   llvm::PointerUnion<DeclContext *, MultipleDeclContext *> declCtx;
 
 public:
-  decl::Kind GetKind() { return kind; }
+  Decl::Type GetType() { return ty; }
 
 protected:
-  Decl(decl::Kind kind, DeclContext *dc, SrcLoc loc)
-      : kind(kind), dc(dc), loc(loc) {}
+  Decl(Decl::Type ty, DeclContext *dc, SrcLoc loc) : ty(ty), dc(dc), loc(loc) {}
 };
 
 class DeclContext {
 public:
   // TODO: Think about
-  enum class Kind : unsigned { Module };
+  enum class Type : unsigned { Module };
 
 protected:
   /// This anonymous union stores the bits belonging to DeclContext and classes
@@ -153,13 +161,13 @@ protected:
 
 class NamingDecl : public Decl {
   /// The name of this declaration, which is typically a normal
-  /// identifier but may also be a special kind of name (C++
+  /// identifier but may also be a special ty of name (C++
   /// constructor, etc.)
   DeclName name;
 
 protected:
-  NamingDecl(decl::Kind kind, DeclContext *dc, SrcLoc loc, DeclName name)
-      : Decl(kind, dc, loc), name(name) {}
+  NamingDecl(Decl::Type ty, DeclContext *dc, SrcLoc loc, DeclName name)
+      : Decl(ty, dc, loc), name(name) {}
 
 public:
   /// Get the identifier that names this declaration, if there is one.
@@ -194,7 +202,7 @@ public:
 class SpaceDecl : public NamingDecl {
 public:
   SpaceDecl(DeclContext *dc, SrcLoc loc, DeclName name)
-      : NamingDecl(decl::Kind::Space, dc, loc, name) {}
+      : NamingDecl(Decl::Type::Space, dc, loc, name) {}
 };
 
 class DeclaratorDecl : public ValueDecl {

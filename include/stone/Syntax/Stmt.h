@@ -21,7 +21,6 @@
 #include "llvm/Support/VersionTuple.h"
 
 #include "stone/Syntax/StmtBits.h"
-#include "stone/Syntax/StmtKind.h"
 #include "stone/Syntax/TreeNode.h"
 #include "stone/Utils/LLVM.h"
 #include "stone/Utils/SrcLoc.h"
@@ -37,7 +36,11 @@ class StringLiteral;
 class VarDecl;
 
 class Stmt : public TreeNode {
-  stmt::Kind kind;
+public:
+  enum Type {};
+
+private:
+  Stmt::Type ty;
 
 public:
   Stmt() = delete;
@@ -47,7 +50,7 @@ public:
   Stmt &operator=(Stmt &&) = delete;
 
 public:
-  stmt::Kind GetKind() { return kind; }
+  Stmt::Type GetType() { return ty; }
 };
 
 class DeclStmt : public Stmt {

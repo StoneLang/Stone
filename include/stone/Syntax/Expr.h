@@ -9,7 +9,6 @@
 #include <type_traits>
 #include <utility>
 
-#include "stone/Syntax/ExprKind.h"
 #include "stone/Syntax/Stmt.h"
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/PointerIntPair.h"
@@ -25,7 +24,11 @@ namespace stone {
 namespace syn {
 
 class Expr : public ValueStmt {
-  expr::Kind kind;
+public:
+  enum Type {};
+
+private:
+  Expr::Type ty;
 
 public:
   Expr() = delete;
@@ -33,6 +36,9 @@ public:
   Expr(Expr &&) = delete;
   Expr &operator=(const Expr &) = delete;
   Expr &operator=(Expr &&) = delete;
+
+public:
+  Expr::Type GetType() { return ty; }
 
 public:
 };
