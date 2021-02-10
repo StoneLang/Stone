@@ -25,11 +25,11 @@
 #include "llvm/Support/PrettyStackTrace.h"
 #include "llvm/Support/StringSaver.h"
 #include "llvm/Support/TargetRegistry.h"
+#include "llvm/Support/Timer.h"
 #include "llvm/Support/VirtualFileSystem.h"
 
 #include "stone/Session/Mode.h"
 #include "stone/Session/SessionOptions.h"
-#include "stone/Utils/Clock.h"
 #include "stone/Utils/Context.h"
 #include "stone/Utils/InputFile.h"
 
@@ -76,7 +76,7 @@ public:
   }
   llvm::vfs::FileSystem &GetFS() const { return *fileSystem; }
 
-  Clock clock;
+  llvm::Timer timer;
 
 public:
   Session(SessionOptions &sessionOpts);

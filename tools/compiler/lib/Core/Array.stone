@@ -1,0 +1,6 @@
+
+
+space Stone.Core.Collections {
+	public struct Array {
+	}
+}

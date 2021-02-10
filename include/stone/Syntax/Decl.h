@@ -228,6 +228,7 @@ public:
 class DtorDecl : public FunctionDecl {
 public:
 };
+
 } // namespace syn
 } // namespace stone
 #endif

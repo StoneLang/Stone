@@ -6,6 +6,7 @@
 #include "llvm/Option/Arg.h"
 #include "llvm/Option/ArgList.h"
 #include "llvm/Support/StringSaver.h"
+#include "llvm/Support/Timer.h"
 
 #include "stone/Driver/CmdOutput.h"
 #include "stone/Driver/CrashState.h"
@@ -42,6 +43,8 @@ protected:
   JobOptions jobOpts;
   Compilation &compilation;
   JobID jobID;
+  llvm::Timer timer;
+
   /// Inputs
   ConstList<Job> deps;
   /// The output of this command.

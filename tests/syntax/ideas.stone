@@ -14,13 +14,13 @@ class C0 :  CI {
 	public System* system = null;  
 }
 
-C0::init(Options* options, Context* context) {
+init public fun C0::Init(Options* options, Context* context) {
 
 	this.options = options;
 	this.context = context; 
 	this.system = new System(); 
 }
-C0::end(){ 
+end public fun C0::End(){ 
 	free system;
 	free options; 
 }
@@ -33,7 +33,7 @@ init public fun C0::Init(const Options* options, Context* context) {
 	me.system = new System(); 
 }
 [test]
-end public fun C0::End() { 
+defer public fun C0::Defer() { 
 	free {
 		system;
 		options;
@@ -135,7 +135,7 @@ space Physics {
 		return true; 
 	}
 	
-  use(Electron) auto a = new LinearAccelerator();
+	with(Electron) auto a = new LinearAccelerator();
   auto e = new Electron();
 	
   a.Fire(electron);
@@ -148,7 +148,7 @@ public fun Pass(use(int) Queue q) -> {
 
 fun Main() -> int {
 
-	use(LinearAccelerator) 
+	with(LinearAccelerator) 
 		Accelerator* a = new LinearAccelerator();
 
 	Particle* p = new Electron();

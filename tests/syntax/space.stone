@@ -1,40 +1,37 @@
 
 // File CM.stone
-space System.Physics.CM; 
-
-public fun Fire(Projectile* projectile) -> bool {
-	return true; 
+space System.Physics.CM { 
+	public fun Fire(const Projectile* projectile) -> bool {
+		return true; 
+	}
 }
-
-
 // QM.stone 
 // Every file belongs to one space which is different from a module -- 
 // The module this file belongs to is System.Physics; 
-space System.Physics.QM; 
+space System.Physics.QM {
 
-public struct Particle {
 
-}
+	public struct Particle {
+	}
+	any(T) interface Accelerator {
+		fun Fire(Particle* particle) -> bool; 
+	}
+	public class Cyclotron : use(Cyclotron) Accelerator {
+	}
+	public fun Cyclotron::Fire(Particle* particle) -> bool {
+		return true; 
+	}
 
-any(T) interface Accelerator {
-	fun Fire(Particle* particle) -> bool; 
+	public class Linear : use(Linear) Accelerator {
+	}
+	public fun Linear::Fire(Particle* particle) -> bool {
+		return true; 
+	}
 }
-public class Cyclotron : use(Cyclotron) Accelerator {
-}
-public fun Cyclotron::Fire(Particle* particle) -> bool {
-	return true; 
-}
-
-public class Linear : use(Linear) Accelerator {
-}
-public fun Linear::Fire(Particle* particle) -> bool {
-	return true; 
-}
-
 
 // Main.stone 
-using System.Physics;
-using System.Physics.QM; 
+use System.Physics;
+use System.Physics.QM; 
 
 fun Main() -> int {
 

@@ -9,7 +9,7 @@ namespace stone {
 namespace syn {
 class Token final {
   /// The token type
-	tk::Type ty;
+  tk::Type ty;
 
   /// Whether this token is the first token on the line.
   unsigned atStartOfLine : 1;
@@ -69,7 +69,8 @@ public:
   }
 
   bool IsBinaryOperator() const {
-    return ty == tk::Type::oper_binary_spaced || ty == tk::Type::oper_binary_unspaced;
+    return ty == tk::Type::oper_binary_spaced ||
+           ty == tk::Type::oper_binary_unspaced;
   }
 
   bool IsAnyOperator() const {
@@ -115,7 +116,7 @@ public:
   bool IsKeyword() const {
     switch (ty) {
 #define KEYWORD(X, S)                                                          \
-  case tk::Type::kw_##X:                                                             \
+  case tk::Type::kw_##X:                                                       \
     return true;
 #include "stone/Utils/TokenType.def"
     default:
@@ -138,7 +139,7 @@ public:
   bool IsPunctuation() const {
     switch (ty) {
 #define PUNCTUATOR(Name, Str)                                                  \
-  case tk::Type::Name:                                                               \
+  case tk::Type::Name:                                                         \
     return true;
 #include "stone/Utils/TokenType.def"
     default:

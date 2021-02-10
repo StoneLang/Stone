@@ -31,7 +31,7 @@ class Compiler final : public Session {
   FileMgr fm;
   Pipeline *pipeline = nullptr;
   mutable Module *mainModule = nullptr;
-  std::unique_ptr<TreeContext> ac;
+  std::unique_ptr<TreeContext> tc;
 
   friend CompilerStats;
   std::unique_ptr<CompilerStats> stats;
@@ -83,7 +83,7 @@ public:
 
   SrcMgr &GetSrcMgr() { return sm; }
 
-  TreeContext &GetTreeContext() { return *ac.get(); }
+  TreeContext &GetTreeContext() { return *tc.get(); }
   // stone::syn::Module &GetModule() { return *md.get(); }
   //
   /// Retrieve the main module containing the files being compiled.

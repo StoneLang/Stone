@@ -1,0 +1,9 @@
+
+use System.Console; 
+
+public fun Main() -> {
+	int i = 0; 
+	if(i == 0){
+		Print("This works.");
+	}
+}

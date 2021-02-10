@@ -1,1 +1,6 @@
 
+
+space Stone.Math {
+	public fun Sin() -> void {
+	}
+}

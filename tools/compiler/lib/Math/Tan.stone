@@ -1,0 +1,6 @@
+
+
+space Stone.Math {
+	public fun Tan() -> void {
+	}
+}

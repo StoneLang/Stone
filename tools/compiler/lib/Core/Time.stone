@@ -1,2 +1,10 @@
 
 
+space Stone.Time {
+
+public struct Time {
+}
+
+
+
+}

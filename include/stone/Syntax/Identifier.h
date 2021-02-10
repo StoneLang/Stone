@@ -45,7 +45,7 @@ class alignas(IdentifierAlignment) Identifier {
   friend class IdentifierTable;
 
   // Front-end token ID or tk::Type::identifier.
-	tk::Type ty;
+  tk::Type ty;
 
   // ObjC keyword ('protocol' in '@protocol') or builtin (__builtin_inf).
   // First NUM_OBJC_KEYWORDS values are for Objective-C,
@@ -136,7 +136,7 @@ public:
   /// If this is a source-language token (e.g. 'for'), this API
   /// can be used to cause the lexer to map identifiers to source-language
   /// tokens.
-	tk::Type GetTokenType() const { return ty; }
+  tk::Type GetTokenType() const { return ty; }
 
   /// True if revertTokenIDToIdentifier() was called.
   bool hasRevertedTokenIDToIdentifier() const { return RevertedTokenID; }

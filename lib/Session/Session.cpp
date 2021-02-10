@@ -9,7 +9,9 @@ Session::Session(SessionOptions &sessionOpts)
     : sessionOpts(sessionOpts), mode(ModeType::None),
       targetTriple(llvm::sys::getDefaultTargetTriple()),
       fileSystem(llvm::vfs::getRealFileSystem()), strSaver(bumpAlloc) {
-  clock.Start();
+
+  // TODO: -print-stats
+  timer.startTimer();
 }
 
 Session::~Session() {}
@@ -98,7 +100,7 @@ void Session::ComputeMode(const llvm::opt::DerivedArgList &args) {
 void Session::Purge() {}
 
 void Session::Finish() {
-  clock.Stop();
+  timer.stopTimer();
   Purge();
   PrintDiagnostics();
   PrintStatistics();

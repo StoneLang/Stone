@@ -41,7 +41,7 @@ static KeywordStatus GetKeywordStatus(const LangOptions &langOpts,
 bool Identifier::IsKeyword(const LangOptions &langOpts) const {
   switch (ty) {
 #define KEYWORD(NAME, FLAG)                                                    \
-  case tk::Type::kw_##NAME:                                                          \
+  case tk::Type::kw_##NAME:                                                    \
     return GetKeywordStatus(langOpts, FLAG) == KeywordStatus::On;
 #include "stone/Utils/TokenType.def"
   default:
@@ -72,7 +72,8 @@ static void AddKeyword(llvm::StringRef keyword, tk::Type kind, unsigned flag,
 void IdentifierTable::AddKeywords(const LangOptions &LangOpts) {
   // Add keywords and tokens for the current language.
 #define KEYWORD(NAME, FLAG)                                                    \
-  AddKeyword(llvm::StringRef(#NAME), tk::Type::kw_##NAME, FLAG, langOpts, *this);
+  AddKeyword(llvm::StringRef(#NAME), tk::Type::kw_##NAME, FLAG, langOpts,      \
+             *this);
 #include "stone/Utils/TokenType.def"
 }
 

@@ -277,6 +277,15 @@ class DiagnosticEngine final {
   SrcMgr *sm = nullptr;
 
 private:
+  /// The location of the current diagnostic that is in flight.
+  SrcLoc curDiagLoc;
+  /// The ID of the current diagnostic that is in flight.
+  ///
+  /// This is set to std::numeric_limits<unsigned>::max() when there is no
+  /// diagnostic in flight.
+  unsigned curDiagID;
+
+private:
   // Treat fatal errors like errors.
   bool fatalsAsError = false;
 
@@ -412,6 +421,14 @@ public:
   // bool GetIgnoreAllWarnings() const {
   //  return GetCurDiagState()->IgnoreAllWarnings;
   // }
+  /// Emit the current diagnostic and clear the diagnostic state.
+  ///
+  /// \param Force Emit the diagnostic regardless of suppression settings.
+  bool EmitCurrentDiagnostic(bool force = false);
+
+  unsigned GetCurrentDiagID() const { return curDiagID; }
+
+  SrcLoc GetCurrentDiagLoc() const { return curDiagLoc; }
 };
 
 /// RAII class that determines when any errors have occurred
@@ -470,8 +487,8 @@ class InflightDiagnostic final {
   explicit InflightDiagnostic(DiagnosticEngine *de) : de(de), isActive(true) {
     assert(de && "InflightDiagnostic requires a valid DiagnosticEngine!");
 
-    // diagnostics->diagnosticRanges.clear();
-    // diagnostics->diagnosticFixHints.clear();
+    // de->diagnosticRanges.clear();
+    // de->diagnosticFixHints.clear();
   }
 
 public:

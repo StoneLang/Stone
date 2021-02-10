@@ -1,0 +1,5 @@
+
+space Stone.Core.Console {
+	public fun Print(string[] args) -> void {
+	}
+}

@@ -8,7 +8,7 @@
 #include "stone/Utils/Mem.h"
 #include "llvm/ADT/SmallVector.h"
 #include "llvm/Support/Chrono.h"
-
+#include "llvm/Support/Timer.h"
 namespace stone {
 
 class StatsPrinter {};
@@ -23,16 +23,7 @@ protected:
   ColorOutputStream cos;
 
 public:
-  /// When the session was started.
-  ///
-  /// This should be as close as possible to when the driver was invoked, since
-  /// it's used as a lower bound.
-  llvm::sys::TimePoint<> startTime;
-
-  /// The time of the last build.
-  ///
-  /// If unknown, this will be some time in the past.
-  llvm::sys::TimePoint<> endTime = llvm::sys::TimePoint<>::min();
+  llvm::Timer timer;
 
 public:
   Stats(const char *name);

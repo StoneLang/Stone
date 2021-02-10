@@ -13,7 +13,7 @@ enum class Type {
 #include "stone/Utils/TokenType.def"
   MAX
 };
-}
+} // namespace tk
 /// Check whether a token kind is known to have any specific text content.
 /// e.g., tol::l_paren has determined text however tk::Type::identifier doesn't.
 bool IsTokenTextDetermined(tk::Type ty);
@@ -21,7 +21,7 @@ bool IsTokenTextDetermined(tk::Type ty);
 /// If a token kind has determined text, return the text; otherwise assert.
 llvm::StringRef GetTokenText(tk::Type ty);
 
-void DumpTokenKind(llvm::raw_ostream &os, tk::Type  ty);
+void DumpTokenKind(llvm::raw_ostream &os, tk::Type ty);
 } // namespace stone
 
 #endif

@@ -15,6 +15,7 @@ fun PriorityQueue::Pop() -> T* {
 }
 
 space System.Physics;
+
 use System.Collection; 
 
 struct Particle {

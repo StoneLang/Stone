@@ -2,7 +2,9 @@
 
 using namespace stone;
 
-Stats::Stats(const char *name) : name(name), cos(llvm::outs()) {}
+Stats::Stats(const char *name) : name(name), cos(llvm::outs()) {
+  timer.startTimer();
+}
 
 StatEngine::StatEngine() {}
 StatEngine::~StatEngine() {}

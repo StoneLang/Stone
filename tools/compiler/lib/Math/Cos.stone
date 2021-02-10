@@ -1,0 +1,7 @@
+
+
+space Stone.Math {
+public fun Cos() -> void {
+
+}
+}

@@ -3,11 +3,12 @@
 
 #include <memory>
 
+#include "llvm/Support/Timer.h"
+
 #include "stone/Analyze/Lexer.h"
 #include "stone/Syntax/Module.h"
 #include "stone/Syntax/Syntax.h"
 #include "stone/Syntax/TreeContext.h"
-
 #include "stone/Utils/Context.h"
 #include "stone/Utils/Stats.h"
 
@@ -27,7 +28,7 @@ public:
 class Parser final {
   friend ParserStats;
   Context &ctx;
-  Clock clock;
+  llvm::Timer timer;
   Pipeline *pipeline;
   std::unique_ptr<Lexer> lexer;
   std::unique_ptr<ParserStats> stats;
