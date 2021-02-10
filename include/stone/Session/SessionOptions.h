@@ -1,12 +1,41 @@
 #ifndef STONE_SESSION_SESSIONOPTIONS_H
 #define STONE_SESSION_SESSIONOPTIONS_H
 
-#include "stone/Session/ModeKind.h"
-#include "stone/Session/Options.h"
+#include "stone/Session/ModeType.h"
 #include "stone/Utils/InputFile.h"
 #include "stone/Utils/LangOptions.h"
 
+namespace llvm {
+namespace opt {
+class OptTable;
+}
+} // namespace llvm
+
 namespace stone {
+
+namespace opts {
+enum OptFlag {
+  CompileOption = (1 << 4),
+  NoCompileOption = (1 << 5),
+  DriverOption = (1 << 6),
+  NoDriverOption = (1 << 7),
+  DebugOption = (1 << 8),
+};
+
+enum OptID : unsigned {
+  INVALID = 0, // This is not an option ID.
+#define OPTION(PREFIX, NAME, ID, KIND, GROUP, ALIAS, ALIASARGS, FLAGS, PARAM,  \
+               HELPTEXT, METAVAR, VALUES)                                      \
+  ID,
+#include "stone/Session/SessionOptions.inc"
+  LAST
+#undef OPTION
+};
+
+std::unique_ptr<llvm::opt::OptTable> CreateOptTable();
+
+} // namespace opts
+
 class SessionOptions {
   std::unique_ptr<llvm::opt::OptTable> optTable;
 
@@ -18,7 +47,7 @@ public:
   bool printStats = false;
 
   /// The default mode
-  ModeKind modeKind = ModeKind::None;
+  ModeType modeKind = ModeType::None;
   /// The name of the module
   llvm::StringRef moduleName;
 
@@ -28,7 +57,7 @@ public:
   file::InputFiles inputs;
 
 public:
-  SessionOptions() : optTable(stone::CreateOptTable()) {}
+  SessionOptions() : optTable(stone::opts::CreateOptTable()) {}
 
 public:
   llvm::opt::OptTable &GetOpts() const { return *optTable.get(); }

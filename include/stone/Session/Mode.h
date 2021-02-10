@@ -1,29 +1,29 @@
 #ifndef STONE_SESSION_MODE_H
 #define STONE_SESSION_MODE_H
 
-#include "stone/Session/ModeKind.h"
+#include "stone/Session/ModeType.h"
 
 namespace stone {
 
 class Mode final {
   friend class Session;
-  ModeKind kind;
+  ModeType ty;
   llvm::StringRef name;
 
-  void SetKind(ModeKind k) { kind = k; }
+  void SetType(ModeType k) { ty = k; }
   void SetName(llvm::StringRef v) { name = v; }
 
 private:
   bool IsCompileOnlyImpl() const {
-    switch (GetKind()) {
-    case ModeKind::Parse:
-    case ModeKind::Check:
-    case ModeKind::EmitIR:
-    case ModeKind::EmitBC:
-    case ModeKind::EmitObject:
-    case ModeKind::EmitModuleOnly:
-    case ModeKind::EmitLibrary:
-    case ModeKind::EmitAssembly:
+    switch (GetType()) {
+    case ModeType::Parse:
+    case ModeType::Check:
+    case ModeType::EmitIR:
+    case ModeType::EmitBC:
+    case ModeType::EmitObject:
+    case ModeType::EmitModuleOnly:
+    case ModeType::EmitLibrary:
+    case ModeType::EmitAssembly:
       return true;
     default:
       return false;
@@ -31,18 +31,18 @@ private:
   }
 
 public:
-  ModeKind GetKind() const { return kind; }
+  ModeType GetType() const { return ty; }
   llvm::StringRef GetName() const { return name; }
 
   bool CanOutput() {
-    switch (GetKind()) {
-    case ModeKind::EmitIR:
-    case ModeKind::EmitBC:
-    case ModeKind::EmitObject:
-    case ModeKind::EmitAssembly:
-    case ModeKind::EmitModuleOnly:
-    case ModeKind::EmitLibrary:
-    case ModeKind::EmitExecutable:
+    switch (GetType()) {
+    case ModeType::EmitIR:
+    case ModeType::EmitBC:
+    case ModeType::EmitObject:
+    case ModeType::EmitAssembly:
+    case ModeType::EmitModuleOnly:
+    case ModeType::EmitLibrary:
+    case ModeType::EmitExecutable:
       return true;
     default:
       return false;
@@ -55,28 +55,28 @@ public:
   }
 
   bool CanCompile() const {
-    switch (GetKind()) {
-    case ModeKind::EmitExecutable:
+    switch (GetType()) {
+    case ModeType::EmitExecutable:
       return true;
     default:
       return IsCompileOnlyImpl();
     }
   }
-  bool IsLinkOnly() const { return GetKind() == ModeKind::Link; }
+  bool IsLinkOnly() const { return GetType() == ModeType::Link; }
   bool CanLink() const {
-    switch (GetKind()) {
-    case ModeKind::EmitExecutable:
-    case ModeKind::Link:
+    switch (GetType()) {
+    case ModeType::EmitExecutable:
+    case ModeType::Link:
       return true;
     default:
       return false;
     }
   }
 
-  static llvm::StringRef GetNameByKind(ModeKind kind);
+  static llvm::StringRef GetNameByType(ModeType ty);
 
 private:
-  Mode(ModeKind kind) : kind(kind) {}
+  Mode(ModeType ty) : ty(ty) {}
 };
 } // namespace stone
 #endif

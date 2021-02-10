@@ -3,7 +3,7 @@
 
 namespace stone {
 
-enum class ModeKind {
+enum class ModeType {
   None,
   Parse,
   Check,

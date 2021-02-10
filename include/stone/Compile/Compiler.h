@@ -106,7 +106,7 @@ public:
 protected:
   void ComputeMode(const llvm::opt::DerivedArgList &args) override;
 
-  ModeKind GetDefaultModeKind() override;
+  ModeType GetDefaultModeType() override;
 
   void BuildOptions() override;
 

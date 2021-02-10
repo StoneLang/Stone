@@ -2,7 +2,7 @@
 
 #include "stone/Driver/Job.h"
 #include "stone/Driver/ToolChain.h"
-#include "stone/Session/ModeKind.h"
+#include "stone/Session/ModeType.h"
 #include "stone/Utils/LLVM.h"
 #include "stone/Utils/Ret.h"
 #include "llvm/Config/llvm-config.h"
@@ -415,27 +415,27 @@ void Driver::BuildOutputProfile(const llvm::opt::DerivedArgList &args,
   //}
 
   // Basic for the time being
-  switch (mode.GetKind()) {
-  case ModeKind::EmitLibrary: {
+  switch (mode.GetType()) {
+  case ModeType::EmitLibrary: {
     outputProfile.linkType = args.hasArg(opts::Static)
                                  ? LinkType::StaticLibrary
                                  : LinkType::DynamicLibrary;
     outputProfile.compilerOutputType = compilerOutputType;
   } break;
-  case ModeKind::EmitObject:
+  case ModeType::EmitObject:
     outputProfile.compilerOutputType = Type::Object;
     break;
-  case ModeKind::EmitAssembly:
+  case ModeType::EmitAssembly:
     outputProfile.compilerOutputType = Type::Assembly;
     break;
-  case ModeKind::EmitIR:
+  case ModeType::EmitIR:
     outputProfile.compilerOutputType = Type::IR;
     break;
-  case ModeKind::EmitBC:
+  case ModeType::EmitBC:
     outputProfile.compilerOutputType = Type::BC;
     break;
-  case ModeKind::Parse:
-  case ModeKind::Check:
+  case ModeType::Parse:
+  case ModeType::Check:
     outputProfile.compilerOutputType = Type::None;
     break;
   default:
@@ -445,7 +445,7 @@ void Driver::BuildOutputProfile(const llvm::opt::DerivedArgList &args,
   assert(outputProfile.compilerOutputType != Type::INVALID);
 }
 
-ModeKind Driver::GetDefaultModeKind() { return ModeKind::EmitExecutable; }
+ModeType Driver::GetDefaultModeType() { return ModeType::EmitExecutable; }
 
 void Driver::ComputeMode(const llvm::opt::DerivedArgList &args) {
   Session::ComputeMode(args);

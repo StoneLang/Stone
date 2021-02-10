@@ -135,21 +135,21 @@ int Driver::BuildJobs() {
     Out() << "D(SrcLoc(), msg::error_no_input_files)" << '\n';
     return ret::err;
   }
-  switch (GetMode().GetKind()) {
-  case ModeKind::Check:
-  case ModeKind::EmitLibrary:
-  case ModeKind::EmitObject:
-  case ModeKind::EmitAssembly:
-  case ModeKind::EmitModuleOnly:
-  case ModeKind::EmitIR:
-  case ModeKind::EmitBC:
-  case ModeKind::Parse:
+  switch (GetMode().GetType()) {
+  case ModeType::Check:
+  case ModeType::EmitLibrary:
+  case ModeType::EmitObject:
+  case ModeType::EmitAssembly:
+  case ModeType::EmitModuleOnly:
+  case ModeType::EmitIR:
+  case ModeType::EmitBC:
+  case ModeType::Parse:
     return JobBuilder::BuildJobsForCompile(*this);
     break;
-  case ModeKind::EmitExecutable:
+  case ModeType::EmitExecutable:
     return JobBuilder::BuildJobsForExecutable(*this);
     break;
-  case ModeKind::Link:
+  case ModeType::Link:
     return JobBuilder::BuildJobForLinking(*this);
   default:
     return ret::err;

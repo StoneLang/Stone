@@ -10,7 +10,7 @@
 #include "stone/Driver/Job.h"
 #include "stone/Driver/LinkType.h"
 #include "stone/Session/Mode.h"
-#include "stone/Session/Options.h"
+#include "stone/Session/SessionOptions.h"
 #include "stone/Utils/InputFile.h"
 #include "stone/Utils/LLVM.h"
 #include "stone/Utils/Mem.h"

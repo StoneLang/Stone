@@ -6,8 +6,8 @@ set(LLVM_LINK_COMPONENTS
   Target
 )
 set(stone_session_sources
-	Options.cpp
 	Session.cpp
+	SessionOptions.cpp
 
 	LINK_LIBS 
 	StoneUtils

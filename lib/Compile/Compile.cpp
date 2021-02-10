@@ -96,20 +96,20 @@ int Compiler::Implementation::EmitBitCode() { return ret::ok; }
 int Compiler::Run(Compiler &compiler) {
   auto impl = llvm::make_unique<Compiler::Implementation>(compiler);
   impl->Build();
-  switch (compiler.GetMode().GetKind()) {
-  case ModeKind::Parse:
+  switch (compiler.GetMode().GetType()) {
+  case ModeType::Parse:
     return impl->Parse();
-  case ModeKind::Check:
+  case ModeType::Check:
     return impl->Check();
-  case ModeKind::EmitIR:
+  case ModeType::EmitIR:
     return impl->EmitIR();
-  case ModeKind::EmitObject:
+  case ModeType::EmitObject:
     return impl->EmitObject();
-  case ModeKind::EmitModuleOnly:
+  case ModeType::EmitModuleOnly:
     return impl->EmitModuleOnly();
-  case ModeKind::EmitBC:
+  case ModeType::EmitBC:
     return impl->EmitBitCode();
-  case ModeKind::EmitLibrary:
+  case ModeType::EmitLibrary:
     return impl->EmitLibrary();
   default:
     llvm_unreachable("Invalide compiler mode.");

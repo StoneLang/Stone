@@ -137,7 +137,7 @@ public:
 protected:
   // Compute the mode id -- TODO: virtual
   virtual void ComputeMode(const llvm::opt::DerivedArgList &args);
-  virtual ModeKind GetDefaultModeKind() = 0;
+  virtual ModeType GetDefaultModeType() = 0;
   virtual void BuildOptions() = 0;
 
 protected:

@@ -52,7 +52,7 @@ bool Compiler::Build(llvm::ArrayRef<const char *> args) {
 // TODO: Belongs in session
 void Compiler::BuildInputs() {}
 
-ModeKind Compiler::GetDefaultModeKind() { return ModeKind::EmitObject; }
+ModeType Compiler::GetDefaultModeType() { return ModeType::EmitObject; }
 
 void Compiler::PrintLifecycle() {}
 

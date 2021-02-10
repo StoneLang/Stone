@@ -6,7 +6,7 @@ using namespace stone;
 using namespace llvm::opt;
 
 Session::Session(SessionOptions &sessionOpts)
-    : sessionOpts(sessionOpts), mode(ModeKind::None),
+    : sessionOpts(sessionOpts), mode(ModeType::None),
       targetTriple(llvm::sys::getDefaultTargetTriple()),
       fileSystem(llvm::vfs::getRealFileSystem()), strSaver(bumpAlloc) {
   clock.Start();
@@ -59,39 +59,39 @@ void Session::SetTargetTriple(llvm::StringRef triple) {
 }
 
 void Session::ComputeMode(const llvm::opt::DerivedArgList &args) {
-  assert(mode.GetKind() == ModeKind::None && "mode id already computed");
+  assert(mode.GetType() == ModeType::None && "mode id already computed");
   const llvm::opt::Arg *const modeArg = args.getLastArg(opts::ModeGroup);
 
   // TODO: may have to claim
   if (modeArg) {
     switch (modeArg->getOption().getID()) {
     case opts::Parse:
-      mode.SetKind(ModeKind::Parse);
+      mode.SetType(ModeType::Parse);
       break;
     case opts::Check:
-      mode.SetKind(ModeKind::Check);
+      mode.SetType(ModeType::Check);
       break;
     case opts::EmitIR:
-      mode.SetKind(ModeKind::EmitIR);
+      mode.SetType(ModeType::EmitIR);
       break;
     case opts::EmitBC:
-      mode.SetKind(ModeKind::EmitBC);
+      mode.SetType(ModeType::EmitBC);
       break;
     case opts::EmitObject:
-      mode.SetKind(ModeKind::EmitObject);
+      mode.SetType(ModeType::EmitObject);
       break;
     case opts::EmitAssembly:
-      mode.SetKind(ModeKind::EmitAssembly);
+      mode.SetType(ModeType::EmitAssembly);
       break;
     case opts::EmitLibrary:
-      mode.SetKind(ModeKind::EmitLibrary);
+      mode.SetType(ModeType::EmitLibrary);
       break;
     default:
       break;
     }
   }
-  if (mode.GetKind() == ModeKind::None) {
-    mode.SetKind(GetDefaultModeKind());
+  if (mode.GetType() == ModeType::None) {
+    mode.SetType(GetDefaultModeType());
   }
 }
 
@@ -112,28 +112,28 @@ void Session::PrintStatistics() {
 }
 
 /*
-static llvm::StringRef Mode::GetNameByKind(ModeKind kind) {
+static llvm::StringRef Mode::GetNameByKind(ModeType kind) {
         //TODO: I think you can get these from the mode group
         // so that you do not have to dublicate the text -- fragile.
   switch (kind) {
-  case ModeKind::Parse:
+  case ModeType::Parse:
     return "parse";
         case Modekind::Check :
                 return "check";
-  case ModeKind::EmitIR:
+  case ModeType::EmitIR:
     return "emit-ir";
-  case ModeKind::EmitBC:
+  case ModeType::EmitBC:
     return "emit-bc";
-  case ModeKind::EmitObject:
+  case ModeType::EmitObject:
     return "emit-object";
-  case ModeKind::EmitAssembly:
+  case ModeType::EmitAssembly:
     return "emit-assembly";
-  case ModeKind::EmitLibrary:
+  case ModeType::EmitLibrary:
     return "emit-library";
-  case ModeKind::EmitExecutable:
+  case ModeType::EmitExecutable:
     return "emit-executable";
   }
-        llvm_unreachable("Invalid ModeKind.");
+        llvm_unreachable("Invalid ModeType.");
 }
 */
 
