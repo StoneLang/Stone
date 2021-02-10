@@ -25,7 +25,7 @@ set(stone_utils_sources
 	SrcMgr.cpp
 	Stats.cpp
 	TextDiagnosticListener.cpp
-	TokenKind.cpp
+	TokenType.cpp
 	UnixDirWatcher.cpp
 	Version.cpp
 	WinDirWatcher.cpp

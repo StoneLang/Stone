@@ -1,5 +1,4 @@
-#include "stone/Utils/TokenKind.h"
-
+#include "stone/Utils/TokenType.h"
 #include "llvm/ADT/StringRef.h"
 
 using namespace stone;
