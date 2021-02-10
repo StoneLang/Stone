@@ -3,8 +3,8 @@
 
 using namespace stone;
 
-bool stone::IsTokenTextDetermined(tk kind) { return false; }
+bool stone::IsTokenTextDetermined(tk::Type ty) { return false; }
 
-llvm::StringRef stone::GetTokenText(tk kind) { return ""; }
+llvm::StringRef stone::GetTokenText(tk::Type ty) { return ""; }
 
-void stone::DumpTokenKind(llvm::raw_ostream &os, tk kind) {}
+void stone::DumpTokenKind(llvm::raw_ostream &os, tk::Type ty) {}

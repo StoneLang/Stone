@@ -39,13 +39,13 @@ enum { IdentifierAlignment = 8 };
 /// is lexed.  This contains information about whether the token was \#define'd,
 /// is a language keyword, or if it is a front-end token of some sort (e.g. a
 /// variable or function name).  The preprocessor keeps this information in a
-/// set, and all tk::identifier tokens have a pointer to one of these.
+/// set, and all tk::Type::identifier tokens have a pointer to one of these.
 /// It is aligned to 8 bytes because DeclName needs the lower 3 bits.
 class alignas(IdentifierAlignment) Identifier {
   friend class IdentifierTable;
 
-  // Front-end token ID or tk::identifier.
-  tk kind;
+  // Front-end token ID or tk::Type::identifier.
+	tk::Type ty;
 
   // ObjC keyword ('protocol' in '@protocol') or builtin (__builtin_inf).
   // First NUM_OBJC_KEYWORDS values are for Objective-C,
@@ -97,7 +97,7 @@ class alignas(IdentifierAlignment) Identifier {
   llvm::StringMapEntry<Identifier *> *entry = nullptr;
 
   Identifier()
-      : kind(tk::identifier), BuiltinID(0), IsExtension(false),
+      : ty(tk::Type::identifier), BuiltinID(0), IsExtension(false),
         isKeywordReserved(false), IsPoisoned(false), IsOperatorKeyword(false),
         NeedsHandleIdentifier(false), IsFromAST(false), ChangedAfterLoad(false),
         FEChangedAfterLoad(false), RevertedTokenID(false), OutOfDate(false),
@@ -136,31 +136,31 @@ public:
   /// If this is a source-language token (e.g. 'for'), this API
   /// can be used to cause the lexer to map identifiers to source-language
   /// tokens.
-  tk getTokenKind() const { return kind; }
+	tk::Type getTokenKind() const { return ty; }
 
   /// True if revertTokenIDToIdentifier() was called.
   bool hasRevertedTokenIDToIdentifier() const { return RevertedTokenID; }
 
-  /// Revert TokenID to tk::identifier; used for GNU libstdc++ 4.2
+  /// Revert TokenID to tk::Type::identifier; used for GNU libstdc++ 4.2
   /// compatibility.
   ///
   /// TokenID is normally read-only but there are 2 instances where we revert it
-  /// to tk::identifier for libstdc++ 4.2. Keep track of when this happens
+  /// to tk::Type::identifier for libstdc++ 4.2. Keep track of when this happens
   /// using this method so we can inform serialization about it.
   void revertTokenIDToIdentifier() {
-    assert(kind != tk::identifier && "Already at tok::identifier");
-    kind = tk::identifier;
+    assert(ty != tk::Type::identifier && "Already at tok::identifier");
+    ty = tk::Type::identifier;
     RevertedTokenID = true;
   }
-  void revertIdentifierToTokenID(tk k) {
-    assert(kind == tk::identifier && "Should be at tok::identifier");
-    kind = k;
+  void revertIdentifierToTokenID(tk::Type k) {
+    assert(ty == tk::Type::identifier && "Should be at tok::identifier");
+    ty = k;
     RevertedTokenID = false;
   }
 
   /// True if setNotBuiltin() was called.
   bool hasRevertedBuiltin() const {
-    // TODO: //return ObjCOrBuiltinID == tk::NUM_OBJC_KEYWORDS;
+    // TODO: //return ObjCOrBuiltinID == tk::Type::NUM_OBJC_KEYWORDS;
     return false;
   }
 
@@ -174,15 +174,15 @@ public:
   /// 0 is not-built-in. 1+ are specific builtin functions.
   unsigned getBuiltinID() const {
     // TODO:
-    // if (BuiltinID >= tk::NUM_OBJC_KEYWORDS)
-    //  return ObjCOrBuiltinID - tk::NUM_OBJC_KEYWORDS;
+    // if (BuiltinID >= tk::Type::NUM_OBJC_KEYWORDS)
+    //  return ObjCOrBuiltinID - tk::Type::NUM_OBJC_KEYWORDS;
     // else
     return 0;
   }
   void setBuiltinID(unsigned ID) {
     // TODO:
-    // ObjCOrBuiltinID = ID + tk::NUM_OBJC_KEYWORDS;
-    // assert(ObjCOrBuiltinID - unsigned(tk::NUM_OBJC_KEYWORDS) == ID
+    // ObjCOrBuiltinID = ID + tk::Type::NUM_OBJC_KEYWORDS;
+    // assert(ObjCOrBuiltinID - unsigned(tk::Type::NUM_OBJC_KEYWORDS) == ID
     //       && "ID too large for field!");
   }
 
@@ -320,7 +320,7 @@ public:
 private:
   /// The Preprocessor::HandleIdentifier does several special (but rare)
   /// things to identifiers of various sorts.  For example, it changes the
-  /// \c for keyword token from tk::identifier to tok::for.
+  /// \c for keyword token from tk::Type::identifier to tok::for.
   ///
   /// This method is very tied to the definition of HandleIdentifier.  Any
   /// change to it should be reflected here.
@@ -429,10 +429,10 @@ public:
     return *identifier;
   }
 
-  Identifier &Get(llvm::StringRef name, tk k) {
+  Identifier &Get(llvm::StringRef name, tk::Type t) {
     auto &identifier = Get(name);
-    identifier.kind = k;
-    assert(identifier.kind == k && "TokenCode too large");
+    identifier.ty = t;
+    assert(identifier.ty == t && "TokenCode too large");
     return identifier;
   }
 

@@ -396,7 +396,7 @@ void Lexer::Init(unsigned startOffset, unsigned endOffset) {
   artificialEOF = bufferStart + endOffset;
   curPtr = bufferStart + startOffset;
 
-  assert(nextToken.Is(tk::MAX));
+  assert(nextToken.Is(tk::Type::MAX));
 
   // Prime the lexer
   Lex();
@@ -439,29 +439,29 @@ void Lexer::Lex() {
   case -2:
     // Diagnose(CurPtr-1, diag::lex_utf16_bom_marker);
     curPtr = bufferEnd;
-    return CreateToken(tk::unk, tokStart);
+    return CreateToken(tk::Type::unk, tokStart);
 
   case '{':
-    return CreateToken(tk::l_brace, tokStart);
+    return CreateToken(tk::Type::l_brace, tokStart);
   case '[':
-    return CreateToken(tk::l_square, tokStart);
+    return CreateToken(tk::Type::l_square, tokStart);
   case '(':
-    return CreateToken(tk::l_paren, tokStart);
+    return CreateToken(tk::Type::l_paren, tokStart);
   case '}':
-    return CreateToken(tk::r_brace, tokStart);
+    return CreateToken(tk::Type::r_brace, tokStart);
   case ']':
-    return CreateToken(tk::r_square, tokStart);
+    return CreateToken(tk::Type::r_square, tokStart);
   case ')':
-    return CreateToken(tk::r_paren, tokStart);
+    return CreateToken(tk::Type::r_paren, tokStart);
 
   case ',':
-    return CreateToken(tk::comma, tokStart);
+    return CreateToken(tk::Type::comma, tokStart);
   case ';':
-    return CreateToken(tk::semi, tokStart);
+    return CreateToken(tk::Type::semi, tokStart);
   case ':':
-    return CreateToken(tk::colon, tokStart);
+    return CreateToken(tk::Type::colon, tokStart);
   case '\\':
-    return CreateToken(tk::backslash, tokStart);
+    return CreateToken(tk::Type::backslash, tokStart);
 
     // case '<':
     // case '>':
@@ -498,12 +498,12 @@ void Lexer::LexIdentifier() {
 }
 
 /// This is either an identifier or a keyword.
-tk Lexer::GetKindOfIdentifier(StringRef tokStr) {
+tk::Type Lexer::GetKindOfIdentifier(StringRef tokStr) {
 #define KEYWORD(kw, S)                                                         \
   if (tokStr == #kw)                                                           \
-    return tk::kw_##kw;
+    return tk::Type::kw_##kw;
 #include "stone/Utils/TokenType.def"
-  return tk::identifier;
+  return tk::Type::identifier;
 }
 void Lexer::LexTrivia(Trivia trivia, bool isTrailing) {}
 
@@ -515,14 +515,14 @@ void Lexer::LexStrLiteral() {}
 
 void Lexer::Diagnose() {}
 
-void Lexer::CreateToken(tk kind, const char *tokenStart) {
+void Lexer::CreateToken(tk::Type kind, const char *tokenStart) {
   assert(curPtr >= bufferStart && curPtr <= bufferEnd &&
          "Cannot create token -- the current pointer is out of range!");
   // When we are lexing a subrange from the middle of a file buffer, we will
   // run past the end of the range, but will stay within the file.  Check if
   // we are past the imaginary EOF, and synthesize a tok::eof in this case.
-  if (kind != tk::eof && tokenStart >= artificialEOF) {
-    kind = tk::eof;
+  if (kind != tk::Type::eof && tokenStart >= artificialEOF) {
+    kind = tk::Type::eof;
   }
   // TODO:
   unsigned commentLength = 0;
@@ -530,7 +530,7 @@ void Lexer::CreateToken(tk kind, const char *tokenStart) {
   llvm::StringRef tokenText{tokenStart,
                             static_cast<size_t>(curPtr - tokenStart)};
 
-  if (triviaRetention == TriviaRetentionMode::With && kind != tk::eof) {
+  if (triviaRetention == TriviaRetentionMode::With && kind != tk::Type::eof) {
     assert(trailingTrivia.empty() && "TrailingTrivia is empty here");
     LexTrivia(trailingTrivia, /* IsForTrailingTrivia */ true);
   }

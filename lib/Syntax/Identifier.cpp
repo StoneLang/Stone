@@ -39,9 +39,9 @@ static KeywordStatus GetKeywordStatus(const LangOptions &langOpts,
 }
 /// Returns true if the identifier is a keyword
 bool Identifier::IsKeyword(const LangOptions &langOpts) const {
-  switch (kind) {
+  switch (ty) {
 #define KEYWORD(NAME, FLAG)                                                    \
-  case tk::kw_##NAME:                                                          \
+  case tk::Type::kw_##NAME:                                                          \
     return GetKeywordStatus(langOpts, FLAG) == KeywordStatus::On;
 #include "stone/Utils/TokenType.def"
   default:
@@ -57,14 +57,14 @@ IdentifierTable::IdentifierTable(const LangOptions &langOpts)
   AddKeywords(langOpts);
 }
 
-static void AddKeyword(llvm::StringRef keyword, tk kind, unsigned flag,
+static void AddKeyword(llvm::StringRef keyword, tk::Type kind, unsigned flag,
                        const LangOptions &langOpts, IdentifierTable &table) {
   auto status = GetKeywordStatus(langOpts, flag);
   if (status == KeywordStatus::Off) {
     return;
   }
   auto &identifier = table.Get(
-      keyword, status == KeywordStatus::Reserved ? tk::identifier : kind);
+      keyword, status == KeywordStatus::Reserved ? tk::Type::identifier : kind);
 
   identifier.SetIsKeywordReserved(status == KeywordStatus::Reserved);
 }
@@ -72,7 +72,7 @@ static void AddKeyword(llvm::StringRef keyword, tk kind, unsigned flag,
 void IdentifierTable::AddKeywords(const LangOptions &LangOpts) {
   // Add keywords and tokens for the current language.
 #define KEYWORD(NAME, FLAG)                                                    \
-  AddKeyword(llvm::StringRef(#NAME), tk::kw_##NAME, FLAG, langOpts, *this);
+  AddKeyword(llvm::StringRef(#NAME), tk::Type::kw_##NAME, FLAG, langOpts, *this);
 #include "stone/Utils/TokenType.def"
 }
 

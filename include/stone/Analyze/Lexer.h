@@ -101,9 +101,9 @@ private:
   void LexChar();
 
   void Diagnose();
-  void CreateToken(tk kind, const char *tokenStart);
+  void CreateToken(tk::Type kind, const char *tokenStart);
 
-  tk GetKindOfIdentifier(StringRef tokStr);
+  tk::Type GetKindOfIdentifier(StringRef tokStr);
 
 public:
   Lexer(const SrcID srcID, SrcMgr &sm, Context &ctx,
@@ -120,7 +120,7 @@ public:
       leading = {leadingTrivia};
       trailing = {trailingTrivia};
     }
-    if (result.IsNot(tk::eof)) {
+    if (result.IsNot(tk::Type::eof)) {
       Lex();
     }
   }
