@@ -33,6 +33,20 @@ class Parser final {
   std::unique_ptr<Lexer> lexer;
   std::unique_ptr<ParserStats> stats;
 
+  /// This is the current token being considered by the parser.
+  Token curTok;
+
+  /// leading trivias for \c Tok.
+  /// Always empty if !SF.shouldBuildSyntaxTree().
+  Trivia leadingTrivia;
+
+  /// trailing trivias for \c Tok.
+  /// Always empty if !SF.shouldBuildSyntaxTree().
+  Trivia trailingTrivia;
+
+  /// The location of the previous token.
+  SrcLoc prevTokLoc;
+
 public:
   /// Control flags for SkipUntil functions.
   enum SkipUntilFlags {
@@ -57,6 +71,7 @@ public:
   ParserStats &GetStats() { return *stats.get(); }
 
 public:
+public:
   // Decl
   int ParseTopDecl();
 
@@ -72,6 +87,12 @@ public:
 public:
   // Expr
   void ParseExpr();
+
+public:
+  /// Stop parsing immediately.
+  void Stop() { curTok.SetType(tk::Type::eof); }
+	/// Is at end of file. 
+  bool IsDone() { return token.GetType() == tk::Type::eof; }
 };
 } // namespace syn
 } // namespace stone
