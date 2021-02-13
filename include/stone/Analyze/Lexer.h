@@ -3,7 +3,6 @@
 
 #include "stone/Analyze/Token.h"
 #include "stone/Analyze/Trivia.h"
-#include "stone/Utils/Clock.h"
 #include "stone/Utils/Context.h"
 #include "stone/Utils/DiagnosticEngine.h"
 #include "stone/Utils/SrcLoc.h"
@@ -42,7 +41,7 @@ class Lexer final {
   friend LexerStats;
   const SrcID srcID;
   SrcMgr &sm;
-  Clock clock;
+
   const Context &ctx;
   std::unique_ptr<LexerStats> stats;
 

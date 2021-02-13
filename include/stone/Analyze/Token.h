@@ -45,8 +45,8 @@ public:
 
   Token() : Token(tk::Type::MAX, {}, 0) {}
 
-  tk::Type GetKind() const { return ty; }
-  void SetKind(tk::Type t) { ty = t; }
+  tk::Type GetType() const { return ty; }
+  void SetType(tk::Type t) { ty = t; }
   void ClearCommentLength() { commentLength = 0; }
 
   /// is/isNot - Predicates to check if this token is a specific ty, as in

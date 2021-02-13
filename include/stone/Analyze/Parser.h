@@ -34,7 +34,7 @@ class Parser final {
   std::unique_ptr<ParserStats> stats;
 
   /// This is the current token being considered by the parser.
-  Token curTok;
+  Token tok;
 
   /// leading trivias for \c Tok.
   /// Always empty if !SF.shouldBuildSyntaxTree().
@@ -90,9 +90,9 @@ public:
 
 public:
   /// Stop parsing immediately.
-  void Stop() { curTok.SetType(tk::Type::eof); }
+  void Stop() { tok.SetType(tk::Type::eof); }
 	/// Is at end of file. 
-  bool IsDone() { return token.GetType() == tk::Type::eof; }
+  bool IsDone() { return tok.GetType() == tk::Type::eof; }
 };
 } // namespace syn
 } // namespace stone
