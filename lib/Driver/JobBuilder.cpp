@@ -12,14 +12,14 @@ namespace driver {
 struct JobBuilder final {
   /// Build jobs for compiling
   static int BuildJobsForCompile(Driver &driver);
-  static Job *BuildJobForCompile(Driver &driver, const InputFile input);
+  static Job *BuildJobForCompile(Driver &driver, const File input);
 
   /// Build jobs for linking
   static int BuildJobForLinking(Driver &driver);
 
   // TODO: Think about
   static int BuildJobForLinking(Driver &driver, Job *dep);
-  static int BuildJobForLinking(Driver &driver, const InputFile input);
+  static int BuildJobForLinking(Driver &driver, const File input);
 
   static Job *BuildJobForLinkingImpl(Driver &driver);
 
@@ -48,7 +48,7 @@ int JobBuilder::BuildJobsForCompile(Driver &driver) {
   return ret::ok;
 }
 
-Job *JobBuilder::BuildJobForCompile(Driver &driver, const InputFile input) {
+Job *JobBuilder::BuildJobForCompile(Driver &driver, const File input) {
   assert(driver.GetMode().CanCompile() &&
          "The 'mode-type' does not support compiling.");
 

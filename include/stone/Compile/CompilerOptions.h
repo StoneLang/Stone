@@ -25,8 +25,8 @@ class alignas(8) InputFile final {
 
   SrcID sid;
 
-  InputFile(const InputFile &) = delete;
-  void operator=(const InputFile &) = delete;
+  InputFile(const File &) = delete;
+  void operator=(const File &) = delete;
 
  public:
   InputFile(Compiler &compiler);
