@@ -1,4 +1,4 @@
-#include "stone/Utils/InputFile.h"
+#include "stone/Utils/File.h"
 
 #include "llvm/ADT/STLExtras.h"
 #include "llvm/ADT/StringSwitch.h"
@@ -17,7 +17,7 @@ struct LocalType {
 
 static const LocalType LocalTypes[] = {
 #define FILE_TYPE(NAME, TYPE, TEMP_SUFFIX, FLAGS) {NAME, FLAGS, TEMP_SUFFIX},
-#include "stone/Utils/InputFile.def"
+#include "stone/Utils/File.def"
 };
 
 static const LocalType &GetLocalType(unsigned ty) {
@@ -39,14 +39,14 @@ file::Type file::GetTypeByExt(llvm::StringRef Ext) {
   assert(Ext.front() == '.' && "not a file extension");
   return llvm::StringSwitch<file::Type>(Ext.drop_front())
 #define FILE_TYPE(NAME, TYPE, SUFFIX, FLAGS) .Case(SUFFIX, TYPE)
-#include "stone/Utils/InputFile.def"
+#include "stone/Utils/File.def"
       .Default(file::INVALID);
 }
 
 file::Type file::GetTypeByName(llvm::StringRef Name) {
   return llvm::StringSwitch<file::Type>(Name)
 #define FILE_TYPE(NAME, TYPE, SUFFIX, FLAGS) .Case(NAME, TYPE)
-#include "stone/Utils/InputFile.def"
+#include "stone/Utils/File.def"
       .Default(file::Type::INVALID);
 }
 

@@ -16,7 +16,7 @@ public fun F2() -> void {
 any(T) fun Max(T* first, T* second) -> T* {
 
 	if(first > second) {
-		return first;
+	return first;
 	}
 	return second; 
 }
@@ -24,5 +24,24 @@ fun Main() -> int {
 
 	auto result = use(int) Max(25, 26); 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

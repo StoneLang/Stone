@@ -1,5 +1,5 @@
-#ifndef STONE_UTILS_INPUTFILE_H
-#define STONE_UTILS_INPUTFILE_H
+#ifndef STONE_UTILS_FILE_H
+#define STONE_UTILS_FILE_H
 
 #include <functional>
 #include <stdio.h>
@@ -15,7 +15,7 @@ namespace file {
 
 enum Type : uint8_t {
 #define FILE_TYPE(NAME, TYPE, TEMP_SUFFIX, FLAGS) TYPE,
-#include "stone/Utils/InputFile.def"
+#include "stone/Utils/File.def"
 #undef FILE_TYPE
   INVALID
 };
@@ -59,9 +59,9 @@ llvm::StringRef GetPath(llvm::StringRef name);
 template <typename Fn> void forAllTypes(const Fn &fn);
 
 /// An input argument from the command line and its inferred type.
-using InputFile = std::pair<file::Type, const llvm::StringRef>;
+using File = std::pair<file::Type, const llvm::StringRef>;
 /// Type used for a list of input arguments.
-using InputFiles = llvm::SmallVector<InputFile, 16>;
+using Files = llvm::SmallVector<File, 16>;
 } // namespace file
 
 } // namespace stone

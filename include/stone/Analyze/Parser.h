@@ -91,7 +91,7 @@ public:
 public:
   /// Stop parsing immediately.
   void Stop() { tok.SetType(tk::Type::eof); }
-	/// Is at end of file. 
+  /// Is at end of file.
   bool IsDone() { return tok.GetType() == tk::Type::eof; }
 };
 } // namespace syn

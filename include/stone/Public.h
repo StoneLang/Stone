@@ -56,5 +56,6 @@ public:
   ///
   virtual void OnGenObjectFinished(const Compiler &compiler);
 };
+
 } // namespace stone
 #endif

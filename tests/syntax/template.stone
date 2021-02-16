@@ -21,7 +21,7 @@ use System.Collection;
 struct Particle {
 }
 fun Main() -> u8 {
-	use(int) Queue* q0 = new PriorityQueue();
+	with(int) Queue* q0 = new PriorityQueue();
 	q0.Push(23);
 
 	Particle* p = new Particle();

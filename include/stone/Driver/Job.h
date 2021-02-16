@@ -69,7 +69,7 @@ public:
   JobType GetType() const { return jobType; }
   const ConstList<Job> &GetDeps() const { return deps; }
 
-  void AddInput(const InputFile input);
+  void AddInput(const File input);
   void AddDep(const Job *job);
   void AddArgument();
 

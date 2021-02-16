@@ -2,7 +2,7 @@
 #define STONE_SESSION_SESSIONOPTIONS_H
 
 #include "stone/Session/ModeType.h"
-#include "stone/Utils/InputFile.h"
+#include "stone/Utils/File.h"
 #include "stone/Utils/LangOptions.h"
 
 namespace llvm {
@@ -54,7 +54,7 @@ public:
   /// The file input kind
   file::Type inputType = file::Type::None;
 
-  file::InputFiles inputs;
+  file::Files inputs;
 
 public:
   SessionOptions() : optTable(stone::opts::CreateOptTable()) {}

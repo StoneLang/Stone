@@ -1,7 +1,7 @@
 #ifndef STONE_DRIVER_CMDOUTPUT_H
 #define STONE_DRIVER_CMDOUTPUT_H
 
-#include "stone/Utils/InputFile.h"
+#include "stone/Utils/File.h"
 #include "stone/Utils/LLVM.h"
 #include "llvm/ADT/SmallSet.h"
 #include "llvm/ADT/SmallVector.h"

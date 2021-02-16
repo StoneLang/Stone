@@ -17,11 +17,19 @@
 namespace stone {
 class LangOptions final {
 public:
+
+	/// This represents the statistics generated due to a session
+	bool showStatistics = true;
+	/// This represents the diatnostics generated due to a session
+	bool showDiagnostics = true;
+	/// 
+  bool showTimer = false;
+	///
+  bool useMalloc = false;
   /// The target we are building for.
   ///
   /// This represents the minimum deployment target.
   llvm::Triple target;
-
   /// \brief The second target for a zippered build
   ///
   /// This represents the target and minimum deployment version for the

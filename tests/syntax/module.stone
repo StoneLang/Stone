@@ -16,7 +16,7 @@ space Stone.Physics.Quantum {
 	public interface Particle {
 		fun Fire() -> auto;  
 	}	
-	class Proton : Particle {
+	struct Proton : Particle {
 		ParticleProfile* profile = null;
 	}
 	init fun Proton::Init(const ParticleProfile* profile) {

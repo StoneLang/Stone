@@ -34,7 +34,7 @@ public:
   // TODO:
   static void ComputeCompileType(const Driver &driver,
                                  const DerivedArgList &args,
-                                 const InputFiles &inputs);
+                                 const Files &inputs);
 
   static void ComputeCompilerOutputFile(const Driver &driver);
 
@@ -214,7 +214,7 @@ void DriverInternal::BuildJobsForSingleCompileType(Driver &driver) {
 
 void DriverInternal::ComputeCompileType(const Driver &driver,
                                         const DerivedArgList &args,
-                                        const InputFiles &inputs) {}
+                                        const Files &inputs) {}
 
 Driver::Driver(llvm::StringRef stoneExecutable, std::string driverName)
     : Session(driverOpts), stoneExecutablePath(stoneExecutablePath),
@@ -356,7 +356,7 @@ bool Driver::EmitInfo(const ArgList &args, const ToolChain &tc) {
 
 // TODO: May move to session
 void Driver::BuildInputs(const ToolChain &tc, const DerivedArgList &args,
-                         InputFiles &inputs) {
+                         Files &inputs) {
   llvm::DenseMap<llvm::StringRef, llvm::StringRef> seenSourceFiles;
 
   for (Arg *arg : args) {

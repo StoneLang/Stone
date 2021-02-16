@@ -49,7 +49,12 @@ Compiler::Implementation::Implementation(Compiler &compiler)
 
 Compiler::Implementation::~Implementation() {}
 
-void Compiler::Implementation::Build() {}
+void Compiler::Implementation::Build() {
+
+  // Create CompilerUnits
+  for (const auto &input : compiler.GetCompilerOptions().inputs) {
+  }
+}
 
 int Compiler::Implementation::Parse(bool check) {
   for (const auto &input : compiler.GetCompilerOptions().inputs) {

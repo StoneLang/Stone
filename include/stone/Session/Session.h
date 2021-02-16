@@ -31,7 +31,7 @@
 #include "stone/Session/Mode.h"
 #include "stone/Session/SessionOptions.h"
 #include "stone/Utils/Context.h"
-#include "stone/Utils/InputFile.h"
+#include "stone/Utils/File.h"
 
 namespace stone {
 
@@ -128,7 +128,7 @@ public:
   // TODO: You want to say
   void AddFile();
 
-  file::InputFiles &GetInputs() { return sessionOpts.inputs; }
+  file::Files &GetInputs() { return sessionOpts.inputs; }
 
   /// Return the total amount of physical memory allocated
   /// for representing CompileInstances

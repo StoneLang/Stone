@@ -19,7 +19,7 @@ Job::Job(JobType jobType, Compilation &compilation)
 
 void Job::AddDep(const Job *job) { deps.Add(job); }
 
-void Job::AddInput(const InputFile input) { jobOpts.inputs.push_back(input); }
+void Job::AddInput(const File input) { jobOpts.inputs.push_back(input); }
 
 const char *Job::GetNameByType(JobType jobType) {
   switch (jobType) {

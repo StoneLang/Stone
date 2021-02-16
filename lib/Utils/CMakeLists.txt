@@ -16,10 +16,10 @@ set(stone_utils_sources
 	DiagnosticEngine.cpp
 	DirScanner.cpp
 	DirWatcher.cpp
+	File.cpp
 	FileMgr.cpp
 	FileSystemStatCache.cpp
 	Fmt.cpp
-	InputFile.cpp
 	LLVMContext.cpp
 	SrcLoc.cpp
 	SrcMgr.cpp
