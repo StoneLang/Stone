@@ -1,4 +1,4 @@
-#include "stone/Analyze/Checker.h"
+#include "stone/Frontend/Checker.h"
 
 using namespace stone::sema;
 

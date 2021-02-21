@@ -36,7 +36,7 @@ inline void AlignedFree(void *p) {
   free(p);
 #endif
 }
-}
+} // namespace mem
 } // namespace stone
 
 #endif

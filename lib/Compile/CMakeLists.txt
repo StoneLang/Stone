@@ -15,7 +15,7 @@ set(stone_compile_sources
 	CompilerUnit.cpp
 
 	LINK_LIBS
-	StoneAnalyze
+	StoneFrontend
 	StoneGen
 	StoneSession
 

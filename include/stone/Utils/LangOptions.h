@@ -17,14 +17,13 @@
 namespace stone {
 class LangOptions final {
 public:
-
-	/// This represents the statistics generated due to a session
-	bool showStatistics = true;
-	/// This represents the diatnostics generated due to a session
-	bool showDiagnostics = true;
-	/// 
+  /// This represents the statistics generated due to a session
+  bool showStatistics = true;
+  /// This represents the diatnostics generated due to a session
+  bool showDiagnostics = true;
+  ///
   bool showTimer = false;
-	///
+  ///
   bool useMalloc = false;
   /// The target we are building for.
   ///

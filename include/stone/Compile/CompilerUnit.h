@@ -6,8 +6,8 @@
 #include "stone/Session/Mode.h"
 #include "stone/Session/SessionOptions.h"
 #include "stone/Syntax/SearchPathOptions.h"
-#include "stone/Utils/FileSystemOptions.h"
 #include "stone/Utils/File.h"
+#include "stone/Utils/FileSystemOptions.h"
 #include "stone/Utils/SrcLoc.h"
 #include "llvm/ADT/ArrayRef.h"
 

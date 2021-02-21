@@ -1,8 +1,8 @@
-#ifndef STONE_ANALYZE_LEXER_H
-#define STONE_ANALYZE_LEXER_H
+#ifndef STONE_FRONTEND_LEXER_H
+#define STONE_FRONTEND_LEXER_H
 
-#include "stone/Analyze/Token.h"
-#include "stone/Analyze/Trivia.h"
+#include "stone/Frontend/Token.h"
+#include "stone/Frontend/Trivia.h"
 #include "stone/Utils/Context.h"
 #include "stone/Utils/DiagnosticEngine.h"
 #include "stone/Utils/SrcLoc.h"

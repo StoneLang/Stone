@@ -50,4 +50,3 @@ LLVM_DECLARE_TYPE_ALIGNMENT(stone::Expr, stone::ExprAlignInBits)
 static_assert(alignof(void *) >= 2, "pointer alignment is too small");
 
 #endif
-

@@ -99,8 +99,9 @@ protected:
   Decl(Decl::Type ty, DeclContext *dc, SrcLoc loc) : ty(ty), dc(dc), loc(loc) {}
 
 public:
-	template <typename DeclTy, typename AllocatorTy>
-	static void *Make(AllocatorTy &allocatorTy, size_t baseSize, bool spaceForClangNode); 
+  template <typename DeclTy, typename AllocatorTy>
+  static void *Make(AllocatorTy &allocatorTy, size_t baseSize,
+                    bool spaceForClangNode);
 };
 
 class DeclContext {

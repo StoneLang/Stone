@@ -1,4 +1,4 @@
-#include "stone/Analyze/Parser.h"
+#include "stone/Frontend/Parser.h"
 
 using namespace stone::syn;
 

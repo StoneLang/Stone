@@ -23,7 +23,7 @@ set(stone_analyze_sources
 	LINK_LIBS
 	StoneSyntax
 )
-add_stone_library(StoneAnalyze
+add_stone_library(StoneFrontend
 	${stone_analyze_sources}
 )
 
