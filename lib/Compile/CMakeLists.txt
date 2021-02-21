@@ -13,15 +13,24 @@ set(stone_compile_sources
 	Compiler.cpp
 	CompilerScope.cpp
 	CompilerUnit.cpp
+	Check.cpp
+	CheckDecl.cpp
+	Checker.cpp
+	CheckExpr.cpp
+	CheckStmt.cpp
+	Lexer.cpp
+	Parse.cpp
+	ParseDecl.cpp
+	Parser.cpp
+	ParseExpr.cpp
+	ParseStmt.cpp
 
 	LINK_LIBS
-	StoneFrontend
 	StoneGen
 	StoneSession
 
 	DEPENDS
 	StoneOptions
-
 )
 add_stone_library(StoneCompile
 	${stone_compile_sources}

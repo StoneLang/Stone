@@ -1,5 +1,5 @@
-#ifndef STONE_FRONTEND_PARSE_H
-#define STONE_FRONTEND_PARSE_H
+#ifndef STONE_COMPILE_PARSE_H
+#define STONE_COMPILE_PARSE_H
 
 #include "llvm/ADT/ArrayRef.h"
 

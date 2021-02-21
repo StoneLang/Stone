@@ -1,5 +1,5 @@
-#ifndef STONE_FRONTEND_SCOPE_H
-#define STONE_FRONTEND_SCOPE_H
+#ifndef STONE_COMPILE_SCOPE_H
+#define STONE_COMPILE_SCOPE_H
 
 #include "llvm/ADT/ArrayRef.h"
 

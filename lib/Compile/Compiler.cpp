@@ -1,9 +1,10 @@
 #include "stone/Compile/Compiler.h"
+#include "stone/Utils/Ret.h"
+
 
 #include <algorithm>
 #include <memory>
 
-#include "stone/Utils/Ret.h"
 
 using namespace stone;
 using namespace stone::opts;
