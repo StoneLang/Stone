@@ -6,6 +6,7 @@
 #include "llvm/Support/Timer.h"
 
 #include "stone/Compile/Lexer.h"
+#include "stone/Compile/SyntaxResult.h"
 #include "stone/Syntax/Module.h"
 #include "stone/Syntax/Syntax.h"
 #include "stone/Syntax/TreeContext.h"

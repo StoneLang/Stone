@@ -5,10 +5,10 @@ include "llvm/Option/OptParser.td"
 // Flags
 
 // The option should be accepted by cram 
-def CompileOption : OptionFlag;
+def CompilerOption : OptionFlag;
 
 // The option should not be accepted by the build.
-def NoCompileOption : OptionFlag;
+def NoCompilerOption : OptionFlag;
 
 // The option should not be accepted by the build.
 def DriverOption : OptionFlag;
@@ -36,19 +36,19 @@ Flags<[HelpHidden]>;
 
 def Parse: Flag<["-"], "parse">,
 HelpText<"Parse input file(s)">, ModeOpt,
-Flags<[CompileOption]>;
+Flags<[CompilerOption]>;
 
 def Check : Flag<["-"], "check">,
 HelpText<"Parse and type-check input file(s)">, ModeOpt,
-Flags<[CompileOption]>;
+Flags<[CompilerOption]>;
 
 def EmitLibrary : Flag<["-"], "emit-library">,
 HelpText<"Emit a linked library">, ModeOpt,
-Flags<[CompileOption]>;
+Flags<[CompilerOption]>;
 
 def EmitObject : Flag<["-"], "emit-object">,
 HelpText<"Emit object file(s) (-C)">, ModeOpt,
-Flags<[CompileOption]>;
+Flags<[CompilerOption]>;
 
 
 def EmitExecutable : Flag<["-"], "emit-executable">,
@@ -57,40 +57,40 @@ Flags<[DriverOption]>;
 
 
 def C : Flag<["-"], "C">, Alias<EmitObject>,
-Flags<[CompileOption]>, ModeOpt;
+Flags<[CompilerOption]>, ModeOpt;
 
 def EmitAssembly : Flag<["-"], "emit-assembly">,
 HelpText<"Emit assembly file(s) (-S)">, ModeOpt,
-Flags<[CompileOption]>;
+Flags<[CompilerOption]>;
 
 def S: Flag<["-"], "S">, Alias<EmitAssembly>,
-Flags<[CompileOption]>, ModeOpt;
+Flags<[CompilerOption]>, ModeOpt;
 
 def EmitBC : Flag<["-"], "emit-bc">,
 HelpText<"Emit LLVM BC file(s)">, ModeOpt,
-Flags<[CompileOption]>;
+Flags<[CompilerOption]>;
 
 def EmitIR : Flag<["-"], "emit-ir">,
 HelpText<"Emit LLVM IR file(s)">, ModeOpt,
-Flags<[CompileOption]>;
+Flags<[CompilerOption]>;
 
 def Static : Flag<["-"], "static">,
-  Flags<[CompileOption]>,
+  Flags<[CompilerOption]>,
   HelpText<"Make this module statically linkable and make the output of -emit-library a static library.">;
 
 
 def DumpAST : Flag<["-"], "dump-ast">,
 HelpText<"Parse and type-check input file(s) and dump AST(s)">, ModeOpt,
-Flags<[CompileOption]>;
+Flags<[CompilerOption]>;
 
 def Help : Flag<["-", "--"], "help">, 
-Flags<[CompileOption, DriverOption]>,
+Flags<[CompilerOption, DriverOption]>,
 HelpText<"Display available options">, ModeOpt;
 
 def h : Flag<["-"], "h">, Alias<Help>;
 
 def HelpSecrete : Flag<["-", "--"], "help-hidden">,
-Flags<[CompileOption]>,
+Flags<[CompilerOption]>,
 HelpText<"Display available options, including hidden options">;
 
 
@@ -108,15 +108,15 @@ Flags<[DriverOption]>;
 
 //GENERAL OPTIONS 
 def Target : Separate<["-"], "target">,
-Flags<[CompileOption, DriverOption]>,
+Flags<[CompilerOption, DriverOption]>,
 HelpText<"Generate code for the given target">;
 
 def TargetVariant : Separate<["-"], "target-variant">,
-  Flags<[CompileOption, DriverOption]>,
+  Flags<[CompilerOption, DriverOption]>,
   HelpText<"Generate 'zippered' code for macCatalyst that can run on the specified"
            " variant target triple in addition to the main -target triple">;
 
-def TargetCPU : Separate<["-"], "target-cpu">, Flags<[CompileOption, DriverOption]>,
+def TargetCPU : Separate<["-"], "target-cpu">, Flags<[CompilerOption, DriverOption]>,
 HelpText<"Generate code for a particular CPU variant">;
 
 // DEV OPTIONS 

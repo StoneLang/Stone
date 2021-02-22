@@ -15,8 +15,8 @@ namespace stone {
 
 namespace opts {
 enum OptFlag {
-  CompileOption = (1 << 4),
-  NoCompileOption = (1 << 5),
+  CompilerOption = (1 << 4),
+  NoCompilerOption = (1 << 5),
   DriverOption = (1 << 6),
   NoDriverOption = (1 << 7),
   DebugOption = (1 << 8),

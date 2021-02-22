@@ -29,7 +29,7 @@ Module *Compiler::GetMainModule() const {
 void Compiler::SetMainModule(Module *m) {}
 
 bool Compiler::Build(llvm::ArrayRef<const char *> args) {
-  excludedFlagsBitmask = opts::NoCompileOption;
+  excludedFlagsBitmask = opts::NoCompilerOption;
 
   originalArgs = ParseArgList(args);
 
