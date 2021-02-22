@@ -37,7 +37,6 @@ class Compiler final : public Session {
   std::unique_ptr<CompilerStats> stats;
 
 private:
-  class Implementation;
   static int Run(Compiler &compiler);
   /*
           /// Identifies the set of input buffers in the SrcMgr that are

@@ -9,13 +9,13 @@
 
 using namespace stone;
 
-class Compiler::Implementation final {
+class CompilerImpl final {
   Compiler &compiler;
   llvm::Module *llvmModule = nullptr;
 
 public:
-  Implementation(Compiler &compiler);
-  ~Implementation();
+  CompilerImpl(Compiler &compiler);
+  ~CompilerImpl();
 
 public:
   /// Setup the units
@@ -29,24 +29,22 @@ public:
   int EmitObject();
   int EmitAssembly();
   int EmitLibrary();
-  /// Emit '.stonemodule'
   int EmitModuleOnly();
   int EmitBitCode();
 };
 
-Compiler::Implementation::Implementation(Compiler &compiler)
-    : compiler(compiler) {}
+CompilerImpl::CompilerImpl(Compiler &compiler) : compiler(compiler) {}
 
-Compiler::Implementation::~Implementation() {}
+CompilerImpl::~CompilerImpl() {}
 
-void Compiler::Implementation::Build() {
+void CompilerImpl::Build() {
 
   // Create CompilerUnits
   for (const auto &input : compiler.GetCompilerOptions().inputs) {
   }
 }
 
-int Compiler::Implementation::Parse(bool check) {
+int CompilerImpl::Parse(bool check) {
   for (const auto &input : compiler.GetCompilerOptions().inputs) {
     // stone::Parse::ParseSourceFile(su, compiler.GetPipeline());
     if (check) {
@@ -61,10 +59,10 @@ int Compiler::Implementation::Parse(bool check) {
   return ret::ok;
 }
 
-int Compiler::Implementation::Parse() { return Parse(false); }
-int Compiler::Implementation::Check() { return Parse(true); }
+int CompilerImpl::Parse() { return Parse(false); }
+int CompilerImpl::Check() { return Parse(true); }
 
-int Compiler::Implementation::EmitIR() {
+int CompilerImpl::EmitIR() {
   if (Check() == ret::err) {
     return ret::err;
   }
@@ -72,7 +70,7 @@ int Compiler::Implementation::EmitIR() {
                             compiler.compilerOpts.genOpts, /*TODO*/ {});
   return ret::ok;
 }
-int Compiler::Implementation::EmitObject() {
+int CompilerImpl::EmitObject() {
   if (EmitIR() == ret::err) {
     return ret::err;
   }
@@ -82,30 +80,31 @@ int Compiler::Implementation::EmitObject() {
   return ret::ok;
 }
 
-int Compiler::Implementation::EmitModuleOnly() { return ret::ok; }
+int CompilerImpl::EmitModuleOnly() { return ret::ok; }
 
-int Compiler::Implementation::EmitLibrary() { return ret::ok; }
+int CompilerImpl::EmitLibrary() { return ret::ok; }
 
-int Compiler::Implementation::EmitBitCode() { return ret::ok; }
+int CompilerImpl::EmitBitCode() { return ret::ok; }
 
 int Compiler::Run(Compiler &compiler) {
-  auto impl = llvm::make_unique<Compiler::Implementation>(compiler);
-  impl->Build();
+  CompilerImpl impl(compiler);
+  impl.Build();
+
   switch (compiler.GetMode().GetType()) {
   case ModeType::Parse:
-    return impl->Parse();
+    return impl.Parse();
   case ModeType::Check:
-    return impl->Check();
+    return impl.Check();
   case ModeType::EmitIR:
-    return impl->EmitIR();
+    return impl.EmitIR();
   case ModeType::EmitObject:
-    return impl->EmitObject();
+    return impl.EmitObject();
   case ModeType::EmitModuleOnly:
-    return impl->EmitModuleOnly();
+    return impl.EmitModuleOnly();
   case ModeType::EmitBC:
-    return impl->EmitBitCode();
+    return impl.EmitBitCode();
   case ModeType::EmitLibrary:
-    return impl->EmitLibrary();
+    return impl.EmitLibrary();
   default:
     llvm_unreachable("Invalide compiler mode.");
   }
