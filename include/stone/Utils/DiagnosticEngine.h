@@ -1,16 +1,6 @@
 #ifndef STONE_UTILS_DIAGNOSTICENGINE_H
 #define STONE_UTILS_DIAGNOSTICENGINE_H
 
-#include <cassert>
-#include <cstdint>
-#include <limits>
-#include <list>
-#include <map>
-#include <memory>
-#include <string>
-#include <type_traits>
-#include <utility>
-#include <vector>
 
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/DenseMap.h"
@@ -27,10 +17,26 @@
 #include "stone/Utils/List.h"
 #include "stone/Utils/SrcLoc.h"
 
+
+#include <cassert>
+#include <cstdint>
+#include <limits>
+#include <list>
+#include <map>
+#include <memory>
+#include <string>
+#include <type_traits>
+#include <utility>
+#include <vector>
+
 namespace stone {
 
 class DiagnosticEngine;
 class InflightDiagnostic;
+class DiagnosticListener;
+class LangOptions;
+class SrcMgr;
+class StoredDiagnostic;
 
 /// Enumeration describing all of possible diagnostics.
 ///
