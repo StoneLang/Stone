@@ -5,7 +5,7 @@ public enum ModeType {
 	Check
 }
 public struct Mode {
-	public ModeType modeType = ModeType::None; 
+	public ModeType modeType = ModeType.None; 
 }
 
 

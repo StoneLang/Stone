@@ -30,6 +30,8 @@ public:
   // If set to true, use the more descriptive experimental formatting style for
   // diagnostics.
   FormattingStyle textFormattingStyle = FormattingStyle::LLVM;
+
+  diag::Severity diagnosticSeverity = diag::Severity::None;
 };
 
 } // namespace stone

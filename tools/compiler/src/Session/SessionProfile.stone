@@ -2,6 +2,7 @@
 public struct SessionOptions {
 }
 public struct SessionProfile {
+	// Private by default 
 	SessionOptions* options = null;
 }
 
