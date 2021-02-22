@@ -1,17 +1,19 @@
-#ifndef STONE_COMPILE_PARSER_H
-#define STONE_COMPILE_PARSER_H
-
-#include <memory>
+#ifndef STONE_ANALYSIS_PARSER_H
+#define STONE_ANALYSIS_PARSER_H
 
 #include "llvm/Support/Timer.h"
 
-#include "stone/Compile/Lexer.h"
-#include "stone/Compile/SyntaxResult.h"
+#include "stone/Analysis/Lexer.h"
+#include "stone/Analysis/SyntaxResult.h"
 #include "stone/Syntax/Module.h"
 #include "stone/Syntax/Syntax.h"
 #include "stone/Syntax/TreeContext.h"
 #include "stone/Utils/Context.h"
 #include "stone/Utils/Stats.h"
+
+
+#include <memory>
+
 
 namespace stone {
 class Pipeline;

@@ -1,12 +1,13 @@
-#ifndef STONE_COMPILE_CHECKER_H
-#define STONE_COMPILE_CHECKER_H
-
-#include <memory>
+#ifndef STONE_ANALYSIS_CHECKER_H
+#define STONE_ANALYSIS_CHECKER_H
 
 #include "stone/Syntax/Module.h"
 #include "stone/Syntax/TreeContext.h"
 #include "stone/Utils/Context.h"
 #include "stone/Utils/Stats.h"
+
+
+#include <memory>
 
 using namespace stone::syn;
 

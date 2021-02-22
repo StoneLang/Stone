@@ -12,21 +12,11 @@ set(stone_compile_sources
 	Compile.cpp
 	Compiler.cpp
 	CompilerScope.cpp
-	Check.cpp
-	CheckDecl.cpp
-	Checker.cpp
-	CheckExpr.cpp
-	CheckStmt.cpp
-	Lexer.cpp
 	Optimize.cpp
-	Parse.cpp
-	ParseDecl.cpp
-	Parser.cpp
-	ParseExpr.cpp
-	ParseStmt.cpp
 	Serialize.cpp
 
 	LINK_LIBS
+	StoneAnalysis
 	StoneGen
 	StoneSession
 

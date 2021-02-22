@@ -1,3 +1,4 @@
+add_subdirectory(Analysis)
 add_subdirectory(Compile)
 add_subdirectory(Driver)
 add_subdirectory(Gen)
