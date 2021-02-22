@@ -19,11 +19,13 @@ set(stone_compile_sources
 	CheckExpr.cpp
 	CheckStmt.cpp
 	Lexer.cpp
+	Optimize.cpp
 	Parse.cpp
 	ParseDecl.cpp
 	Parser.cpp
 	ParseExpr.cpp
 	ParseStmt.cpp
+	Serialize.cpp
 
 	LINK_LIBS
 	StoneGen

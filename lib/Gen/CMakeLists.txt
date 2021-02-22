@@ -14,7 +14,6 @@ set(stone_gen_sources
 	CodeGenerator.cpp
 	CodeEmitter.cpp
 	CodeGenFunction.cpp
-	Optimize.cpp
 
 	LINK_LIBS
 	StoneSyntax
