@@ -1,7 +1,6 @@
 #include "stone/Compile/Compile.h"
 #include "stone/Compile/Check.h"
 #include "stone/Compile/Compiler.h"
-#include "stone/Compile/CompilerUnit.h"
 #include "stone/Compile/Parse.h"
 #include "stone/Gen/Gen.h"
 #include "stone/Session/ExecutablePath.h"
@@ -14,9 +13,6 @@ class Compiler::Implementation final {
   Compiler &compiler;
   llvm::Module *llvmModule = nullptr;
 
-  CompilerUnit *currentUnit = nullptr;
-  std::vector<CompilerUnit *> units;
-
 public:
   Implementation(Compiler &compiler);
   ~Implementation();
@@ -24,12 +20,6 @@ public:
 public:
   /// Setup the units
   void Build();
-
-  /// Return information about the active/current file being compiled.
-  CompilerUnit &GetCurrentCompilerUnit() { return *currentUnit; }
-
-  /// The the record of all files that were compiled.
-  std::vector<CompilerUnit *> &GetCompilerUnits() { return units; }
 
 public:
   int Parse();

@@ -12,7 +12,6 @@ set(stone_compile_sources
 	Compile.cpp
 	Compiler.cpp
 	CompilerScope.cpp
-	CompilerUnit.cpp
 	Check.cpp
 	CheckDecl.cpp
 	Checker.cpp
