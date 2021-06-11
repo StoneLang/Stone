@@ -6,7 +6,6 @@
 #include "stone/Utils/Context.h"
 #include "stone/Utils/Stats.h"
 
-
 #include <memory>
 
 using namespace stone::syn;

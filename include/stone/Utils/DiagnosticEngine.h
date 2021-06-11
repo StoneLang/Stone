@@ -1,7 +1,6 @@
 #ifndef STONE_UTILS_DIAGNOSTICENGINE_H
 #define STONE_UTILS_DIAGNOSTICENGINE_H
 
-
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/DenseMap.h"
 #include "llvm/ADT/IntrusiveRefCntPtr.h"
@@ -16,7 +15,6 @@
 #include "stone/Utils/LangOptions.h"
 #include "stone/Utils/List.h"
 #include "stone/Utils/SrcLoc.h"
-
 
 #include <cassert>
 #include <cstdint>
