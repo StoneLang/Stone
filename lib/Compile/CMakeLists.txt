@@ -11,7 +11,6 @@ set( LLVM_LINK_COMPONENTS
 set(stone_compile_sources
 	Compile.cpp
 	Compiler.cpp
-	CompilerScope.cpp
 	Optimize.cpp
 	Serialize.cpp
 
