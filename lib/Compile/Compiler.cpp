@@ -29,9 +29,8 @@ Module *Compiler::GetMainModule() const {
 
 void Compiler::SetMainModule(Module *m) {}
 
+void Compiler::Init() { CreateTimer(); }
 bool Compiler::Build(llvm::ArrayRef<const char *> args) {
-
-  CreateTimer();
 
   excludedFlagsBitmask = opts::NoCompilerOption;
 

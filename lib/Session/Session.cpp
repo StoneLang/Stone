@@ -9,7 +9,6 @@ Session::Session(SessionOptions &sessionOpts)
     : sessionOpts(sessionOpts), mode(ModeType::None),
       targetTriple(llvm::sys::getDefaultTargetTriple()),
       fileSystem(llvm::vfs::getRealFileSystem()), strSaver(bumpAlloc) {
-
   // TODO: -print-stats
 }
 
@@ -17,11 +16,12 @@ Session::~Session() {}
 
 void Session::CreateTimer() {
 
-  // TODO: Make sure there is no perf hit here.
   timerGroup.reset(new llvm::TimerGroup(
-      GetName(), llvm::StringRef(GetName().str() + "time report")));
-  timer.reset(new llvm::Timer(
-      GetName(), llvm::StringRef(GetName().str() + "timer"), *timerGroup));
+      GetName(), llvm::StringRef(GetDescription().str() + "time report")));
+
+  timer.reset(new llvm::Timer(GetName(),
+                              llvm::StringRef(GetDescription().str() + "timer"),
+                              *timerGroup));
 }
 std::unique_ptr<llvm::opt::InputArgList>
 Session::ParseArgList(llvm::ArrayRef<const char *> args) {

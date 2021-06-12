@@ -80,7 +80,7 @@ public:
   std::unique_ptr<llvm::Timer> timer;
 
 public:
-  Session(SessionOptions &sessionOpts);
+  Session(SessionOptions &opts);
   virtual ~Session();
 
 protected:
@@ -93,6 +93,7 @@ protected:
   TranslateArgList(const llvm::opt::InputArgList &args);
 
 public:
+  virtual void Init() = 0;
   ///
   virtual bool Build(llvm::ArrayRef<const char *> args) = 0;
   ///
@@ -138,16 +139,17 @@ public:
   size_t GetMemSize() const { return bumpAlloc.getTotalMemory(); }
 
 protected:
-
-	//NOTE: Cannot call virtual functions from constructor 
-  void CreateTimer();
+  // NOTE: Cannot call virtual functions from constructor
   // Compute the mode id -- TODO: virtual
+  virtual llvm::StringRef GetName() = 0;
+  virtual llvm::StringRef GetDescription() = 0;
+
   virtual void ComputeMode(const llvm::opt::DerivedArgList &args);
   virtual ModeType GetDefaultModeType() = 0;
   virtual void BuildOptions() = 0;
-  virtual llvm::StringRef GetName() = 0;
 
 protected:
+  void CreateTimer();
   llvm::StringRef ComputeWorkingDir();
   void Purge();
   void PrintDiagnostics();

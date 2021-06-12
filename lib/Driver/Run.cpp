@@ -70,6 +70,7 @@ int stone::Run(llvm::ArrayRef<const char *> args, const char *arg0,
   bool canonicalPrefixes = false;
   SetInstallDir(arg0, driver, canonicalPrefixes);
 
+  driver.Init();
   if (driver.Build(args)) {
     if (driver.GetDiagEngine().HasError()) {
       return ret::err;

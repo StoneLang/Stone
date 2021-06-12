@@ -41,6 +41,8 @@ int stone::Compile(llvm::ArrayRef<const char *> args, const char *arg0,
 
   STONE_DEFER { compiler.Finish(); };
 
+  compiler.Init();
+
   if (compiler.Build(args)) {
     if (compiler.GetDiagEngine().HasError()) {
       return ret::err;

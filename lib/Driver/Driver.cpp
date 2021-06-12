@@ -220,7 +220,8 @@ Driver::Driver(llvm::StringRef stoneExecutable, std::string driverName)
     : Session(driverOpts), stoneExecutablePath(stoneExecutablePath),
       driverName(driverName),
       /*sysRoot(DEFAULT_SYSROOT),*/
-      driverTitle("Stone Compiler"), checkInputFilesExist(true) {
+      driverTitle("Compiler driver"), checkInputFilesExist(true) {
+
   stats.reset(new DriverStats(*this));
   GetStatEngine().Register(stats.get());
 }
@@ -231,10 +232,9 @@ DriverInternal::BuildTaskQueue(Driver &driver) {
   return llvm::make_unique<driver::UnixTaskQueue>(driver);
 }
 
+void Driver::Init() { CreateTimer(); }
 /// Parse the given list of strings into an InputArgList.
 bool Driver::Build(llvm::ArrayRef<const char *> args) {
-
-  CreateTimer();
 
   excludedFlagsBitmask = opts::NoDriverOption;
 

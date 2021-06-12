@@ -193,6 +193,7 @@ private:
 public:
   Driver(llvm::StringRef executablePath, std::string driverName);
 
+  void Init() override;
   /// Parse the given list of strings into an InputArgList.
   bool Build(llvm::ArrayRef<const char *> args) override;
   int Run() override;
@@ -234,7 +235,9 @@ protected:
   ModeType GetDefaultModeType() override;
   void BuildOptions() override;
 
-  llvm::StringRef GetName() override { return "Driver"; }
+  llvm::StringRef GetName() override { return "Compiler"; }
+  llvm::StringRef GetDescription() override { return "Compiler Driver"; }
+
   /// TranslateInputArgs - Create a new derived argument list from the input
   /// arguments, after applying the standard argument translations.
   // llvm::opt::DerivedArgList *
