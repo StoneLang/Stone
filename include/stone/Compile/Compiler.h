@@ -28,6 +28,7 @@ public:
 class OutputProfile final {};
 
 class CompilingUnit {};
+
 class Compiler final : public Session {
   SrcMgr sm;
   FileMgr fm;
@@ -106,11 +107,10 @@ public:
 
 protected:
   void ComputeMode(const llvm::opt::DerivedArgList &args) override;
-
   ModeType GetDefaultModeType() override;
-
   void BuildOptions() override;
 
+  llvm::StringRef GetName() override { return "Compiler"; }
   /// TranslateInputArgs - Create a new derived argument list from the input
   /// arguments, after applying the standard argument translations.
   // llvm::opt::DerivedArgList *

@@ -233,6 +233,9 @@ DriverInternal::BuildTaskQueue(Driver &driver) {
 
 /// Parse the given list of strings into an InputArgList.
 bool Driver::Build(llvm::ArrayRef<const char *> args) {
+
+  CreateTimer();
+
   excludedFlagsBitmask = opts::NoDriverOption;
 
   originalArgs = ParseArgList(args);

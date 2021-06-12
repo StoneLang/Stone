@@ -27,7 +27,7 @@ int Compiler::Run(Compiler &compiler) {
   case ModeType::EmitLibrary:
     return sys::EmitLibrary(fe);
   default:
-    llvm_unreachable("Unknown compiler mode.");
+    sys::EmitObject(fe);
   }
   return ret::ok;
 }

@@ -11,11 +11,18 @@ Session::Session(SessionOptions &sessionOpts)
       fileSystem(llvm::vfs::getRealFileSystem()), strSaver(bumpAlloc) {
 
   // TODO: -print-stats
-  timer.startTimer();
 }
 
 Session::~Session() {}
 
+void Session::CreateTimer() {
+
+  // TODO: Make sure there is no perf hit here.
+  timerGroup.reset(new llvm::TimerGroup(
+      GetName(), llvm::StringRef(GetName().str() + "time report")));
+  timer.reset(new llvm::Timer(
+      GetName(), llvm::StringRef(GetName().str() + "timer"), *timerGroup));
+}
 std::unique_ptr<llvm::opt::InputArgList>
 Session::ParseArgList(llvm::ArrayRef<const char *> args) {
   auto argList = llvm::make_unique<llvm::opt::InputArgList>(
@@ -100,7 +107,7 @@ void Session::ComputeMode(const llvm::opt::DerivedArgList &args) {
 void Session::Purge() {}
 
 void Session::Finish() {
-  timer.stopTimer();
+  // TODO: timer->stopTimer();
   Purge();
   PrintDiagnostics();
   PrintStatistics();

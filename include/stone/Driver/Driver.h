@@ -234,6 +234,7 @@ protected:
   ModeType GetDefaultModeType() override;
   void BuildOptions() override;
 
+  llvm::StringRef GetName() override { return "Driver"; }
   /// TranslateInputArgs - Create a new derived argument list from the input
   /// arguments, after applying the standard argument translations.
   // llvm::opt::DerivedArgList *

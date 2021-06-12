@@ -3,7 +3,8 @@
 using namespace stone;
 
 Stats::Stats(const char *name) : name(name), cos(llvm::outs()) {
-  timer.startTimer();
+  // TODO: timer.startTimer();
+  timer.reset(new llvm::Timer(name, name));
 }
 
 StatEngine::StatEngine() {}

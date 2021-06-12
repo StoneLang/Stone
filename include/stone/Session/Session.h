@@ -76,7 +76,8 @@ public:
   }
   llvm::vfs::FileSystem &GetFS() const { return *fileSystem; }
 
-  llvm::Timer timer;
+  std::unique_ptr<llvm::TimerGroup> timerGroup;
+  std::unique_ptr<llvm::Timer> timer;
 
 public:
   Session(SessionOptions &sessionOpts);
@@ -109,7 +110,6 @@ public:
 
   llvm::StringRef GetTargetTriple() const { return langOpts.target.str(); }
 
-  // virtual llvm::StringRef GetName() = 0;
   void Finish();
 
   Mode &GetMode() { return mode; }
@@ -130,15 +130,22 @@ public:
 
   file::Files &GetInputs() { return sessionOpts.inputs; }
 
+  llvm::TimerGroup &GetTimerGroup() { return *timerGroup.get(); }
+  llvm::Timer &GetTimer() { return *timer.get(); }
+
   /// Return the total amount of physical memory allocated
   /// for representing CompileInstances
   size_t GetMemSize() const { return bumpAlloc.getTotalMemory(); }
 
 protected:
+
+	//NOTE: Cannot call virtual functions from constructor 
+  void CreateTimer();
   // Compute the mode id -- TODO: virtual
   virtual void ComputeMode(const llvm::opt::DerivedArgList &args);
   virtual ModeType GetDefaultModeType() = 0;
   virtual void BuildOptions() = 0;
+  virtual llvm::StringRef GetName() = 0;
 
 protected:
   llvm::StringRef ComputeWorkingDir();

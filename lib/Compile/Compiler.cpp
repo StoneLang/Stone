@@ -11,6 +11,7 @@ using namespace stone::syn;
 Compiler::Compiler(Pipeline *pipeline)
     : Session(compilerOpts), pipeline(pipeline), fm(compilerOpts.fsOpts),
       sm(GetDiagEngine(), fm) {
+
   tc.reset(new TreeContext(*this, compilerOpts.spOpts, sm));
 
   stats.reset(new CompilerStats(*this));
@@ -29,6 +30,9 @@ Module *Compiler::GetMainModule() const {
 void Compiler::SetMainModule(Module *m) {}
 
 bool Compiler::Build(llvm::ArrayRef<const char *> args) {
+
+  CreateTimer();
+
   excludedFlagsBitmask = opts::NoCompilerOption;
 
   originalArgs = ParseArgList(args);

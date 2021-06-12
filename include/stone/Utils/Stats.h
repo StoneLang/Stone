@@ -23,7 +23,7 @@ protected:
   ColorOutputStream cos;
 
 public:
-  llvm::Timer timer;
+  std::unique_ptr<llvm::Timer> timer;
 
 public:
   Stats(const char *name);
@@ -33,6 +33,8 @@ public:
   void Disable() { enabled = false; }
   void AddDep(const Stats *stats) { deps.Add(stats); }
   ConstList<Stats> GetDeps() { return deps; }
+
+  llvm::Timer &GetTimer() { return *timer.get(); }
 
 public:
   virtual void Print() = 0;

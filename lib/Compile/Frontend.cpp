@@ -45,12 +45,14 @@ int sys::EmitIR(Frontend &fe) {
   return ret::ok;
 }
 int sys::EmitObject(Frontend &fe) {
-  if (sys::EmitIR(fe) == ret::err) {
-    return ret::err;
-  }
-  bool status = stone::GenObject(
-      fe.GetLLVMModule(), fe.GetCompiler().GetCompilerOptions().genOpts,
-      fe.GetCompiler().GetTreeContext(), /*TODO*/ {});
+
+  // if (sys::EmitIR(fe) == ret::err) {
+  //  return ret::err;
+  //}
+  // bool status = stone::GenObject(
+  //    fe.GetLLVMModule(), fe.GetCompiler().GetCompilerOptions().genOpts,
+  //    fe.GetCompiler().GetTreeContext(), /*TODO*/ {});
+
   return ret::ok;
 }
 
