@@ -13,7 +13,7 @@ class SrcID;
 class SrcMgr;
 class Token;
 class LangOptions;
-class Pipeline;
+class LexerPipeline;
 
 namespace syn {
 class Token;
@@ -82,6 +82,8 @@ class Lexer final {
   /// `TriviaRetentionMode::With`.
   Trivia trailingTrivia;
 
+  LexerPipeline *pipeline = nullptr;
+
 public:
   // Making this public for now
   TriviaRetentionMode triviaRetention;
@@ -106,23 +108,11 @@ private:
 
 public:
   Lexer(const SrcID srcID, SrcMgr &sm, Context &ctx,
-        Pipeline *pipeline = nullptr);
+        LexerPipeline *pipeline = nullptr);
 
 public:
-  void Lex(Token &result) {
-    Trivia leading, trailing;
-    Lex(result, leading, trailing);
-  }
-  void Lex(Token &result, Trivia &leading, Trivia &trailing) {
-    result = nextToken;
-    if (triviaRetention == TriviaRetentionMode::With) {
-      leading = {leadingTrivia};
-      trailing = {trailingTrivia};
-    }
-    if (result.IsNot(tk::Type::eof)) {
-      Lex();
-    }
-  }
+  void Lex(Token &result);
+  void Lex(Token &result, Trivia &leading, Trivia &trailing);
   Token &Peek() { return nextToken; }
 
   SrcID GetSrcID() { return srcID; }

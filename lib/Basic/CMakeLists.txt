@@ -21,6 +21,7 @@ set(stone_basic_sources
 	FileSystemStatCache.cpp
 	Fmt.cpp
 	LLVMContext.cpp
+	PipelineEngine.cpp
 	SrcLoc.cpp
 	SrcMgr.cpp
 	Stats.cpp

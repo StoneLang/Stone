@@ -9,8 +9,8 @@ using namespace stone;
 using namespace stone::opts;
 using namespace stone::syn;
 
-Compiler::Compiler(Pipeline *pipeline)
-    : Session(compilerOpts), pipeline(pipeline), fm(compilerOpts.fsOpts),
+Compiler::Compiler(PipelineEngine *pe)
+    : Session(compilerOpts), pe(pe), fm(compilerOpts.fsOpts),
       sm(GetDiagEngine(), fm) {
 
   tc.reset(new TreeContext(*this, compilerOpts.spOpts, sm));
@@ -36,7 +36,7 @@ syn::Module *Compiler::GetMainModule() const {
 
 void Compiler::SetMainModule(syn::Module *m) { mainModule = m; }
 
-void Compiler::Init() { CreateTimer(); }
+void Compiler::Init() {}
 
 bool Compiler::Build(llvm::ArrayRef<const char *> args) {
 
@@ -48,7 +48,7 @@ bool Compiler::Build(llvm::ArrayRef<const char *> args) {
   // Computer the compiler mode.
   ComputeMode(*translatedArgs);
 
-  compilerOpts.printStats = translatedArgs->hasArg(opts::PrintStats);
+  CreateTimer();
 
   BuildInputs();
 
@@ -85,7 +85,7 @@ int Compiler::Run() {
 void CompilerStats::Print() {
 
   // if print-stats
-  GetTimer().stopTimer();
+  // GetTimer().stopTimer();
   // auto timeRecord = GetTimer().getTotalTime();
   // timeRecord.print(timeRecord, compiler.Out().GetOS());
 }

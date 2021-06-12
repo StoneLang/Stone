@@ -1,11 +1,12 @@
 #include "stone/Analyze/Checker.h"
+#include "stone/Analyze/CheckerPipeline.h"
 #include "stone/Basic/Ret.h"
 
 using namespace stone;
 using namespace stone::sema;
 using namespace stone::syn;
 
-Checker::Checker(SourceFile &su, Context &ctx, Pipeline *pipeline)
+Checker::Checker(SourceFile &su, Context &ctx, CheckerPipeline *pipeline)
     : su(su), ctx(ctx), pipeline(pipeline) {
   stats.reset(new CheckerStats(*this));
   ctx.GetStatEngine().Register(stats.get());

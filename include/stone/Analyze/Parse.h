@@ -4,14 +4,14 @@
 #include "llvm/ADT/ArrayRef.h"
 
 namespace stone {
-class Pipeline;
+class ParserPipeline;
 
 namespace syn {
 class SourceFile;
 }
 
 /// Parse a source file
-void ParseSourceFile(syn::SourceFile &su, Pipeline *pipeline = nullptr);
+void ParseSourceFile(syn::SourceFile &su, ParserPipeline *pipeline = nullptr);
 
 } // namespace stone
 #endif

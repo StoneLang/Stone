@@ -4,17 +4,19 @@
 #include "llvm/ADT/ArrayRef.h"
 
 namespace stone {
-class Pipeline;
+class CheckerPipeline;
 
 namespace syn {
 class SourceFile;
 }
 
 /// Perform type checking
-void CheckSourceFile(syn::SourceFile &file, Pipeline *pipeline = nullptr);
+void CheckSourceFile(syn::SourceFile &file,
+                     CheckerPipeline *pipeline = nullptr);
 
 /// Perform type checking
-void CheckWholeModule(syn::SourceFile &file, Pipeline *pipeline = nullptr);
+void CheckWholeModule(syn::SourceFile &file,
+                      CheckerPipeline *pipeline = nullptr);
 
 } // namespace stone
 #endif

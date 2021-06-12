@@ -3,6 +3,11 @@
 
 using namespace stone::syn;
 
-void Parser::ParseDecl() {}
+void Parser::ParseDecl() {
+
+  // if(pipeline) {
+  // pipeline->OnDeclParse(...);
+  //}
+}
 
 int Parser::ParseTopDecl() { return ret::ok; }

@@ -10,10 +10,12 @@ namespace syn {
 class Token;
 }
 
+/*
 class Pipeline {
   Pipeline() = default;
   virtual ~Pipeline() = default;
 
+public:
 public:
   virtual void OnCompilerConfigured(const Compiler &compiler) = 0;
 
@@ -56,6 +58,8 @@ public:
   ///
   virtual void OnGenObjectFinished(const Compiler &compiler);
 };
+
+*/
 
 } // namespace stone
 #endif

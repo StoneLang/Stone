@@ -16,14 +16,15 @@ Session::~Session() {}
 
 void Session::CreateTimer() {
 
-  timerGroup.reset(new llvm::TimerGroup(
-      GetName(), llvm::StringRef(GetDescription().str() + "time report")));
+  if (sessionOpts.printStats) {
+    timerGroup.reset(new llvm::TimerGroup(
+        GetName(), llvm::StringRef(GetDescription().str() + "time report")));
 
-  timer.reset(new llvm::Timer(GetName(),
-                              llvm::StringRef(GetDescription().str() + "timer"),
-                              *timerGroup));
-
-  timer->startTimer();
+    timer.reset(new llvm::Timer(
+        GetName(), llvm::StringRef(GetDescription().str() + "timer"),
+        *timerGroup));
+    timer->startTimer();
+  }
 }
 std::unique_ptr<llvm::opt::InputArgList>
 Session::ParseArgList(llvm::ArrayRef<const char *> args) {
@@ -59,6 +60,7 @@ Session::TranslateArgList(const llvm::opt::InputArgList &args) {
   for (Arg *arg : args) {
     dArgList->append(arg);
   }
+  sessionOpts.printStats = dArgList->hasArg(opts::PrintStats);
   return dArgList;
 }
 
@@ -110,8 +112,6 @@ void Session::Purge() {}
 
 void Session::Finish() {
   Purge();
-  GetTimer().stopTimer();
-
   PrintDiagnostics();
   PrintStatistics();
 }
@@ -119,6 +119,7 @@ void Session::PrintDiagnostics() { GetDiagEngine().Print(); }
 
 void Session::PrintStatistics() {
   if (sessionOpts.printStats) {
+    GetTimer().stopTimer();
     GetStatEngine().Print();
   }
 }

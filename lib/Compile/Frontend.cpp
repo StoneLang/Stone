@@ -12,6 +12,7 @@ Frontend::~Frontend() {}
 
 int sys::Parse(Frontend &fe, bool check) {
 
+  // NOTE: Here
   // CompilingScope scope;
   // scope.Enter();
   // SourceFile su;

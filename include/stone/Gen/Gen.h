@@ -15,6 +15,7 @@ class TargetMachine;
 } // namespace llvm
 
 namespace stone {
+class EmitPipeline;
 
 namespace syn {
 class TreeContext;

@@ -232,7 +232,7 @@ DriverInternal::BuildTaskQueue(Driver &driver) {
   return llvm::make_unique<driver::UnixTaskQueue>(driver);
 }
 
-void Driver::Init() { CreateTimer(); }
+void Driver::Init() {}
 /// Parse the given list of strings into an InputArgList.
 bool Driver::Build(llvm::ArrayRef<const char *> args) {
 
@@ -294,6 +294,8 @@ void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
 
   // NOTE: Session manages this object
   translatedArgs = TranslateArgList(argList);
+
+  CreateTimer();
 
   // Computer the compiler mode.
   ComputeMode(*translatedArgs);

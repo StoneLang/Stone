@@ -14,7 +14,7 @@
 #include <memory>
 
 namespace stone {
-class Pipeline;
+class ParserPipeline;
 namespace syn {
 class Parser;
 class ParserStats final : public Stats {
@@ -28,7 +28,7 @@ public:
 class Parser final {
   friend ParserStats;
   Context &ctx;
-  Pipeline *pipeline;
+  ParserPipeline *pipeline;
   std::unique_ptr<Lexer> lexer;
   std::unique_ptr<ParserStats> stats;
 
@@ -63,7 +63,7 @@ public:
   class MultiParsingScope {};
 
 public:
-  Parser(Context &ctx, Pipeline *pipeline = nullptr);
+  Parser(Context &ctx, ParserPipeline *pipeline = nullptr);
   ~Parser();
 
 public:

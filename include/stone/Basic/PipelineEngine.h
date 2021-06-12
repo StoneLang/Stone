@@ -18,10 +18,15 @@ enum class PipelineType {
   Gen,
 };
 
-class Pipeline {};
-class CheckPipeline : public Pipeline {};
-class ParsePipeline : public Pipeline {};
-class LexPipeline : public Pipeline {};
+class Pipeline {
+
+public:
+  Pipeline() = default;
+  virtual ~Pipeline();
+
+public:
+  virtual llvm::StringRef GetName() = 0;
+};
 
 class PipelineEngine final {
 public:

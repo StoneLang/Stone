@@ -11,7 +11,7 @@
 using namespace stone::syn;
 
 namespace stone {
-class Pipeline;
+class CheckerPipeline;
 
 namespace syn {
 class SourceFile;
@@ -33,12 +33,13 @@ class Checker final {
   syn::SourceFile &su;
   std::unique_ptr<CheckerStats> stats;
 
-  Pipeline *pipeline;
+  CheckerPipeline *pipeline;
   Context &ctx;
 
 public:
   // TODO: CompileUnit
-  Checker(syn::SourceFile &su, Context &ctx, Pipeline *pipeline = nullptr);
+  Checker(syn::SourceFile &su, Context &ctx,
+          CheckerPipeline *pipeline = nullptr);
 
 public:
   void CheckDecl();

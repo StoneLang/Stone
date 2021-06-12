@@ -12,7 +12,7 @@
 using namespace stone::syn;
 
 namespace stone {
-class Pipeline;
+class PipelineEngine;
 
 class Compiler;
 class CompilerStats final : public Stats {
@@ -32,7 +32,7 @@ class CompilingUnit {};
 class Compiler final : public Session {
   SrcMgr sm;
   FileMgr fm;
-  Pipeline *pipeline = nullptr;
+  PipelineEngine *pe = nullptr;
   mutable syn::Module *mainModule = nullptr;
   std::unique_ptr<TreeContext> tc;
 
@@ -64,7 +64,7 @@ public:
   Compiler &operator=(const Compiler &) = delete;
   Compiler &operator=(Compiler &&) = delete;
 
-  Compiler(Pipeline *pipeline = nullptr);
+  Compiler(PipelineEngine *pe = nullptr);
 
 public:
   void Init() override;
@@ -103,6 +103,8 @@ public:
   }
 
   CompilerStats &GetStats() { return *stats.get(); }
+
+  PipelineEngine *GetPipelineEngine() { return pe; }
 
 protected:
   void ComputeMode(const llvm::opt::DerivedArgList &args) override;
