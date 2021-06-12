@@ -70,10 +70,10 @@ public:
   class MultiParsingScope {};
 
 public:
-  Parser(const SrcID srcID, SourceFile &sf, stone::SrcMgr &sm, Context &ctx,
+  Parser(const SrcID srcID, SourceFile &sf, SrcMgr &sm, Context &ctx,
          ParserPipeline *pipeline = nullptr);
 
-  Parser(const SrcID srcID, SourceFile &sf, stone::SrcMgr &sm, Context &ctx,
+  Parser(const SrcID srcID, SourceFile &sf, SrcMgr &sm, Context &ctx,
          std::unique_ptr<Lexer> lexer, ParserPipeline *pipeline = nullptr);
 
   ~Parser();

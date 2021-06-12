@@ -351,7 +351,7 @@ static bool IsIdentifier(const signed char ch) {
   }
 }
 
-Lexer::Lexer(const SrcID srcID, stone::SrcMgr &sm, Context &ctx,
+Lexer::Lexer(const SrcID srcID, SrcMgr &sm, Context &ctx,
              LexerPipeline *pipeline)
     : srcID(srcID), sm(sm), ctx(ctx), pipeline(pipeline) {
 
@@ -552,6 +552,7 @@ void Lexer::CreateToken(tk::Type ty, const char *tokenStart) {
   }
   nextToken.SetToken(ty, tokenText, commentLength);
   if (pipeline) {
+    // TODO: I think you want the current token -- this returns the next.
     pipeline->OnTokenCreated(Peek());
   }
 }

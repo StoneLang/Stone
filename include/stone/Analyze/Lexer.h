@@ -93,7 +93,7 @@ private:
   void operator=(const Lexer &) = delete;
 
 public:
-  Lexer(const SrcID srcID, stone::SrcMgr &sm, Context &ctx,
+  Lexer(const SrcID srcID, SrcMgr &sm, Context &ctx,
         LexerPipeline *pipeline = nullptr);
   void Init(unsigned startOffset, unsigned endOffset);
 
