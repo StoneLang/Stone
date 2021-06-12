@@ -38,11 +38,9 @@ int stone::Compile(llvm::ArrayRef<const char *> args, const char *arg0,
   auto executablePath = stone::GetExecutablePath(arg0);
 
   Compiler compiler(pipeline);
-
   STONE_DEFER { compiler.Finish(); };
 
   compiler.Init();
-
   if (compiler.Build(args)) {
     if (compiler.GetDiagEngine().HasError()) {
       return ret::err;
