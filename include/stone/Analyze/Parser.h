@@ -68,6 +68,7 @@ public:
 
 public:
   ParserStats &GetStats() { return *stats.get(); }
+  Lexer &GetLexer() { return *lexer.get(); }
 
 public:
 public:

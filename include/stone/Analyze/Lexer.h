@@ -93,6 +93,9 @@ private:
   void operator=(const Lexer &) = delete;
   void Init(unsigned startOffset, unsigned endOffset);
 
+public:
+  void SetPipeline(LexerPipeline *p) { pipeline = p; }
+
 private:
   void Lex();
   void LexTrivia(Trivia trivia, bool isTrailing);

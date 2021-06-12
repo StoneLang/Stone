@@ -8,8 +8,12 @@
 
 using namespace stone::syn;
 
-void stone::ParseSourceFile(syn::SourceFile &sf, ParserPipeline *pipeline) {
+void stone::ParseSourceFile(syn::SourceFile &sf, PipelineEngine *pe) {
 
+  ParserPipeline *parserPipeline = nullptr;
+  if (pe) {
+    parserPipeline =
+        static_cast<ParserPipeline *>(pe->Get(PipelineType::Parse));
+  }
   // Parser parser(pipeline);
-  //
 }

@@ -18,7 +18,7 @@ int sys::Parse(Frontend &fe, bool check) {
   // SourceFile su;
 
   for (const auto &input : fe.GetCompiler().GetCompilerOptions().inputs) {
-    // stone::ParseSourceFile(su, compiler.GetPipeline());
+    // stone::ParseSourceFile(su, pipeline);
     if (check) {
       if (!fe.GetCompiler().GetCompilerOptions().wholeModuleCheck) {
         //	stone::CheckSourceFile(su, compiler.GetPipeline());
