@@ -32,16 +32,16 @@
 #include "llvm/Support/Casting.h"
 #include "llvm/Support/Compiler.h"
 
+#include "stone/Basic/Context.h"
+#include "stone/Basic/LangOptions.h"
+#include "stone/Basic/SrcMgr.h"
+#include "stone/Basic/Stats.h"
 #include "stone/Syntax/Builtin.h"
 #include "stone/Syntax/Identifier.h"
 #include "stone/Syntax/LangABI.h"
 #include "stone/Syntax/SearchPathOptions.h"
 #include "stone/Syntax/TreeContextAlloc.h"
 #include "stone/Syntax/Type.h"
-#include "stone/Utils/Context.h"
-#include "stone/Utils/LangOptions.h"
-#include "stone/Utils/SrcMgr.h"
-#include "stone/Utils/Stats.h"
 
 namespace stone {
 namespace syn {
@@ -103,7 +103,7 @@ public:
 
 public:
   ///
-  Identifier& GetIdentifier(llvm::StringRef name);
+  Identifier &GetIdentifier(llvm::StringRef name);
   ///
   Builtin &GetBuiltin() const;
   //

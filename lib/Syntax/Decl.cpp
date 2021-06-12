@@ -10,15 +10,15 @@
 #include <tuple>
 #include <utility>
 
+#include "stone/Basic/LLVM.h"
+#include "stone/Basic/LangOptions.h"
+#include "stone/Basic/SrcLoc.h"
+#include "stone/Basic/Target.h"
 #include "stone/Syntax/Identifier.h"
 #include "stone/Syntax/Module.h"
 #include "stone/Syntax/Stmt.h"
 #include "stone/Syntax/Template.h" //DeclTemplate
 #include "stone/Syntax/Type.h"
-#include "stone/Utils/LLVM.h"
-#include "stone/Utils/LangOptions.h"
-#include "stone/Utils/SrcLoc.h"
-#include "stone/Utils/Target.h"
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/PointerIntPair.h"
 #include "llvm/ADT/SmallVector.h"

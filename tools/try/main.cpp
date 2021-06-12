@@ -18,8 +18,8 @@
 #include "llvm/Support/Compiler.h"
 #include "llvm/Support/Error.h"
 
-#include "stone/Utils/List.h"
-#include "stone/Utils/SrcLoc.h"
+#include "stone/Basic/List.h"
+#include "stone/Basic/SrcLoc.h"
 
 class DiagnosticEngine;
 

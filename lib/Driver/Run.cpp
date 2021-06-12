@@ -5,12 +5,12 @@
 #include <set>
 #include <system_error>
 
+#include "stone/Basic/Defer.h"
+#include "stone/Basic/LLVM.h"
+#include "stone/Basic/Ret.h"
 #include "stone/Driver/Compilation.h"
 #include "stone/Driver/Driver.h"
 #include "stone/Session/ExecutablePath.h"
-#include "stone/Utils/Defer.h"
-#include "stone/Utils/LLVM.h"
-#include "stone/Utils/Ret.h"
 #include "llvm/ADT/SmallString.h"
 #include "llvm/ADT/SmallVector.h"
 #include "llvm/ADT/Triple.h"

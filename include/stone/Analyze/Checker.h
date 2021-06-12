@@ -1,10 +1,10 @@
 #ifndef STONE_ANALYZE_CHECKER_H
 #define STONE_ANALYZE_CHECKER_H
 
+#include "stone/Basic/Context.h"
+#include "stone/Basic/Stats.h"
 #include "stone/Syntax/Module.h"
 #include "stone/Syntax/TreeContext.h"
-#include "stone/Utils/Context.h"
-#include "stone/Utils/Stats.h"
 
 #include <memory>
 

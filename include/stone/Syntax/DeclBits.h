@@ -164,9 +164,8 @@ class FunctionDeclBits final {
 enum { NumFunctionDeclBits = 27 };
 
 class ModuleDeclBits final {
-	/// The TagKind enum.
+  /// The TagKind enum.
   uint64_t IsMainModule : 1;
-
 };
 
 } // namespace syn

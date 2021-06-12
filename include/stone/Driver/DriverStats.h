@@ -1,7 +1,7 @@
 #ifndef STONE_DRIVER_DRIVERSTATS_H
 #define STONE_DRIVER_DRIVERSTATS_H
 
-#include "stone/Utils/Stats.h"
+#include "stone/Basic/Stats.h"
 
 namespace stone {
 namespace driver {

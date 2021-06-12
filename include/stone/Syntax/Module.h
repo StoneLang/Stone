@@ -1,11 +1,11 @@
 #ifndef STONE_SYNTAX_MODULE_H
 #define STONE_SYNTAX_MODULE_H
 
+#include "stone/Basic/LLVM.h"
 #include "stone/Syntax/Decl.h"
 #include "stone/Syntax/Identifier.h"
 #include "stone/Syntax/TreeContext.h"
 #include "stone/Syntax/TreeScope.h"
-#include "stone/Utils/LLVM.h"
 #include "llvm/ADT/SmallVector.h"
 
 namespace stone {
@@ -72,10 +72,10 @@ public:
   SourceFile &GetMainSourceFile() const;
 
   ModuleFile &GetMainFile(ModuleFile::Kind kind) const;
-public:
-	static syn::Module* Create(Identifier& identifier, TreeContext& tc);
-	static syn::Module* CreateMainModule(Identifier& identifier, TreeContext& tc); 
 
+public:
+  static syn::Module *Create(Identifier &identifier, TreeContext &tc);
+  static syn::Module *CreateMainModule(Identifier &identifier, TreeContext &tc);
 };
 
 } // namespace syn

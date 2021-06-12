@@ -1,10 +1,10 @@
 #include "stone/Driver/Driver.h"
 
+#include "stone/Basic/LLVM.h"
+#include "stone/Basic/Ret.h"
 #include "stone/Driver/Job.h"
 #include "stone/Driver/ToolChain.h"
 #include "stone/Session/ModeType.h"
-#include "stone/Utils/LLVM.h"
-#include "stone/Utils/Ret.h"
 #include "llvm/Config/llvm-config.h"
 #include "llvm/Support/FormatVariadic.h"
 

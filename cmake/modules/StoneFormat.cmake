@@ -1,26 +1,24 @@
 set(stone_include_files
 	${STONE_SOURCE_DIR}/include/stone/Analyze/*.h
+	${STONE_SOURCE_DIR}/include/stone/Basic/*.h
+
 	${STONE_SOURCE_DIR}/include/stone/Compile/*.h
 	${STONE_SOURCE_DIR}/include/stone/Driver/*.h
 	${STONE_SOURCE_DIR}/include/stone/Gen/*.h
 	${STONE_SOURCE_DIR}/include/stone/Session/*.h
 	${STONE_SOURCE_DIR}/include/stone/Syntax/*.h
-	${STONE_SOURCE_DIR}/include/stone/Utils/*.h
 	${STONE_SOURCE_DIR}/include/stone/*.h
 
 )
 set(stone_lib_files
 	${STONE_SOURCE_DIR}/lib/Analyze/*.cpp
+	${STONE_SOURCE_DIR}/lib/Basic/*.cpp
 	${STONE_SOURCE_DIR}/lib/Compile/*.cpp
 	${STONE_SOURCE_DIR}/lib/Driver/*.cpp
 	${STONE_SOURCE_DIR}/lib/Gen/*.cpp
 	${STONE_SOURCE_DIR}/lib/Session/*.cpp
 	${STONE_SOURCE_DIR}/lib/Syntax/*.cpp
-	${STONE_SOURCE_DIR}/lib/Utils/*.cpp
-	#${STONE_SOURCE_DIR}/tests/units/Compile/*.cpp
-	#${STONE_SOURCE_DIR}/tests/units/Core/*.cpp
-	#${STONE_SOURCE_DIR}/tests/units/Driver/*.cpp
-
+		
 )
 set(stone_tools_files
 	${STONE_SOURCE_DIR}/tools/stone/*.cpp

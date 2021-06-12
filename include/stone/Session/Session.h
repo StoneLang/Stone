@@ -28,10 +28,10 @@
 #include "llvm/Support/Timer.h"
 #include "llvm/Support/VirtualFileSystem.h"
 
+#include "stone/Basic/Context.h"
+#include "stone/Basic/File.h"
 #include "stone/Session/Mode.h"
 #include "stone/Session/SessionOptions.h"
-#include "stone/Utils/Context.h"
-#include "stone/Utils/File.h"
 
 namespace stone {
 

@@ -1,8 +1,8 @@
 #include "stone/Analyze/Parse.h"
 #include "stone/Analyze/Parser.h"
+#include "stone/Basic/Ret.h"
 #include "stone/Public.h"
 #include "stone/Syntax/Module.h"
-#include "stone/Utils/Ret.h"
 
 using namespace stone::syn;
 

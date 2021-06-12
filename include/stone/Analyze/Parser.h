@@ -5,11 +5,11 @@
 
 #include "stone/Analyze/Lexer.h"
 #include "stone/Analyze/SyntaxResult.h"
+#include "stone/Basic/Context.h"
+#include "stone/Basic/Stats.h"
 #include "stone/Syntax/Module.h"
 #include "stone/Syntax/Syntax.h"
 #include "stone/Syntax/TreeContext.h"
-#include "stone/Utils/Context.h"
-#include "stone/Utils/Stats.h"
 
 #include <memory>
 
@@ -18,11 +18,10 @@ class Pipeline;
 namespace syn {
 class Parser;
 class ParserStats final : public Stats {
-	Parser &parser;
+  Parser &parser;
 
 public:
-  ParserStats(Parser &parser)
-      : Stats("parser statistics:"), parser(parser) {}
+  ParserStats(Parser &parser) : Stats("parser statistics:"), parser(parser) {}
   void Print() override;
 };
 

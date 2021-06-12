@@ -1,7 +1,7 @@
+#include "stone/Basic/Ret.h"
 #include "stone/Compile/Compile.h"
 #include "stone/Driver/Run.h"
 #include "stone/Session/ExecutablePath.h"
-#include "stone/Utils/Ret.h"
 #include "llvm/ADT/Triple.h"
 #include "llvm/Support/CommandLine.h"
 #include "llvm/Support/FileSystem.h"

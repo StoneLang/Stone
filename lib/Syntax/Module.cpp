@@ -26,12 +26,12 @@ void Module::AddFile(ModuleFile &file) {
   files.push_back(&file);
   // ClearLookupCache();
 }
-syn::Module* syn::Module::Create(Identifier& identifier, TreeContext& tc) {
+syn::Module *syn::Module::Create(Identifier &identifier, TreeContext &tc) {
 
-	return nullptr;
+  return nullptr;
 }
-syn::Module* syn::Module::CreateMainModule(Identifier& identifier, TreeContext& tc) {
+syn::Module *syn::Module::CreateMainModule(Identifier &identifier,
+                                           TreeContext &tc) {
 
-	return nullptr; 
+  return nullptr;
 }
-

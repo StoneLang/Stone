@@ -1,8 +1,8 @@
-#include "stone/Utils/SrcMgr.h"
-#include "stone/Utils/DiagnosticOptions.h"
-#include "stone/Utils/DiagnosticEngine.h"
-#include "stone/Utils/FileMgr.h"
-#include "stone/Utils/FileSystemOptions.h"
+#include "stone/Basic/SrcMgr.h"
+#include "stone/Basic/DiagnosticOptions.h"
+#include "stone/Basic/DiagnosticEngine.h"
+#include "stone/Basic/FileMgr.h"
+#include "stone/Basic/FileSystemOptions.h"
 
 #include "llvm/ADT/SmallString.h"
 #include "llvm/Config/llvm-config.h"

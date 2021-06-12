@@ -7,13 +7,13 @@
 #include <string>
 #include <utility>
 
+#include "stone/Basic/File.h"
+#include "stone/Basic/LLVM.h"
+#include "stone/Basic/Mem.h"
 #include "stone/Driver/Job.h"
 #include "stone/Driver/LinkType.h"
 #include "stone/Session/Mode.h"
 #include "stone/Session/SessionOptions.h"
-#include "stone/Utils/File.h"
-#include "stone/Utils/LLVM.h"
-#include "stone/Utils/Mem.h"
 #include "llvm/ADT/APFloat.h"
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/SmallVector.h"

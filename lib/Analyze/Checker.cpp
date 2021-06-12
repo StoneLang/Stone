@@ -1,5 +1,5 @@
 #include "stone/Analyze/Checker.h"
-#include "stone/Utils/Ret.h"
+#include "stone/Basic/Ret.h"
 
 using namespace stone;
 using namespace stone::sema;

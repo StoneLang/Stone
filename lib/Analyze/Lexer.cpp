@@ -1,6 +1,6 @@
 #include "stone/Analyze/Lexer.h"
-#include "stone/Utils/Char.h"
-#include "stone/Utils/SrcMgr.h"
+#include "stone/Basic/Char.h"
+#include "stone/Basic/SrcMgr.h"
 
 using namespace stone;
 using namespace stone::syn;
@@ -501,7 +501,7 @@ tk::Type Lexer::GetKindOfIdentifier(StringRef tokStr) {
 #define KEYWORD(kw, S)                                                         \
   if (tokStr == #kw)                                                           \
     return tk::Type::kw_##kw;
-#include "stone/Utils/TokenType.def"
+#include "stone/Basic/TokenType.def"
   return tk::Type::identifier;
 }
 void Lexer::LexTrivia(Trivia trivia, bool isTrailing) {}

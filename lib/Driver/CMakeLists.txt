@@ -31,7 +31,7 @@ set(stone_driver_sources
 	WinTaskQueue.cpp
 
 	LINK_LIBS
-	StoneUtils
+	StoneBasic
 	StoneSession
 )
 add_stone_library(StoneDriver

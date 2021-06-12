@@ -19,12 +19,12 @@
 #include "llvm/Support/PrettyStackTrace.h"
 #include "llvm/Support/VersionTuple.h"
 
+#include "stone/Basic/LLVM.h"
+#include "stone/Basic/SrcLoc.h"
 #include "stone/Syntax/DeclBits.h"
 #include "stone/Syntax/DeclName.h"
 #include "stone/Syntax/Identifier.h"
 #include "stone/Syntax/TreeNode.h"
-#include "stone/Utils/LLVM.h"
-#include "stone/Utils/SrcLoc.h"
 
 namespace stone {
 namespace syn {
@@ -221,8 +221,7 @@ public:
 class FunDecl : public FunctionDecl {
 public:
 public:
-	static FunDecl *Create(TreeContext* tc, DeclContext* dc); 
-
+  static FunDecl *Create(TreeContext *tc, DeclContext *dc);
 };
 
 class ConstructorInitializer final {

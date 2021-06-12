@@ -9,11 +9,11 @@
 #include <type_traits>
 #include <utility>
 
+#include "stone/Basic/LLVM.h"
+#include "stone/Basic/SrcLoc.h"
 #include "stone/Syntax/Decl.h"
 #include "stone/Syntax/DeclName.h"
 #include "stone/Syntax/Identifier.h"
-#include "stone/Utils/LLVM.h"
-#include "stone/Utils/SrcLoc.h"
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/PointerIntPair.h"
 #include "llvm/ADT/PointerUnion.h"
