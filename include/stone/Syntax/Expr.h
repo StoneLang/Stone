@@ -61,11 +61,11 @@ public:
 };
 
 /// Represents a call to a constructor.
-class CtorExpr : public Expr {
+class ConstructorExpr : public Expr {
 public:
 };
 /// Represents a call to a destructor.
-class DtorExpr : public Expr {
+class DestructorExpr : public Expr {
 public:
 };
 

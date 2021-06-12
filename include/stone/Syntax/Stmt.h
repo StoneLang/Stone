@@ -26,12 +26,12 @@
 #include "stone/Syntax/TreeNode.h"
 
 namespace stone {
-namespace syn {
+class SrcMgr;
 
+namespace syn {
 class TreeContext;
 class Decl;
 class Expr;
-class SrcMgr;
 class StringLiteral;
 class VarDecl;
 

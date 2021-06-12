@@ -351,7 +351,7 @@ static bool IsIdentifier(const signed char ch) {
   }
 }
 
-Lexer::Lexer(const SrcID srcID, SrcMgr &sm, Context &ctx,
+Lexer::Lexer(const SrcID srcID, stone::SrcMgr &sm, Context &ctx,
              LexerPipeline *pipeline)
     : srcID(srcID), sm(sm), ctx(ctx), pipeline(pipeline) {
 

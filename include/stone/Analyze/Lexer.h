@@ -91,6 +91,10 @@ public:
 private:
   Lexer(const Lexer &) = delete;
   void operator=(const Lexer &) = delete;
+
+public:
+  Lexer(const SrcID srcID, stone::SrcMgr &sm, Context &ctx,
+        LexerPipeline *pipeline = nullptr);
   void Init(unsigned startOffset, unsigned endOffset);
 
 public:
@@ -108,10 +112,6 @@ private:
   void CreateToken(tk::Type kind, const char *tokenStart);
 
   tk::Type GetKindOfIdentifier(StringRef tokStr);
-
-public:
-  Lexer(const SrcID srcID, SrcMgr &sm, Context &ctx,
-        LexerPipeline *pipeline = nullptr);
 
 public:
   void Lex(Token &result);

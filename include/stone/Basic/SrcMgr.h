@@ -729,7 +729,8 @@ class SrcMgr : public RefCountedBase<SrcMgr> {
   /// There is no way to set this value from the command line. If we ever need
   /// to do so (e.g., if on-demand module construction moves out-of-process),
   /// we can add a cc1-level option to do so.
-  SmallVector<std::pair<std::string, FullSrcLoc>, 2> StoredModuleBuildStack;
+  llvm::SmallVector<std::pair<std::string, FullSrcLoc>, 2>
+      StoredModuleBuildStack;
 
 public:
   SrcMgr(DiagnosticEngine &de, FileMgr &fileMgr,

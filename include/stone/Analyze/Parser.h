@@ -5,17 +5,19 @@
 
 #include "stone/Analyze/Lexer.h"
 #include "stone/Analyze/SyntaxResult.h"
-#include "stone/Basic/Context.h"
 #include "stone/Basic/Stats.h"
 #include "stone/Syntax/Module.h"
-#include "stone/Syntax/Syntax.h"
 #include "stone/Syntax/TreeContext.h"
 
 #include <memory>
 
 namespace stone {
+class Context;
+class SrcMgr;
 class ParserPipeline;
+
 namespace syn {
+
 class Parser;
 class ParserStats final : public Stats {
   Parser &parser;
@@ -27,9 +29,14 @@ public:
 
 class Parser final {
   friend ParserStats;
+
   Context &ctx;
+  const SrcID srcID;
+  SrcMgr &sm;
+  SourceFile &sf;
   ParserPipeline *pipeline;
   std::unique_ptr<Lexer> lexer;
+
   std::unique_ptr<ParserStats> stats;
 
   /// This is the current token being considered by the parser.
@@ -63,7 +70,12 @@ public:
   class MultiParsingScope {};
 
 public:
-  Parser(Context &ctx, ParserPipeline *pipeline = nullptr);
+  Parser(const SrcID srcID, SourceFile &sf, stone::SrcMgr &sm, Context &ctx,
+         ParserPipeline *pipeline = nullptr);
+
+  Parser(const SrcID srcID, SourceFile &sf, stone::SrcMgr &sm, Context &ctx,
+         std::unique_ptr<Lexer> lexer, ParserPipeline *pipeline = nullptr);
+
   ~Parser();
 
 public:
