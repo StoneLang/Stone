@@ -1,10 +1,10 @@
-#ifndef STONE_ANALYSIS_PARSER_H
-#define STONE_ANALYSIS_PARSER_H
+#ifndef STONE_ANALYZE_PARSER_H
+#define STONE_ANALYZE_PARSER_H
 
 #include "llvm/Support/Timer.h"
 
-#include "stone/Analysis/Lexer.h"
-#include "stone/Analysis/SyntaxResult.h"
+#include "stone/Analyze/Lexer.h"
+#include "stone/Analyze/SyntaxResult.h"
 #include "stone/Syntax/Module.h"
 #include "stone/Syntax/Syntax.h"
 #include "stone/Syntax/TreeContext.h"

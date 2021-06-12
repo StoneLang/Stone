@@ -1,5 +1,5 @@
-#ifndef STONE_ANALYSIS_CHECKER_H
-#define STONE_ANALYSIS_CHECKER_H
+#ifndef STONE_ANALYZE_CHECKER_H
+#define STONE_ANALYZE_CHECKER_H
 
 #include "stone/Syntax/Module.h"
 #include "stone/Syntax/TreeContext.h"

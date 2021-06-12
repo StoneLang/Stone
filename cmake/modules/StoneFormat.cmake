@@ -1,5 +1,5 @@
 set(stone_include_files
-	${STONE_SOURCE_DIR}/include/stone/Analysis/*.h
+	${STONE_SOURCE_DIR}/include/stone/Analyze/*.h
 	${STONE_SOURCE_DIR}/include/stone/Compile/*.h
 	${STONE_SOURCE_DIR}/include/stone/Driver/*.h
 	${STONE_SOURCE_DIR}/include/stone/Gen/*.h
@@ -10,7 +10,7 @@ set(stone_include_files
 
 )
 set(stone_lib_files
-	${STONE_SOURCE_DIR}/lib/Analysis/*.cpp
+	${STONE_SOURCE_DIR}/lib/Analyze/*.cpp
 	${STONE_SOURCE_DIR}/lib/Compile/*.cpp
 	${STONE_SOURCE_DIR}/lib/Driver/*.cpp
 	${STONE_SOURCE_DIR}/lib/Gen/*.cpp

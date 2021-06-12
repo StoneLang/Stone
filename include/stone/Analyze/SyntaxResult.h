@@ -1,5 +1,5 @@
-#ifndef STONE_ANALYSIS_SYNTAX_H
-#define STONE_ANALYSIS_SYNTAX_H
+#ifndef STONE_ANALYZE_SYNTAX_H
+#define STONE_ANALYZE_SYNTAX_H
 
 #include "stone/Syntax/Expr.h"
 #include "stone/Syntax/Ownership.h"

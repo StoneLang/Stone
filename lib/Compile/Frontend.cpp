@@ -1,6 +1,6 @@
 #include "stone/Compile/Frontend.h"
-#include "stone/Analysis/Check.h"
-#include "stone/Analysis/Parse.h"
+#include "stone/Analyze/Check.h"
+#include "stone/Analyze/Parse.h"
 #include "stone/Compile/Compiler.h"
 #include "stone/Gen/Gen.h"
 #include "stone/Utils/Ret.h"

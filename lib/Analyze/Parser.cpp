@@ -1,4 +1,4 @@
-#include "stone/Analysis/Parser.h"
+#include "stone/Analyze/Parser.h"
 #include "stone/Utils/Ret.h"
 
 using namespace stone;

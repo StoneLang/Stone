@@ -8,7 +8,7 @@ set( LLVM_LINK_COMPONENTS
   IPO
   Option
   )
-set(stone_analysis_sources
+set(stone_analyze_sources
 	Check.cpp
 	CheckDecl.cpp
 	Checker.cpp
@@ -28,8 +28,8 @@ set(stone_analysis_sources
 	DEPENDS
 	StoneOptions
 )
-add_stone_library(StoneAnalysis
-	${stone_analysis_sources}
+add_stone_library(StoneAnalyze
+	${stone_analyze_sources}
 )
 
 

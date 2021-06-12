@@ -16,7 +16,7 @@ set(stone_compile_sources
 	Serialize.cpp
 
 	LINK_LIBS
-	StoneAnalysis
+	StoneAnalyze
 	StoneGen
 	StoneSession
 
