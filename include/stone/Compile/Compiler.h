@@ -33,7 +33,7 @@ class Compiler final : public Session {
   SrcMgr sm;
   FileMgr fm;
   Pipeline *pipeline = nullptr;
-  mutable Module *mainModule = nullptr;
+  mutable syn::Module *mainModule = nullptr;
   std::unique_ptr<TreeContext> tc;
 
   friend CompilerStats;
@@ -87,14 +87,12 @@ public:
   SrcMgr &GetSrcMgr() { return sm; }
 
   TreeContext &GetTreeContext() { return *tc.get(); }
-  // stone::syn::Module &GetModule() { return *md.get(); }
-  //
+  
   /// Retrieve the main module containing the files being compiled.
-  Module *GetMainModule() const;
-
+	syn::Module *GetMainModule() const;
   /// Replace the current main module with a new one. This is used for top-level
   /// cached code completion.
-  void SetMainModule(Module *moduleDecl);
+  void SetMainModule(syn::Module *mainModule);
 
   void SetInputType(file::Type ty) { compilerOpts.inputType = ty; }
   file::Type GetInputKind() const { return compilerOpts.inputType; }

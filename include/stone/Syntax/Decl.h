@@ -220,17 +220,20 @@ public:
 
 class FunDecl : public FunctionDecl {
 public:
+public:
+	static FunDecl *Create(TreeContext* tc, DeclContext* dc); 
+
 };
 
-class CtorInitializer final {
+class ConstructorInitializer final {
 public:
 };
 
-class CtorDecl : public FunctionDecl {
+class ConstructorDecl : public FunctionDecl {
 public:
 };
 
-class DtorDecl : public FunctionDecl {
+class DestructorDecl : public FunctionDecl {
 public:
 };
 

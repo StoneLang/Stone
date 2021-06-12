@@ -1,5 +1,7 @@
 #include "stone/Compile/Compiler.h"
 #include "stone/Utils/Ret.h"
+#include "stone/Syntax/Module.h"
+
 
 #include <algorithm>
 #include <memory>
@@ -22,12 +24,18 @@ void Compiler::ComputeMode(const llvm::opt::DerivedArgList &args) {
   Session::ComputeMode(args);
 }
 
-Module *Compiler::GetMainModule() const {
+syn::Module *Compiler::GetMainModule() const {
   assert(mainModule && "Null Main Module.");
+
+	// Setup the main module
+  if (!mainModule) {
+		Identifier& moduleName = tc->GetIdentifier(GetModuleName());
+		mainModule = syn::Module::CreateMainModule(moduleName, *tc);
+  }
   return mainModule;
 }
 
-void Compiler::SetMainModule(Module *m) {}
+void Compiler::SetMainModule(syn::Module *m) { mainModule = m;}
 
 void Compiler::Init() { CreateTimer(); }
 
@@ -45,12 +53,7 @@ bool Compiler::Build(llvm::ArrayRef<const char *> args) {
 
   BuildInputs();
 
-  // Setup the main module
-  if (!mainModule) {
-    // Identifier moduleName = ac->GetIdentifier(GetModuleName());
-    // mainModule = Module::Create(moduleName, *Context);
-  }
-
+ 
   // Create CompilingUnits
   // for (const auto &input : compiler.GetCompilerOptions().inputs) {
   //}
@@ -90,8 +93,9 @@ std::unique_ptr<Compiler> Compiler::Create() {
 */
 
 void CompilerStats::Print() {
-  GetTimer().stopTimer();
-  auto timeRecord = GetTimer().getTotalTime();
 
-  timeRecord.print(timeRecord, compiler.Out().GetOS());
+	//if print-stats  
+  GetTimer().stopTimer();
+  //auto timeRecord = GetTimer().getTotalTime();
+  //timeRecord.print(timeRecord, compiler.Out().GetOS());
 }

@@ -12,8 +12,8 @@ class Builtin final {
   Builtin(const Builtin &) = delete;
   void operator=(const Builtin &) = delete;
 
-  void InitType(TreeContext &astCtx);
-  void InitTypes(TreeContext &astCtx);
+  void InitType(TreeContext &tc);
+  void InitTypes(TreeContext &tc);
 
   BuiltinID builtinID;
 
@@ -21,7 +21,7 @@ public:
   Builtin() = default;
   ~Builtin();
 
-  void Init(TreeContext &astCtx);
+  void Init(TreeContext &tc);
 };
 } // namespace syn
 } // namespace stone

@@ -162,6 +162,13 @@ class FunctionDeclBits final {
 
 /// Number of non-inherited bits in FunctionDeclBitfields.
 enum { NumFunctionDeclBits = 27 };
+
+class ModuleDeclBits final {
+	/// The TagKind enum.
+  uint64_t IsMainModule : 1;
+
+};
+
 } // namespace syn
 } // namespace stone
 

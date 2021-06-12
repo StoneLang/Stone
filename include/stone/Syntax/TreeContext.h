@@ -103,7 +103,7 @@ public:
 
 public:
   ///
-  Identifier &GetIdentifier(llvm::StringRef name);
+  Identifier& GetIdentifier(llvm::StringRef name);
   ///
   Builtin &GetBuiltin() const;
   //

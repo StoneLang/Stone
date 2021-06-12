@@ -18,10 +18,10 @@ class Pipeline;
 namespace syn {
 class Parser;
 class ParserStats final : public Stats {
-  const Parser &parser;
+	Parser &parser;
 
 public:
-  ParserStats(const Parser &parser)
+  ParserStats(Parser &parser)
       : Stats("parser statistics:"), parser(parser) {}
   void Print() override;
 };
@@ -29,7 +29,6 @@ public:
 class Parser final {
   friend ParserStats;
   Context &ctx;
-  llvm::Timer timer;
   Pipeline *pipeline;
   std::unique_ptr<Lexer> lexer;
   std::unique_ptr<ParserStats> stats;

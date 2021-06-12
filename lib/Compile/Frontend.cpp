@@ -11,11 +11,14 @@ using namespace stone::sys;
 Frontend::~Frontend() {}
 
 int sys::Parse(Frontend &fe, bool check) {
+
   // CompilingScope scope;
   // scope.Enter();
+	//SourceFile su; 
+
 
   for (const auto &input : fe.GetCompiler().GetCompilerOptions().inputs) {
-    // stone::Parse::ParseSourceFile(su, compiler.GetPipeline());
+		//stone::ParseSourceFile(su, compiler.GetPipeline());
     if (check) {
       if (!fe.GetCompiler().GetCompilerOptions().wholeModuleCheck) {
         //	stone::CheckSourceFile(su, compiler.GetPipeline());

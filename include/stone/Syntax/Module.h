@@ -72,6 +72,10 @@ public:
   SourceFile &GetMainSourceFile() const;
 
   ModuleFile &GetMainFile(ModuleFile::Kind kind) const;
+public:
+	static syn::Module* Create(Identifier& identifier, TreeContext& tc);
+	static syn::Module* CreateMainModule(Identifier& identifier, TreeContext& tc); 
+
 };
 
 } // namespace syn

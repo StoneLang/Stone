@@ -26,7 +26,7 @@ TreeContext::TreeContext(Context &ctx, const SearchPathOptions &spOpts,
 
 TreeContext::~TreeContext() {}
 
-Identifier &TreeContext::GetIdentifier(llvm::StringRef name) {
+Identifier& TreeContext::GetIdentifier(llvm::StringRef name) {
   return identifiers.Get(name);
 }
 size_t TreeContext::GetSizeOfMemUsed() const {

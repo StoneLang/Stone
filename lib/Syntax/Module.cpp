@@ -12,6 +12,7 @@
 #include "llvm/Support/SaveAndRestore.h"
 #include "llvm/Support/raw_ostream.h"
 
+using namespace stone;
 using namespace stone::syn;
 
 void Module::AddFile(ModuleFile &file) {
@@ -25,3 +26,12 @@ void Module::AddFile(ModuleFile &file) {
   files.push_back(&file);
   // ClearLookupCache();
 }
+syn::Module* syn::Module::Create(Identifier& identifier, TreeContext& tc) {
+
+	return nullptr;
+}
+syn::Module* syn::Module::CreateMainModule(Identifier& identifier, TreeContext& tc) {
+
+	return nullptr; 
+}
+

@@ -4,7 +4,6 @@ using namespace stone;
 
 Stats::Stats(const char *name) : name(name), cos(llvm::outs()) {
   timer.reset(new llvm::Timer(name, name));
-  timer->startTimer();
 }
 
 StatEngine::StatEngine() {}
