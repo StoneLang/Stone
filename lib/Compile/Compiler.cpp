@@ -45,6 +45,10 @@ bool Compiler::Build(llvm::ArrayRef<const char *> args) {
     // mainModule = Module::Create(moduleName, *Context);
   }
 
+  // Create CompilingUnits
+  // for (const auto &input : compiler.GetCompilerOptions().inputs) {
+  //}
+
   return true;
 }
 

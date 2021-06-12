@@ -27,6 +27,7 @@ public:
 // TODO: InputOutputProfile
 class OutputProfile final {};
 
+class CompilingUnit {};
 class Compiler final : public Session {
   SrcMgr sm;
   FileMgr fm;
