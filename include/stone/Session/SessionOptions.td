@@ -133,6 +133,11 @@ def PrintTime : Flag<["-"], "print-time">,
 Flags<[DebugOption]>,
 HelpText<"Print the time of the 'Compiler' or 'Driver' lifecycle">;
 
+def PrintStats : Flag<["-"], "print-stats">,
+Flags<[DebugOption]>,
+HelpText<"Print the 'Compiler' statistics">;
+
+
 def PrintDriverActivities : Flag<["-"], "driver-print-activities">,
 Flags<[DebugOption]>,
 HelpText<"Print the list of activities to run">;
@@ -145,10 +150,6 @@ HelpText<"Print the list of jobs to be executed">;
 def PrintDriverLifecycle : Flag<["-"], "driver-print-lifecycle">,
 Flags<[DebugOption]>,
 HelpText<"Print the lifecycle of activities and jobs">;
-
-def PrintDriverStats : Flag<["-"], "driver-print-stats">,
-Flags<[DebugOption]>,
-HelpText<"Print all driver statistics">;
 
 def MainFile : Separate<["-"], "main-file">,
   HelpText<"Produce output for this file, not the whole module">;

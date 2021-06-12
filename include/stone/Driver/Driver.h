@@ -235,8 +235,8 @@ protected:
   ModeType GetDefaultModeType() override;
   void BuildOptions() override;
 
-  llvm::StringRef GetName() override { return "Compiler"; }
-  llvm::StringRef GetDescription() override { return "Compiler Driver"; }
+  llvm::StringRef GetName() override { return "Stone compiler"; }
+  llvm::StringRef GetDescription() override { return "Stone compiler driver "; }
 
   /// TranslateInputArgs - Create a new derived argument list from the input
   /// arguments, after applying the standard argument translations.

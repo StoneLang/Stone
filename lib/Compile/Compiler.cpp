@@ -30,6 +30,7 @@ Module *Compiler::GetMainModule() const {
 void Compiler::SetMainModule(Module *m) {}
 
 void Compiler::Init() { CreateTimer(); }
+
 bool Compiler::Build(llvm::ArrayRef<const char *> args) {
 
   excludedFlagsBitmask = opts::NoCompilerOption;
@@ -39,6 +40,8 @@ bool Compiler::Build(llvm::ArrayRef<const char *> args) {
   translatedArgs = TranslateArgList(*originalArgs);
   // Computer the compiler mode.
   ComputeMode(*translatedArgs);
+
+  compilerOpts.printStats = translatedArgs->hasArg(opts::PrintStats);
 
   BuildInputs();
 
@@ -86,4 +89,9 @@ std::unique_ptr<Compiler> Compiler::Create() {
 
 */
 
-void CompilerStats::Print() {}
+void CompilerStats::Print() {
+  GetTimer().stopTimer();
+  auto timeRecord = GetTimer().getTotalTime();
+
+  timeRecord.print(timeRecord, compiler.Out().GetOS());
+}

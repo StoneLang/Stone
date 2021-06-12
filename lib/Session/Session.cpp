@@ -22,6 +22,8 @@ void Session::CreateTimer() {
   timer.reset(new llvm::Timer(GetName(),
                               llvm::StringRef(GetDescription().str() + "timer"),
                               *timerGroup));
+
+  timer->startTimer();
 }
 std::unique_ptr<llvm::opt::InputArgList>
 Session::ParseArgList(llvm::ArrayRef<const char *> args) {
@@ -107,8 +109,9 @@ void Session::ComputeMode(const llvm::opt::DerivedArgList &args) {
 void Session::Purge() {}
 
 void Session::Finish() {
-  // TODO: timer->stopTimer();
   Purge();
+  GetTimer().stopTimer();
+
   PrintDiagnostics();
   PrintStatistics();
 }

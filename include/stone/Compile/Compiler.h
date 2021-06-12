@@ -16,10 +16,10 @@ class Pipeline;
 
 class Compiler;
 class CompilerStats final : public Stats {
-  const Compiler &compiler;
+  Compiler &compiler;
 
 public:
-  CompilerStats(const Compiler &compiler)
+  CompilerStats(Compiler &compiler)
       : Stats("compiler statistics:"), compiler(compiler) {}
   void Print() override;
 };
@@ -111,8 +111,10 @@ protected:
   ModeType GetDefaultModeType() override;
   void BuildOptions() override;
 
-  llvm::StringRef GetName() override { return "Compiler"; }
-  llvm::StringRef GetDescription() override { return "Compiler Frontend"; }
+  llvm::StringRef GetName() override { return "Stone compiler "; }
+  llvm::StringRef GetDescription() override {
+    return "Stone compiler front-end ";
+  }
 
   /// TranslateInputArgs - Create a new derived argument list from the input
   /// arguments, after applying the standard argument translations.

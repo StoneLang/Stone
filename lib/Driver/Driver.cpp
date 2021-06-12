@@ -330,7 +330,7 @@ void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
   driverOpts.printJobs = translatedArgs->hasArg(opts::PrintDriverJobs);
   driverOpts.printLifecycle =
       translatedArgs->hasArg(opts::PrintDriverLifecycle);
-  driverOpts.printStats = translatedArgs->hasArg(opts::PrintDriverStats);
+  driverOpts.printStats = translatedArgs->hasArg(opts::PrintStats);
 
   compilation = llvm::make_unique<Compilation>(*this);
 
