@@ -153,6 +153,29 @@ public:
                    bool removeFileOnSignal, bool useTmp,
                    bool createMissingDirectories = false);
 
+private:
+  /// Create a new output file and add it to the list of tracked output files.
+  ///
+  /// If \p OutputPath is empty, then createOutputFile will derive an output
+  /// path location as \p BaseInput, with any suffix removed, and \p Extension
+  /// appended. If \p OutputPath is not stdout and \p UseTemporary
+  /// is true, createOutputFile will create a new temporary file that must be
+  /// renamed to \p OutputPath in the end.
+  ///
+  /// \param OutputPath - If given, the path to the output file.
+  /// \param Binary - The mode to open the file in.
+  /// \param RemoveFileOnSignal - Whether the file should be registered with
+  /// llvm::sys::RemoveFileOnSignal. Note that this is not safe for
+  /// multithreaded use, as the underlying signal mechanism is not reentrant
+  /// \param UseTemporary - Create a new temporary file that must be renamed to
+  /// OutputPath in the end.
+  /// \param CreateMissingDirectories - When \p UseTemporary is true, create
+  /// missing directories in the output path.
+  llvm::Expected<std::unique_ptr<raw_pwrite_stream>>
+  CreateOutputFileImpl(llvm::StringRef outputPath, bool binary,
+                       bool removeFileOnSignal, bool bseTmp,
+                       bool createMissingDirectories);
+
 protected:
   // NOTE: Cannot call virtual functions from constructor
   // Compute the mode id -- TODO: virtual
