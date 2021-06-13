@@ -11,7 +11,7 @@ using namespace stone::syn;
 
 Compiler::Compiler(PipelineEngine *pe)
     : Session(compilerOpts), pe(pe), fm(compilerOpts.fsOpts),
-      sm(GetDiagEngine(), fm) {
+      sm(GetDiagEngine(), fm), cc(*this) {
 
   tc.reset(new TreeContext(*this, compilerOpts.spOpts, sm));
 
@@ -89,3 +89,5 @@ void CompilerStats::Print() {
   // auto timeRecord = GetTimer().getTotalTime();
   // timeRecord.print(timeRecord, compiler.Out().GetOS());
 }
+
+CompilerContext::~CompilerContext() {}

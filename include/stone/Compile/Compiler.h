@@ -3,6 +3,7 @@
 
 #include "stone/Basic/Stats.h"
 #include "stone/Compile/CompilerAlloc.h"
+#include "stone/Compile/CompilerContext.h"
 #include "stone/Compile/CompilerOptions.h"
 #include "stone/Session/Session.h"
 #include "stone/Syntax/Module.h"
@@ -12,9 +13,11 @@
 using namespace stone::syn;
 
 namespace stone {
-class PipelineEngine;
 
 class Compiler;
+class CompilerContext;
+class PipelineEngine;
+
 class CompilerStats final : public Stats {
   Compiler &compiler;
 
@@ -24,14 +27,10 @@ public:
   void Print() override;
 };
 
-// TODO: InputOutputProfile
-class OutputProfile final {};
-
-class CompilingUnit {};
-
 class Compiler final : public Session {
   SrcMgr sm;
   FileMgr fm;
+  CompilerContext cc;
   PipelineEngine *pe = nullptr;
   mutable syn::Module *mainModule = nullptr;
   std::unique_ptr<TreeContext> tc;
@@ -83,6 +82,8 @@ public:
 
   CompilerOptions &GetCompilerOptions() { return compilerOpts; }
   const CompilerOptions &GetCompilerOptions() const { return compilerOpts; }
+
+  CompilerContext &GetCompilerContext() { return cc; }
 
   SrcMgr &GetSrcMgr() { return sm; }
 
