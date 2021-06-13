@@ -1,10 +1,12 @@
 #include "stone/Compile/Compile.h"
+#include "stone/Analyze/Check.h"
+#include "stone/Analyze/Parse.h"
 #include "stone/Basic/Defer.h"
 #include "stone/Basic/List.h"
 #include "stone/Basic/Ret.h"
 #include "stone/Compile/CompilableItem.h"
 #include "stone/Compile/Compiler.h"
-#include "stone/Compile/Frontend.h"
+#include "stone/Gen/Gen.h"
 #include "stone/Session/ExecutablePath.h"
 
 using namespace stone;
@@ -15,6 +17,7 @@ public:
 
 public:
   static int Parse(Compiler &compiler, CompilableItem &compilable);
+  static int Parse(Compiler &compiler, CompilableItem &compilable, bool check);
   static int Check(Compiler &compiler, CompilableItem &compilable);
   static int EmitIR(Compiler &compiler, CompilableItem &compilable);
   static int EmitObject(Compiler &compiler, CompilableItem &compilable);
@@ -24,16 +27,46 @@ public:
   static int EmitBitCode(Compiler &compiler, CompilableItem &compilable);
 };
 
-int CompilerImpl::Parse(Compiler &compiler, CompilableItem &compilable) {
+int CompilerImpl::Parse(Compiler &compiler, CompilableItem &compilable,
+                        bool check) {
   return ret::ok;
+}
+int CompilerImpl::Parse(Compiler &compiler, CompilableItem &compilable) {
+  return CompilerImpl::Parse(compiler, compilable, false);
 }
 int CompilerImpl::Check(Compiler &compiler, CompilableItem &compilable) {
-  return ret::ok;
+  return CompilerImpl::Parse(compiler, compilable, true);
 }
+
 int CompilerImpl::EmitIR(Compiler &compiler, CompilableItem &compilable) {
+
+  /// Should be in EmitIR Scope
+  if (!CompilerImpl::Parse(compiler, compilable, true)) {
+    return ret::err;
+  }
+  /// Should be in Parse scope
+  // if(compiler.GetCompilerContext().GetCompilingScope() !=
+  // CompilingScopeType::Parsing) {
+  //}
+  // If we are here, then parse should have already been called.
+  auto llvmModule = stone::GenIR(compiler.GetMainModule(), compiler,
+                                 compiler.compilerOpts.genOpts, /*TODO*/ {});
+
+  compiler.GetCompilerContext().SetLLVMModule(llvmModule);
+
   return ret::ok;
 }
 int CompilerImpl::EmitObject(Compiler &compiler, CompilableItem &compilable) {
+
+  /// Should be in EmitIR Scope
+  if (!CompilerImpl::EmitIR(compiler, compilable)) {
+    return ret::err;
+  }
+  bool status = stone::GenObject(
+      compiler.GetCompilerContext().GetLLVMModule(),
+      compiler.GetCompilerOptions().genOpts, compiler.GetTreeContext(),
+      compilable.GetOutputFile()->GetName()); // TODO: Null check
+
   return ret::ok;
 }
 int CompilerImpl::EmitAssembly(Compiler &compiler, CompilableItem &compilable) {
@@ -51,13 +84,9 @@ int CompilerImpl::EmitBitCode(Compiler &compiler, CompilableItem &compilable) {
 }
 int CompilerImpl::Compile(Compiler &compiler, CompilableItem &compilable) {
 
-  /// All modes require parsing.
-  if (!CompilerImpl::Parse(compiler, compilable)) {
-    return ret::err;
-  }
   switch (compiler.GetMode().GetType()) {
   case ModeType::Parse:
-    return ret::ok;
+    return CompilerImpl::Parse(compiler, compilable);
   case ModeType::Check:
     return CompilerImpl::Check(compiler, compilable);
   default:
