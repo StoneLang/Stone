@@ -47,17 +47,6 @@ class alignas(8) InputFile final {
 class OutputFile final {};
 */
 
-class InputFile final {
-  const file::File &file;
-
-public:
-  InputFile(const file::File &file) : file(file) {}
-
-public:
-  file::Type GetType() { return file.first; }
-  llvm::StringRef GetName() { return file.second; }
-};
-
 class CompilerOptions final : public SessionOptions {
 public:
   CodeGenOptions genOpts;
