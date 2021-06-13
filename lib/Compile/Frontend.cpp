@@ -1,4 +1,4 @@
-#include "stone/Compile/CompilerTool.h"
+#include "stone/Compile/Frontend.h"
 #include "stone/Analyze/Check.h"
 #include "stone/Analyze/Parse.h"
 #include "stone/Basic/Ret.h"
@@ -7,7 +7,7 @@
 
 using namespace stone;
 
-int stone::PerformParse(Compiler &compiler, bool check) {
+int frontend::Parse(Compiler &compiler, bool check) {
 
   // NOTE: Here
   // CompilingScope scope;
@@ -28,16 +28,16 @@ int stone::PerformParse(Compiler &compiler, bool check) {
   return ret::ok;
 }
 
-int stone::PerformParse(Compiler &compiler) {
-  return stone::PerformParse(compiler, false);
+int frontend::Parse(Compiler &compiler) {
+  return frontend::Parse(compiler, false);
 }
 
-int stone::PerformCheck(Compiler &compiler) {
-  return stone::PerformParse(compiler, true);
+int frontend::Check(Compiler &compiler) {
+  return frontend::Parse(compiler, true);
 }
-int stone::PerformEmitIR(Compiler &compiler) {
+int frontend::EmitIR(Compiler &compiler) {
 
-  if (stone::PerformCheck(compiler) == ret::err) {
+  if (frontend::Check(compiler) == ret::err) {
     return ret::err;
   }
   auto llvmModule = stone::GenIR(compiler.GetMainModule(), compiler,
@@ -47,21 +47,20 @@ int stone::PerformEmitIR(Compiler &compiler) {
 
   return ret::ok;
 }
-int stone::PerformEmitObject(Compiler &compiler) {
+int frontend::EmitObject(Compiler &compiler) {
 
-  // if (stone::EmitIR(compiler) == ret::err) {
-  //  return ret::err;
-  //}
-  // bool status = stone::GenObject(
-  //    compiler.GetLLVMModule(),
-  //    compiler.GetCompiler().GetCompilerOptions().genOpts,
-  //    compiler.GetCompiler().GetTreeContext(), /*TODO*/ {});
+  if (frontend::EmitIR(compiler) == ret::err) {
+    return ret::err;
+  }
+  bool status = stone::GenObject(compiler.GetCompilerContext().GetLLVMModule(),
+                                 compiler.GetCompilerOptions().genOpts,
+                                 compiler.GetTreeContext(), /*TODO*/ {});
 
   return ret::ok;
 }
 
-int stone::PerformEmitModuleOnly(Compiler &compiler) { return ret::ok; }
+int frontend::EmitModuleOnly(Compiler &compiler) { return ret::ok; }
 
-int stone::PerformEmitLibrary(Compiler &compiler) { return ret::ok; }
+int frontend::EmitLibrary(Compiler &compiler) { return ret::ok; }
 
-int stone::PerformEmitBitCode(Compiler &compiler) { return ret::ok; }
+int frontend::EmitBitCode(Compiler &compiler) { return ret::ok; }

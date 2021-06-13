@@ -2,7 +2,7 @@
 #include "stone/Basic/Defer.h"
 #include "stone/Basic/Ret.h"
 #include "stone/Compile/Compiler.h"
-#include "stone/Compile/CompilerTool.h"
+#include "stone/Compile/Frontend.h"
 #include "stone/Session/ExecutablePath.h"
 
 using namespace stone;
@@ -11,21 +11,21 @@ int Compiler::Run(Compiler &compiler) {
 
   switch (compiler.GetMode().GetType()) {
   case ModeType::Parse:
-    return stone::PerformParse(compiler);
+    return frontend::Parse(compiler);
   case ModeType::Check:
-    return stone::PerformCheck(compiler);
+    return frontend::Check(compiler);
   case ModeType::EmitIR:
-    return stone::PerformEmitIR(compiler);
+    return frontend::EmitIR(compiler);
   case ModeType::EmitObject:
-    return stone::PerformEmitObject(compiler);
+    return frontend::EmitObject(compiler);
   case ModeType::EmitModuleOnly:
-    return stone::PerformEmitModuleOnly(compiler);
+    return frontend::EmitModuleOnly(compiler);
   case ModeType::EmitBC:
-    return stone::PerformEmitBitCode(compiler);
+    return frontend::EmitBitCode(compiler);
   case ModeType::EmitLibrary:
-    return stone::PerformEmitLibrary(compiler);
+    return frontend::EmitLibrary(compiler);
   default:
-    stone::PerformEmitObject(compiler);
+    frontend::EmitObject(compiler);
   }
   return ret::ok;
 }
