@@ -39,7 +39,7 @@ class Compiler final : public Session {
   std::unique_ptr<CompilerStats> stats;
 
 private:
-  static int Run(Compiler &compiler);
+  static int Compile(Compiler &compiler);
   /*
           /// Identifies the set of input buffers in the SrcMgr that are
     /// considered main source files.

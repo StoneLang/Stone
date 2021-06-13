@@ -1,4 +1,6 @@
 #include "stone/Compile/Compile.h"
+#include "stone/Compile/CompilableItem.h"
+
 #include "stone/Basic/Defer.h"
 #include "stone/Basic/Ret.h"
 #include "stone/Compile/Compiler.h"
@@ -7,7 +9,45 @@
 
 using namespace stone;
 
-int Compiler::Run(Compiler &compiler) {
+class CompilerImpl final {
+public:
+  static int Parse(Compiler &compiler, CompilableItem &compilable);
+  static int Check(Compiler &compiler, CompilableItem &compilable);
+  static int EmitIR(Compiler &compiler, CompilableItem &compilable);
+  static int EmitObject(Compiler &compiler, CompilableItem &compilable);
+  static int EmitAssembly(Compiler &compiler, CompilableItem &compilable);
+  static int EmitLibrary(Compiler &compiler, CompilableItem &compilable);
+  static int EmitModuleOnly(Compiler &compiler, CompilableItem &compilable);
+  static int EmitBitCode(Compiler &compiler, CompilableItem &compilable);
+};
+
+int CompilerImpl::Parse(Compiler &compiler, CompilableItem &compilable) {
+  return ret::ok;
+}
+int CompilerImpl::Check(Compiler &compiler, CompilableItem &compilable) {
+  return ret::ok;
+}
+int CompilerImpl::EmitIR(Compiler &compiler, CompilableItem &compilable) {
+  return ret::ok;
+}
+int CompilerImpl::EmitObject(Compiler &compiler, CompilableItem &compilable) {
+  return ret::ok;
+}
+int CompilerImpl::EmitAssembly(Compiler &compiler, CompilableItem &compilable) {
+  return ret::ok;
+}
+int CompilerImpl::EmitLibrary(Compiler &compiler, CompilableItem &compilable) {
+  return ret::ok;
+}
+int CompilerImpl::EmitModuleOnly(Compiler &compiler,
+                                 CompilableItem &compilable) {
+  return ret::ok;
+}
+int CompilerImpl::EmitBitCode(Compiler &compiler, CompilableItem &compilable) {
+  return ret::ok;
+}
+
+int Compiler::Compile(Compiler &compiler) {
 
   switch (compiler.GetMode().GetType()) {
   case ModeType::Parse:
