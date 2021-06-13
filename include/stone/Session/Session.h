@@ -138,6 +138,21 @@ public:
   /// for representing CompileInstances
   size_t GetMemSize() const { return bumpAlloc.getTotalMemory(); }
 
+  std::unique_ptr<raw_pwrite_stream>
+  CreateDefaultOutputFile(bool binary = true, llvm::StringRef baseInput = "",
+                          llvm::StringRef extension = "",
+                          bool removeFileOnSignal = true,
+                          bool createMissingDirectories = false);
+
+  /// Create a new output file, optionally deriving the output path name, and
+  /// add it to the list of tracked output files.
+  ///
+  /// \return - Null on error.
+  std::unique_ptr<raw_pwrite_stream>
+  CreateOutputFile(llvm::StringRef outputPath, bool binary,
+                   bool removeFileOnSignal, bool useTmp,
+                   bool createMissingDirectories = false);
+
 protected:
   // NOTE: Cannot call virtual functions from constructor
   // Compute the mode id -- TODO: virtual

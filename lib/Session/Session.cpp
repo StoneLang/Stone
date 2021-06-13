@@ -150,4 +150,25 @@ static llvm::StringRef Mode::GetNameByKind(ModeType kind) {
 }
 */
 
+std::unique_ptr<raw_pwrite_stream>
+CreateDefaultOutputFile(bool binary = true, llvm::StringRef baseInput = "",
+                        llvm::StringRef extension = "",
+                        bool removeFileOnSignal = true,
+                        bool createMissingDirectories = false) {
+
+  return nullptr;
+}
+
+/// Create a new output file, optionally deriving the output path name, and
+/// add it to the list of tracked output files.
+///
+/// \return - Null on error.
+std::unique_ptr<raw_pwrite_stream>
+CreateOutputFile(llvm::StringRef outputPath, bool binary,
+                 bool removeFileOnSignal, bool useTmp,
+                 bool createMissingDirectories = false) {
+
+  return nullptr;
+}
+
 void Session::PrintVersion() {}
