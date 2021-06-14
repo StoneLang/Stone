@@ -1,6 +1,6 @@
 
 
-space Stone.Core.Collections {
+space Stone.Collections {
 	public struct Array {
 	}
 }

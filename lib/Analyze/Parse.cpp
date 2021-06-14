@@ -9,7 +9,7 @@
 
 using namespace stone::syn;
 
-void stone::ParseSourceFile(const SrcID srcID, SourceFile &sf, SrcMgr &sm,
+void stone::ParseSourceModuleFile(const SrcID srcID, SourceModuleFile &sf, SrcMgr &sm,
                             Context &ctx, PipelineEngine *pe) {
 
   ParserPipeline *parserPipeline = nullptr;

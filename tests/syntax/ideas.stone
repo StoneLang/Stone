@@ -3,7 +3,7 @@ use Math;
 
 module Ideas; 
 
-space Ideas.Testing {
+space Ideas {
 
 interface CI {
 	fun Print() -> void; 
@@ -94,12 +94,12 @@ space Physics {
 	any(A) interface Accelerator {
 			any(P:Particle) fun Fire(const P* particle) -> bool;
 	}
-	public struct LinearAccelerator : use(LinearAccelerator) Accelerator {
+	public struct LinearAccelerator : real(LinearAccelerator) Accelerator {
 		public string name = "some name";  
 	}
 	init public fun LinearAccelerator::Init() {
 	}
-	end public fun LinearAccelerator::End() {
+	defer public fun LinearAccelerator::Defer() {
 	}
 	public fun LinearAccelerator::Fire(const P* particle) -> bool {
 		return true; 
@@ -135,28 +135,25 @@ space Physics {
 		return true; 
 	}
 	
-	with(Electron) auto a = new LinearAccelerator();
+	real(Electron) 
+		auto a = new LinearAccelerator();
   auto e = new Electron();
 	
   a.Fire(electron);
 }
 
-public fun Pass(use(int) Queue q) -> {
+public fun Pass(real(int) Queue q, Queuei<int> q2, ) -> {
 
 }
 
-
 fun Main() -> int {
-
-	with(LinearAccelerator) 
+	real(LinearAccelerator) 
 		Accelerator* a = new LinearAccelerator();
-
 	Particle* p = new Electron();
 	a.Fire(p); 
 
 	free p; 
 }
-
 
 
 

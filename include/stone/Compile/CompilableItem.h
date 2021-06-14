@@ -7,12 +7,12 @@
 namespace stone {
 class Compiler;
 namespace syn {
-class SourceFile;
+class SourceModuleFile;
 }
 class CompilableItem final {
 
   Compiler &compiler;
-  syn::SourceFile *sf = nullptr;
+  syn::SourceModuleFile *sf = nullptr;
 
   const InputFile input;
   OutputFile *output = nullptr;
@@ -29,8 +29,8 @@ public:
   ~CompilableItem() {}
 
 public:
-  void SetSourceFile(syn::SourceFile *s) { sf = s; }
-  syn::SourceFile *GetSourceFile() { return sf; }
+  void SetSourceModuleFile(syn::SourceModuleFile *s) { sf = s; }
+  syn::SourceModuleFile *GetSourceModuleFile() { return sf; }
 
   void SetOutputFile(OutputFile *o) { output = o; }
   OutputFile *GetOutputFile() { return output; }

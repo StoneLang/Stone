@@ -9,6 +9,9 @@
 #include "stone/Syntax/Module.h"
 #include "stone/Syntax/SearchPathOptions.h"
 #include "stone/Syntax/TreeContext.h"
+#include "stone/Compile/InputFile.h"
+#include "stone/Basic/List.h"
+
 
 using namespace stone::syn;
 
@@ -37,6 +40,8 @@ class Compiler final : public Session {
 
   friend CompilerStats;
   std::unique_ptr<CompilerStats> stats;
+
+	ConstList<InputFile> inputs; 
 
 private:
   static int Compile(Compiler &compiler);
@@ -106,6 +111,8 @@ public:
   CompilerStats &GetStats() { return *stats.get(); }
 
   PipelineEngine *GetPipelineEngine() { return pe; }
+
+	ConstList<InputFile> &GetInputs() { return inputs; }	
 
 protected:
   void ComputeMode(const llvm::opt::DerivedArgList &args) override;

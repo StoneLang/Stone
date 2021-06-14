@@ -1,0 +1,7 @@
+
+space Stone.Basic {
+
+	public struct DiagnosticEngine {
+
+	}
+}

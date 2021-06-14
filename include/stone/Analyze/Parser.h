@@ -33,7 +33,7 @@ class Parser final {
   Context &ctx;
   const SrcID srcID;
   SrcMgr &sm;
-  SourceFile &sf;
+  SourceModuleFile &sf;
   ParserPipeline *pipeline;
   std::unique_ptr<Lexer> lexer;
 
@@ -70,10 +70,10 @@ public:
   class MultiParsingScope {};
 
 public:
-  Parser(const SrcID srcID, SourceFile &sf, SrcMgr &sm, Context &ctx,
+  Parser(const SrcID srcID, SourceModuleFile &sf, SrcMgr &sm, Context &ctx,
          ParserPipeline *pipeline = nullptr);
 
-  Parser(const SrcID srcID, SourceFile &sf, SrcMgr &sm, Context &ctx,
+  Parser(const SrcID srcID, SourceModuleFile &sf, SrcMgr &sm, Context &ctx,
          std::unique_ptr<Lexer> lexer, ParserPipeline *pipeline = nullptr);
 
   ~Parser();

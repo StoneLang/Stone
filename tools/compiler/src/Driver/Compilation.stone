@@ -1,4 +1,16 @@
 
-public struct Compilaiton {	
+
+space Stone {
+
+	public interface ICompilation {
+	}
+	public struct Compilaiton : ICompilation {	
+	}
+
+	init public fun Compilation::Init() {
+	}
+	defer public fun Compilation::Defer() {
+
+	}
 }
 

@@ -1,11 +1,17 @@
+use Stone.Session;
 
-public struct Compiler {
-}
+space Stone {
+	public struct Compiler : ISession {
+	}
+	init public fun Compiler::Init() {
+	}
+	defer public fun Compiler::Defer() {
+	}
+	public fun Compiler::Build() -> bool {
+		return true; 
+	}
 
-init public fun Compiler::Init() {
-}
-
-
-end public fun Compiler::End() {
-
+	public fun Compiler::GetProfile() -> SessionProfile* {
+		return null; 
+	}
 }

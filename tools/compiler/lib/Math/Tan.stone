@@ -1,6 +1,6 @@
 
 
 space Stone.Math {
-	public fun Tan() -> void {
+	public fun Tan(f64 x) -> f64 {
 	}
 }

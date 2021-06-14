@@ -1,6 +1,7 @@
 
 
-public fun Compile(string[] args) -> bool {
-
-	return true; 
+space Stone {
+	public fun Compile(string[] args) -> bool {
+		return true; 
+	}
 }

@@ -6,7 +6,7 @@ using namespace stone;
 using namespace stone::sema;
 using namespace stone::syn;
 
-Checker::Checker(SourceFile &su, Context &ctx, CheckerPipeline *pipeline)
+Checker::Checker(SourceModuleFile &su, Context &ctx, CheckerPipeline *pipeline)
     : su(su), ctx(ctx), pipeline(pipeline) {
   stats.reset(new CheckerStats(*this));
   ctx.GetStatEngine().Register(stats.get());

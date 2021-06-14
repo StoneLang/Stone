@@ -6,7 +6,7 @@ public any(T) interface Queue {
 }
 
 /// Consider using a struct 
-any(T) class PriorityQueue : any(T) Queue {
+any(T) struct PriorityQueue : any(T) Queue {
 }
 
 fun PriorityQueue::Push(T* t) -> void {
@@ -21,11 +21,13 @@ use System.Collection;
 struct Particle {
 }
 fun Main() -> u8 {
-	with(int) Queue* q0 = new PriorityQueue();
+	real(int) 
+		Queue* q0 = new PriorityQueue();
 	q0.Push(23);
 
 	Particle* p = new Particle();
-	use(string) Queue* q1 = new PriorityQueue(); 
+	real(string) 
+		Queue* q1 = new PriorityQueue(); 
 	q1.Push(p);
 
 	//real(int, string) 
@@ -45,7 +47,7 @@ any(T) fun Max(T* first, T* second) -> T {
 	}
 	return second;
 }
-auto max = use(i32) Max(23, 25);
+auto max = real(int) Max(23, 25);
 
 
 

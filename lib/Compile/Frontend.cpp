@@ -12,13 +12,13 @@ int frontend::Parse(Compiler &compiler, bool check) {
   // NOTE: Here
   // CompilingScope scope;
   // scope.Enter();
-  // SourceFile su;
+  // SourceModuleFile su;
 
   for (const auto &input : compiler.GetCompilerOptions().inputs) {
-    // stone::ParseSourceFile(su, pipeline);
+    // stone::ParseSourceModuleFile(su, pipeline);
     if (check) {
       if (!compiler.GetCompilerOptions().wholeModuleCheck) {
-        //	stone::CheckSourceFile(su, compiler.GetPipeline());
+        //	stone::CheckSourceModuleFile(su, compiler.GetPipeline());
       }
     }
   }

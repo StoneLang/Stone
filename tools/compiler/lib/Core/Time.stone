@@ -2,9 +2,52 @@
 
 space Stone.Time {
 
-public struct Time {
-}
+	public enum Weekday : u8  (
+		Sunday = 1, 
+		Monday,
+		Tuesday,
+		Wednesday,
+		Thursday,
+		Friday,
+		Saturday
+	}
+	public enum Month : u8  {
+		January = 1, 
+		February,
+		March,
+		April,
+		May,
+		June,
+		July,
+		August,
+		September,
+		October,
+		November,
+		December
+	}
+	public enum TimeType { 
+		NanoSeconds,
+		MicroSeconds,
+		MilliSeconds,
+		Seconds, 
+		Minutes, 
+		Hours,
+		Days
+	}
+	public struct Time { 
+	}
+	public struct Duration {
+	}
+	init public fun Time::Init() {
+	}
+	public fun Time::Start() -> void {
 
+	}
+	public fun Time::Stop() -> void {
 
+	}
+	public fun Time::GetSeconds() -> i32 {
+		return 0;
+	}
 
 }

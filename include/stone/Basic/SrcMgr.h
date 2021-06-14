@@ -804,11 +804,11 @@ public:
   /// being \#included from the specified IncludePosition.
   ///
   /// This translates NULL into standard input.
-  SrcID CreateSrcID(const SrcFile *SourceFile, SrcLoc IncludePos,
+  SrcID CreateSrcID(const SrcFile *SourceModuleFile, SrcLoc IncludePos,
                     src::CharacteristicKind FileCharacter, int LoadedID = 0,
                     unsigned LoadedOffset = 0) {
     const src::ContentCache *IR =
-        getOrCreateContentCache(SourceFile, isSystem(FileCharacter));
+        getOrCreateContentCache(SourceModuleFile, isSystem(FileCharacter));
     assert(IR && "getOrCreateContentCache() cannot return NULL");
     return CreateSrcID(IR, IncludePos, FileCharacter, LoadedID, LoadedOffset);
   }
@@ -840,12 +840,12 @@ public:
                        IncludeLoc, FileCharacter, LoadedID, LoadedOffset);
   }
 
-  /// Get the SrcID for \p SourceFile if it exists. Otherwise, create a
-  /// new SrcID for the \p SourceFile.
-  SrcID getOrCreateSrcID(const SrcFile *SourceFile,
+  /// Get the SrcID for \p SourceModuleFile if it exists. Otherwise, create a
+  /// new SrcID for the \p SourceModuleFile.
+  SrcID getOrCreateSrcID(const SrcFile *SourceModuleFile,
                          src::CharacteristicKind FileCharacter) {
-    SrcID ID = translateFile(SourceFile);
-    return ID.isValid() ? ID : CreateSrcID(SourceFile, SrcLoc(), FileCharacter);
+    SrcID ID = translateFile(SourceModuleFile);
+    return ID.isValid() ? ID : CreateSrcID(SourceModuleFile, SrcLoc(), FileCharacter);
   }
 
   /// Return a new SrcLoc that encodes the
@@ -878,27 +878,27 @@ public:
   /// Override the contents of the given source file by providing an
   /// already-allocated buffer.
   ///
-  /// \param SourceFile the source file whose contents will be overridden.
+  /// \param SourceModuleFile the source file whose contents will be overridden.
   ///
   /// \param Buffer the memory buffer whose contents will be used as the
   /// data in the given source file.
   ///
   /// \param DoNotFree If true, then the buffer will not be freed when the
   /// source manager is destroyed.
-  void overrideFileContents(const SrcFile *SourceFile,
+  void overrideFileContents(const SrcFile *SourceModuleFile,
                             llvm::MemoryBuffer *Buffer, bool DoNotFree);
-  void overrideFileContents(const SrcFile *SourceFile,
+  void overrideFileContents(const SrcFile *SourceModuleFile,
                             std::unique_ptr<llvm::MemoryBuffer> Buffer) {
-    overrideFileContents(SourceFile, Buffer.release(), /*DoNotFree*/ false);
+    overrideFileContents(SourceModuleFile, Buffer.release(), /*DoNotFree*/ false);
   }
 
   /// Override the given source file with another one.
   ///
-  /// \param SourceFile the source file which will be overridden.
+  /// \param SourceModuleFile the source file which will be overridden.
   ///
   /// \param NewFile the file whose contents will be used as the
   /// data instead of the contents of the given source file.
-  void overrideFileContents(const SrcFile *SourceFile, const SrcFile *NewFile);
+  void overrideFileContents(const SrcFile *SourceModuleFile, const SrcFile *NewFile);
 
   /// Returns true if the file contents have been overridden.
   bool isFileOverridden(const SrcFile *File) const {
@@ -919,7 +919,7 @@ public:
   void disableFileContentsOverride(const SrcFile *File);
 
   /// Specify that a file is transient.
-  void setFileIsTransient(const SrcFile *SourceFile);
+  void setFileIsTransient(const SrcFile *SourceModuleFile);
 
   /// Specify that all files that are read during this compilation are
   /// transient.
@@ -1404,7 +1404,7 @@ public:
   }
 
   /// Returns whether \p Loc is located in a <built-in> file.
-  bool isWrittenInBuiltinFile(SrcLoc Loc) const {
+  bool isWrittenInBuiltinModuleFile(SrcLoc Loc) const {
     StringRef Filename(getPresumedLoc(Loc).getFilename());
     return Filename.equals("<built-in>");
   }
@@ -1521,14 +1521,14 @@ public:
   ///
   /// If the source file is included multiple times, the source location will
   /// be based upon the first inclusion.
-  SrcLoc translateFileLineCol(const SrcFile *SourceFile, unsigned Line,
+  SrcLoc translateFileLineCol(const SrcFile *SourceModuleFile, unsigned Line,
                               unsigned Col) const;
 
   /// Get the SrcID for the given file.
   ///
   /// If the source file is included multiple times, the SrcID will be the
   /// first inclusion.
-  SrcID translateFile(const SrcFile *SourceFile) const;
+  SrcID translateFile(const SrcFile *SourceModuleFile) const;
 
   /// Get the source location in \p FID for the given line:col.
   /// Returns null location if \p FID is not a file SLocEntry.
@@ -1756,7 +1756,7 @@ private:
                     src::CharacteristicKind DirCharacter, int LoadedID,
                     unsigned LoadedOffset);
 
-  const src::ContentCache *getOrCreateContentCache(const SrcFile *SourceFile,
+  const src::ContentCache *getOrCreateContentCache(const SrcFile *SourceModuleFile,
                                                    bool isSystemFile = false);
 
   /// Create a new ContentCache for the specified  memory buffer.

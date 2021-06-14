@@ -1,6 +1,7 @@
 
 
 space Stone.Math {
-	public fun Sin() -> void {
+	public fun Sin(f64 x) -> f64 {
+		return 0;
 	}
 }

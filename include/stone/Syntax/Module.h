@@ -28,7 +28,7 @@ public:
 public:
 };
 
-class SourceFile final : public ModuleFile {
+class SourceModuleFile final : public ModuleFile {
 private:
   friend TreeContext;
   bool isMain;
@@ -38,18 +38,18 @@ public:
   enum class Kind { Library };
 
 public:
-  SourceFile::Kind kind;
+  SourceModuleFile::Kind kind;
 
 public:
-  SourceFile(Module &owner, SourceFile::Kind kind, bool isMain = false);
-  ~SourceFile();
+  SourceModuleFile(Module &owner, SourceModuleFile::Kind kind, bool isMain = false);
+  ~SourceModuleFile();
 
   static bool classof(const ModuleFile *file) {
     return file->GetKind() == ModuleFile::Kind::Source;
   }
 };
 
-class BuiltinFile final : public ModuleFile {
+class BuiltinModuleFile final : public ModuleFile {
 public:
 };
 
@@ -69,7 +69,7 @@ public:
   }
   void AddFile(ModuleFile &file);
 
-  SourceFile &GetMainSourceFile() const;
+  SourceModuleFile &GetMainSourceModuleFile() const;
 
   ModuleFile &GetMainFile(ModuleFile::Kind kind) const;
 

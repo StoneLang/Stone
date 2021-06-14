@@ -16,7 +16,7 @@ class OutputFile;
 
 // TODO: Replace with CompileUnit
 class alignas(8) InputFile final {
-  syn::SourceFile *su = nullptr;
+  syn::SourceModuleFile *su = nullptr;
   OutputFile *outputFile = nullptr;
   CompilerScope *scope = nullptr;
   Compiler &compiler;
@@ -53,6 +53,9 @@ public:
   SearchPathOptions spOpts;
   FileSystemOptions fsOpts;
   bool wholeModuleCheck = false;
+
+	 /// The name of the module that the compiler is building.
+  std::string moduleName;
 
 public:
   CompilerOptions() {}

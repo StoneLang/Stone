@@ -362,7 +362,7 @@ bool Driver::EmitInfo(const ArgList &args, const ToolChain &tc) {
 // TODO: May move to session
 void Driver::BuildInputs(const ToolChain &tc, const DerivedArgList &args,
                          Files &inputs) {
-  llvm::DenseMap<llvm::StringRef, llvm::StringRef> seenSourceFiles;
+  llvm::DenseMap<llvm::StringRef, llvm::StringRef> seenSourceModuleFiles;
 
   for (Arg *arg : args) {
     if (arg->getOption().getKind() == Option::InputClass) {
@@ -389,10 +389,10 @@ void Driver::BuildInputs(const ToolChain &tc, const DerivedArgList &args,
 
       if (ft == Type::Stone) {
         auto basename = llvm::sys::path::filename(argValue);
-        if (!seenSourceFiles.insert({basename, argValue}).second) {
+        if (!seenSourceModuleFiles.insert({basename, argValue}).second) {
           Out() << "de.D(SourceLoc(),"
                 << "diag::error_two_files_same_name,"
-                << "basename, seenSourceFiles[basename], argValue);" << '\n';
+                << "basename, seenSourceModuleFiles[basename], argValue);" << '\n';
           Out() << " de.D(SourceLoc(), "
                 << "diag::note_explain_two_files_"
                    "same_name);"

@@ -2,8 +2,12 @@
 
 struct S0 {	
 }
+init fun S0::Init() {
+}
+defer fun S0::Defer() {
 
-void S0::Do() -> void {
+}
+fun S0::Do() -> void {
 }
 
 

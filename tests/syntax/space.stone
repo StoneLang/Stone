@@ -16,13 +16,13 @@ space System.Physics.QM {
 	any(T) interface Accelerator {
 		fun Fire(Particle* particle) -> bool; 
 	}
-	public class Cyclotron : use(Cyclotron) Accelerator {
+	public class Cyclotron : real(Cyclotron) Accelerator {
 	}
 	public fun Cyclotron::Fire(Particle* particle) -> bool {
 		return true; 
 	}
 
-	public class Linear : use(Linear) Accelerator {
+	public struct Linear : real(Linear) Accelerator {
 	}
 	public fun Linear::Fire(Particle* particle) -> bool {
 		return true; 
@@ -36,13 +36,13 @@ use System.Physics.QM;
 fun Main() -> int {
 
 
-	use(Cyclotron) 
+	real(Cyclotron) 
 		Accelerator* c0 = new Cyclotron();
 
-	use(Linear) 
+	real(Linear) 
 		Accelerator* l0 = new Linear();
 
-	use(Linear) 
+	real(Linear) 
 		Accelerator* l1 = null; 
 
 	l1 = new Linear(); 

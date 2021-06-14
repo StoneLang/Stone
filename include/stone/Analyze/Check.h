@@ -7,15 +7,15 @@ namespace stone {
 class CheckerPipeline;
 
 namespace syn {
-class SourceFile;
+class SourceModuleFile;
 }
 
 /// Perform type checking
-void CheckSourceFile(syn::SourceFile &file,
+void CheckSourceModuleFile(syn::SourceModuleFile &file,
                      CheckerPipeline *pipeline = nullptr);
 
 /// Perform type checking
-void CheckWholeModule(syn::SourceFile &file,
+void CheckWholeModule(syn::SourceModuleFile &file,
                       CheckerPipeline *pipeline = nullptr);
 
 } // namespace stone
