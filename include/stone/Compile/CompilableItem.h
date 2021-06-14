@@ -6,6 +6,7 @@
 
 namespace stone {
 class Compiler;
+
 namespace syn {
 class SourceModuleFile;
 }
@@ -14,7 +15,7 @@ class CompilableItem final {
   Compiler &compiler;
   syn::SourceModuleFile *sf = nullptr;
 
-  const InputFile input;
+  const InputFile &input;
   OutputFile *output = nullptr;
 
 public:
@@ -24,7 +25,7 @@ public:
   CompilableItem &operator=(CompilableItem &&) = delete;
 
 public:
-  CompilableItem(const InputFile input, Compiler &compiler)
+  CompilableItem(const InputFile &input, Compiler &compiler)
       : input(input), compiler(compiler) {}
   ~CompilableItem() {}
 
@@ -41,7 +42,7 @@ public:
 
 public:
   // TODO: Improve on
-  static std::unique_ptr<CompilableItem> Create(file::File input,
+  static std::unique_ptr<CompilableItem> Create(const InputFile &input,
                                                 Compiler &compiler);
 
 public:

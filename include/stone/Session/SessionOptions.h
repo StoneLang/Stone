@@ -54,6 +54,7 @@ public:
   /// The file input kind
   file::Type inputType = file::Type::None;
 
+private:
   file::Files inputs;
 
 public:
@@ -62,9 +63,16 @@ public:
 public:
   llvm::opt::OptTable &GetOpts() const { return *optTable.get(); }
 
-  void AddInput(file::Type ty, llvm::StringRef name) {
+  void AddInput(llvm::StringRef name) {
+    auto ty = file::GetTypeByName(name);
+    assert(ty != file::Type::INVALID && "Invalid input type.");
     inputs.push_back(std::make_pair(ty, name));
   }
+  void AddInput(llvm::StringRef name, file::Type ty) {
+    inputs.push_back(std::make_pair(ty, name));
+  }
+
+  file::Files &GetInputs() { return inputs; }
 };
 } // namespace stone
 

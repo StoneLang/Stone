@@ -94,7 +94,7 @@ void DriverInternal::BuildCompileJobs(Driver &driver) {
   if (!driver.GetMode().CanCompile()) {
     return;
   }
-  if (driver.GetDriverOptions().inputs.size() == 0) {
+  if (driver.GetDriverOptions().GetInputs().size() == 0) {
     return;
   }
   OutputFileMap fileMap;
@@ -103,7 +103,7 @@ void DriverInternal::BuildCompileJobs(Driver &driver) {
 
   auto cmdOutput = llvm::make_unique<CmdOutput>("todo", fileMap);
 
-  for (const auto &input : driver.GetDriverOptions().inputs) {
+  for (const auto &input : driver.GetDriverOptions().GetInputs()) {
     if (input.first == Type::Stone) {
       assert(file::IsPartOfCompilation(input.first));
 
@@ -125,7 +125,7 @@ void DriverInternal::BuildLinkJob(Driver &driver) {
     return;
   }
   if (driver.GetMode().IsLinkOnly()) {
-    for (const auto &input : driver.GetDriverOptions().inputs) {
+    for (const auto &input : driver.GetDriverOptions().GetInputs()) {
       switch (input.first) {
       case Type::Object:
         break;
@@ -196,7 +196,7 @@ void DriverInternal::BuildJobsForSingleCompileType(Driver &driver) {
     auto job =
         driver.GetCompilation().CreateJob<CompileJob>(driver.GetCompilation());
 
-    for (const auto &input : driver.GetDriverOptions().inputs) {
+    for (const auto &input : driver.GetDriverOptions().GetInputs()) {
       switch (input.first) {
         case file::Type::Stone: {
           assert(file::IsPartOfCompilation(input.first));
@@ -366,30 +366,27 @@ void Driver::BuildInputs(const ToolChain &tc, const DerivedArgList &args,
 
   for (Arg *arg : args) {
     if (arg->getOption().getKind() == Option::InputClass) {
-      llvm::StringRef argValue = arg->getValue();
-      file::Type ft = file::Type::INVALID;
+      llvm::StringRef input = arg->getValue();
+      file::Type fileType = file::Type::INVALID;
       // stdin must be handled specially.
-      if (argValue.equals("-")) {
+      if (input.equals("-")) {
         // By default, treat stdin as Swift input.
-        ft = file::Type::Stone;
+        fileType = file::Type::Stone;
       } else {
         // Otherwise lookup by internal.
-        ft = file::GetTypeByExt(file::GetExt(argValue));
-
-        if (ft == file::Type::INVALID) {
+        fileType = file::GetTypeByExt(file::GetExt(input));
+        if (fileType == file::Type::INVALID) {
           // By default, treat inputs with no internal, or with an
           // internal that isn't recognized, as object files.
-          ft = file::Type::Object;
+          fileType = file::Type::Object;
         }
       }
-
-      if (DriverInternal::DoesInputExist(*this, args, argValue)) {
-        driverOpts.AddInput(ft, argValue);
+      if (DriverInternal::DoesInputExist(*this, args, input)) {
+        driverOpts.AddInput(input, fileType);
       }
-
-      if (ft == Type::Stone) {
-        auto basename = llvm::sys::path::filename(argValue);
-        if (!seenSourceModuleFiles.insert({basename, argValue}).second) {
+      if (fileType == Type::Stone) {
+        auto basename = llvm::sys::path::filename(input);
+        if (!seenSourceModuleFiles.insert({basename, input}).second) {
           Out() << "de.D(SourceLoc(),"
                 << "diag::error_two_files_same_name,"
                 << "basename, seenSourceModuleFiles[basename], argValue);"

@@ -54,9 +54,6 @@ public:
   FileSystemOptions fsOpts;
   bool wholeModuleCheck = false;
 
-  /// The name of the module that the compiler is building.
-  std::string moduleName;
-
 public:
   CompilerOptions() {}
 };

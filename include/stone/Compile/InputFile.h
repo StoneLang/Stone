@@ -32,6 +32,10 @@ public:
   /// Retrieves the backing buffer for this input file, if any.
   llvm::MemoryBuffer *GetBuffer() const { return buffer; }
   bool CanOutput();
+
+public:
+  static InputFile *Create(const file::File input, bool isPrimary,
+                           llvm::MemoryBuffer *buffer = nullptr);
 };
 } // namespace stone
 

@@ -11,6 +11,11 @@
 
 using namespace stone;
 
+class CompilableItems final {
+public:
+  SafeList<CompilableItem> entries;
+};
+
 class CompilerImpl final {
 public:
   static int Compile(Compiler &compiler, CompilableItem &compilable);
@@ -25,6 +30,8 @@ public:
   static int EmitLibrary(Compiler &compiler, CompilableItem &compilable);
   static int EmitModuleOnly(Compiler &compiler, CompilableItem &compilable);
   static int EmitBitCode(Compiler &compiler, CompilableItem &compilable);
+
+  // CompilableItem* Create<
 };
 
 int CompilerImpl::Parse(Compiler &compiler, CompilableItem &compilable,
@@ -94,8 +101,11 @@ int CompilerImpl::Compile(Compiler &compiler, CompilableItem &compilable) {
   }
 }
 
-static void BuildCompilables(Compiler &compiler,
-                             SafeList<CompilableItem> &compilables) {}
+static void BuildCompilables(Compiler &compiler, CompilableItems &compilables) {
+  for (auto &input : compiler.GetCompilerOptions().GetInputs()) {
+    // CompilableItem::Create(InputFile::Create(input.first, inut.second)):
+  }
+}
 
 int Compiler::Compile(Compiler &compiler) {
 
@@ -103,10 +113,12 @@ int Compiler::Compile(Compiler &compiler) {
     return ret::err;
   }
 
-  SafeList<CompilableItem> compilables;
+  CompilableItems compilables;
   BuildCompilables(compiler, compilables);
+  assert(!compilables.entries.empty() &&
+         "There are no input files to compile.");
 
-  for (auto &compilable : compilables) {
+  for (auto &compilable : compilables.entries) {
     if (!CompilerImpl::Compile(compiler, compilable)) {
 
       // TODO: Prform some logging

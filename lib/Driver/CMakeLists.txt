@@ -14,6 +14,7 @@ set(stone_driver_sources
 	BackendJob.cpp
 	CmdOutput.cpp
 	Compilation.cpp
+	CompilationItem.cpp
 	CompileJob.cpp
 	CrashState.cpp
 	DriverStats.cpp

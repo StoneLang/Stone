@@ -129,7 +129,7 @@ public:
   // TODO: You want to say
   void AddFile();
 
-  file::Files &GetInputs() { return sessionOpts.inputs; }
+  file::Files &GetInputs() { return sessionOpts.GetInputs(); }
 
   llvm::TimerGroup &GetTimerGroup() { return *timerGroup.get(); }
   llvm::Timer &GetTimer() { return *timer.get(); }

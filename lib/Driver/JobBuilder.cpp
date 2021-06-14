@@ -41,7 +41,7 @@ int JobBuilder::BuildJobsForCompile(Driver &driver) {
   assert(driver.GetMode().IsCompileOnly() &&
          "Can only be called directly for compiling only.");
 
-  for (const auto &input : driver.GetDriverOptions().inputs) {
+  for (const auto &input : driver.GetDriverOptions().GetInputs()) {
     auto job = JobBuilder::BuildJobForCompile(driver, input);
     driver.AddJobForCompilation(job);
   }
@@ -68,7 +68,7 @@ int JobBuilder::BuildJobForLinking(Driver &driver) {
          "Can only be called directly for linking only");
 
   auto job = JobBuilder::BuildJobForLinkingImpl(driver);
-  for (const auto &input : driver.GetDriverOptions().inputs) {
+  for (const auto &input : driver.GetDriverOptions().GetInputs()) {
     assert(input.first == Type::Object && "Incorrect file for linking.");
     job->AddInput(input);
   }
@@ -119,7 +119,7 @@ int JobBuilder::BuildJobsForExecutable(Driver &driver) {
   auto linkJob = JobBuilder::BuildJobForLinkingImpl(driver);
   assert(linkJob && "Could not create 'LinkJob'");
 
-  for (const auto &input : driver.GetDriverOptions().inputs) {
+  for (const auto &input : driver.GetDriverOptions().GetInputs()) {
     auto compileJob = JobBuilder::BuildJobForCompile(driver, input);
     assert(compileJob && "Could not create 'CompileJob'");
     linkJob->AddDep(compileJob);
@@ -131,7 +131,7 @@ int JobBuilder::BuildJobsForExecutable(Driver &driver) {
 int Driver::BuildJobs() {
   llvm::PrettyStackTraceString CrashInfo("Building compilation jobs.");
 
-  if (GetDriverOptions().inputs.empty()) {
+  if (GetDriverOptions().GetInputs().empty()) {
     Out() << "D(SrcLoc(), msg::error_no_input_files)" << '\n';
     return ret::err;
   }

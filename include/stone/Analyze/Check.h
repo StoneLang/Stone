@@ -11,11 +11,11 @@ class SourceModuleFile;
 }
 
 /// Perform type checking
-void CheckSourceModuleFile(syn::SourceModuleFile &file,
+void CheckSourceModuleFile(syn::SourceModuleFile &sf,
                            CheckerPipeline *pipeline = nullptr);
 
 /// Perform type checking
-void CheckWholeModule(syn::SourceModuleFile &file,
+void CheckWholeModule(syn::SourceModuleFile &sf,
                       CheckerPipeline *pipeline = nullptr);
 
 } // namespace stone
