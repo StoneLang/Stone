@@ -28,7 +28,7 @@ public:
 };
 
 int CompilerImpl::Parse(Compiler &compiler, CompilableItem &compilable,
-                        bool check) { 
+                        bool check) {
   return ret::ok;
 }
 int CompilerImpl::Parse(Compiler &compiler, CompilableItem &compilable) {
@@ -95,9 +95,7 @@ int CompilerImpl::Compile(Compiler &compiler, CompilableItem &compilable) {
 }
 
 static void BuildCompilables(Compiler &compiler,
-                             SafeList<CompilableItem> &compilables) {
-
-}
+                             SafeList<CompilableItem> &compilables) {}
 
 int Compiler::Compile(Compiler &compiler) {
 

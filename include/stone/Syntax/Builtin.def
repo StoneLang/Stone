@@ -1,0 +1,27 @@
+
+
+
+#ifndef BUILTIN_OPERATION
+#define BUILTIN_OPERATIONId, Name, Attrs) BUILTIN(Id, Name, Attrs)
+#endif
+
+#undef BUILTIN_OPERATION
+
+
+#ifndef BUILTIN_TYPE
+#define BUILTIN_TYPE(Id, Name, Attrs) BUILTIN(Id, Name, Attrs)
+#endif
+
+#undef BUILTIN_TYPE
+
+
+#ifndef BUILTIN_IDENTIFIER
+#define BUILTIN_IDENTIFIER(Id, Name, Attrs) BUILTIN(Id, Name, Attrs)
+#endif
+
+
+#undef BUILTIN_IDENTIFIER
+
+
+
+

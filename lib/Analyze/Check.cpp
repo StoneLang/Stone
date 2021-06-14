@@ -8,7 +8,8 @@
 using namespace stone::syn;
 using namespace stone::sema;
 
-void stone::CheckSourceModuleFile(SourceModuleFile &sf, CheckerPipeline *pipeline) {
+void stone::CheckSourceModuleFile(SourceModuleFile &sf,
+                                  CheckerPipeline *pipeline) {
   // Checker checker(su, pipeline);
 }
 

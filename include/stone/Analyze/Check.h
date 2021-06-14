@@ -12,7 +12,7 @@ class SourceModuleFile;
 
 /// Perform type checking
 void CheckSourceModuleFile(syn::SourceModuleFile &file,
-                     CheckerPipeline *pipeline = nullptr);
+                           CheckerPipeline *pipeline = nullptr);
 
 /// Perform type checking
 void CheckWholeModule(syn::SourceModuleFile &file,

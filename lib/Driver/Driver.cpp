@@ -392,7 +392,8 @@ void Driver::BuildInputs(const ToolChain &tc, const DerivedArgList &args,
         if (!seenSourceModuleFiles.insert({basename, argValue}).second) {
           Out() << "de.D(SourceLoc(),"
                 << "diag::error_two_files_same_name,"
-                << "basename, seenSourceModuleFiles[basename], argValue);" << '\n';
+                << "basename, seenSourceModuleFiles[basename], argValue);"
+                << '\n';
           Out() << " de.D(SourceLoc(), "
                 << "diag::note_explain_two_files_"
                    "same_name);"

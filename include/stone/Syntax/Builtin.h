@@ -5,17 +5,23 @@ namespace stone {
 namespace syn {
 class TreeContext;
 
+namespace builtin {
+enum ID {};
+struct Profile {
+  const char *name;
+  const char *ty;
+  const char *attributes;
+  const char *features;
+};
+} // namespace builtin
+
 class Builtin final {
-  enum BuiltinID {
-    None,
-  };
+
   Builtin(const Builtin &) = delete;
   void operator=(const Builtin &) = delete;
 
   void InitType(TreeContext &tc);
   void InitTypes(TreeContext &tc);
-
-  BuiltinID builtinID;
 
 public:
   Builtin() = default;

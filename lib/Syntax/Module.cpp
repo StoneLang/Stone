@@ -20,9 +20,10 @@ void Module::AddFile(ModuleFile &file) {
   // assert(!(isa<LoadedFile>(newFile) &&
   //         cast<LoadedFile>(newFile).hadLoadError()));
   // Require Main and REPL files to be the first file added.
-  assert(files.empty() || !isa<SourceModuleFile>(file) ||
-         cast<SourceModuleFile>(file).kind == SourceModuleFile::Kind::Library
-         /*||cast<SourceModuleFile>(unit).Kind == SourceModuleFile::Kind::SIL*/);
+  assert(
+      files.empty() || !isa<SourceModuleFile>(file) ||
+      cast<SourceModuleFile>(file).kind == SourceModuleFile::Kind::Library
+      /*||cast<SourceModuleFile>(unit).Kind == SourceModuleFile::Kind::SIL*/);
   files.push_back(&file);
   // ClearLookupCache();
 }

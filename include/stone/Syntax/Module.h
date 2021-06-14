@@ -41,7 +41,8 @@ public:
   SourceModuleFile::Kind kind;
 
 public:
-  SourceModuleFile(Module &owner, SourceModuleFile::Kind kind, bool isMain = false);
+  SourceModuleFile(Module &owner, SourceModuleFile::Kind kind,
+                   bool isMain = false);
   ~SourceModuleFile();
 
   static bool classof(const ModuleFile *file) {

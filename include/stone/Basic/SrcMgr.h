@@ -845,7 +845,9 @@ public:
   SrcID getOrCreateSrcID(const SrcFile *SourceModuleFile,
                          src::CharacteristicKind FileCharacter) {
     SrcID ID = translateFile(SourceModuleFile);
-    return ID.isValid() ? ID : CreateSrcID(SourceModuleFile, SrcLoc(), FileCharacter);
+    return ID.isValid()
+               ? ID
+               : CreateSrcID(SourceModuleFile, SrcLoc(), FileCharacter);
   }
 
   /// Return a new SrcLoc that encodes the
@@ -889,7 +891,8 @@ public:
                             llvm::MemoryBuffer *Buffer, bool DoNotFree);
   void overrideFileContents(const SrcFile *SourceModuleFile,
                             std::unique_ptr<llvm::MemoryBuffer> Buffer) {
-    overrideFileContents(SourceModuleFile, Buffer.release(), /*DoNotFree*/ false);
+    overrideFileContents(SourceModuleFile, Buffer.release(),
+                         /*DoNotFree*/ false);
   }
 
   /// Override the given source file with another one.
@@ -898,7 +901,8 @@ public:
   ///
   /// \param NewFile the file whose contents will be used as the
   /// data instead of the contents of the given source file.
-  void overrideFileContents(const SrcFile *SourceModuleFile, const SrcFile *NewFile);
+  void overrideFileContents(const SrcFile *SourceModuleFile,
+                            const SrcFile *NewFile);
 
   /// Returns true if the file contents have been overridden.
   bool isFileOverridden(const SrcFile *File) const {
@@ -1756,8 +1760,9 @@ private:
                     src::CharacteristicKind DirCharacter, int LoadedID,
                     unsigned LoadedOffset);
 
-  const src::ContentCache *getOrCreateContentCache(const SrcFile *SourceModuleFile,
-                                                   bool isSystemFile = false);
+  const src::ContentCache *
+  getOrCreateContentCache(const SrcFile *SourceModuleFile,
+                          bool isSystemFile = false);
 
   /// Create a new ContentCache for the specified  memory buffer.
   const src::ContentCache *

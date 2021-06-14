@@ -9,8 +9,9 @@
 
 using namespace stone::syn;
 
-void stone::ParseSourceModuleFile(const SrcID srcID, SourceModuleFile &sf, SrcMgr &sm,
-                            Context &ctx, PipelineEngine *pe) {
+void stone::ParseSourceModuleFile(const SrcID srcID, SourceModuleFile &sf,
+                                  SrcMgr &sm, Context &ctx,
+                                  PipelineEngine *pe) {
 
   ParserPipeline *parserPipeline = nullptr;
   LexerPipeline *lexerPipeline = nullptr;
