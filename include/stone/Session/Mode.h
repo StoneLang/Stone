@@ -54,7 +54,7 @@ public:
     return IsCompileOnlyImpl();
   }
 
-  bool CanCompile() const {
+  bool IsCompilable() const {
     switch (GetType()) {
     case ModeType::EmitExecutable:
       return true;
@@ -72,7 +72,22 @@ public:
       return false;
     }
   }
-
+  bool IsValid() {
+    switch (GetType()) {
+    case ModeType::Parse:
+    case ModeType::Check:
+    case ModeType::EmitIR:
+    case ModeType::EmitBC:
+    case ModeType::EmitObject:
+    case ModeType::EmitAssembly:
+    case ModeType::EmitModuleOnly:
+    case ModeType::EmitLibrary:
+    case ModeType::EmitExecutable:
+      return true;
+    default:
+      return false;
+    }
+  }
   static llvm::StringRef GetNameByType(ModeType ty);
 
 private:

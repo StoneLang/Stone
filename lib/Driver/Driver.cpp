@@ -91,7 +91,7 @@ bool DriverInternal::DoesInputExist(Driver &driver, const DerivedArgList &args,
   return false;
 }
 void DriverInternal::BuildCompileJobs(Driver &driver) {
-  if (!driver.GetMode().CanCompile()) {
+  if (!driver.GetMode().IsCompilable()) {
     return;
   }
   if (driver.GetDriverOptions().GetInputs().size() == 0) {

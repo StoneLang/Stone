@@ -29,7 +29,7 @@ Tool *ToolChain::PickTool(JobType jobType) const {
 
 // TODO: Update for other scenarios like assemble
 bool ToolChain::Build() {
-  if (GetDriver().GetMode().CanCompile()) {
+  if (GetDriver().GetMode().IsCompilable()) {
     assert(BuildStoneTool() && "Failed to build stone tool.");
     if (GetDriver().GetMode().IsCompileOnly()) {
       return true;

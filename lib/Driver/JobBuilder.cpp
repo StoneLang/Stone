@@ -49,7 +49,7 @@ int JobBuilder::BuildJobsForCompile(Driver &driver) {
 }
 
 Job *JobBuilder::BuildJobForCompile(Driver &driver, const File input) {
-  assert(driver.GetMode().CanCompile() &&
+  assert(driver.GetMode().IsCompilable() &&
          "The 'mode-type' does not support compiling.");
 
   Job *result = nullptr;

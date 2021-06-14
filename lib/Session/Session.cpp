@@ -100,11 +100,16 @@ void Session::ComputeMode(const llvm::opt::DerivedArgList &args) {
       mode.SetType(ModeType::EmitLibrary);
       break;
     default:
+      /// This is left blank because we want the derived class to specify its
+      /// own default mode
       break;
     }
   }
   if (mode.GetType() == ModeType::None) {
     mode.SetType(GetDefaultModeType());
+  }
+  if (mode.IsValid()) {
+    mode.SetName(modeArg->getOption().getName());
   }
 }
 

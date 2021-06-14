@@ -109,14 +109,15 @@ static void BuildCompilables(Compiler &compiler, CompilableItems &compilables) {
 
 int Compiler::Compile(Compiler &compiler) {
 
-  if (!compiler.GetMode().CanCompile()) {
+  if (compiler.GetInputs().empty()) {
+    printf("No input files.\n");
     return ret::err;
   }
 
+  assert(compiler.GetMode().IsCompilable() && "Invalid compile mode.");
+
   CompilableItems compilables;
   BuildCompilables(compiler, compilables);
-  assert(!compilables.entries.empty() &&
-         "There are no input files to compile.");
 
   for (auto &compilable : compilables.entries) {
     if (!CompilerImpl::Compile(compiler, compilable)) {
