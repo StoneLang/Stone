@@ -171,4 +171,10 @@ CreateOutputFile(llvm::StringRef outputPath, bool binary,
   return nullptr;
 }
 
+/// Session Utils
+
+file::File Session::Utils::CreateFile(llvm::StringRef name) {}
+file::File Session::Utils::CreateFile(llvm::opt::Arg &arg) {}
+bool Session::Utils::FileExits(llvm::StringRef name) {}
+
 void Session::PrintVersion() {}

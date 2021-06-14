@@ -186,6 +186,14 @@ protected:
   virtual ModeType GetDefaultModeType() = 0;
   virtual void BuildOptions() = 0;
 
+public:
+  /// Session Utils
+  struct Utils {
+    static file::File CreateFile(llvm::StringRef name);
+    static file::File CreateFile(llvm::opt::Arg &arg);
+    static bool FileExits(llvm::StringRef name);
+  };
+
 protected:
   void CreateTimer();
   llvm::StringRef ComputeWorkingDir();

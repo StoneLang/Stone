@@ -361,13 +361,18 @@ bool Driver::EmitInfo(const ArgList &args, const ToolChain &tc) {
 
 // TODO: May move to session
 void Driver::BuildInputs(const ToolChain &tc, const DerivedArgList &args,
-                         Files &inputs) {
+                         file::Files &inputs) {
   llvm::DenseMap<llvm::StringRef, llvm::StringRef> seenSourceModuleFiles;
 
   for (Arg *arg : args) {
     if (arg->getOption().getKind() == Option::InputClass) {
       llvm::StringRef input = arg->getValue();
       file::Type fileType = file::Type::INVALID;
+
+			if(Session::Utils::FileExist(input)) {
+			}
+      fileType = file::GetTypeByExt(file::GetExt(input));
+
       // stdin must be handled specially.
       if (input.equals("-")) {
         // By default, treat stdin as Swift input.
