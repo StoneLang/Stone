@@ -163,9 +163,6 @@ private:
   /// because ToolChain has virtual methods.
   void BuildToolChain(const llvm::opt::InputArgList &args);
 
-  void BuildInputs(const ToolChain &tc, const DerivedArgList &args,
-                   Files &inputs);
-
   /// Construct the OutputInfo for the driver from the given arguments.
   ///
   /// \param TC The current tool chain.

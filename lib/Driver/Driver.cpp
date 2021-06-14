@@ -310,7 +310,7 @@ void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
     return;
   }
 
-  BuildInputs(GetToolChain(), *translatedArgs, GetInputs());
+  BuildInputs(*translatedArgs, GetInputs());
 
   if (CutOff())
     return;
@@ -357,53 +357,6 @@ bool Driver::EmitInfo(const ArgList &args, const ToolChain &tc) {
     return true;
   }
   return false;
-}
-
-// TODO: May move to session
-void Driver::BuildInputs(const ToolChain &tc, const DerivedArgList &args,
-                         file::Files &inputs) {
-  llvm::DenseMap<llvm::StringRef, llvm::StringRef> seenSourceModuleFiles;
-
-  for (Arg *arg : args) {
-    if (arg->getOption().getKind() == Option::InputClass) {
-      llvm::StringRef input = arg->getValue();
-      file::Type fileType = file::Type::INVALID;
-
-			if(Session::Utils::FileExist(input)) {
-			}
-      fileType = file::GetTypeByExt(file::GetExt(input));
-
-      // stdin must be handled specially.
-      if (input.equals("-")) {
-        // By default, treat stdin as Swift input.
-        fileType = file::Type::Stone;
-      } else {
-        // Otherwise lookup by internal.
-        fileType = file::GetTypeByExt(file::GetExt(input));
-        if (fileType == file::Type::INVALID) {
-          // By default, treat inputs with no internal, or with an
-          // internal that isn't recognized, as object files.
-          fileType = file::Type::Object;
-        }
-      }
-      if (DriverInternal::DoesInputExist(*this, args, input)) {
-        driverOpts.AddInput(input, fileType);
-      }
-      if (fileType == Type::Stone) {
-        auto basename = llvm::sys::path::filename(input);
-        if (!seenSourceModuleFiles.insert({basename, input}).second) {
-          Out() << "de.D(SourceLoc(),"
-                << "diag::error_two_files_same_name,"
-                << "basename, seenSourceModuleFiles[basename], argValue);"
-                << '\n';
-          Out() << " de.D(SourceLoc(), "
-                << "diag::note_explain_two_files_"
-                   "same_name);"
-                << '\n';
-        }
-      }
-    }
-  }
 }
 
 void Driver::BuildOutputProfile(const llvm::opt::DerivedArgList &args,

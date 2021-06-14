@@ -33,6 +33,16 @@
 #include "stone/Session/Mode.h"
 #include "stone/Session/SessionOptions.h"
 
+namespace llvm {
+namespace opt {
+class Arg;
+class ArgList;
+class OptTable;
+class InputArgList;
+class DerivedArgList;
+} // namespace opt
+} // namespace llvm
+
 namespace stone {
 
 enum class SessionType { Compiler, Driver };
@@ -185,6 +195,8 @@ protected:
   virtual void ComputeMode(const llvm::opt::DerivedArgList &args);
   virtual ModeType GetDefaultModeType() = 0;
   virtual void BuildOptions() = 0;
+
+  void BuildInputs(const llvm::opt::DerivedArgList &args, file::Files &inputs);
 
 public:
   /// Session Utils
