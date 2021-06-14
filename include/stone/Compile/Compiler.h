@@ -111,7 +111,7 @@ public:
 
   PipelineEngine *GetPipelineEngine() { return pe; }
 
-  ConstList<InputFile> &GetInputs() { return inputs; }
+  // ConstList<InputFile> &GetInputs() { return inputs; }
 
 protected:
   void ComputeMode(const llvm::opt::DerivedArgList &args) override;
@@ -127,9 +127,6 @@ protected:
   /// arguments, after applying the standard argument translations.
   // llvm::opt::DerivedArgList *
   // TranslateInputArgs(const llvm::opt::InputArgList &args) override const;
-
-private:
-  void BuildInputs();
 
 public:
   void *Allocate(size_t size, unsigned align) const {

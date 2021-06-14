@@ -48,9 +48,9 @@ bool Compiler::Build(llvm::ArrayRef<const char *> args) {
   // Computer the compiler mode.
   ComputeMode(*translatedArgs);
 
-  CreateTimer();
+  BuildInputs(*translatedArgs, GetInputs());
 
-  BuildInputs();
+  CreateTimer();
 
   // Create CompilingUnits
   // for (const auto &input : compiler.GetCompilerOptions().inputs) {
@@ -58,9 +58,6 @@ bool Compiler::Build(llvm::ArrayRef<const char *> args) {
 
   return true;
 }
-
-// TODO: Belongs in session
-void Compiler::BuildInputs() {}
 
 ModeType Compiler::GetDefaultModeType() { return ModeType::EmitObject; }
 

@@ -202,6 +202,7 @@ void Session::BuildInputs(const DerivedArgList &args, file::Files &inputs) {
         }
       } else {
         // TODO: Inform
+        printf("***********No input files\n");
       }
     }
   }
