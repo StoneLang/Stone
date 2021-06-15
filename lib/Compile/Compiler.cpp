@@ -41,7 +41,6 @@ void Compiler::Init() {}
 bool Compiler::Build(llvm::ArrayRef<const char *> args) {
 
   excludedFlagsBitmask = opts::NoCompilerOption;
-
   originalArgs = ParseArgList(args);
 
   translatedArgs = TranslateArgList(*originalArgs);
@@ -51,7 +50,6 @@ bool Compiler::Build(llvm::ArrayRef<const char *> args) {
   BuildInputs(*translatedArgs, GetInputs());
 
   CreateTimer();
-
   // Create CompilingUnits
   // for (const auto &input : compiler.GetCompilerOptions().inputs) {
   //}

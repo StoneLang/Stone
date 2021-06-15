@@ -61,11 +61,11 @@ class TreeContext;
 class DiagnosticEngine;
 
 class TreeContextStats final : public Stats {
-  const TreeContext &ac;
+  const TreeContext &tc;
 
 public:
-  TreeContextStats(const TreeContext &ac)
-      : Stats("tree-context stats:"), ac(ac) {}
+  TreeContextStats(const TreeContext &tc)
+      : Stats("tree-context stats:"), tc(tc) {}
   void Print() override;
 };
 class TreeContext final {

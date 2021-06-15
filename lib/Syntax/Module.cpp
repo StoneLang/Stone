@@ -33,6 +33,11 @@ syn::Module *syn::Module::Create(Identifier &identifier, TreeContext &tc) {
 }
 syn::Module *syn::Module::CreateMainModule(Identifier &identifier,
                                            TreeContext &tc) {
-
   return nullptr;
 }
+
+SourceModuleFile::SourceModuleFile(SourceModuleFile::Kind kind, Module &owner,
+                                   bool isMain)
+    : ModuleFile(ModuleFile::Kind::Source, owner), kind(kind) {}
+
+SourceModuleFile::~SourceModuleFile() {}

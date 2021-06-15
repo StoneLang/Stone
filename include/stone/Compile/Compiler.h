@@ -132,6 +132,10 @@ public:
   void *Allocate(size_t size, unsigned align) const {
     return bumpAlloc.Allocate(size, align);
   }
+
+  // TODO: You may need to do this.
+  // void Reset() { bumpAlloc.Reset()); }
+
   template <typename T> T *Allocate(size_t num = 1) const {
     return static_cast<T *>(Allocate(num * sizeof(T), alignof(T)));
   }

@@ -178,7 +178,6 @@ CreateOutputFile(llvm::StringRef outputPath, bool binary,
 // TODO: May move to session
 void Session::BuildInputs(const DerivedArgList &args, file::Files &inputs) {
   llvm::DenseMap<llvm::StringRef, llvm::StringRef> seenSourceModuleFiles;
-
   for (Arg *arg : args) {
     if (arg->getOption().getKind() == Option::InputClass) {
       auto input = arg->getValue();
@@ -189,6 +188,7 @@ void Session::BuildInputs(const DerivedArgList &args, file::Files &inputs) {
           sessionOpts.AddInput(input, fileType);
           break;
         default:
+          // TODO: Work with just object files
           fileType = file::Type::Object;
           break;
         }
@@ -205,9 +205,6 @@ void Session::BuildInputs(const DerivedArgList &args, file::Files &inputs) {
                   << '\n';
           }
         }
-      } else {
-        // TODO: Inform
-        printf("***********No input files\n");
       }
     }
   }

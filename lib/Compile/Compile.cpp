@@ -8,6 +8,7 @@
 #include "stone/Compile/Compiler.h"
 #include "stone/Gen/Gen.h"
 #include "stone/Session/ExecutablePath.h"
+#include "stone/Syntax/Module.h"
 
 using namespace stone;
 
@@ -36,6 +37,10 @@ public:
 
 int CompilerImpl::Parse(Compiler &compiler, CompilableItem &compilable,
                         bool check) {
+  // SourceModuleFile sf;
+  // SourceModuleFile* sf =
+  //   new (*compiler.GetTreeContext())SourceModuleFile(SourceFileKind::Library,
+  //   compiler.GetMainModule(), CI->GetBufferID());
   return ret::ok;
 }
 int CompilerImpl::Parse(Compiler &compiler, CompilableItem &compilable) {
@@ -69,6 +74,7 @@ int CompilerImpl::EmitObject(Compiler &compiler, CompilableItem &compilable) {
   if (!CompilerImpl::EmitIR(compiler, compilable)) {
     return ret::err;
   }
+
   bool status = stone::GenObject(
       compiler.GetCompilerContext().GetLLVMModule(),
       compiler.GetCompilerOptions().genOpts, compiler.GetTreeContext(),
@@ -102,26 +108,30 @@ int CompilerImpl::Compile(Compiler &compiler, CompilableItem &compilable) {
 }
 
 static void BuildCompilables(Compiler &compiler, CompilableItems &compilables) {
+
   for (auto &input : compiler.GetCompilerOptions().GetInputs()) {
-    // CompilableItem::Create(InputFile::Create(input.first, inut.second)):
+    // TODO: perf improvement
+    std::unique_ptr<CompilableItem> compilable(
+        new CompilableItem(InputFile(input, false, nullptr), compiler));
+
+    compilables.entries.Add(std::move(compilable));
   }
 }
-
 int Compiler::Compile(Compiler &compiler) {
 
   if (compiler.GetInputs().empty()) {
-    printf("No input files.\n");
+    printf("No input files.\n"); // TODO: Use Diagnostics
     return ret::err;
   }
-
   assert(compiler.GetMode().IsCompilable() && "Invalid compile mode.");
 
   CompilableItems compilables;
   BuildCompilables(compiler, compilables);
 
+  assert(!compilables.entries.empty() && "No items to compile.");
+
   for (auto &compilable : compilables.entries) {
     if (!CompilerImpl::Compile(compiler, compilable)) {
-
       // TODO: Prform some logging
       break;
     }

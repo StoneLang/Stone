@@ -7,7 +7,7 @@
 namespace stone {
 
 class InputFile final {
-  const file::File input;
+  const file::File &input;
   bool isPrimary;
   /// The input, if it comes from a buffer rather than a file. This object
   /// does not own the buffer, and the caller is responsible for ensuring
@@ -15,11 +15,11 @@ class InputFile final {
   llvm::MemoryBuffer *buffer = nullptr;
 
 public:
-  InputFile(const file::File input, bool isPrimary)
+  InputFile(const file::File &input, bool isPrimary)
       : InputFile(input, isPrimary, nullptr) {}
 
   /// Constructs an input file from the provided data.
-  InputFile(const file::File input, bool isPrimary, llvm::MemoryBuffer *buffer)
+  InputFile(const file::File &input, bool isPrimary, llvm::MemoryBuffer *buffer)
       : input(input), isPrimary(isPrimary), buffer(buffer) {
     assert(!input.second.empty());
   }
@@ -34,8 +34,6 @@ public:
   bool CanOutput();
 
 public:
-  static InputFile *Create(const file::File input, bool isPrimary,
-                           llvm::MemoryBuffer *buffer = nullptr);
 };
 } // namespace stone
 

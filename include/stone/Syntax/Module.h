@@ -2,6 +2,7 @@
 #define STONE_SYNTAX_MODULE_H
 
 #include "stone/Basic/LLVM.h"
+#include "stone/Basic/List.h"
 #include "stone/Syntax/Decl.h"
 #include "stone/Syntax/Identifier.h"
 #include "stone/Syntax/TreeContext.h"
@@ -10,6 +11,8 @@
 
 namespace stone {
 namespace syn {
+
+static inline unsigned AlignOfModuleFile();
 class Module;
 
 class ModuleFile {
@@ -26,6 +29,17 @@ public:
   ModuleFile::Kind GetKind() const { return kind; }
 
 public:
+private:
+  // Make placement new and vanilla new/delete illegal for FileUnits.
+  void *operator new(size_t bytes) throw() = delete;
+  void *operator new(size_t bytes, void *mem) throw() = delete;
+  void operator delete(void *data) throw() = delete;
+
+public:
+  // Only allow allocation of FileUnits using the allocator in ASTContext
+  // or by doing a placement new.
+  void *operator new(size_t bytes, TreeContext &tc,
+                     unsigned alignment = AlignOfModuleFile());
 };
 
 class SourceModuleFile final : public ModuleFile {
@@ -39,9 +53,10 @@ public:
 
 public:
   SourceModuleFile::Kind kind;
+  UnsafeList<Decl *> topDecls;
 
 public:
-  SourceModuleFile(Module &owner, SourceModuleFile::Kind kind,
+  SourceModuleFile(SourceModuleFile::Kind kind, Module &owner,
                    bool isMain = false);
   ~SourceModuleFile();
 
@@ -78,6 +93,8 @@ public:
   static syn::Module *Create(Identifier &identifier, TreeContext &tc);
   static syn::Module *CreateMainModule(Identifier &identifier, TreeContext &tc);
 };
+
+static inline unsigned AlignOfModuleFile() { return alignof(ModuleFile &); }
 
 } // namespace syn
 } // namespace stone

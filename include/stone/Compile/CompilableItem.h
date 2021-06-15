@@ -33,6 +33,7 @@ public:
   void SetSourceModuleFile(syn::SourceModuleFile *s) { sf = s; }
   syn::SourceModuleFile *GetSourceModuleFile() { return sf; }
 
+  const InputFile &GetInputFile() const { return input; }
   void SetOutputFile(OutputFile *o) { output = o; }
   OutputFile *GetOutputFile() { return output; }
 
