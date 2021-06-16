@@ -21,6 +21,8 @@
 using namespace stone::file;
 
 namespace stone {
+class Context;
+
 namespace driver {
 class Job;
 class Compilation;
@@ -30,7 +32,8 @@ class JobStats final : public Stats {
   const Job &job;
 
 public:
-  JobStats(const Job &compilation) : Stats("job statistics:"), job(job) {}
+  JobStats(const Job &compilation, Context &ctx)
+      : Stats("job statistics:", ctx), job(job) {}
   void Print() override;
 };
 

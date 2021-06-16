@@ -2,8 +2,9 @@
 #define STONE_SYNTAX_LANG_ABI_H
 
 namespace stone {
-
-class LangABI final {};
+class LangABI final {
+public:
+};
 
 } // namespace stone
 

@@ -19,7 +19,6 @@ enum class PipelineType {
 };
 
 class Pipeline {
-
 public:
   Pipeline() = default;
   virtual ~Pipeline();

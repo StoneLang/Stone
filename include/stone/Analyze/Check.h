@@ -4,6 +4,7 @@
 #include "llvm/ADT/ArrayRef.h"
 
 namespace stone {
+class Context;
 class CheckerPipeline;
 
 namespace syn {
@@ -11,11 +12,11 @@ class SourceModuleFile;
 }
 
 /// Perform type checking
-void CheckSourceModuleFile(syn::SourceModuleFile &sf,
+void CheckSourceModuleFile(syn::SourceModuleFile &sf, Context &ctx,
                            CheckerPipeline *pipeline = nullptr);
 
 /// Perform type checking
-void CheckWholeModule(syn::SourceModuleFile &sf,
+void CheckWholeModule(syn::SourceModuleFile &sf, Context &ctx,
                       CheckerPipeline *pipeline = nullptr);
 
 } // namespace stone

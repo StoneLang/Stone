@@ -4,7 +4,9 @@
 namespace stone {
 
 /// Options for controlling diagnostics.
-class SearchPathOptions {};
+class SearchPathOptions final {
+public:
+};
 
 } // namespace stone
 

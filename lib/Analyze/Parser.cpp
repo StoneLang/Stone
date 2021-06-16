@@ -19,7 +19,7 @@ Parser::Parser(const SrcID srcID, SourceModuleFile &sf, SrcMgr &sm,
     : srcID(srcID), sf(sf), sm(sm), ctx(ctx), lexer(lx.release()),
       pipeline(pipeline) {
 
-  stats.reset(new ParserStats(*this));
+  stats.reset(new ParserStats(*this, ctx));
   ctx.GetStatEngine().Register(stats.get());
 
   // Populate the curTok

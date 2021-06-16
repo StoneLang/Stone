@@ -18,7 +18,7 @@ TreeContext::TreeContext(Context &ctx, const SearchPathOptions &spOpts,
                          SrcMgr &sm)
     : ctx(ctx), searchPathOpts(spOpts), sm(sm),
       identifiers(ctx.GetLangOptions()) {
-  stats.reset(new TreeContextStats(*this));
+  stats.reset(new TreeContextStats(*this, ctx));
   ctx.GetStatEngine().Register(stats.get());
 
   builtin.Init(*this);

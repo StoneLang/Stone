@@ -4,8 +4,11 @@
 namespace stone {
 namespace syn {
 
-class DeclNameLoc {};
+class DeclNameLoc {
+public:
+};
 class DeclName {
+public:
 public:
   // TODO:
   bool IsIdentifier() const { return false; }

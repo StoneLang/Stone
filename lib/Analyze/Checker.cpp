@@ -8,7 +8,7 @@ using namespace stone::syn;
 
 Checker::Checker(SourceModuleFile &su, Context &ctx, CheckerPipeline *pipeline)
     : su(su), ctx(ctx), pipeline(pipeline) {
-  stats.reset(new CheckerStats(*this));
+  stats.reset(new CheckerStats(*this, ctx));
   ctx.GetStatEngine().Register(stats.get());
 }
 

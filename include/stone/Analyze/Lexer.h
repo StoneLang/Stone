@@ -33,7 +33,8 @@ class LexerStats final : public Stats {
   const Lexer &lexer;
 
 public:
-  LexerStats(const Lexer &lexer) : Stats("lexer statistics:"), lexer(lexer) {}
+  LexerStats(const Lexer &lexer, Context &ctx)
+      : Stats("lexer statistics:", ctx), lexer(lexer) {}
   void Print() override;
 };
 

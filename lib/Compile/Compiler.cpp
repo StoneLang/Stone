@@ -14,8 +14,7 @@ Compiler::Compiler(PipelineEngine *pe)
       sm(GetDiagEngine(), fm), cc(*this) {
 
   tc.reset(new TreeContext(*this, compilerOpts.spOpts, sm));
-
-  stats.reset(new CompilerStats(*this));
+  stats.reset(new CompilerStats(*this, *this));
   GetStatEngine().Register(stats.get());
 }
 
@@ -43,14 +42,25 @@ bool Compiler::Build(llvm::ArrayRef<const char *> args) {
   excludedFlagsBitmask = opts::NoCompilerOption;
   originalArgs = ParseArgList(args);
 
+  if (Error())
+    return false;
+
   translatedArgs = TranslateArgList(*originalArgs);
-  // Computer the compiler mode.
+
+  // Compute the compiler mode.
   ComputeMode(*translatedArgs);
+
+  if (Error())
+    return false;
 
   BuildInputs(*translatedArgs, GetInputs());
 
+  if (Error())
+    return false;
+
   CreateTimer();
-  // Create CompilingUnits
+
+  // TODO: Create CompilableItem here?
   // for (const auto &input : compiler.GetCompilerOptions().inputs) {
   //}
 

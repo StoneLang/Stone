@@ -64,8 +64,8 @@ class TreeContextStats final : public Stats {
   const TreeContext &tc;
 
 public:
-  TreeContextStats(const TreeContext &tc)
-      : Stats("tree-context stats:"), tc(tc) {}
+  TreeContextStats(const TreeContext &tc, Context &ctx)
+      : Stats("tree-context stats:", ctx), tc(tc) {}
   void Print() override;
 };
 class TreeContext final {

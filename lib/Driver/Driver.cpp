@@ -1,5 +1,4 @@
 #include "stone/Driver/Driver.h"
-
 #include "stone/Basic/LLVM.h"
 #include "stone/Basic/Ret.h"
 #include "stone/Driver/Job.h"
@@ -13,7 +12,7 @@ using namespace stone::file;
 using namespace stone::driver;
 using namespace llvm::opt;
 
-class DriverInternal final {
+class DriverImpl final {
 public:
   static bool DoesInputExist(Driver &driver, const DerivedArgList &args,
                              llvm::StringRef input);
@@ -73,8 +72,8 @@ public:
 
 /// Check that the file referenced by \p Input exists. If it doesn't,
 /// issue a diagnostic and return false.
-bool DriverInternal::DoesInputExist(Driver &driver, const DerivedArgList &args,
-                                    llvm::StringRef input) {
+bool DriverImpl::DoesInputExist(Driver &driver, const DerivedArgList &args,
+                                llvm::StringRef input) {
   if (!driver.GetCheckInputFilesExist()) {
     return true;
   }
@@ -90,7 +89,7 @@ bool DriverInternal::DoesInputExist(Driver &driver, const DerivedArgList &args,
                << '\n';
   return false;
 }
-void DriverInternal::BuildCompileJobs(Driver &driver) {
+void DriverImpl::BuildCompileJobs(Driver &driver) {
   if (!driver.GetMode().IsCompilable()) {
     return;
   }
@@ -117,7 +116,7 @@ void DriverInternal::BuildCompileJobs(Driver &driver) {
   }
 }
 
-void DriverInternal::BuildLinkJob(Driver &driver) {
+void DriverImpl::BuildLinkJob(Driver &driver) {
   if (driver.GetMode().IsCompileOnly()) {
     return;
   }
@@ -177,11 +176,11 @@ linkJob->AddDep(job);
   }
 }
 
-void DriverInternal::BuildAssembleJob(Driver &driver) {}
+void DriverImpl::BuildAssembleJob(Driver &driver) {}
 
-void DriverInternal::BuildBackendJob(Driver &driver) {}
+void DriverImpl::BuildBackendJob(Driver &driver) {}
 
-void DriverInternal::BuildJobsForMultipleCompileType(Driver &driver) {
+void DriverImpl::BuildJobsForMultipleCompileType(Driver &driver) {
   if (driver.GetMode().IsCompileOnly()) {
     BuildCompileJobs(driver);
     return;
@@ -191,7 +190,7 @@ void DriverInternal::BuildJobsForMultipleCompileType(Driver &driver) {
     return;
   }
 }
-void DriverInternal::BuildJobsForSingleCompileType(Driver &driver) {
+void DriverImpl::BuildJobsForSingleCompileType(Driver &driver) {
   /*
     auto job =
         driver.GetCompilation().CreateJob<CompileJob>(driver.GetCompilation());
@@ -212,9 +211,19 @@ void DriverInternal::BuildJobsForSingleCompileType(Driver &driver) {
   // job->BuildCmdOutput();
 }
 
-void DriverInternal::ComputeCompileType(const Driver &driver,
-                                        const DerivedArgList &args,
-                                        const Files &inputs) {}
+void DriverImpl::ComputeCompileType(const Driver &driver,
+                                    const DerivedArgList &args,
+                                    const Files &inputs) {}
+
+DriverStats::DriverStats(const Driver &driver, Context &ctx)
+    : Stats("driver statistics:", ctx), driver(driver) {}
+
+void DriverStats::Print() {
+  if (driver.driverOpts.printStats) {
+    GetContext().Out() << GetName() << '\n';
+    return;
+  }
+}
 
 Driver::Driver(llvm::StringRef stoneExecutable, std::string driverName)
     : Session(driverOpts), stoneExecutablePath(stoneExecutablePath),
@@ -222,12 +231,11 @@ Driver::Driver(llvm::StringRef stoneExecutable, std::string driverName)
       /*sysRoot(DEFAULT_SYSROOT),*/
       driverTitle("Compiler driver"), checkInputFilesExist(true) {
 
-  stats.reset(new DriverStats(*this));
+  stats.reset(new DriverStats(*this, *this));
   GetStatEngine().Register(stats.get());
 }
 
-std::unique_ptr<driver::TaskQueue>
-DriverInternal::BuildTaskQueue(Driver &driver) {
+std::unique_ptr<driver::TaskQueue> DriverImpl::BuildTaskQueue(Driver &driver) {
   // TODO:
   return llvm::make_unique<driver::UnixTaskQueue>(driver);
 }
@@ -300,6 +308,9 @@ void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
   // Computer the compiler mode.
   ComputeMode(*translatedArgs);
 
+  if (Error())
+    return;
+
   BuildToolChain(*originalArgs);
   // TODO: Check for errors
 
@@ -312,7 +323,7 @@ void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
 
   BuildInputs(*translatedArgs, GetInputs());
 
-  if (CutOff())
+  if (Error())
     return;
 
   if (GetInputs().size() == 0) {
@@ -322,7 +333,7 @@ void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
 
   BuildOutputProfile(*translatedArgs, GetOutputProfile());
 
-  if (CutOff())
+  if (Error())
     return;
 
   // TODO: ComputeCompileMod()
@@ -338,7 +349,7 @@ void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
 
   BuildJobs();
 
-  if (CutOff())
+  if (Error())
     return;
 
   if (driverOpts.printJobs) {
@@ -414,7 +425,7 @@ void Driver::ComputeMode(const llvm::opt::DerivedArgList &args) {
 
 void Driver::PrintJobs() {
   for (auto &job : GetCompilation().GetJobs()) {
-    DriverInternal::PrintJob(job, *this);
+    DriverImpl::PrintJob(job, *this);
   }
 }
 
@@ -431,13 +442,13 @@ void Driver::PrintHelp(bool showHidden) {
                                  /*ShowAllAliases*/ false);
 }
 
-void DriverInternal::PrintJob(const Job &job, Driver &driver) {
+void DriverImpl::PrintJob(const Job &job, Driver &driver) {
   auto cos = driver.Out();
   cos.UseGreen();
 
   if (job.GetDeps().size() > 0) {
     for (const auto &j : job.GetDeps()) {
-      DriverInternal::PrintJob(j, driver);
+      DriverImpl::PrintJob(j, driver);
     }
   }
 
@@ -473,9 +484,9 @@ int Driver::Run() {
     // PrintHelp();
   }
   // auto compilationResult =
-  //	GetCompilation().Run(DriverInternal::BuildTaskQueue(*this));
+  //	GetCompilation().Run(DriverImpl::BuildTaskQueue(*this));
 
-  if (CutOff())
+  if (Error())
     return ret::err;
 
   return ret::ok;

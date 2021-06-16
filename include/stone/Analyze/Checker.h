@@ -23,8 +23,8 @@ class CheckerStats final : public Stats {
   const Checker &checker;
 
 public:
-  CheckerStats(const Checker &checker)
-      : Stats("checker statistics:"), checker(checker) {}
+  CheckerStats(const Checker &checker, Context &ctx)
+      : Stats("checker statistics:", ctx), checker(checker) {}
   void Print() override;
 };
 

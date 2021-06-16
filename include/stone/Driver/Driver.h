@@ -9,7 +9,6 @@
 #include "stone/Basic/Mem.h"
 #include "stone/Driver/Compilation.h"
 #include "stone/Driver/DriverOptions.h"
-#include "stone/Driver/DriverStats.h"
 #include "stone/Driver/Job.h"
 #include "stone/Driver/JobOptions.h"
 #include "stone/Driver/ToolChain.h"
@@ -96,6 +95,15 @@ public:
 
   bool RequiresLTO() { return ltoVariant != LTOKind::None; }
   bool RequiresLink() { return linkType != LinkType::None; }
+};
+
+class Driver;
+class DriverStats final : public Stats {
+  const Driver &driver;
+
+public:
+  DriverStats(const Driver &driver, Context &ctx);
+  void Print() override;
 };
 
 class Driver final : public Session {
@@ -240,7 +248,6 @@ protected:
   // llvm::opt::DerivedArgList *
   // TranslateInputArgs(const llvm::opt::InputArgList &args) override;
 private:
-  bool CutOff() { return de.HasError(); }
   int BuildJobs();
   void PrintJobs();
   void BuildJobQueue();

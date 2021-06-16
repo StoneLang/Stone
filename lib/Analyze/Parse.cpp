@@ -28,7 +28,7 @@ void stone::ParseSourceModuleFile(const SrcID srcID, SourceModuleFile &sf,
   }
 
   // TODO: Error is another condition to
-  while (!parser.IsDone()) {
+  while (!parser.IsDone() && !ctx.Error()) {
     // check for errors from diag, if there are exit.
     // Go through all of the top level decls in the file
     parser.ParseTopDecl();

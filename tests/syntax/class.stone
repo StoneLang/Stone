@@ -14,3 +14,18 @@ C0::defer() {
 	
 }
 
+
+any<T:ISpeak> struct Hello {
+}
+
+public fun Hello::DoWork() -> bool {
+	
+}
+any<T> public fun DoWork(T* t) -> bool {
+}
+
+fun Main() -> int {
+	
+	Hello<int>* hello = new Hello<int>(); 
+
+}

@@ -7,6 +7,7 @@
 #include "stone/Basic/Stats.h"
 
 namespace stone {
+
 class Context {
 protected:
   LangOptions langOpts;
@@ -32,6 +33,8 @@ public:
 
   DiagnosticOptions &GetDiagOptions() { return diagOpts; }
   const DiagnosticOptions &GetDiagOptions() const { return diagOpts; }
+
+  bool Error() { return de.HasError(); }
 };
 
 } // namespace stone

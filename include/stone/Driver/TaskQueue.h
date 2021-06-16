@@ -20,8 +20,8 @@ class TaskQueueStats final : public Stats {
   const TaskQueue &queue;
 
 public:
-  TaskQueueStats(const TaskQueue &queue)
-      : Stats("task-queue statistics:"), queue(queue) {}
+  TaskQueueStats(const TaskQueue &queue, Context &ctx)
+      : Stats("task-queue statistics:", ctx), queue(queue) {}
   void Print() override;
 };
 

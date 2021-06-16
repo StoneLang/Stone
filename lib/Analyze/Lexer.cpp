@@ -355,7 +355,7 @@ Lexer::Lexer(const SrcID srcID, SrcMgr &sm, Context &ctx,
              LexerPipeline *pipeline)
     : srcID(srcID), sm(sm), ctx(ctx), pipeline(pipeline) {
 
-  stats.reset(new LexerStats(*this));
+  stats.reset(new LexerStats(*this, ctx));
   ctx.GetStatEngine().Register(stats.get());
 
   bool invalid = false;

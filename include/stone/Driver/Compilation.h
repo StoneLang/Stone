@@ -39,8 +39,8 @@ class CompilationStats final : public Stats {
   const Compilation &compilation;
 
 public:
-  CompilationStats(const Compilation &compilation)
-      : Stats("compilation statistics:"), compilation(compilation) {}
+  CompilationStats(const Compilation &compilation, Context &ctx)
+      : Stats("compilation statistics:", ctx), compilation(compilation) {}
   void Print() override;
 };
 

@@ -13,6 +13,7 @@
 #include "llvm/Support/raw_ostream.h"
 
 #include "stone/Basic/Char.h"
+#include "stone/Basic/Context.h"
 #include "stone/Basic/LangOptions.h"
 #include "stone/Basic/TokenType.h"
 #include "stone/Syntax/Identifier.h"
@@ -100,7 +101,7 @@ void IdentifierTableStats::Print() {
       maxIdentifierLength = idLen;
   }
 
-  cos << GetName() << '\n';
+  GetContext().Out() << GetName() << '\n';
 
   fprintf(stderr, "# Identifiers:   %d\n", numIdentifiers);
   fprintf(stderr, "# Empty Buckets: %d\n", numEmptyBuckets);
