@@ -58,10 +58,20 @@ llvm::StringRef GetPath(llvm::StringRef name);
 
 template <typename Fn> void forAllTypes(const Fn &fn);
 
-/// An input argument from the command line and its inferred type.
-using File = std::pair<file::Type, const llvm::StringRef>;
+class File final {
+  file::Type ty;
+  llvm::StringRef name;
+
+public:
+  File() = delete;
+  File(llvm::StringRef name, file::Type ty) : name(name), ty(ty) {}
+
+public:
+  llvm::StringRef GetName() { return name; }
+  file::Type GetType() { return ty; }
+};
 /// Type used for a list of input arguments.
-using Files = llvm::SmallVector<File, 16>;
+using Files = llvm::SmallVector<file::File, 16>;
 } // namespace file
 
 } // namespace stone

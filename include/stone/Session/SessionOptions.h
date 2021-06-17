@@ -51,11 +51,11 @@ public:
   /// The name of the module
   llvm::StringRef moduleName;
 
-  /// The file input kind
+  /// The file input type
   file::Type inputType = file::Type::None;
 
 private:
-  file::Files inputs;
+  file::Files inputFiles;
 
 public:
   SessionOptions() : optTable(stone::opts::CreateOptTable()) {}
@@ -63,16 +63,15 @@ public:
 public:
   llvm::opt::OptTable &GetOpts() const { return *optTable.get(); }
 
-  void AddInput(llvm::StringRef name) {
+  void AddInputFile(llvm::StringRef name) {
     auto ty = file::GetTypeByName(name);
-    assert(ty != file::Type::INVALID && "Invalid input type.");
-    inputs.push_back(std::make_pair(ty, name));
+    assert(ty != file::Type::INVALID && "Invalid input-file type.");
+    AddInputFile(name, ty);
   }
-  void AddInput(llvm::StringRef name, file::Type ty) {
-    inputs.push_back(std::make_pair(ty, name));
+  void AddInputFile(llvm::StringRef name, file::Type ty) {
+    inputFiles.push_back(file::File(name, ty));
   }
-
-  file::Files &GetInputs() { return inputs; }
+  file::Files &GetInputFiles() { return inputFiles; }
 };
 } // namespace stone
 

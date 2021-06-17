@@ -57,14 +57,12 @@ public:
   UnsafeList<Decl *> topDecls;
 
 public:
-  SourceModuleFile(SourceModuleFile::Kind kind, Module &owner,
-                   bool isPrimary = false);
+  SourceModuleFile(SourceModuleFile::Kind kind, syn::Module &owner,
+                   const SrcID srcID, bool isPrimary = false);
   ~SourceModuleFile();
 
 public:
   bool IsPrimary() { return isPrimary; }
-
-  // TODO: Pass in as a parameter
   SrcID GetSrcID() { return srcID; }
 
 public:

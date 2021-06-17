@@ -18,7 +18,14 @@ public:
 
 class System final {
 public:
-  static int ExecuteMode(Compiler &compiler, CompilableItem &compilable);
+  static int ExecuteCompilable(Compiler &compiler, CompilableItem &compilable);
+
+public:
+  static std::unique_ptr<CompilableItem> BuildCompilable(Compiler &compiler,
+                                                         file::File &input);
+  static syn::SourceModuleFile *
+  BuildSourceModuleFileForMainModule(Compiler &compiler,
+                                     CompilableItem &compilable);
 
 public:
   // Mode operations
@@ -31,53 +38,16 @@ public:
   static int EmitLibrary(Compiler &compiler, CompilableItem &compilable);
   static int EmitModuleOnly(Compiler &compiler, CompilableItem &compilable);
   static int EmitBitCode(Compiler &compiler, CompilableItem &compilable);
-
-  // CompilableItem* Create<
 };
-
-static syn::SourceModuleFile *
-CreateSourceModuleFileForMainModule(Compiler &compiler) {
-  return nullptr;
-}
-static llvm::MemoryBuffer *CreateMemoryBuffer(Compiler &compiler,
-                                              CompilableItem &compilable) {
-  return nullptr;
-}
-
-static void BuildCompilables(Compiler &compiler, CompilableItems &compilables) {
-
-  for (auto &input : compiler.GetCompilerOptions().GetInputs()) {
-    // TODO: perf improvement
-    std::unique_ptr<CompilableItem> compilable(
-        new CompilableItem(InputFile(input, false, nullptr), compiler));
-
-    compilables.entries.Add(std::move(compilable));
-  }
-}
-int System::ExecuteMode(Compiler &compiler, CompilableItem &compilable) {
-
-  switch (compiler.GetMode().GetType()) {
-  case ModeType::Parse:
-    return System::Parse(compiler, compilable);
-  case ModeType::Check:
-    return System::Check(compiler, compilable);
-  default:
-    return System::EmitObject(compiler, compilable);
-  }
-}
 int System::Parse(Compiler &compiler, CompilableItem &compilable, bool check) {
 
-  auto *sf = CreateSourceModuleFileForMainModule(compiler);
-  assert(sf && "Could not create SourceModuleFile.");
-
   while (!compiler.Error()) {
-    stone::ParseSourceModuleFile(*sf, compiler.GetSrcMgr(), compiler,
+    stone::ParseSourceModuleFile(compilable.GetSourceModuleFile(),
+                                 compiler.GetSrcMgr(), compiler,
                                  compiler.GetPipelineEngine());
+    if (compiler.Error())
+      return ret::err;
   }
-  //   new
-  //   (*compiler.GetTreeContext())SourceModuleFile(SourceFileKind::Library,
-  //   compiler.GetMainModule(), CI->GetBufferID());
-
   return ret::ok;
 }
 int System::Parse(Compiler &compiler, CompilableItem &compilable) {
@@ -101,21 +71,32 @@ int System::EmitIR(Compiler &compiler, CompilableItem &compilable) {
   auto llvmModule = stone::GenIR(compiler.GetMainModule(), compiler,
                                  compiler.compilerOpts.genOpts, /*TODO*/ {});
 
+  if (compiler.Error())
+    return ret::err;
+
   compiler.GetCompilerContext().SetLLVMModule(llvmModule);
 
   return ret::ok;
 }
 int System::EmitObject(Compiler &compiler, CompilableItem &compilable) {
 
+  if (!compiler.GetMode().CanOutput()) {
+    return ret::err;
+  }
+  if (!compilable.GetOutputFile()) {
+    return ret::err;
+  }
   /// Should be in EmitIR Scope
   if (!System::EmitIR(compiler, compilable)) {
     return ret::err;
   }
 
-  bool status = stone::GenObject(
-      compiler.GetCompilerContext().GetLLVMModule(),
-      compiler.GetCompilerOptions().genOpts, compiler.GetTreeContext(),
-      compilable.GetOutputFile()->GetName()); // TODO: Null check
+  if (!stone::GenObject(compiler.GetCompilerContext().GetLLVMModule(),
+                        compiler.GetCompilerOptions().genOpts,
+                        compiler.GetTreeContext(),
+                        compilable.GetOutputFile()->GetFile().GetName())) {
+    return ret::err;
+  }
 
   return ret::ok;
 }
@@ -132,25 +113,51 @@ int System::EmitBitCode(Compiler &compiler, CompilableItem &compilable) {
   return ret::ok;
 }
 
+std::unique_ptr<CompilableItem> System::BuildCompilable(Compiler &compiler,
+                                                        file::File &input) {
+
+  auto memBuffer = llvm::MemoryBuffer::getMemBuffer(input.GetName());
+
+  auto srcID = compiler.GetSrcMgr().CreateSrcID(std::move(memBuffer));
+
+  // Use the srcID to create the SourceModuleFile
+  SourceModuleFile *sf = nullptr;
+  // System::BuildSourceModuleFileForMainModule(compiler,
+  // compilable);
+
+  assert(sf && "Could not create SourceModuleFile");
+  std::unique_ptr<CompilableItem> compilable(
+      new CompilableItem(CompilableFile(input, false), compiler, *sf));
+
+  // TODO: May want to do tis later
+  if (compilable->CanOutput()) {
+    compilable->CreateOutputFile();
+  }
+  return compilable;
+}
+int System::ExecuteCompilable(Compiler &compiler, CompilableItem &compilable) {
+
+  switch (compiler.GetMode().GetType()) {
+  case ModeType::Parse:
+    return System::Parse(compiler, compilable);
+  case ModeType::Check:
+    return System::Check(compiler, compilable);
+  default:
+    return System::EmitObject(compiler, compilable);
+  }
+}
 int Compiler::Compile(Compiler &compiler) {
 
-  if (compiler.GetInputs().empty()) {
+  assert(compiler.GetMode().IsCompilable() && "Invalid compile mode.");
+  if (compiler.GetInputFiles().empty()) {
     printf("No input files.\n"); // TODO: Use Diagnostics
     return ret::err;
   }
-  assert(compiler.GetMode().IsCompilable() && "Invalid compile mode.");
-
-  CompilableItems compilables;
-  BuildCompilables(compiler, compilables);
-
-  assert(!compilables.entries.empty() && "No items to compile.");
-
-  for (auto &compilable : compilables.entries) {
-    if (!System::ExecuteMode(compiler, compilable)) {
-      // TODO: Prform some logging
+  for (auto &input : compiler.GetInputFiles()) {
+    auto compilable = System::BuildCompilable(compiler, input);
+    if (!System::ExecuteCompilable(compiler, *compilable.get())) {
       break;
     }
   }
-
   return ret::ok;
 }

@@ -1,7 +1,7 @@
 #ifndef STONE_COMPILE_COMPILABLEITEM_H
 #define STONE_COMPILE_COMPILABLEITEM_H
 
-#include "stone/Compile/InputFile.h"
+#include "stone/Compile/CompilableFile.h"
 #include "stone/Compile/OutputFile.h"
 
 namespace stone {
@@ -13,9 +13,8 @@ class SourceModuleFile;
 class CompilableItem final {
 
   Compiler &compiler;
-  syn::SourceModuleFile *sf = nullptr;
-
-  const InputFile &input;
+  syn::SourceModuleFile &sf;
+  const CompilableFile &input;
   OutputFile *output = nullptr;
 
 public:
@@ -25,26 +24,23 @@ public:
   CompilableItem &operator=(CompilableItem &&) = delete;
 
 public:
-  CompilableItem(const InputFile &input, Compiler &compiler)
-      : input(input), compiler(compiler) {}
+  CompilableItem(const CompilableFile &input, Compiler &compiler,
+                 syn::SourceModuleFile &sf)
+      : input(input), compiler(compiler), sf(sf) {}
   ~CompilableItem() {}
 
 public:
-  void SetSourceModuleFile(syn::SourceModuleFile *s) { sf = s; }
-  syn::SourceModuleFile *GetSourceModuleFile() { return sf; }
+  // TODO: We may want to remove this
+  // void SetSourceModuleFile(syn::SourceModuleFile *s) { sf = s; }
+  syn::SourceModuleFile &GetSourceModuleFile() { return sf; }
 
-  const InputFile &GetInputFile() const { return input; }
+  const CompilableFile &GetCompilableFile() const { return input; }
+
   void SetOutputFile(OutputFile *o) { output = o; }
   OutputFile *GetOutputFile() { return output; }
 
-  // TODO: bool CanOutput() { return file::CanOutput(input.GetType()); }
-
+  bool CanOutput();
   void CreateOutputFile();
-
-public:
-  // TODO: Improve on
-  static std::unique_ptr<CompilableItem> Create(const InputFile &input,
-                                                Compiler &compiler);
 
 public:
 };

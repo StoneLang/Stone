@@ -93,7 +93,7 @@ void DriverImpl::BuildCompileJobs(Driver &driver) {
   if (!driver.GetMode().IsCompilable()) {
     return;
   }
-  if (driver.GetDriverOptions().GetInputs().size() == 0) {
+  if (driver.GetInputFiles().size() == 0) {
     return;
   }
   OutputFileMap fileMap;
@@ -102,9 +102,9 @@ void DriverImpl::BuildCompileJobs(Driver &driver) {
 
   auto cmdOutput = llvm::make_unique<CmdOutput>("todo", fileMap);
 
-  for (const auto &input : driver.GetDriverOptions().GetInputs()) {
-    if (input.first == Type::Stone) {
-      assert(file::IsPartOfCompilation(input.first));
+  for (auto &input : driver.GetInputFiles()) {
+    if (input.GetType() == Type::Stone) {
+      assert(file::IsPartOfCompilation(input.GetType()));
 
       auto job = tool->CreateJob(driver.GetCompilation(), std::move(cmdOutput),
                                  driver.GetOutputProfile());
@@ -124,8 +124,8 @@ void DriverImpl::BuildLinkJob(Driver &driver) {
     return;
   }
   if (driver.GetMode().IsLinkOnly()) {
-    for (const auto &input : driver.GetDriverOptions().GetInputs()) {
-      switch (input.first) {
+    for (auto &input : driver.GetInputFiles()) {
+      switch (input.GetType()) {
       case Type::Object:
         break;
       default:
@@ -195,10 +195,10 @@ void DriverImpl::BuildJobsForSingleCompileType(Driver &driver) {
     auto job =
         driver.GetCompilation().CreateJob<CompileJob>(driver.GetCompilation());
 
-    for (const auto &input : driver.GetDriverOptions().GetInputs()) {
-      switch (input.first) {
+    for (const auto &input : driver.GetInputFiles()) {
+      switch (input.GetType()) {
         case file::Type::Stone: {
-          assert(file::IsPartOfCompilation(input.first));
+          assert(file::IsPartOfCompilation(input.GetType()));
           job->AddInput(input);
           break;
         }
@@ -321,12 +321,12 @@ void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
     return;
   }
 
-  BuildInputs(*translatedArgs, GetInputs());
+  BuildInputs(*translatedArgs, GetInputFiles());
 
   if (Error())
     return;
 
-  if (GetInputs().size() == 0) {
+  if (GetInputFiles().size() == 0) {
     Out() << "msg::driver_error_no_input_files" << '\n';
     return;
   }

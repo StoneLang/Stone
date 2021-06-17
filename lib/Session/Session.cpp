@@ -185,7 +185,7 @@ void Session::BuildInputs(const DerivedArgList &args, file::Files &inputs) {
         auto fileType = file::GetTypeByExt(file::GetExt(input));
         switch (fileType) {
         case file::Type::Stone:
-          sessionOpts.AddInput(input, fileType);
+          sessionOpts.AddInputFile(input, fileType);
           break;
         default:
           // TODO: Work with just object files

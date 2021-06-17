@@ -47,8 +47,9 @@ syn::Module *syn::Module::CreateMainModule(Identifier &name, TreeContext &tc) {
 }
 
 SourceModuleFile::SourceModuleFile(SourceModuleFile::Kind kind, Module &owner,
-                                   bool isMain)
-    : ModuleFile(ModuleFile::Kind::Source, owner), kind(kind) {}
+                                   const SrcID srcID, bool isPrimary)
+    : ModuleFile(ModuleFile::Kind::Source, owner), kind(kind), srcID(srcID),
+      isPrimary(isPrimary) {}
 
 syn::SourceModuleFile *
 syn::SourceModuleFile::Create(SourceModuleFile::Kind kind, syn::Module &owner,

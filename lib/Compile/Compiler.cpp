@@ -53,16 +53,12 @@ bool Compiler::Build(llvm::ArrayRef<const char *> args) {
   if (Error())
     return false;
 
-  BuildInputs(*translatedArgs, GetInputs());
+  BuildInputs(*translatedArgs, GetInputFiles());
 
   if (Error())
     return false;
 
-  CreateTimer();
-
-  // TODO: Create CompilableItem here?
-  // for (const auto &input : compiler.GetCompilerOptions().inputs) {
-  //}
+  // CreateTimer();
 
   return true;
 }

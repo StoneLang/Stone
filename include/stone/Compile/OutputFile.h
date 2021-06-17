@@ -7,16 +7,17 @@
 namespace stone {
 
 class OutputFile final {
-  file::File file;
-  llvm::Optional<llvm::sys::fs::TempFile> tmpFile;
+  file::File output;
+  llvm::Optional<llvm::sys::fs::TempFile> tempFile;
 
 public:
-  OutputFile(file::File file, llvm::Optional<llvm::sys::fs::TempFile> tmpFile)
-      : file(std::move(file)), tmpFile(std::move(tmpFile)) {}
+  OutputFile(file::File output,
+             llvm::Optional<llvm::sys::fs::TempFile> tempFile)
+      : output(output), tempFile(std::move(tempFile)) {}
 
 public:
-  llvm::StringRef GetName() { return file.second; }
-  file::Type GetType() { return file.first; }
+  file::File &GetFile() { return output; }
+  llvm::Optional<llvm::sys::fs::TempFile> &GetTemFile() { return tempFile; }
 };
 } // namespace stone
 #endif
