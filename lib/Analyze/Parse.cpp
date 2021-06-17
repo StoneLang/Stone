@@ -9,9 +9,8 @@
 
 using namespace stone::syn;
 
-void stone::ParseSourceModuleFile(const SrcID srcID, SourceModuleFile &sf,
-                                  SrcMgr &sm, Context &ctx,
-                                  PipelineEngine *pe) {
+void stone::ParseSourceModuleFile(SourceModuleFile &sf, SrcMgr &sm,
+                                  Context &ctx, PipelineEngine *pe) {
 
   ParserPipeline *parserPipeline = nullptr;
   LexerPipeline *lexerPipeline = nullptr;
@@ -22,7 +21,9 @@ void stone::ParseSourceModuleFile(const SrcID srcID, SourceModuleFile &sf,
 
     lexerPipeline = static_cast<LexerPipeline *>(pe->Get(PipelineType::Lex));
   }
-  Parser parser(srcID, sf, sm, ctx, parserPipeline);
+
+  // TODO: Since we have the sf, we do not need to pass SrcID
+  Parser parser(sf, sm, ctx, parserPipeline);
   if (lexerPipeline) {
     parser.GetLexer().SetPipeline(lexerPipeline);
   }

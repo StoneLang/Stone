@@ -18,12 +18,12 @@ public:
 
 class System final {
 public:
-  static int CompileItem(Compiler &compiler, CompilableItem &compilable);
+  static int ExecuteMode(Compiler &compiler, CompilableItem &compilable);
 
 public:
   static syn::SourceModuleFile *
   CreateSourceModuleFileForMainModule(Compiler &compiler);
-  
+
   static void BuildCompilables(Compiler &compiler,
                                CompilableItems &compilables);
 
@@ -50,10 +50,12 @@ System::CreateSourceModuleFileForMainModule(Compiler &compiler) {
 int System::Parse(Compiler &compiler, CompilableItem &compilable, bool check) {
 
   auto *sf = System::CreateSourceModuleFileForMainModule(compiler);
+  assert(sf && "Could not create SourceModuleFile.");
 
-  // stone::ParseSourceModuleFile(const SrcID srcID, *sf,
-  // compiler.GetSrcMgr(), compiler, compiler.GetPipelineEngine());
-
+  while (!compiler.Error()) {
+    stone::ParseSourceModuleFile(*sf, compiler.GetSrcMgr(), compiler,
+                                 compiler.GetPipelineEngine());
+  }
   //   new
   //   (*compiler.GetTreeContext())SourceModuleFile(SourceFileKind::Library,
   //   compiler.GetMainModule(), CI->GetBufferID());
@@ -123,7 +125,7 @@ void System::BuildCompilables(Compiler &compiler,
     compilables.entries.Add(std::move(compilable));
   }
 }
-int System::CompileItem(Compiler &compiler, CompilableItem &compilable) {
+int System::ExecuteMode(Compiler &compiler, CompilableItem &compilable) {
 
   switch (compiler.GetMode().GetType()) {
   case ModeType::Parse:
@@ -149,7 +151,7 @@ int Compiler::Compile(Compiler &compiler) {
   assert(!compilables.entries.empty() && "No items to compile.");
 
   for (auto &compilable : compilables.entries) {
-    if (!System::CompileItem(compiler, compilable)) {
+    if (!System::ExecuteMode(compiler, compilable)) {
       // TODO: Prform some logging
       break;
     }

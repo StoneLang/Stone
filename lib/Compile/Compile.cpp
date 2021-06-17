@@ -10,7 +10,6 @@ int stone::Compile(llvm::ArrayRef<const char *> args, const char *arg0,
                    void *mainAddr, PipelineEngine *pe) {
 
   auto executablePath = stone::GetExecutablePath(arg0);
-
   Compiler compiler(pe);
   STONE_DEFER { compiler.Finish(); };
 

@@ -12,8 +12,7 @@ class PipelineEngine;
 namespace syn {
 class SourceModuleFile;
 }
-void ParseSourceModuleFile(const SrcID srcID, syn::SourceModuleFile &sf,
-                           SrcMgr &sm, Context &ctx,
+void ParseSourceModuleFile(syn::SourceModuleFile &sf, SrcMgr &sm, Context &ctx,
                            PipelineEngine *pe = nullptr);
 } // namespace stone
 #endif

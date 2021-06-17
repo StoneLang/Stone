@@ -63,6 +63,8 @@ public:
 
 public:
   bool IsPrimary() { return isPrimary; }
+
+  // TODO: Pass in as a parameter
   SrcID GetSrcID() { return srcID; }
 
 public:
