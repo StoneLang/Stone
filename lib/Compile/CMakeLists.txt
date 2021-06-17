@@ -14,6 +14,7 @@ set(stone_compile_sources
 	Compiler.cpp
 	Optimize.cpp
 	Serialize.cpp
+	System.cpp
 
 	LINK_LIBS
 	StoneAnalyze

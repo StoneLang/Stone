@@ -41,13 +41,20 @@ fun Main() -> u8 {
 	}
 }
 
-any(T) fun Max(T* first, T* second) -> T {
+fun Max<int>(T* first, T* second) -> T {
 	if(first > second) {
 		return first; 
 	}
 	return second;
 }
 auto max = real(int) Max(23, 25);
+
+
+fun Test() -> void {
+	
+	math.Min<int>(24, 25);
+
+} 
 
 
 

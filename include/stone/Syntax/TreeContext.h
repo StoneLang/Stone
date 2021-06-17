@@ -84,15 +84,23 @@ class TreeContext final {
   const SearchPathOptions &searchPathOpts;
 
   Builtin builtin;
-  /// The allocator used to create AST objects.
-  /// AST objects are never destructed; rather, all memory associated with the
-  /// AST objects will be released when the TreeContext itself is destroyed.
+  /// The allocator used to create TreeContext objects.
+  /// TreeContext objects are never destructed; rather, all memory associated
+  /// with the TreeContext objects will be released when the TreeContext itself
+  /// is destroyed.
   mutable llvm::BumpPtrAllocator bumpAlloc;
 
   /// Table for all
   IdentifierTable identifiers;
 
+  ///
   mutable llvm::SmallVector<Type *, 0> types;
+
+  /// The standard library module.
+  mutable syn::Module *stdlibModule = nullptr;
+
+  /// The name of the standard library module "libstone".
+  // Identifier stdlibModuleName;
 
 public:
   TreeContext(Context &ctx, const SearchPathOptions &pathOpts, SrcMgr &sm);
@@ -112,6 +120,7 @@ public:
   LangABI *GetLangABI() const;
   //
   SrcMgr &GetSrcMgr() { return sm; }
+
   /// Retrieve the allocator for the given arena.
   llvm::BumpPtrAllocator &GetAllocator() const;
 
@@ -162,9 +171,9 @@ public:
 /// @param Alignment The alignment of the allocated memory (if the underlying
 ///                  allocator supports it).
 /// @return The allocated memory. Could be nullptr.
-inline void *operator new(size_t bytes, const stone::syn::TreeContext &C,
+inline void *operator new(size_t bytes, const stone::syn::TreeContext &tc,
                           size_t alignment /* = 8 */) {
-  return C.Allocate(bytes, alignment);
+  return tc.Allocate(bytes, alignment);
 }
 
 /// Placement delete companion to the new above.
@@ -173,9 +182,9 @@ inline void *operator new(size_t bytes, const stone::syn::TreeContext &C,
 /// invoking it directly; see the new operator for more details. This operator
 /// is called implicitly by the compiler if a placement new expression using
 /// the TreeContext throws in the object constructor.
-inline void operator delete(void *Ptr, const stone::syn::TreeContext &C,
+inline void operator delete(void *Ptr, const stone::syn::TreeContext &tc,
                             size_t) {
-  C.Deallocate(Ptr);
+  tc.Deallocate(Ptr);
 }
 
 /// This placement form of operator new[] uses the TreeContext's allocator for
@@ -201,9 +210,9 @@ inline void operator delete(void *Ptr, const stone::syn::TreeContext &C,
 /// @param Alignment The alignment of the allocated memory (if the underlying
 ///                  allocator supports it).
 /// @return The allocated memory. Could be nullptr.
-inline void *operator new[](size_t bytes, const stone::syn::TreeContext &astCtx,
+inline void *operator new[](size_t bytes, const stone::syn::TreeContext &tc,
                             size_t alignment /* = 8 */) {
-  return astCtx.Allocate(bytes, alignment);
+  return tc.Allocate(bytes, alignment);
 }
 
 /// Placement delete[] companion to the new[] above.
@@ -212,9 +221,9 @@ inline void *operator new[](size_t bytes, const stone::syn::TreeContext &astCtx,
 /// invoking it directly; see the new[] operator for more details. This operator
 /// is called implicitly by the compiler if a placement new[] expression using
 /// the TreeContext throws in the object constructor.
-inline void operator delete[](void *Ptr, const stone::syn::TreeContext &astCtx,
+inline void operator delete[](void *Ptr, const stone::syn::TreeContext &tc,
                               size_t) {
-  astCtx.Deallocate(Ptr);
+  tc.Deallocate(Ptr);
 }
 
 #endif

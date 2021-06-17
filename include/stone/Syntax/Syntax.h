@@ -18,11 +18,6 @@ class InflightDiagnostic;
 
 class Syntax final {
 public:
-  static FunDecl *CreateFunDecl();
-  static StructDecl *CreateStructDecl();
-
-public:
-  static IfStmt *CreateIfStmt();
 };
 } // namespace syn
 } // namespace stone

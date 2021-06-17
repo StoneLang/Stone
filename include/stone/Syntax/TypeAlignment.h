@@ -4,11 +4,11 @@
 #include <cstddef>
 
 namespace stone {
-class TreeContext;
 class Decl;
-class DeclContext;
 class Expr;
 class Stmt;
+class TreeContext;
+class DeclContext;
 
 /// We frequently use three tag bits on all of these types.
 constexpr size_t DeclAlignInBits = 3;

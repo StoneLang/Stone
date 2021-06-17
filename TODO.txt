@@ -1,5 +1,5 @@
 
-1. Future structure: Core, Analyze(Lexer, Parser, Checker), Gen, Compile, Driver, Session
+1. Module.cpp: 23 - you are passing nullptr for DeclContext
 
 2.
 compile(0): {test.stone} -> object

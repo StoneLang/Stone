@@ -3,7 +3,7 @@
 
 namespace stone {
 namespace syn {
-class TreeScope {
+class TreeScope final {
 public:
   enum Bits {
     /// This indicates that the scope corresponds to a function, which

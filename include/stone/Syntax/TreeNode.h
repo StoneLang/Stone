@@ -6,6 +6,7 @@ namespace syn {
 class TreeNode {
 public:
 };
+
 } // namespace syn
 } // namespace stone
 #endif

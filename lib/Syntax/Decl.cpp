@@ -32,14 +32,43 @@
 using namespace stone;
 using namespace stone::syn;
 
-void *Decl::operator new(std::size_t size, const TreeContext &astCtx,
+// Only allow allocation of Decls using the allocator in ASTContext.
+void *syn::Decl::operator new(std::size_t bytes, const TreeContext &tc,
+                              unsigned alignment) {
+  return tc.Allocate(bytes, alignment);
+}
+
+template <typename DeclTy, typename AllocatorTy>
+void *Decl::Make(AllocatorTy &allocatorTy, size_t baseSize, bool extraSace) {
+
+  static_assert(alignof(DeclTy) >= sizeof(void *),
+                "A pointer must fit in the alignment of the DeclTy!");
+
+  size_t size = baseSize;
+  if (extraSace) {
+    size += alignof(DeclTy);
+  }
+  void *mem = allocatorTy.Allocate(size, alignof(DeclTy));
+  if (extraSace)
+    mem = reinterpret_cast<char *>(mem) + alignof(DeclTy);
+  return mem;
+}
+
+// Only allow allocation of Modules using the allocator in ASTContext.
+// void *syn::Module::operator new(std::size_t bytes, const TreeContext &tc,
+//                               unsigned alignment) {
+// return tc.Allocate(bytes, alignment);
+//}
+
+/*
+void *Decl::operator new(std::size_t size, const TreeContext &tc,
                          unsigned globalDeclID, std::size_t extra) {
   // Allocate an extra 8 bytes worth of storage, which ensures that the
   // resulting pointer will still be 8-byte aligned.
   static_assert(sizeof(unsigned) * 2 >= alignof(Decl),
                 "Decl won't be misaligned");
 
-  void *start = astCtx.Allocate(size + extra + 8);
+  void *start = tc.Allocate(size + extra + 8);
   void *result = (char *)start + 8;
 
   unsigned *prefixPtr = (unsigned *)result - 2;
@@ -51,10 +80,12 @@ void *Decl::operator new(std::size_t size, const TreeContext &astCtx,
 
   return result;
 }
+*/
 
-void *Decl::operator new(std::size_t size, const TreeContext &astCtx,
+/*
+void *Decl::operator new(std::size_t size, const TreeContext &tc,
                          DeclContext *parentDeclContext, std::size_t extra) {
-  /*TODO:
+
     assert(!parent || &parent->GetParentTreeContext() == &astCtx);
     // With local visibility enabled, we track the owning module even for local
     // declarations. We create the TU decl early and may not yet know what the
@@ -76,10 +107,10 @@ void *Decl::operator new(std::size_t size, const TreeContext &astCtx,
 
       return new (buffer) Module*(parentModule) + 1;
     }
-  */
 
-  return ::operator new(size + extra, astCtx);
+  return ::operator new(size + extra, tc);
 }
+*/
 
 // stone::Module *Decl::GetOwningModule() const {
 //  assert(IsFromASTFile() && "Not from AST file?");
@@ -88,7 +119,7 @@ void *Decl::operator new(std::size_t size, const TreeContext &astCtx,
 //
 //
 //
-
-FunDecl *Syntax::CreateFunDecl() { return nullptr; }
-
+DeclContext::DeclContext(Decl::Type ty, DeclContext *parent) {
+  declContextBits.DeclType = ty;
+}
 void DeclStats::Print() {}

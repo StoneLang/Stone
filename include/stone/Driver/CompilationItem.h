@@ -3,7 +3,11 @@
 
 namespace stone {
 namespace driver {
-class CompilationItem final {};
+
+///
+class CompilationItem final {
+public:
+};
 } // namespace driver
 } // namespace stone
 #endif

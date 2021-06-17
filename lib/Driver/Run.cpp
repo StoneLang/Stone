@@ -60,6 +60,8 @@ static void SetInstallDir(const char *arg0, Driver &driver,
 
 int stone::Run(llvm::ArrayRef<const char *> args, const char *arg0,
                void *mainAddr) {
+
+  // TODO: Move to session
   auto driverPath = stone::GetExecutablePath(arg0);
   auto driverName = llvm::sys::path::stem(arg0);
 

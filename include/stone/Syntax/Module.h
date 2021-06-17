@@ -28,9 +28,8 @@ public:
 public:
   ModuleFile::Kind GetKind() const { return kind; }
 
-public:
 private:
-  // Make placement new and vanilla new/delete illegal for FileUnits.
+  // MAKE placement new and vanilla new/delete ILLEGAL for ModuleFiles
   void *operator new(size_t bytes) throw() = delete;
   void *operator new(size_t bytes, void *mem) throw() = delete;
   void operator delete(void *data) throw() = delete;
@@ -45,8 +44,10 @@ public:
 class SourceModuleFile final : public ModuleFile {
 private:
   friend TreeContext;
-  bool isMain;
   // llvm::NullablePtr<TreeScope> scope = nullptr;
+  bool isPrimary;
+
+  const SrcID srcID;
 
 public:
   enum class Kind { Library };
@@ -57,8 +58,17 @@ public:
 
 public:
   SourceModuleFile(SourceModuleFile::Kind kind, Module &owner,
-                   bool isMain = false);
+                   bool isPrimary = false);
   ~SourceModuleFile();
+
+public:
+  bool IsPrimary() { return isPrimary; }
+  SrcID GetSrcID() { return srcID; }
+
+public:
+  static syn::SourceModuleFile *Create(SourceModuleFile::Kind kind,
+                                       Module &owner, TreeContext &tc,
+                                       bool isPrimary = false);
 
   static bool classof(const ModuleFile *file) {
     return file->GetKind() == ModuleFile::Kind::Source;
@@ -70,9 +80,12 @@ public:
 };
 
 class Module final : public DeclContext, public TypeDecl {
-private:
-  Module(Identifier name, TreeContext &tree);
 
+public:
+  Module(Identifier &name, TreeContext &tc);
+
+public:
+  using syn::Decl::GetTreeContext;
   llvm::SmallVector<ModuleFile *, 2> files;
 
 public:
@@ -90,8 +103,8 @@ public:
   ModuleFile &GetMainFile(ModuleFile::Kind kind) const;
 
 public:
-  static syn::Module *Create(Identifier &identifier, TreeContext &tc);
-  static syn::Module *CreateMainModule(Identifier &identifier, TreeContext &tc);
+  static syn::Module *Create(Identifier &name, TreeContext &tc);
+  static syn::Module *CreateMainModule(Identifier &name, TreeContext &tc);
 };
 
 static inline unsigned AlignOfModuleFile() { return alignof(ModuleFile &); }

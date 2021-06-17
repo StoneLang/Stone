@@ -60,6 +60,8 @@ private:
   DeclContext *dc;
 
 protected:
+  // TODO: This is how clang does it - swift
+
   /// Allocate memory for a deserialized declaration.
   ///
   /// This routine must be used to allocate memory for any declaration that is
@@ -69,12 +71,23 @@ protected:
   /// \param astCtx The context in which we will allocate memory.
   /// \param declID The global ID of the deserialized declaration.
   /// \param extra The amount of extra space to allocate after the object.
-  void *operator new(std::size_t size, const TreeContext &astCtx,
-                     unsigned declID, std::size_t extra = 0);
+  // void *operator new(std::size_t size, const TreeContext &tc, unsigned
+  // declID,
+  //                   std::size_t extra = 0);
 
   /// Allocate memory for a non-deserialized declaration.
-  void *operator new(std::size_t size, const TreeContext &astCtx,
-                     DeclContext *parentDeclContext, std::size_t extra = 0);
+  // void *operator new(std::size_t size, const TreeContext &astCtx,
+  //                  DeclContext *parentDeclContext, std::size_t extra = 0);
+
+public:
+  // Make vanilla new/delete illegal for Decls.
+  void *operator new(size_t bytes) = delete;
+  void operator delete(void *data) = delete;
+
+  // Only allow allocation of Decls using the allocator in ASTContext
+  // or by doing a placement new.
+  void *operator new(size_t bytes, const TreeContext &tc,
+                     unsigned alignment = alignof(Decl));
 
 public:
   Decl() = delete;
@@ -95,19 +108,37 @@ public:
 public:
   Decl::Type GetType() { return ty; }
 
+  TreeContext &GetTreeContext() const LLVM_READONLY;
+
+  /*
+    const TreeContext &GetTreeContext() const {
+      auto DC = context.dyn_cast<DeclContext *>();
+      if (DC) {
+        return DC->GetASTContext();
+      }
+      return *context.get<ASTContext *>();
+    }
+
+  */
 protected:
   Decl(Decl::Type ty, DeclContext *dc, SrcLoc loc) : ty(ty), dc(dc), loc(loc) {}
 
 public:
   template <typename DeclTy, typename AllocatorTy>
-  static void *Make(AllocatorTy &allocatorTy, size_t baseSize,
-                    bool spaceForClangNode);
+  static void *Make(AllocatorTy &allocatorTy, size_t baseSize) {
+    return Make(allocatorTy, baseSize, false);
+  }
+
+  /// \param extraSpace The amount of extra space to allocate after the object
+  /// -- generally for clang nodes.
+  template <typename DeclTy, typename AllocatorTy>
+  static void *Make(AllocatorTy &allocatorTy, size_t baseSize, bool extraSpace);
 };
 
 class DeclContext {
 public:
   // TODO: Think about
-  enum class Type : unsigned { Module };
+  // enum class Type : unsigned { Module };
 
 protected:
   /// This anonymous union stores the bits belonging to DeclContext and classes
@@ -130,8 +161,10 @@ protected:
 
     static_assert(sizeof(DeclContextBits) <= 8,
                   "DeclContextBitfields is larger than 8 bytes!");
+
     static_assert(sizeof(NominalTypeDeclBits) <= 8,
                   "TagDeclBitfields is larger than 8 bytes!");
+
     // static_assert(sizeof(EnumDeclBits) <= 8,
     //              "EnumDeclBitfields is larger than 8 bytes!");
     // static_assert(sizeof(RecordDeclBits) <= 8,
@@ -162,6 +195,9 @@ protected:
   /// \returns the first/last pair of declarations.
   static std::pair<Decl *, Decl *> BuildDeclChain(llvm::ArrayRef<Decl *> decls,
                                                   bool fieldsAlreadyLoaded);
+
+public:
+  DeclContext(Decl::Type ty, DeclContext *parent = nullptr);
 };
 
 class NamingDecl : public Decl {
@@ -193,9 +229,24 @@ public:
 };
 
 class TypeDecl : public NamingDecl {
-public:
+
+  friend class TreeContext;
+  /// This indicates the Type object that represents
+  /// this TypeDecl.  It is a cache maintained by
+  /// ASTContext::getTypedefType, ASTContext::getTagDeclType, and
+  /// ASTContext::getTemplateTypeParmType, and TemplateTypeParmDecl.
+  // mutable const Type *TypeForDecl = nullptr;
+
+  /// The start of the source range for this declaration.
+  SrcLoc startLoc;
+
+protected:
+  TypeDecl(Decl::Type ty, DeclContext *dc, SrcLoc loc, Identifier *name,
+           SrcLoc startLocation = SrcLoc())
+      : NamingDecl(ty, dc, loc, name), startLoc(startLocation) {}
 };
 
+// TODO: May use this instead of using NamingDecl
 class ValueDecl : public NamingDecl {
 public:
 };

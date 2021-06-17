@@ -3,7 +3,9 @@
 
 namespace stone {
 
-class VirtualTable {};
+class VirtualTable {
+public:
+};
 
 } // namespace stone
 #endif

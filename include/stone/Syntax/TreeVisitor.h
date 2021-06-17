@@ -3,7 +3,7 @@
 
 namespace stone {
 namespace syn {
-class ASTVisitor {
+class TreeVisitor {
 public:
 };
 } // namespace syn
