@@ -21,13 +21,6 @@ public:
   static int ExecuteMode(Compiler &compiler, CompilableItem &compilable);
 
 public:
-  static syn::SourceModuleFile *
-  CreateSourceModuleFileForMainModule(Compiler &compiler);
-
-  static void BuildCompilables(Compiler &compiler,
-                               CompilableItems &compilables);
-
-public:
   // Mode operations
   static int Parse(Compiler &compiler, CompilableItem &compilable);
   static int Parse(Compiler &compiler, CompilableItem &compilable, bool check);
@@ -42,14 +35,39 @@ public:
   // CompilableItem* Create<
 };
 
-syn::SourceModuleFile *
-System::CreateSourceModuleFileForMainModule(Compiler &compiler) {
+static syn::SourceModuleFile *
+CreateSourceModuleFileForMainModule(Compiler &compiler) {
+  return nullptr;
+}
+static llvm::MemoryBuffer *CreateMemoryBuffer(Compiler &compiler,
+                                              CompilableItem &compilable) {
   return nullptr;
 }
 
+static void BuildCompilables(Compiler &compiler, CompilableItems &compilables) {
+
+  for (auto &input : compiler.GetCompilerOptions().GetInputs()) {
+    // TODO: perf improvement
+    std::unique_ptr<CompilableItem> compilable(
+        new CompilableItem(InputFile(input, false, nullptr), compiler));
+
+    compilables.entries.Add(std::move(compilable));
+  }
+}
+int System::ExecuteMode(Compiler &compiler, CompilableItem &compilable) {
+
+  switch (compiler.GetMode().GetType()) {
+  case ModeType::Parse:
+    return System::Parse(compiler, compilable);
+  case ModeType::Check:
+    return System::Check(compiler, compilable);
+  default:
+    return System::EmitObject(compiler, compilable);
+  }
+}
 int System::Parse(Compiler &compiler, CompilableItem &compilable, bool check) {
 
-  auto *sf = System::CreateSourceModuleFileForMainModule(compiler);
+  auto *sf = CreateSourceModuleFileForMainModule(compiler);
   assert(sf && "Could not create SourceModuleFile.");
 
   while (!compiler.Error()) {
@@ -114,29 +132,6 @@ int System::EmitBitCode(Compiler &compiler, CompilableItem &compilable) {
   return ret::ok;
 }
 
-void System::BuildCompilables(Compiler &compiler,
-                              CompilableItems &compilables) {
-
-  for (auto &input : compiler.GetCompilerOptions().GetInputs()) {
-    // TODO: perf improvement
-    std::unique_ptr<CompilableItem> compilable(
-        new CompilableItem(InputFile(input, false, nullptr), compiler));
-
-    compilables.entries.Add(std::move(compilable));
-  }
-}
-int System::ExecuteMode(Compiler &compiler, CompilableItem &compilable) {
-
-  switch (compiler.GetMode().GetType()) {
-  case ModeType::Parse:
-    return System::Parse(compiler, compilable);
-  case ModeType::Check:
-    return System::Check(compiler, compilable);
-  default:
-    return System::EmitObject(compiler, compilable);
-  }
-}
-
 int Compiler::Compile(Compiler &compiler) {
 
   if (compiler.GetInputs().empty()) {
@@ -146,7 +141,7 @@ int Compiler::Compile(Compiler &compiler) {
   assert(compiler.GetMode().IsCompilable() && "Invalid compile mode.");
 
   CompilableItems compilables;
-  System::BuildCompilables(compiler, compilables);
+  BuildCompilables(compiler, compilables);
 
   assert(!compilables.entries.empty() && "No items to compile.");
 
