@@ -10,8 +10,8 @@ using namespace stone::opts;
 using namespace stone::syn;
 
 Compiler::Compiler(PipelineEngine *pe)
-    : Session(compilerOpts), pe(pe), fm(compilerOpts.fsOpts),
-      sm(GetDiagEngine(), fm), cc(*this) {
+    : Session(compilerOpts), pe(pe), sm(GetDiagEngine(), GetFileMgr()),
+      cc(*this) {
 
   tc.reset(new TreeContext(*this, compilerOpts.spOpts, sm));
   stats.reset(new CompilerStats(*this, *this));
@@ -53,6 +53,8 @@ bool Compiler::Build(llvm::ArrayRef<const char *> args) {
 
   // Compute the compiler mode.
   ComputeMode(*translatedArgs);
+
+  ComputeWorkingDir();
 
   if (Error())
     return false;

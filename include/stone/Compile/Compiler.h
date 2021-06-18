@@ -1,8 +1,6 @@
 #ifndef STONE_COMPILE_COMPILER_H
 #define STONE_COMPILE_COMPILER_H
 
-#include "stone/Basic/List.h"
-#include "stone/Basic/Stats.h"
 #include "stone/Compile/CompilableFile.h"
 #include "stone/Compile/CompilerAlloc.h"
 #include "stone/Compile/CompilerContext.h"
@@ -11,14 +9,6 @@
 #include "stone/Syntax/Module.h"
 #include "stone/Syntax/SearchPathOptions.h"
 #include "stone/Syntax/TreeContext.h"
-
-#include "llvm/Support/FileSystem.h"
-
-#include <cassert>
-#include <list>
-#include <memory>
-#include <string>
-#include <utility>
 
 using namespace stone::syn;
 
@@ -39,7 +29,6 @@ public:
 
 class Compiler final : public Session {
   SrcMgr sm;
-  FileMgr fm;
   CompilerContext cc;
   PipelineEngine *pe = nullptr;
   mutable syn::Module *mainModule = nullptr;
@@ -98,8 +87,6 @@ public:
   CompilerContext &GetCompilerContext() { return cc; }
 
   SrcMgr &GetSrcMgr() { return sm; }
-
-  FileMgr &GetFileMgr() { return fm; }
 
   llvm::vfs::FileSystem &GetVFS() const;
 

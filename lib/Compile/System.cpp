@@ -118,7 +118,7 @@ std::unique_ptr<CompilableItem> System::BuildCompilable(Compiler &compiler,
 
   auto fileBuffer = compiler.GetFileMgr().getBufferForFile(input.GetName());
   if (!fileBuffer) {
-    // TODO: log
+    // TODO: compiler.Diagnose();
     return nullptr;
   }
   auto srcID = compiler.GetSrcMgr().CreateSrcID(std::move(*fileBuffer));
@@ -158,8 +158,10 @@ int Compiler::Compile(Compiler &compiler) {
   }
   for (auto &input : compiler.GetInputFiles()) {
     auto compilable = System::BuildCompilable(compiler, input);
-    if (!System::ExecuteCompilable(compiler, *compilable.get())) {
-      break;
+    if (compilable) {
+      if (!System::ExecuteCompilable(compiler, *compilable.get())) {
+        break;
+      }
     }
   }
   return ret::ok;

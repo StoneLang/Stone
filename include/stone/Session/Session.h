@@ -30,8 +30,17 @@
 
 #include "stone/Basic/Context.h"
 #include "stone/Basic/File.h"
+#include "stone/Basic/FileMgr.h"
+#include "stone/Basic/List.h"
+#include "stone/Basic/Stats.h"
 #include "stone/Session/Mode.h"
 #include "stone/Session/SessionOptions.h"
+
+#include <cassert>
+#include <list>
+#include <memory>
+#include <string>
+#include <utility>
 
 namespace llvm {
 namespace opt {
@@ -50,7 +59,10 @@ enum class SessionType { Compiler, Driver };
 class Session : public Context {
   /// The mode id for this session
   SessionOptions &sessionOpts;
-  llvm::IntrusiveRefCntPtr<llvm::vfs::FileSystem> fileSystem;
+  FileSystemOptions fsOpts;
+  llvm::IntrusiveRefCntPtr<llvm::vfs::FileSystem> vfs;
+
+  FileMgr fm;
 
 protected:
   Mode mode;
@@ -81,10 +93,9 @@ protected:
   llvm::StringSaver strSaver;
 
 public:
-  void SetFS(llvm::IntrusiveRefCntPtr<llvm::vfs::FileSystem> fs) {
-    fileSystem = fs;
-  }
-  llvm::vfs::FileSystem &GetFS() const { return *fileSystem; }
+
+  void SetVFS(llvm::IntrusiveRefCntPtr<llvm::vfs::FileSystem> fs) {vfs = fs;}
+  llvm::vfs::FileSystem &GetVFS() const { return *vfs; }
 
   std::unique_ptr<llvm::TimerGroup> timerGroup;
   std::unique_ptr<llvm::Timer> timer;
@@ -136,8 +147,7 @@ public:
   }
   std::string GetModuleName() { return moduleName; }
 
-  // TODO: You want to say
-  void AddFile();
+  FileMgr &GetFileMgr() { return fm; }
 
   file::Files &GetInputFiles() { return sessionOpts.GetInputFiles(); }
 
@@ -162,6 +172,9 @@ public:
   CreateOutputFile(llvm::StringRef outputPath, bool binary,
                    bool removeFileOnSignal, bool useTmp,
                    bool createMissingDirectories = false);
+
+
+  void ComputeWorkingDir(); 
 
 private:
   /// Create a new output file and add it to the list of tracked output files.
@@ -208,7 +221,6 @@ public:
 
 protected:
   void CreateTimer();
-  llvm::StringRef ComputeWorkingDir();
   void Purge();
   void PrintDiagnostics();
   void PrintStatistics();
