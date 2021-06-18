@@ -2,6 +2,7 @@
 #define STONE_SESSION_SESSIONOPTIONS_H
 
 #include "stone/Basic/File.h"
+#include "stone/Basic/FileSystemOptions.h"
 #include "stone/Basic/LangOptions.h"
 #include "stone/Session/ModeType.h"
 
@@ -53,6 +54,8 @@ public:
 
   /// The file input type
   file::Type inputType = file::Type::None;
+
+  FileSystemOptions fsOpts;
 
 private:
   file::Files inputFiles;

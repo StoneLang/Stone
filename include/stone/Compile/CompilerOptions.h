@@ -51,7 +51,6 @@ class CompilerOptions final : public SessionOptions {
 public:
   CodeGenOptions genOpts;
   SearchPathOptions spOpts;
-  FileSystemOptions fsOpts;
   bool wholeModuleCheck = false;
 
 public:
