@@ -10,6 +10,9 @@ class Compiler;
 namespace syn {
 class SourceModuleFile;
 }
+
+class CompilableScope {};
+
 class CompilableItem final {
 
   Compiler &compiler;
@@ -41,6 +44,7 @@ public:
 
   bool CanOutput();
   void CreateOutputFile();
+  void PurgeOutputFile();
 
 public:
 };

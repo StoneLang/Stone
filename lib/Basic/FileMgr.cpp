@@ -406,11 +406,11 @@ FileMgr::getBufferForFile(const SrcFile *Entry, bool isVolatile,
 }
 
 llvm::ErrorOr<std::unique_ptr<llvm::MemoryBuffer>>
-FileMgr::getBufferForFile(StringRef Filename, bool isVolatile) {
+FileMgr::getBufferForFile(StringRef fileName, bool isVolatile) {
   if (FileSystemOpts.WorkingDir.empty())
-    return FS->getBufferForFile(Filename, -1, true, isVolatile);
+    return FS->getBufferForFile(fileName, -1, true, isVolatile);
 
-  SmallString<128> FilePath(Filename);
+  llvm::SmallString<128> FilePath(fileName);
   FixupRelativePath(FilePath);
   return FS->getBufferForFile(FilePath.c_str(), -1, true, isVolatile);
 }

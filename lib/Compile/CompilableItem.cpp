@@ -6,3 +6,5 @@ using namespace stone;
 bool CompilableItem::CanOutput() { return compiler.GetMode().CanOutput(); }
 
 void CompilableItem::CreateOutputFile() {}
+
+void CompilableItem::PurgeOutputFile() {}

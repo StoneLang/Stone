@@ -1,34 +1,8 @@
 
 
-fun F0() -> void {
+public fun F0() -> void {
 	
 }
-
-
-fun F1() -> auto {
-	return 0; 
-}
-
-public fun F2() -> void {
-}
-
-
-any(T) fun Max(T* first, T* second) -> T* {
-
-	if(first > second) {
-	return first;
-	}
-	return second; 
-}
-fun Main() -> int {
-
-	auto result = use(int) Max(25, 26); 
-}
-
-
-
-
-
 
 
 

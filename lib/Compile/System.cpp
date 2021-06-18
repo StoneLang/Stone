@@ -116,16 +116,19 @@ int System::EmitBitCode(Compiler &compiler, CompilableItem &compilable) {
 std::unique_ptr<CompilableItem> System::BuildCompilable(Compiler &compiler,
                                                         file::File &input) {
 
-  auto memBuffer = llvm::MemoryBuffer::getMemBuffer(input.GetName());
-
-  auto srcID = compiler.GetSrcMgr().CreateSrcID(std::move(memBuffer));
+  auto fileBuffer = compiler.GetFileMgr().getBufferForFile(input.GetName());
+  if (!fileBuffer) {
+    // TODO: log
+    return nullptr;
+  }
+  auto srcID = compiler.GetSrcMgr().CreateSrcID(std::move(*fileBuffer));
 
   // Use the srcID to create the SourceModuleFile
   SourceModuleFile *sf = nullptr;
   // System::BuildSourceModuleFileForMainModule(compiler,
   // compilable);
-
   assert(sf && "Could not create SourceModuleFile");
+
   std::unique_ptr<CompilableItem> compilable(
       new CompilableItem(CompilableFile(input, false), compiler, *sf));
 

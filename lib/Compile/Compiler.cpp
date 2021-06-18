@@ -33,6 +33,10 @@ syn::Module *Compiler::GetMainModule() const {
   return mainModule;
 }
 
+// llvm::vfs::FileSystem &Compiler::GetVFS() const {
+//   return GetFileMgr().getVirtualFileSystem();
+// }
+
 void Compiler::SetMainModule(syn::Module *m) { mainModule = m; }
 
 void Compiler::Init() {}

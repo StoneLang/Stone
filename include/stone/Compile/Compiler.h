@@ -12,6 +12,14 @@
 #include "stone/Syntax/SearchPathOptions.h"
 #include "stone/Syntax/TreeContext.h"
 
+#include "llvm/Support/FileSystem.h"
+
+#include <cassert>
+#include <list>
+#include <memory>
+#include <string>
+#include <utility>
+
 using namespace stone::syn;
 
 namespace stone {
@@ -90,6 +98,10 @@ public:
   CompilerContext &GetCompilerContext() { return cc; }
 
   SrcMgr &GetSrcMgr() { return sm; }
+
+  FileMgr &GetFileMgr() { return fm; }
+
+  llvm::vfs::FileSystem &GetVFS() const;
 
   TreeContext &GetTreeContext() { return *tc.get(); }
 
