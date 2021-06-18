@@ -13,6 +13,7 @@ Session::Session(SessionOptions &sessionOpts)
       vfs(llvm::vfs::getRealFileSystem()), strSaver(bumpAlloc) {
 
   // TODO: -print-stats
+        
 }
 
 Session::~Session() {}
