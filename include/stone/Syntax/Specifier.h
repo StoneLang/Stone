@@ -27,7 +27,7 @@ enum class BuiltinType {
   U32,
 };
 
-enum class AccessType {
+enum class AccessLevel {
   Internal,
   Public,
   Private,

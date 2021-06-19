@@ -73,6 +73,48 @@ class NullLiteralExpr : public Expr {
 public:
 };
 
+class ParenExpr final : public Expr {
+  Stmt *val;
+  SrcLoc leftLoc, rightLoc;
+
+public:
+  //   ParenExpr(SrcLoc left, SrcLoc right, Expr *val)
+  //       : Expr(ParenExprClass, val->getType(), val->getValueKind(),
+  //              val->getObjectKind()),
+  //         L(l), R(r), Val(val) {
+  //     setDependence(computeDependence(this));
+  //   }
+
+  //   /// Construct an empty parenthesized expression.
+  //   explicit ParenExpr(EmptyShell Empty)
+  //     : Expr(ParenExprClass, Empty) { }
+
+  //   const Expr *GetSubExpr() const { return cast<Expr>(al); }
+  //   Expr *GetSubExpr() { return cast<Expr>(Val); }
+  //   void SetSubExpr(Expr *E) { Val = E; }
+
+  //   SourceLocation GetBeginLoc() const LLVM_READONLY { return beginLoc; }
+  //   SourceLocation GetEndLoc() const LLVM_READONLY { return endLoc; }
+
+  //   /// Get the location of the left parentheses '('.
+  //   SourceLocation GetLeftParen() const { return L; }
+  //   void SetLParen(SourceLocation Loc) { L = Loc; }
+
+  //   /// Get the location of the right parentheses ')'.
+  //   SourceLocation GetRightParen() const { return R; }
+  //   void setRParen(SourceLocation Loc) { R = Loc; }
+
+  // static bool classof(const Stmt *T) {
+  //   return T->getStmtClass() == ParenExprClass;
+  // }
+
+  // // Iterators
+  // child_range children() { return child_range(&Val, &Val+1); }
+  // const_child_range children() const {
+  //   return const_child_range(&Val, &Val + 1);
+  // }
+};
+
 } // namespace syn
 } // namespace stone
 #endif

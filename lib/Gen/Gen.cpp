@@ -77,10 +77,11 @@ using namespace stone;
 using namespace stone::gen;
 using namespace stone::syn;
 
-llvm::Module *stone::GenIR(syn::Module *moduleDecl, const Context &ctx,
+llvm::Module *stone::GenIR(syn::Module *langMod, const Context &ctx,
                            const CodeGenOptions &genOpts,
-                           llvm::StringRef outputModulename) {
-  assert(moduleDecl && "No Module");
+                           const OutputFile *output) {
+
+  assert(langMod && "Null Lang Module");
   return nullptr;
 }
 
@@ -88,9 +89,10 @@ std::unique_ptr<llvm::TargetMachine>
 stone::CreateTargetMachine(const CodeGenOptions &genOpts, TreeContext &astCtx) {
   return nullptr;
 }
-bool stone::GenObject(llvm::Module *llvmModule,
-                      const gen::CodeGenOptions &genOpts,
-                      syn::TreeContext &astCtx,
-                      llvm::StringRef outputFilename) {
+bool stone::GenObject(llvm::Module *llvmMod, const gen::CodeGenOptions &genOpts,
+                      syn::TreeContext &ctx, const OutputFile *output) {
+
+  assert(llvmMod && "Null LLVM Module");
+
   return true;
 }

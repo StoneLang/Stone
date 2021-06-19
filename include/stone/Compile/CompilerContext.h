@@ -6,21 +6,6 @@ class Module;
 } // namespace llvm
 
 namespace stone {
-class CompilingScope final {
-public:
-  CompilingScope(const CompilingScope &) = delete;
-  CompilingScope(CompilingScope &&) = delete;
-  CompilingScope &operator=(const CompilingScope &) = delete;
-  CompilingScope &operator=(CompilingScope &&) = delete;
-
-public:
-  CompilingScope() {}
-  ~CompilingScope() {}
-
-public:
-  void Enter();
-  void Exit();
-};
 
 class CompilerContext final {
   Compiler &compiler;

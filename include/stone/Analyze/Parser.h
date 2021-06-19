@@ -4,11 +4,11 @@
 #include "stone/Analyze/Lexer.h"
 #include "stone/Analyze/SyntaxResult.h"
 #include "stone/Basic/Stats.h"
+#include "stone/Syntax/Identifier.h"
 #include "stone/Syntax/Module.h"
 #include "stone/Syntax/TreeContext.h"
 
 #include "llvm/Support/Timer.h"
-
 #include <memory>
 
 namespace stone {
@@ -21,6 +21,7 @@ namespace syn {
 class Parser;
 class Scope;
 class ParsingBalancer;
+class ParsingDeclSpecifier;
 
 class ParserStats final : public Stats {
   Parser &parser;
@@ -68,6 +69,12 @@ class Parser final {
 
   /// We may consider performing type-checking during parsing
   // std::unique_ptr<Checker> checker;
+
+private:
+  // Identifiers
+
+  mutable Identifier *importIdentifier;
+  mutable Identifier *moduleIdentifier;
 
 public:
   /// Control flags for SkipUntil functions.
@@ -140,6 +147,8 @@ public:
     syn::DeclGroupPtrTy result;
     return ParseTopDecl(result);
   }
+
+  DeclGroupPtrTy ParseDecl(ParsingDeclSpecifier *pds);
 
   bool IsDecl(const Token &tok);
 

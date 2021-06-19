@@ -32,6 +32,9 @@ public:
   static int Parse(Compiler &compiler, CompilableItem &compilable);
   static int Parse(Compiler &compiler, CompilableItem &compilable, bool check);
   static int Check(Compiler &compiler, CompilableItem &compilable);
+  static int ResolveImports(Compiler &compiler);
+
+public:
   static int EmitIR(Compiler &compiler, CompilableItem &compilable);
   static int EmitObject(Compiler &compiler, CompilableItem &compilable);
   static int EmitAssembly(Compiler &compiler, CompilableItem &compilable);
@@ -68,8 +71,9 @@ int System::EmitIR(Compiler &compiler, CompilableItem &compilable) {
   // CompilingScopeType::Parsing) {
   //}
   // If we are here, then parse should have already been called.
-  auto llvmModule = stone::GenIR(compiler.GetMainModule(), compiler,
-                                 compiler.compilerOpts.genOpts, /*TODO*/ {});
+  auto llvmModule =
+      stone::GenIR(compiler.GetMainModule(), compiler,
+                   compiler.compilerOpts.genOpts, compilable.GetOutputFile());
 
   if (compiler.Error())
     return ret::err;
@@ -94,7 +98,7 @@ int System::EmitObject(Compiler &compiler, CompilableItem &compilable) {
   if (!stone::GenObject(compiler.GetCompilerContext().GetLLVMModule(),
                         compiler.GetCompilerOptions().genOpts,
                         compiler.GetTreeContext(),
-                        compilable.GetOutputFile()->GetFile().GetName())) {
+                        compilable.GetOutputFile())) {
     return ret::err;
   }
 

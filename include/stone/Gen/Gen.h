@@ -2,6 +2,8 @@
 #define STONE_GEN_BACKEND_H
 
 #include "stone/Basic/LLVM.h"
+#include "stone/Basic/OutputFile.h"
+
 #include "stone/Syntax/TreeContext.h"
 #include "llvm/Target/TargetMachine.h"
 
@@ -27,14 +29,14 @@ class GenModuleProfile;
 } // namespace gen
 
 std::unique_ptr<llvm::TargetMachine>
-CreateTargetMachine(const gen::CodeGenOptions &Opts, syn::TreeContext &astCtx);
+CreateTargetMachine(const gen::CodeGenOptions &genOpts, syn::TreeContext &ctx);
 
 // TODO: remove GenModuleProfile
-llvm::Module *GenIR(syn::Module *moduleDecl, const Context &ctx,
+llvm::Module *GenIR(syn::Module *langMod, const Context &ctx,
                     const gen::CodeGenOptions &genOpts,
-                    llvm::StringRef outputModulename);
+                    const OutputFile *output);
 
-bool GenObject(llvm::Module *llvmModule, const gen::CodeGenOptions &genOpts,
-               syn::TreeContext &astCtx, llvm::StringRef outputFilename);
+bool GenObject(llvm::Module *llvmMod, const gen::CodeGenOptions &genOpts,
+               syn::TreeContext &ctx, const OutputFile *output);
 } // namespace stone
 #endif

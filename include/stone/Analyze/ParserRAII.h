@@ -9,6 +9,31 @@
 namespace stone {
 namespace syn {
 
+/// A class for parsing a DeclSpecifier.
+class ParsingDeclSpecifier final : public DeclSpecifier {
+  //   ParsingDeclRAII parsingDeclRAII;
+
+  // public:
+  //   ParsingDeclSpec(Parser &P)
+  //     : DeclSpec(P.getAttrFactory()),
+  //       ParsingRAII(P, ParsingDeclRAIIObject::NoParent) {}
+  //   ParsingDeclSpec(Parser &P, ParsingDeclRAIIObject *RAII)
+  //     : DeclSpec(P.getAttrFactory()),
+  //       ParsingRAII(P, RAII) {}
+
+  //   const sema::DelayedDiagnosticPool &getDelayedDiagnosticPool() const {
+  //     return ParsingRAII.getDelayedDiagnosticPool();
+  //   }
+
+  //   void Complete(Decl *D) {
+  //     ParsingRAII.complete(D);
+  //   }
+
+  //   void Aort() {
+  //     ParsingRAII.abort();
+  //   }
+};
+
 /// A class for parsing a declarator.
 class ParsingDeclarator final : public Declarator {
 

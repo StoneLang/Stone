@@ -1,8 +1,12 @@
 #ifndef STONE_COMPILE_COMPILABLEITEM_H
 #define STONE_COMPILE_COMPILABLEITEM_H
 
+#include "stone/Basic/OutputFile.h"
 #include "stone/Compile/CompilableFile.h"
-#include "stone/Compile/OutputFile.h"
+
+namespace llvm {
+class Module;
+} // namespace llvm
 
 namespace stone {
 class Compiler;
@@ -11,7 +15,21 @@ namespace syn {
 class SourceModuleFile;
 }
 
-class CompilableScope {};
+class CompilingScope final {
+public:
+  CompilingScope(const CompilingScope &) = delete;
+  CompilingScope(CompilingScope &&) = delete;
+  CompilingScope &operator=(const CompilingScope &) = delete;
+  CompilingScope &operator=(CompilingScope &&) = delete;
+
+public:
+  CompilingScope() {}
+  ~CompilingScope() {}
+
+public:
+  void Enter();
+  void Exit();
+};
 
 class CompilableItem final {
 
@@ -40,7 +58,7 @@ public:
   const CompilableFile &GetCompilableFile() const { return input; }
 
   void SetOutputFile(OutputFile *o) { output = o; }
-  OutputFile *GetOutputFile() { return output; }
+  OutputFile *GetOutputFile() const { return output; }
 
   bool CanOutput();
   void CreateOutputFile();
