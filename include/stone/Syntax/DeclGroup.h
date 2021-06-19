@@ -21,7 +21,7 @@ private:
 public:
   friend TrailingObjects;
 
-  static DeclGroup *Create(TreeContext &C, Decl **Decls, unsigned NumDecls);
+  static DeclGroup *Create(TreeContext &tc, Decl **decls, unsigned numDecls);
 
   unsigned size() const { return NumDecls; }
 

@@ -159,13 +159,16 @@ using MultiStmtArg = MutableArrayRef<Stmt *>;
 // using MultiTypeArg = MutableArrayRef<ParsedType>;
 // sing MultiTemplateParamsArg = MutableArrayRef<TemplateParameterList *>;
 
+inline DeclResult DeclError() { return DeclResult(true); }
 inline ExprResult ExprError() { return ExprResult(true); }
 inline StmtResult StmtError() { return StmtResult(true); }
 // inline TypeResult TypeError() { return TypeResult(true); }
 
+inline DeclResult DeclError(const InflightDiagnostic &) { return DeclError(); }
 inline ExprResult ExprError(const InflightDiagnostic &) { return ExprError(); }
 inline StmtResult StmtError(const InflightDiagnostic &) { return StmtError(); }
 
+inline DeclResult DeclEmpty() { return DeclResult(false); }
 inline ExprResult ExprEmpty() { return ExprResult(false); }
 inline StmtResult StmtEmpty() { return StmtResult(false); }
 

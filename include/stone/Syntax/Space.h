@@ -5,7 +5,8 @@
 
 namespace stone {
 namespace syn {
-
-class Space final : public DeclContext, public TypeDecl {};
+class Space final : public DeclContext, public TypeDecl {
+public:
+};
 }
 #endif

@@ -31,7 +31,7 @@ public:
     /// This is a scope that corresponds to a block/closure object.
     /// Blocks serve as top-level scopes for some objects like labels, they
     /// also prevent things like break and continue.  BlockScopes always have
-    /// the FnScope and DeclScope flags set as well.
+    /// the FunScope and DeclScope flags set as well.
     Block = 0x40,
 
     /// This is a scope that corresponds to the

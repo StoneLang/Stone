@@ -4,12 +4,16 @@
 #include "llvm/ADT/ArrayRef.h"
 
 namespace stone {
-namespace analysis {
+namespace syn {
 
-class Delcarator final {};
+class Declarator {
+public:
+};
 
-class DeclSpecifier {};
+class DeclSpecifier {
+public:
+};
 
-} // namespace analysis
+} // namespace syn
 } // namespace stone
 #endif

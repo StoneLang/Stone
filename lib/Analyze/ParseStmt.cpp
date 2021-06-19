@@ -3,4 +3,4 @@
 
 using namespace stone::syn;
 
-void Parser::ParseStmt() {}
+SyntaxResult<Stmt *> Parser::ParseStmt() { return StmtEmpty(); }

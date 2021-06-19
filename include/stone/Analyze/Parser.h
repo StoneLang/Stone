@@ -1,13 +1,13 @@
 #ifndef STONE_ANALYZE_PARSER_H
 #define STONE_ANALYZE_PARSER_H
 
-#include "llvm/Support/Timer.h"
-
 #include "stone/Analyze/Lexer.h"
 #include "stone/Analyze/SyntaxResult.h"
 #include "stone/Basic/Stats.h"
 #include "stone/Syntax/Module.h"
 #include "stone/Syntax/TreeContext.h"
+
+#include "llvm/Support/Timer.h"
 
 #include <memory>
 
@@ -20,6 +20,7 @@ namespace syn {
 
 class Parser;
 class Scope;
+class ParsingBalancer;
 
 class ParserStats final : public Stats {
   Parser &parser;
@@ -32,6 +33,8 @@ public:
 
 class Parser final {
   friend ParserStats;
+  friend ParsingBalancer;
+
   Context &ctx;
   SrcMgr &sm;
   SourceModuleFile &sf;
@@ -54,10 +57,14 @@ class Parser final {
   /// The location of the previous token.
   SrcLoc prevTokLoc;
 
+  unsigned short parenCount = 0;
+  unsigned short bracketCount = 0;
+  unsigned short braceCount = 0;
+
   /// ScopeCache - cache scopes to reduce malloc traffic.
-  enum { ScopeCacheSize = 16 };
-  unsigned NumCachedScopes;
-  Scope *ScopeCache[ScopeCacheSize];
+  enum { scopeCacheSize = 16 };
+  unsigned numCachedScopes;
+  Scope *scopeCache[scopeCacheSize];
 
   /// We may consider performing type-checking during parsing
   // std::unique_ptr<Checker> checker;
@@ -133,20 +140,20 @@ public:
     syn::DeclGroupPtrTy result;
     return ParseTopDecl(result);
   }
-  ///
-  void ParseDecl();
 
-  ///
+  bool IsDecl(const Token &tok);
+
+  DeclResult ParseDecl();
+
   void ParseSpaceDecl();
-
   ///
 public:
   /// Stmt
-  void ParseStmt();
+  StmtResult ParseStmt();
 
 public:
   /// Expr
-  void ParseExpr();
+  ExprResult ParseExpr();
 
 public:
   /// Stop parsing immediately.
