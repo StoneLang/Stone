@@ -24,7 +24,7 @@
 #include "stone/Syntax/DeclBits.h"
 #include "stone/Syntax/DeclName.h"
 #include "stone/Syntax/Identifier.h"
-#include "stone/Syntax/TreeNode.h"
+#include "stone/Syntax/Node.h"
 
 namespace stone {
 namespace syn {
@@ -43,7 +43,7 @@ public:
   void Print() override;
 };
 
-class alignas(8) Decl : public TreeNode {
+class alignas(8) Decl : public syn::Node {
 public:
   enum Type {
 #define DECL(Id, Parent) Id,

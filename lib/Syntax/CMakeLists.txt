@@ -16,8 +16,8 @@ set(stone_syn_sources
 	Template.cpp
 	TreeContext.cpp
 	TreeListener.cpp
-	TreeVisitor.cpp
-	TreeWalker.cpp
+	Visitor.cpp
+	Walker.cpp
 	Type.cpp
 	VirtualTable.cpp
 

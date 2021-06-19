@@ -1,12 +1,11 @@
-#ifndef STONE_SYNTAXSYNTAXNODE_H
-#define STONE_SYNTAXSYNTAXNODE_H
+#ifndef STONE_SYNTAX_VISITOR_H
+#define STONE_SYNTAX_VISITOR_H
 
 namespace stone {
 namespace syn {
-class TreeNode {
+class Visitor {
 public:
 };
-
 } // namespace syn
 } // namespace stone
 #endif

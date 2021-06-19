@@ -1,9 +1,9 @@
-#ifndef STONE_SYNTAX_TREEWALKER_H
-#define STONE_SYNTAX_TREEWALKER_H
+#ifndef STONE_SYNTAX_WALKER_H
+#define STONE_SYNTAX_WALKER_H
 
 namespace stone {
 namespace syn {
-class TreeWalker {
+class Walker {
 public:
 };
 } // namespace syn

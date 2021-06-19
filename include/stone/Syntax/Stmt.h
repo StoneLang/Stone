@@ -22,8 +22,8 @@
 
 #include "stone/Basic/LLVM.h"
 #include "stone/Basic/SrcLoc.h"
+#include "stone/Syntax/Node.h"
 #include "stone/Syntax/StmtBits.h"
-#include "stone/Syntax/TreeNode.h"
 
 namespace stone {
 class SrcMgr;
@@ -35,7 +35,7 @@ class Expr;
 class StringLiteral;
 class VarDecl;
 
-class Stmt : public TreeNode {
+class Stmt : public syn::Node {
 public:
   enum Type {};
 

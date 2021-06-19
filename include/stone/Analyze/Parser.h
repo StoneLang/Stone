@@ -32,7 +32,6 @@ public:
 
 class Parser final {
   friend ParserStats;
-
   Context &ctx;
   SrcMgr &sm;
   SourceModuleFile &sf;
@@ -54,6 +53,14 @@ class Parser final {
 
   /// The location of the previous token.
   SrcLoc prevTokLoc;
+
+  /// ScopeCache - cache scopes to reduce malloc traffic.
+  enum { ScopeCacheSize = 16 };
+  unsigned NumCachedScopes;
+  Scope *ScopeCache[ScopeCacheSize];
+
+  /// We may consider performing type-checking during parsing
+  // std::unique_ptr<Checker> checker;
 
 public:
   /// Control flags for SkipUntil functions.

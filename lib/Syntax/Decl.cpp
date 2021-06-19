@@ -1,6 +1,7 @@
 #include "stone/Syntax/Decl.h"
 #include "stone/Syntax/Syntax.h"
 #include "stone/Syntax/TreeContext.h"
+
 //#include "stone/Syntax/DeclContextInternals.h"
 // TODO: #include "stone/Syntax/Friend.h"
 #include <algorithm>
