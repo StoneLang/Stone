@@ -37,7 +37,7 @@ class Checker final {
   Context &ctx;
 
 public:
-  // TODO: CompileUnit
+  /// TODO: Pass in Syntax so that you can create the Nodes
   Checker(syn::SourceModuleFile &su, Context &ctx,
           CheckerPipeline *pipeline = nullptr);
 

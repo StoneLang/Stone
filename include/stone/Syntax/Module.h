@@ -54,7 +54,9 @@ public:
 
 public:
   SourceModuleFile::Kind kind;
-  UnsafeList<Decl *> topDecls;
+
+  // TODO: You may want const list
+  UnsafeList<Decl> decls;
 
 public:
   SourceModuleFile(SourceModuleFile::Kind kind, syn::Module &owner,
@@ -64,6 +66,8 @@ public:
 public:
   bool IsPrimary() { return isPrimary; }
   SrcID GetSrcID() { return srcID; }
+
+  void AddDecl(Decl *decl) { decls.Add(decl); }
 
 public:
   static syn::SourceModuleFile *Create(SourceModuleFile::Kind kind,

@@ -24,27 +24,24 @@ void stone::ParseSourceModuleFile(SourceModuleFile &sf, SrcMgr &sm,
     parser.GetLexer().SetPipeline(lp);
   }
 
-  // TODO: Error is another condition to
+  syn::DeclGroupPtrTy topDecl;
   while (true) {
-
     // Check for tk::eof
     if (parser.IsDone()) {
       pp->OnDone();
       break;
     }
-
     // Check for errors from diag and if there are then exit.
     if (ctx.Error()) {
       pp->OnError();
       break;
     }
-
     // Go through all of the top level decls in the file one at a time
     // As you process a decl, it will be added to the SourceModuleFile
-    if (parser.ParseTopDecl()) {
+    if (parser.ParseTopDecl(topDecl)) {
 
       // Notifify that a top decl has been parsed.
-      pp->OnTopDecl(nullptr); // TODO: Pass null for now.
+      pp->OnTopDecl(topDecl.get().getSingleDecl());
     }
   }
 }

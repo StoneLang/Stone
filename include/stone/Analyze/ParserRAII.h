@@ -62,16 +62,16 @@ class ParsingDeclarator final : public Declarator {
 };
 /// RAII object that makes sure paren/bracket/brace count is correct
 /// after declaration/statement parsing, even when there's a parsing error.
-class ParsingBalancer final {
+class DelimiterBalancer final {
   Parser &parser;
   unsigned short parenCount, bracketCount, braceCount;
 
 public:
-  ParsingBalancer(Parser &other)
+  DelimiterBalancer(Parser &other)
       : parser(other), parenCount(other.parenCount),
         bracketCount(other.bracketCount), braceCount(other.braceCount) {}
 
-  ~ParsingBalancer() {
+  ~DelimiterBalancer() {
     // parser.AngleBrackets.clear(parser);
     parser.parenCount = parenCount;
     parser.bracketCount = bracketCount;

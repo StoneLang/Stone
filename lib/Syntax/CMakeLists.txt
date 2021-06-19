@@ -14,13 +14,15 @@ set(stone_syn_sources
 	Module.cpp
 	Stmt.cpp
 	Scope.cpp
+	Syntax.cpp
 	Template.cpp
 	TreeContext.cpp
-	TreeListener.cpp
+	Type.cpp
 	Visitor.cpp
 	Walker.cpp
-	Type.cpp
-	VirtualTable.cpp
+	Watcher.cpp
+	Witness.cpp
+	
 
 	LINK_LIBS
 	StoneBasic

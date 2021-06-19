@@ -2,13 +2,15 @@
 #define STONE_ANALYZE_PARSER_H
 
 #include "stone/Analyze/Lexer.h"
-#include "stone/Analyze/SyntaxResult.h"
 #include "stone/Basic/Stats.h"
 #include "stone/Syntax/Identifier.h"
 #include "stone/Syntax/Module.h"
+#include "stone/Syntax/Specifier.h"
+#include "stone/Syntax/SyntaxResult.h"
 #include "stone/Syntax/TreeContext.h"
 
 #include "llvm/Support/Timer.h"
+
 #include <memory>
 
 namespace stone {
@@ -20,7 +22,7 @@ namespace syn {
 
 class Parser;
 class Scope;
-class ParsingBalancer;
+class DelimiterBalancer;
 class ParsingDeclSpecifier;
 
 class ParserStats final : public Stats {
@@ -34,7 +36,7 @@ public:
 
 class Parser final {
   friend ParserStats;
-  friend ParsingBalancer;
+  friend DelimiterBalancer;
 
   Context &ctx;
   SrcMgr &sm;
@@ -138,23 +140,19 @@ public:
 public:
   ParserStats &GetStats() { return *stats.get(); }
   Lexer &GetLexer() { return *lexer.get(); }
-  const Token &GetCurToken() const { return tok; }
+  const Token &GetCurTok() const { return tok; }
+
+  // Checker& GetChecker() { return checker; }
 
 public:
+  bool IsTopDecl(const Token &tok);
   bool ParseTopDecl(DeclGroupPtrTy &result, bool isFirstDecl = false);
 
-  bool ParseTopDecl() {
-    syn::DeclGroupPtrTy result;
-    return ParseTopDecl(result);
-  }
+  syn::DeclGroupPtrTy ParseDecl(ParsingDeclSpecifier *pds);
+  syn::DeclGroupPtrTy ParseDeclImpl(ParsingDeclSpecifier &pds, AccessLevel al);
 
-  DeclGroupPtrTy ParseDecl(ParsingDeclSpecifier *pds);
-
-  bool IsDecl(const Token &tok);
-
-  DeclResult ParseDecl();
-
-  void ParseSpaceDecl();
+  DeclResult ParseSpaceDecl();
+  DeclResult ParseFunDecl(ParsingDeclSpecifier &pds, AccessLevel al);
   ///
 public:
   /// Stmt

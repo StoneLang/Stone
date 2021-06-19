@@ -1,7 +1,6 @@
-#ifndef STONE_ANALYZE_SYNTAX_H
-#define STONE_ANALYZE_SYNTAX_H
+#ifndef STONE_SYNTAX_SYNTAXRESULT_H
+#define STONE_SYNTAX_SYNTAXRESULT_H
 
-#include "stone/Analyze/Ownership.h"
 #include "stone/Syntax/DeclGroup.h"
 #include "stone/Syntax/Expr.h"
 #include "stone/Syntax/Ownership.h"
@@ -18,7 +17,7 @@ class MatchStmt;
 class Expr;
 class InflightDiagnostic;
 
-typedef stone::OpaquePtr<DeclGroupRef> DeclGroupPtrTy;
+typedef stone::OpaquePtr<syn::DeclGroupRef> DeclGroupPtrTy;
 
 // Determines whether the low bit of the result pointer for the
 // given UID is always zero. If so, SyntaxResult will use that bit
@@ -34,7 +33,7 @@ template <class Ptr> struct IsResultPtrLowBitFree {
 /// stored in the low bit of the Val pointer.
 template <class PtrTy,
           bool CompressInvalid = IsResultPtrLowBitFree<PtrTy>::value>
-class SyntaxResult {
+class SyntaxResult final {
   PtrTy Val;
   bool Invalid;
 

@@ -1,9 +1,9 @@
 #include "stone/Syntax/Decl.h"
 #include "stone/Syntax/Syntax.h"
-#include "stone/Syntax/TreeContext.h"
 
 //#include "stone/Syntax/DeclContextInternals.h"
 // TODO: #include "stone/Syntax/Friend.h"
+
 #include <algorithm>
 #include <cassert>
 #include <cstddef>
@@ -32,6 +32,8 @@
 
 using namespace stone;
 using namespace stone::syn;
+
+void DeclStats::Print() {}
 
 // Only allow allocation of Decls using the allocator in ASTContext.
 void *syn::Decl::operator new(std::size_t bytes, const TreeContext &tc,
@@ -123,4 +125,7 @@ void *Decl::operator new(std::size_t size, const TreeContext &tc,
 DeclContext::DeclContext(Decl::Type ty, DeclContext *parent) {
   declContextBits.DeclType = ty;
 }
-void DeclStats::Print() {}
+
+SyntaxResult<Decl *> Syntax::CreateFunDecl() { return DeclEmpty(); }
+
+SyntaxResult<Decl *> Syntax::CreateStructDecl() { return DeclEmpty(); }

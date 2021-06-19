@@ -9,11 +9,12 @@ set( LLVM_LINK_COMPONENTS
   Option
   )
 set(stone_gen_sources
-	Gen.cpp
 	CodeGenBlocks.cpp
 	CodeGenerator.cpp
 	CodeEmitter.cpp
 	CodeGenFunction.cpp
+	Gen.cpp
+	Native.cpp
 
 	LINK_LIBS
 	StoneSyntax

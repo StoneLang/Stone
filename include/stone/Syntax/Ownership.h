@@ -1,7 +1,20 @@
+//===- Ownership.h - Parser ownership helpers -------------------*- C++ -*-===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+//
+//  This file contains classes for managing ownership of Stmt and Expr nodes.
+//
+//===----------------------------------------------------------------------===//
+
 #ifndef STONE_SYNTAX_OWNERSHIP_H
 #define STONE_SYNTAX_OWNERSHIP_H
 
 #include "stone/Basic/LLVM.h"
+
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/Support/PointerLikeTypeTraits.h"
 #include "llvm/Support/type_traits.h"
@@ -9,9 +22,12 @@
 #include <cstddef>
 #include <cstdint>
 
-namespace stone {
-namespace syn {
+//===----------------------------------------------------------------------===//
+// OpaquePtr
+//===----------------------------------------------------------------------===//
 
+// TODO: move to basic
+namespace stone {
 /// Wrapper for void* pointer.
 /// \tparam PtrTy Either a pointer type like 'T*' or a type that behaves like
 ///               a pointer.
@@ -79,24 +95,22 @@ template <class T> struct UnionOpaquePtr {
   }
 };
 
-/*
+} // namespace stone
+
 namespace llvm {
 
-  template <class T>
-  struct PointerLikeTypeTraits<stone::syn::OpaquePtr<T>> {
-    static constexpr int NumLowBitsAvailable = 0;
+template <class T> struct PointerLikeTypeTraits<stone::OpaquePtr<T>> {
+  static constexpr int NumLowBitsAvailable = 0;
 
-    static inline void *getAsVoidPointer(stone::syn::OpaquePtr<T> P) {
-      // FIXME: Doesn't work? return P.getAs< void >();
-      return P.getAsOpaquePtr();
-    }
-    static inline stone::syn::OpaquePtr<T> getFromVoidPointer(void *P) {
-      return stone::syn::OpaquePtr<T>::getFromOpaquePtr(P);
-    }
-  };
+  static inline void *getAsVoidPointer(stone::OpaquePtr<T> P) {
+    // FIXME: Doesn't work? return P.getAs< void >();
+    return P.getAsOpaquePtr();
+  }
+
+  static inline stone::OpaquePtr<T> getFromVoidPointer(void *P) {
+    return stone::OpaquePtr<T>::getFromOpaquePtr(P);
+  }
+};
+
 } // namespace llvm
-*/
-
-} // namespace syn
-} // namespace stone
 #endif

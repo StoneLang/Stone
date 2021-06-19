@@ -14,6 +14,7 @@ Compiler::Compiler(PipelineEngine *pe)
       cc(*this) {
 
   tc.reset(new TreeContext(*this, compilerOpts.spOpts, sm));
+
   stats.reset(new CompilerStats(*this, *this));
   GetStatEngine().Register(stats.get());
 }

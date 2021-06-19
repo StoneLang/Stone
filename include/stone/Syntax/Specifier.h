@@ -4,8 +4,8 @@
 #include "stone/Basic/LLVM.h"
 #include "stone/Syntax/Decl.h"
 #include "stone/Syntax/Identifier.h"
+#include "stone/Syntax/Scope.h"
 #include "stone/Syntax/TreeContext.h"
-#include "stone/Syntax/TreeScope.h"
 #include "llvm/ADT/SmallVector.h"
 
 namespace stone {
