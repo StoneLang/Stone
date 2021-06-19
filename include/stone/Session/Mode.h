@@ -49,7 +49,7 @@ public:
     }
   }
   bool IsCompileOnly() const {
-    if (CanLink())
+    if (IsLinkable())
       return false;
     return IsCompileOnlyImpl();
   }
@@ -63,7 +63,7 @@ public:
     }
   }
   bool IsLinkOnly() const { return GetType() == ModeType::Link; }
-  bool CanLink() const {
+  bool IsLinkable() const {
     switch (GetType()) {
     case ModeType::EmitExecutable:
     case ModeType::Link:

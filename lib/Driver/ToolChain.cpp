@@ -36,7 +36,7 @@ bool ToolChain::Build() {
     }
   }
   // Build the link tools, ect.
-  if (GetDriver().GetMode().CanLink()) {
+  if (GetDriver().GetMode().IsLinkable()) {
     if (GetDriver().GetDriverOptions().useLLDLinker) {
       assert(BuildLLDLinkTool() && "Failed to build lld.");
     } else if (GetDriver().GetDriverOptions().useLDLinker) {

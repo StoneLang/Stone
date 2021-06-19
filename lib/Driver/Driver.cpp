@@ -137,7 +137,7 @@ void DriverImpl::BuildLinkJob(Driver &driver) {
 
   BuildCompileJobs(driver);
 
-  if (driver.GetMode().CanLink()) {
+  if (driver.GetMode().IsLinkable()) {
     Job *linkJob = nullptr;
     switch (driver.GetOutputProfile().linkType) {
     case LinkType::StaticLibrary: {

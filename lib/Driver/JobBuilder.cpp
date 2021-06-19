@@ -76,7 +76,7 @@ int JobBuilder::BuildJobForLinking(Driver &driver) {
   return ret::ok;
 }
 Job *JobBuilder::BuildJobForLinkingImpl(Driver &driver) {
-  assert(driver.GetMode().CanLink() &&
+  assert(driver.GetMode().IsLinkable() &&
          "The 'mode-type' does not support linking.");
 
   Job *result = nullptr;
