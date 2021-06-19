@@ -2,4 +2,6 @@
 
 using namespace stone;
 
-Context::Context() : fm(fsOpts), de(diagOpts), cos(llvm::outs()) {}
+Context::Context()
+    : fm(fsOpts), de(diagOpts), cos(llvm::outs()),
+      targetTriple(llvm::sys::getDefaultTargetTriple()) {}

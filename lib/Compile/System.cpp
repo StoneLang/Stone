@@ -28,7 +28,6 @@ public:
                                      CompilableItem &compilable);
 
 public:
-  // Mode operations
   static int Parse(Compiler &compiler, CompilableItem &compilable);
   static int Parse(Compiler &compiler, CompilableItem &compilable, bool check);
   static int Check(Compiler &compiler, CompilableItem &compilable);

@@ -19,6 +19,9 @@ protected:
   FileMgr fm;
   FileSystemOptions fsOpts;
 
+  /// Default target triple.
+  std::string targetTriple;
+
 public:
   Context();
 
@@ -38,6 +41,8 @@ public:
   const DiagnosticOptions &GetDiagOptions() const { return diagOpts; }
 
   FileMgr &GetFileMgr() { return fm; }
+
+  std::string GetTarget() { return targetTriple; }
 
   bool Error() { return de.HasError(); }
 };

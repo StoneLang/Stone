@@ -15,9 +15,15 @@ public:
   llvm::StringRef GetName() override { return "ParserPipeline"; }
 
 public:
-  virtual void OnDeclParsed(const syn::Decl &decl) = 0;
-  virtual void OnStmtParsed(const syn::Stmt &stmt) = 0;
-  virtual void OnExprParsed(const syn::Expr &expr) = 0;
+  virtual void OnDone() = 0;
+  virtual void OnError() = 0;
+
+public:
+  virtual void OnTopDecl(const syn::Decl *decl) = 0;
+  virtual void OnDecl(const syn::Decl *decl) = 0;
+
+  virtual void OnStmt(const syn::Stmt *stmt) = 0;
+  virtual void OnExpr(const syn::Expr *expr) = 0;
 };
 } // namespace stone
 #endif

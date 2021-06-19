@@ -11,26 +11,40 @@ using namespace stone::syn;
 void stone::ParseSourceModuleFile(SourceModuleFile &sf, SrcMgr &sm,
                                   Context &ctx, PipelineEngine *pe) {
 
-  ParserPipeline *parserPipeline = nullptr;
-  LexerPipeline *lexerPipeline = nullptr;
+  ParserPipeline *pp = nullptr;
+  LexerPipeline *lp = nullptr;
 
   if (pe) {
-    parserPipeline =
-        static_cast<ParserPipeline *>(pe->Get(PipelineType::Parse));
-    lexerPipeline = static_cast<LexerPipeline *>(pe->Get(PipelineType::Lex));
+    pp = static_cast<ParserPipeline *>(pe->Get(PipelineType::Parse));
+    lp = static_cast<LexerPipeline *>(pe->Get(PipelineType::Lex));
   }
   // TODO: Since we have the sf, we do not need to pass SrcID
-  Parser parser(sf, sm, ctx, parserPipeline);
-  if (lexerPipeline) {
-    parser.GetLexer().SetPipeline(lexerPipeline);
+  Parser parser(sf, sm, ctx, pp);
+  if (lp) {
+    parser.GetLexer().SetPipeline(lp);
   }
 
   // TODO: Error is another condition to
-  while (!parser.IsDone() && !ctx.Error()) {
-    // check for errors from diag, if there are exit.
-    // Go through all of the top level decls in the file
-    if (!parser.ParseTopDecl()) {
+  while (true) {
+
+    // Check for tk::eof
+    if (parser.IsDone()) {
+      pp->OnDone();
       break;
+    }
+
+    // Check for errors from diag and if there are then exit.
+    if (ctx.Error()) {
+      pp->OnError();
+      break;
+    }
+
+    // Go through all of the top level decls in the file one at a time
+    // As you process a decl, it will be added to the SourceModuleFile
+    if (parser.ParseTopDecl()) {
+
+      // Notifify that a top decl has been parsed.
+      pp->OnTopDecl(nullptr); // TODO: Pass null for now.
     }
   }
 }

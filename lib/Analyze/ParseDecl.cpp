@@ -14,12 +14,13 @@ bool Parser::IsDecl(const Token &tok) {
   }
 }
 
+// Ex: sample.stone
+// fun F0() -> void {}
+// fun F1() -> void {}
+// There are two top decls - F0 and F1
+// This call parses one at a time and adds it to the SourceModuleFile
 bool Parser::ParseTopDecl(DeclGroupPtrTy &result, bool isFirstDecl) {
 
-  while (!IsDone()) {
-
-    ParseDecl();
-  }
   return false;
 }
 

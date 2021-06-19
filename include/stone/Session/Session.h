@@ -70,9 +70,6 @@ protected:
   unsigned missingArgIndex;
   unsigned missingArgCount;
 
-  /// Default target triple.
-  std::string targetTriple;
-
   /// The name of the module which we are building.
   std::string moduleName;
 

@@ -7,7 +7,6 @@ using namespace llvm::opt;
 
 Session::Session(SessionOptions &sessionOpts)
     : sessionOpts(sessionOpts), mode(ModeType::None),
-      targetTriple(llvm::sys::getDefaultTargetTriple()),
       vfs(llvm::vfs::getRealFileSystem()), strSaver(bumpAlloc) {
 
   // TODO: -print-stats
