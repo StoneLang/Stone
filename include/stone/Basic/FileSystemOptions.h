@@ -11,6 +11,8 @@ public:
   // Sometimes empty() on std::string returns characters when we are
   // passing things around by ref.
   bool UseWorkingDir = false;
+
+  /// The working directory to use
   std::string WorkingDir;
 
 public:

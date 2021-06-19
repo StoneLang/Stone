@@ -84,28 +84,41 @@ public:
 
 public:
 public:
-  // Decl
-  int ParseTopDecl();
+  bool ParseTopDecl(DeclGroupPtrTy &result, bool isFirstDecl = false);
 
-  //
+  bool ParseTopDecl() {
+    syn::DeclGroupPtrTy result;
+    return ParseTopDecl(result);
+  }
+  ///
   void ParseDecl();
 
+  ///
   void ParseSpaceDecl();
 
+  ///
 public:
-  // Stmt
+  /// Stmt
   void ParseStmt();
 
 public:
-  // Expr
+  /// Expr
   void ParseExpr();
 
 public:
   /// Stop parsing immediately.
   void Stop() { tok.SetType(tk::Type::eof); }
+
   /// Is at end of file.
   bool IsDone() { return tok.GetType() == tk::Type::eof; }
+
+  void EatToken() {}
+
+  SrcLoc EatBracket() { return SrcLoc(); }
+  SrcLoc EatBrace() { return SrcLoc(); }
+  SrcLoc EatParen() { return SrcLoc(); }
 };
+
 } // namespace syn
 } // namespace stone
 #endif

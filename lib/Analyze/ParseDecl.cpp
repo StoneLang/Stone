@@ -1,4 +1,5 @@
 #include "stone/Analyze/Parser.h"
+#include "stone/Analyze/SyntaxResult.h"
 #include "stone/Basic/Ret.h"
 
 using namespace stone::syn;
@@ -6,8 +7,9 @@ using namespace stone::syn;
 void Parser::ParseDecl() {
 
   // if(pipeline) {
-  // pipeline->OnDeclParse(...);
-  //}
+  //   pipeline->OnDeclParsed();
+  // }
 }
-
-int Parser::ParseTopDecl() { return ret::ok; }
+bool Parser::ParseTopDecl(DeclGroupPtrTy &result, bool isFirstDecl) {
+  return false;
+}
