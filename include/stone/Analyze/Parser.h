@@ -19,6 +19,8 @@ class ParserPipeline;
 namespace syn {
 
 class Parser;
+class Scope;
+
 class ParserStats final : public Stats {
   Parser &parser;
 
@@ -65,11 +67,6 @@ public:
   };
 
 public:
-  class ParsingScope {};
-
-  class MultiParsingScope {};
-
-public:
   Parser(SourceModuleFile &sf, SrcMgr &sm, Context &ctx,
          ParserPipeline *pipeline = nullptr);
 
@@ -79,10 +76,49 @@ public:
   ~Parser();
 
 public:
-  ParserStats &GetStats() { return *stats.get(); }
-  Lexer &GetLexer() { return *lexer.get(); }
+  class ParsingScope final {
+    Parser *self;
+    ParsingScope(const ParsingScope &) = delete;
+    void operator=(const ParsingScope &) = delete;
+
+  public:
+    // ParseScope - Construct a new object to manage a scope in the
+    // parser Self where the new Scope is created with the flags
+    // ScopeFlags, but only when we aren't about to enter a compound statement.
+    ParsingScope(Parser *self, unsigned scopeFlags, bool enteredScope = true,
+                 bool beforeCompoundStmt = false)
+        : self(self) {
+
+      if (enteredScope && !beforeCompoundStmt) {
+        self->EnterScope(scopeFlags);
+      } else {
+        if (beforeCompoundStmt) {
+          // TODO: self->incrementMSManglingNumber();
+        }
+        this->self = nullptr;
+      }
+    }
+    // Exit - Exit the scope associated with this object now, rather
+    // than waiting until the object is destroyed.
+    void Exit() {
+      if (self) {
+        self->ExitScope();
+        self = nullptr;
+      }
+    }
+    ~ParsingScope() { Exit(); }
+  };
 
 public:
+  class MultiParsingScope final {
+  public:
+  };
+
+public:
+  ParserStats &GetStats() { return *stats.get(); }
+  Lexer &GetLexer() { return *lexer.get(); }
+  const Token &GetCurToken() const { return tok; }
+
 public:
   bool ParseTopDecl(DeclGroupPtrTy &result, bool isFirstDecl = false);
 
@@ -117,6 +153,15 @@ public:
   SrcLoc EatBracket() { return SrcLoc(); }
   SrcLoc EatBrace() { return SrcLoc(); }
   SrcLoc EatParen() { return SrcLoc(); }
+
+public:
+  /// EnterScope - start a new scope.
+  void EnterScope(unsigned scopeFlags);
+
+  /// ExitScope - pop a scope off the scope stack.
+  void ExitScope();
+
+  syn::Scope *GetCurScope() const;
 };
 
 } // namespace syn

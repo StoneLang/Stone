@@ -4,6 +4,7 @@
 #include "stone/Basic/Ret.h"
 #include "stone/Basic/SrcLoc.h"
 #include "stone/Basic/SrcMgr.h"
+#include "stone/Syntax/Scope.h"
 
 using namespace stone;
 using namespace stone::syn;
@@ -25,5 +26,8 @@ Parser::Parser(SourceModuleFile &sf, SrcMgr &sm, Context &ctx,
 }
 
 Parser::~Parser() {}
+
+void Parser::EnterScope(unsigned scopeFlags) {}
+void Parser::ExitScope() {}
 
 void ParserStats::Print() {}

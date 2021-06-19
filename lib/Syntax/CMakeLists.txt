@@ -2,14 +2,9 @@ set(LLVM_LINK_COMPONENTS
   BinaryFormat
   Core
   Support
-  )
+ )
 
 set(stone_syn_sources
-	TreeContext.cpp
-	TreeListener.cpp
-	TreeScope.cpp
-	TreeVisitor.cpp
-	TreeWalker.cpp
 	Builtin.cpp
 	Comment.cpp
 	Decl.cpp
@@ -17,7 +12,12 @@ set(stone_syn_sources
 	Identifier.cpp
 	Module.cpp
 	Stmt.cpp
+	Scope.cpp
 	Template.cpp
+	TreeContext.cpp
+	TreeListener.cpp
+	TreeVisitor.cpp
+	TreeWalker.cpp
 	Type.cpp
 	VirtualTable.cpp
 

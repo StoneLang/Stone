@@ -1,9 +1,9 @@
-#ifndef STONE_SYNTAX_TREESCOPE_H
-#define STONE_SYNTAX_TREESCOPE_H
+#ifndef STONE_SYNTAX_SCOPE_H
+#define STONE_SYNTAX_SCOPE_H
 
 namespace stone {
 namespace syn {
-class TreeScope final {
+class Scope final {
 public:
   enum Bits {
     /// This indicates that the scope corresponds to a function, which

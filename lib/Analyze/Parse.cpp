@@ -17,10 +17,8 @@ void stone::ParseSourceModuleFile(SourceModuleFile &sf, SrcMgr &sm,
   if (pe) {
     parserPipeline =
         static_cast<ParserPipeline *>(pe->Get(PipelineType::Parse));
-
     lexerPipeline = static_cast<LexerPipeline *>(pe->Get(PipelineType::Lex));
   }
-
   // TODO: Since we have the sf, we do not need to pass SrcID
   Parser parser(sf, sm, ctx, parserPipeline);
   if (lexerPipeline) {
@@ -31,6 +29,8 @@ void stone::ParseSourceModuleFile(SourceModuleFile &sf, SrcMgr &sm,
   while (!parser.IsDone() && !ctx.Error()) {
     // check for errors from diag, if there are exit.
     // Go through all of the top level decls in the file
-    parser.ParseTopDecl();
+    if (!parser.ParseTopDecl()) {
+      break;
+    }
   }
 }
