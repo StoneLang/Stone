@@ -2,5 +2,4 @@
 
 using namespace stone;
 
-// TODO:
-Context::Context() : de(diagOpts), cos(llvm::outs()) {}
+Context::Context() : fm(fsOpts), de(diagOpts), cos(llvm::outs()) {}

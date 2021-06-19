@@ -59,10 +59,7 @@ enum class SessionType { Compiler, Driver };
 class Session : public Context {
   /// The mode id for this session
   SessionOptions &sessionOpts;
-  FileSystemOptions fsOpts;
   llvm::IntrusiveRefCntPtr<llvm::vfs::FileSystem> vfs;
-
-  FileMgr fm;
 
 protected:
   Mode mode;
@@ -93,8 +90,7 @@ protected:
   llvm::StringSaver strSaver;
 
 public:
-
-  void SetVFS(llvm::IntrusiveRefCntPtr<llvm::vfs::FileSystem> fs) {vfs = fs;}
+  void SetVFS(llvm::IntrusiveRefCntPtr<llvm::vfs::FileSystem> fs) { vfs = fs; }
   llvm::vfs::FileSystem &GetVFS() const { return *vfs; }
 
   std::unique_ptr<llvm::TimerGroup> timerGroup;
@@ -147,8 +143,6 @@ public:
   }
   std::string GetModuleName() { return moduleName; }
 
-  FileMgr &GetFileMgr() { return fm; }
-
   file::Files &GetInputFiles() { return sessionOpts.GetInputFiles(); }
 
   llvm::TimerGroup &GetTimerGroup() { return *timerGroup.get(); }
@@ -173,8 +167,7 @@ public:
                    bool removeFileOnSignal, bool useTmp,
                    bool createMissingDirectories = false);
 
-
-  void ComputeWorkingDir(); 
+  void ComputeWorkingDir();
 
 private:
   /// Create a new output file and add it to the list of tracked output files.

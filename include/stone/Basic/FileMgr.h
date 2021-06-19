@@ -166,6 +166,7 @@ public:
   /// llvm::vfs::getRealFileSystem().
   FileMgr(const FileSystemOptions &FileSystemOpts,
           IntrusiveRefCntPtr<llvm::vfs::FileSystem> FS = nullptr);
+
   ~FileMgr();
 
   /// Installs the provided FileSystemStatCache object within

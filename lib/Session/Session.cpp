@@ -6,14 +6,11 @@ using namespace stone;
 using namespace llvm::opt;
 
 Session::Session(SessionOptions &sessionOpts)
-    : sessionOpts(sessionOpts), 
-      mode(ModeType::None),
-      fm(fsOpts, llvm::vfs::getRealFileSystem()),
+    : sessionOpts(sessionOpts), mode(ModeType::None),
       targetTriple(llvm::sys::getDefaultTargetTriple()),
       vfs(llvm::vfs::getRealFileSystem()), strSaver(bumpAlloc) {
 
   // TODO: -print-stats
-        
 }
 
 Session::~Session() {}
@@ -76,7 +73,7 @@ void Session::SetTargetTriple(llvm::StringRef triple) {
 }
 
 void Session::ComputeWorkingDir() {
-  sessionOpts.fsOpts.WorkingDir.clear();
+  // sessionOpts.fsOpts.WorkingDir.clear();
 }
 void Session::ComputeMode(const llvm::opt::DerivedArgList &args) {
   assert(mode.GetType() == ModeType::None && "mode id already computed");

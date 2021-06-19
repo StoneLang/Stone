@@ -3,9 +3,10 @@
 
 #include "stone/Basic/DiagnosticEngine.h"
 #include "stone/Basic/DiagnosticOptions.h"
+#include "stone/Basic/FileMgr.h"
+#include "stone/Basic/FileSystemOptions.h"
 #include "stone/Basic/LangOptions.h"
 #include "stone/Basic/Stats.h"
-
 namespace stone {
 
 class Context {
@@ -15,6 +16,8 @@ protected:
   DiagnosticEngine de;
   StatEngine se;
   ColorOutputStream cos;
+  FileMgr fm;
+  FileSystemOptions fsOpts;
 
 public:
   Context();
@@ -33,6 +36,8 @@ public:
 
   DiagnosticOptions &GetDiagOptions() { return diagOpts; }
   const DiagnosticOptions &GetDiagOptions() const { return diagOpts; }
+
+  FileMgr &GetFileMgr() { return fm; }
 
   bool Error() { return de.HasError(); }
 };

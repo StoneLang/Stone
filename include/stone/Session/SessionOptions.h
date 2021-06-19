@@ -55,8 +55,6 @@ public:
   /// The file input type
   file::Type inputType = file::Type::None;
 
-  FileSystemOptions fsOpts;
-
 private:
   file::Files inputFiles;
 

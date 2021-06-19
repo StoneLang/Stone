@@ -48,6 +48,9 @@ FileMgr::FileMgr(const FileSystemOptions &FSO,
   NumDirLookups = NumFileLookups = 0;
   NumDirCacheMisses = NumFileCacheMisses = 0;
 
+  if (!FileSystemOpts.UseWorkingDir) {
+    FileSystemOpts.WorkingDir.clear();
+  }
   // If the caller doesn't provide a virtual file system, just grab the real
   // file system.
   if (!this->FS)
