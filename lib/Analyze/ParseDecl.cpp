@@ -28,7 +28,7 @@ bool Parser::ParseTopDecl(syn::DeclGroupPtrTy &result, bool isFirstDecl) {
 
 syn::DeclGroupPtrTy Parser::ParseDecl(ParsingDeclSpecifier *pds) {
 
-  // DelimiterBalancer balancer(*this);
+  PairDelimiterBalancer pairBalancer(*this);
   // if (pds) {
   //   return ParseDeclImpl(*pds);
   // }

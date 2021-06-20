@@ -8,6 +8,7 @@
 #include "stone/Session/Session.h"
 #include "stone/Syntax/Module.h"
 #include "stone/Syntax/SearchPathOptions.h"
+#include "stone/Syntax/Syntax.h"
 #include "stone/Syntax/TreeContext.h"
 
 using namespace stone::syn;
@@ -32,7 +33,9 @@ class Compiler final : public Session {
   CompilerContext cc;
   PipelineEngine *pe = nullptr;
   mutable syn::Module *mainModule = nullptr;
+
   std::unique_ptr<TreeContext> tc;
+  std::unique_ptr<Syntax> syntax;
 
   friend CompilerStats;
   std::unique_ptr<CompilerStats> stats;
@@ -91,6 +94,8 @@ public:
   llvm::vfs::FileSystem &GetVFS() const;
 
   TreeContext &GetTreeContext() { return *tc.get(); }
+
+  Syntax &GetSyntax() { return *syntax.get(); }
 
   /// Retrieve the main module containing the files being compiled.
   syn::Module *GetMainModule() const;

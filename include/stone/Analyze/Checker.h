@@ -34,6 +34,7 @@ class Checker final {
   std::unique_ptr<CheckerStats> stats;
 
   CheckerPipeline *pipeline;
+
   Context &ctx;
 
 public:

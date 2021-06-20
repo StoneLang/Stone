@@ -22,7 +22,7 @@ namespace syn {
 
 class Parser;
 class Scope;
-class DelimiterBalancer;
+class PairDelimiterBalancer;
 class ParsingDeclSpecifier;
 
 class ParserStats final : public Stats {
@@ -36,7 +36,7 @@ public:
 
 class Parser final {
   friend ParserStats;
-  friend DelimiterBalancer;
+  friend PairDelimiterBalancer;
 
   Context &ctx;
   SrcMgr &sm;

@@ -26,6 +26,7 @@ public:
   Syntax(Syntax &&) = delete;
   Syntax &operator=(const Syntax &) = delete;
   Syntax &operator=(Syntax &&) = delete;
+  Syntax() = delete;
 
 public:
   Syntax(TreeContext &tc);

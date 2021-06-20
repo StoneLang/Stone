@@ -103,7 +103,7 @@ class TreeContext final {
   // Identifier stdlibModuleName;
 
 public:
-  TreeContext(Context &ctx, const SearchPathOptions &pathOpts, SrcMgr &sm);
+  TreeContext(Context &ctx, const SearchPathOptions &spOpts, SrcMgr &sm);
   ~TreeContext();
 
   TreeContext(const TreeContext &) = delete;
