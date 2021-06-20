@@ -5,21 +5,23 @@
 #include "stone/Basic/SrcLoc.h"
 #include "stone/Basic/SrcMgr.h"
 #include "stone/Syntax/Scope.h"
+#include "stone/Syntax/Syntax.h"
 
 using namespace stone;
 using namespace stone::syn;
 
-Parser::Parser(SourceModuleFile &sf, SrcMgr &sm, Context &ctx,
+Parser::Parser(SourceModuleFile &sf, Syntax &syntax, ParserPipeline *pipeline)
+    : Parser(sf, syntax,
+             std::unique_ptr<Lexer>(
+                 new Lexer(sf.GetSrcID(), syntax.GetTreeContext().GetSrcMgr(),
+                           syntax.GetTreeContext().GetContext()))) {}
+
+Parser::Parser(SourceModuleFile &sf, Syntax &syntax, std::unique_ptr<Lexer> lx,
                ParserPipeline *pipeline)
-    : Parser(sf, sm, ctx,
-             std::unique_ptr<Lexer>(new Lexer(sf.GetSrcID(), sm, ctx))) {}
+    : sf(sf), syntax(syntax), lexer(lx.release()), pipeline(pipeline) {
 
-Parser::Parser(SourceModuleFile &sf, SrcMgr &sm, Context &ctx,
-               std::unique_ptr<Lexer> lx, ParserPipeline *pipeline)
-    : sf(sf), sm(sm), ctx(ctx), lexer(lx.release()), pipeline(pipeline) {
-
-  stats.reset(new ParserStats(*this, ctx));
-  ctx.GetStatEngine().Register(stats.get());
+  stats.reset(new ParserStats(*this, syntax.GetTreeContext().GetContext()));
+  syntax.GetTreeContext().GetContext().GetStatEngine().Register(stats.get());
 
   // Populate the curTok
   // ConsumeToken();

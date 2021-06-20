@@ -45,7 +45,7 @@ int System::Parse(Compiler &compiler, CompilableItem &compilable, bool check) {
 
   while (!compiler.Error()) {
     stone::ParseSourceModuleFile(compilable.GetSourceModuleFile(),
-                                 compiler.GetSrcMgr(), compiler,
+                                 compiler.GetSyntax(),
                                  compiler.GetPipelineEngine());
     if (compiler.Error())
       return ret::err;

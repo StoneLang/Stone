@@ -14,12 +14,11 @@
 #include <memory>
 
 namespace stone {
-class Context;
-class SrcMgr;
 class ParserPipeline;
 
 namespace syn {
 
+class Syntax;
 class Parser;
 class Scope;
 class PairDelimiterBalancer;
@@ -38,12 +37,10 @@ class Parser final {
   friend ParserStats;
   friend PairDelimiterBalancer;
 
-  Context &ctx;
-  SrcMgr &sm;
+  Syntax &syntax;
   SourceModuleFile &sf;
   ParserPipeline *pipeline;
   std::unique_ptr<Lexer> lexer;
-
   std::unique_ptr<ParserStats> stats;
 
   /// This is the current token being considered by the parser.
@@ -90,11 +87,11 @@ public:
   };
 
 public:
-  Parser(SourceModuleFile &sf, SrcMgr &sm, Context &ctx,
+  Parser(SourceModuleFile &sf, Syntax &syntax,
          ParserPipeline *pipeline = nullptr);
 
-  Parser(SourceModuleFile &sf, SrcMgr &sm, Context &ctx,
-         std::unique_ptr<Lexer> lexer, ParserPipeline *pipeline = nullptr);
+  Parser(SourceModuleFile &sf, Syntax &syntax, std::unique_ptr<Lexer> lexer,
+         ParserPipeline *pipeline = nullptr);
 
   ~Parser();
 

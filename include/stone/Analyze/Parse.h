@@ -4,15 +4,13 @@
 #include "llvm/ADT/ArrayRef.h"
 
 namespace stone {
-class SrcMgr;
-class SrcID;
-class Context;
 class PipelineEngine;
 
 namespace syn {
+class Syntax;
 class SourceModuleFile;
-}
-void ParseSourceModuleFile(syn::SourceModuleFile &sf, SrcMgr &sm, Context &ctx,
+} // namespace syn
+void ParseSourceModuleFile(syn::SourceModuleFile &sf, syn::Syntax &syntax,
                            PipelineEngine *pe = nullptr);
 } // namespace stone
 #endif

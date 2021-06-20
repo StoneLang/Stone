@@ -5,11 +5,11 @@
 #include "stone/Basic/Ret.h"
 #include "stone/Public.h"
 #include "stone/Syntax/Module.h"
-
+#include "stone/Syntax/Syntax.h"
 using namespace stone::syn;
 
-void stone::ParseSourceModuleFile(SourceModuleFile &sf, SrcMgr &sm,
-                                  Context &ctx, PipelineEngine *pe) {
+void stone::ParseSourceModuleFile(SourceModuleFile &sf, Syntax &syntax,
+                                  PipelineEngine *pe) {
 
   ParserPipeline *pp = nullptr;
   LexerPipeline *lp = nullptr;
@@ -19,7 +19,7 @@ void stone::ParseSourceModuleFile(SourceModuleFile &sf, SrcMgr &sm,
     lp = static_cast<LexerPipeline *>(pe->Get(PipelineType::Lex));
   }
   // TODO: Since we have the sf, we do not need to pass SrcID
-  Parser parser(sf, sm, ctx, pp);
+  Parser parser(sf, syntax, pp);
   if (lp) {
     parser.GetLexer().SetPipeline(lp);
   }
@@ -32,7 +32,7 @@ void stone::ParseSourceModuleFile(SourceModuleFile &sf, SrcMgr &sm,
       break;
     }
     // Check for errors from diag and if there are then exit.
-    if (ctx.Error()) {
+    if (syntax.GetTreeContext().GetContext().Error()) {
       pp->OnError();
       break;
     }

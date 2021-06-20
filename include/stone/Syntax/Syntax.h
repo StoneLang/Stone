@@ -8,6 +8,7 @@
 
 namespace stone {
 class InflightDiagnostic;
+
 namespace syn {
 class Decl;
 class FunDecl;
@@ -17,10 +18,11 @@ class IfStmt;
 class MatchStmt;
 class Expr;
 class TreeContext;
+class SourceModuleFile;
 
 class Syntax final {
   TreeContext &tc;
-
+  // TODO: UnsafeList<SourceModuleFile> sources;
 public:
   Syntax(const Syntax &) = delete;
   Syntax(Syntax &&) = delete;

@@ -114,7 +114,8 @@ public:
   Identifier &GetIdentifier(llvm::StringRef name);
   ///
   Builtin &GetBuiltin() const;
-  //
+
+  Context &GetContext() { return ctx; }
   const Context &GetContext() const { return ctx; }
   ///
   LangABI *GetLangABI() const;
