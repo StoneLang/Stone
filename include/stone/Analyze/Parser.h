@@ -170,6 +170,8 @@ public:
 
   void EatToken() {}
 
+  bool Error();
+
   SrcLoc EatBracket() { return SrcLoc(); }
   SrcLoc EatBrace() { return SrcLoc(); }
   SrcLoc EatParen() { return SrcLoc(); }

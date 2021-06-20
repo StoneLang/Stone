@@ -15,8 +15,12 @@ void stone::ParseSourceModuleFile(SourceModuleFile &sf, Syntax &syntax,
   LexerPipeline *lp = nullptr;
 
   if (pe) {
-    pp = static_cast<ParserPipeline *>(pe->Get(PipelineType::Parse));
-    lp = static_cast<LexerPipeline *>(pe->Get(PipelineType::Lex));
+    if (pe->Get(PipelineType::Parse)) {
+      pp = static_cast<ParserPipeline *>(pe->Get(PipelineType::Parse));
+    }
+    if (pe->Get(PipelineType::Lex)) {
+      lp = static_cast<LexerPipeline *>(pe->Get(PipelineType::Lex));
+    }
   }
   // TODO: Since we have the sf, we do not need to pass SrcID
   Parser parser(sf, syntax, pp);
@@ -28,20 +32,25 @@ void stone::ParseSourceModuleFile(SourceModuleFile &sf, Syntax &syntax,
   while (true) {
     // Check for tk::eof
     if (parser.IsDone()) {
-      pp->OnDone();
+      if (pp) {
+        pp->OnDone();
+      }
       break;
     }
     // Check for errors from diag and if there are then exit.
-    if (syntax.Error()) {
-      pp->OnError();
+    if (parser.Error()) {
+      if (pp) {
+        pp->OnError();
+      }
       break;
     }
     // Go through all of the top level decls in the file one at a time
     // As you process a decl, it will be added to the SourceModuleFile
     if (parser.ParseTopDecl(topDecl)) {
-
       // Notifify that a top decl has been parsed.
-      pp->OnTopDecl(topDecl.get().getSingleDecl());
+      if (pp) {
+        pp->OnTopDecl(topDecl.get().getSingleDecl());
+      }
     }
   }
 }
