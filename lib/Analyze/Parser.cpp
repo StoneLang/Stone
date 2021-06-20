@@ -23,11 +23,11 @@ Parser::Parser(SourceModuleFile &sf, Syntax &syntax, std::unique_ptr<Lexer> lx,
   stats.reset(new ParserStats(*this, syntax.GetTreeContext().GetContext()));
   syntax.GetTreeContext().GetContext().GetStatEngine().Register(stats.get());
 
-  // Populate the curTok
-  // ConsumeToken();
+  Prime();
 }
-
 Parser::~Parser() {}
+
+void Parser::Prime() { assert(true && "TODO"); }
 
 void Parser::EnterScope(unsigned scopeFlags) {}
 void Parser::ExitScope() {}

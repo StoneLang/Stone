@@ -4,6 +4,7 @@
 #include "stone/Syntax/Expr.h"
 #include "stone/Syntax/Ownership.h"
 #include "stone/Syntax/SyntaxResult.h"
+#include "stone/Syntax/TreeContext.h"
 #include "stone/Syntax/Type.h"
 
 namespace stone {
@@ -17,7 +18,6 @@ class Stmt;
 class IfStmt;
 class MatchStmt;
 class Expr;
-class TreeContext;
 class SourceModuleFile;
 
 class Syntax final {
@@ -41,6 +41,10 @@ public:
 
 public:
   SyntaxResult<Stmt *> CreateIfStmt();
+
+public:
+  bool Error() { return tc.GetContext().Error(); }
+  Context &GetContext() { return tc.GetContext(); }
 };
 } // namespace syn
 } // namespace stone

@@ -95,6 +95,8 @@ public:
 
   ~Parser();
 
+  void Prime();
+
 public:
   class ParsingScope final {
     Parser *self;
