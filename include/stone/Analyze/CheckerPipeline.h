@@ -11,11 +11,15 @@
 namespace stone {
 
 class CheckerPipeline : public Pipeline {
-public:
-  llvm::StringRef GetName() override { return "CheckerPipeline"; }
 
 public:
-  virtual void OnDeclChecked(const syn::Decl &decl) = 0;
+  CheckerPipeline() : Pipeline(PipelineType::Check) {}
+
+public:
+  llvm::StringRef GetName() override { return "Check"; }
+
+public:
+  virtual void OnDeclChecked(const syn::Decl *decl) = 0;
 };
 
 } // namespace stone

@@ -10,7 +10,10 @@ namespace stone {
 
 class LexerPipeline : public Pipeline {
 public:
-  llvm::StringRef GetName() override { return "LexerPipeline"; }
+  LexerPipeline() : Pipeline(PipelineType::Lex) {}
+
+public:
+  llvm::StringRef GetName() override { return "Lex"; }
 
 public:
   virtual void OnTokenCreated(const syn::Token &token) = 0;

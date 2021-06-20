@@ -11,8 +11,12 @@
 namespace stone {
 
 class ParserPipeline : public Pipeline {
+
 public:
-  llvm::StringRef GetName() override { return "ParserPipeline"; }
+  ParserPipeline() : Pipeline(PipelineType::Parse) {}
+
+public:
+  llvm::StringRef GetName() override { return "Parse"; }
 
 public:
   virtual void OnDone() = 0;
