@@ -265,14 +265,15 @@ class DeclaratorDecl : public ValueDecl {
 public:
 };
 
-class FunctionDecl : public DeclaratorDecl, public DeclContext {
+// This is really your function prototye
+class FunctionDecl : public DeclaratorDecl,
+                     public DeclContext /*, syn::Redeclarable<FunctionDecl> */ {
 public:
 };
 
-class FunDecl : public FunctionDecl {
+class FunDecl final : public FunctionDecl {
 public:
-public:
-  static FunDecl *Create(TreeContext *tc, DeclContext *dc);
+  bool IsMain() const;
 };
 
 class ConstructorInitializer final {

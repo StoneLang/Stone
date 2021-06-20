@@ -308,7 +308,7 @@ void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
   // Computer the compiler mode.
   ComputeMode(*translatedArgs);
 
-  if (Error())
+  if (HasError())
     return;
 
   BuildToolChain(*originalArgs);
@@ -323,7 +323,7 @@ void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
 
   BuildInputs(*translatedArgs, GetInputFiles());
 
-  if (Error())
+  if (HasError())
     return;
 
   if (GetInputFiles().size() == 0) {
@@ -333,7 +333,7 @@ void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
 
   BuildOutputProfile(*translatedArgs, GetOutputProfile());
 
-  if (Error())
+  if (HasError())
     return;
 
   // TODO: ComputeCompileMod()
@@ -349,7 +349,7 @@ void Driver::BuildCompilation(const llvm::opt::InputArgList &argList) {
 
   BuildJobs();
 
-  if (Error())
+  if (HasError())
     return;
 
   if (driverOpts.printJobs) {
@@ -486,7 +486,7 @@ int Driver::Run() {
   // auto compilationResult =
   //	GetCompilation().Run(DriverImpl::BuildTaskQueue(*this));
 
-  if (Error())
+  if (HasError())
     return ret::err;
 
   return ret::ok;

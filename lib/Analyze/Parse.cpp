@@ -38,7 +38,7 @@ void stone::ParseSourceModuleFile(SourceModuleFile &sf, Syntax &syntax,
       break;
     }
     // Check for errors from diag and if there are then exit.
-    if (parser.Error()) {
+    if (parser.HasError()) {
       if (pp) {
         pp->OnError();
       }

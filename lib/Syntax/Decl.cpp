@@ -122,10 +122,21 @@ void *Decl::operator new(std::size_t size, const TreeContext &tc,
 //
 //
 //
+
 DeclContext::DeclContext(Decl::Type ty, DeclContext *parent) {
   declContextBits.DeclType = ty;
 }
 
-SyntaxResult<Decl *> Syntax::CreateFunDecl() { return DeclEmpty(); }
+template <std::size_t Len>
+static bool IsNamed(const NamingDecl *namingDecl, const char (&str)[Len]) {
+  Identifier *identifier = namingDecl->GetIdentifier();
+  return identifier && identifier->isStr(str);
+}
+
+bool FunDecl::IsMain() const { return false; }
+SyntaxResult<Decl *> Syntax::CreateFunDecl(SrcLoc funLoc, const DeclName &name,
+                                           SrcLoc nameLoc) {
+  return DeclEmpty();
+}
 
 SyntaxResult<Decl *> Syntax::CreateStructDecl() { return DeclEmpty(); }

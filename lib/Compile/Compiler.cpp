@@ -48,7 +48,7 @@ bool Compiler::Build(llvm::ArrayRef<const char *> args) {
   excludedFlagsBitmask = opts::NoCompilerOption;
   originalArgs = ParseArgList(args);
 
-  if (Error())
+  if (HasError())
     return false;
 
   translatedArgs = TranslateArgList(*originalArgs);
@@ -58,12 +58,12 @@ bool Compiler::Build(llvm::ArrayRef<const char *> args) {
 
   ComputeWorkingDir();
 
-  if (Error())
+  if (HasError())
     return false;
 
   BuildInputs(*translatedArgs, GetInputFiles());
 
-  if (Error())
+  if (HasError())
     return false;
 
   // CreateTimer();

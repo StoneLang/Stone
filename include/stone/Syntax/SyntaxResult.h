@@ -15,7 +15,7 @@ class Stmt;
 class IfStmt;
 class MatchStmt;
 class Expr;
-class InflightDiagnostic;
+class LiveDiagnostic;
 
 typedef stone::OpaquePtr<syn::DeclGroupRef> DeclGroupPtrTy;
 
@@ -40,7 +40,7 @@ class SyntaxResult final {
 public:
   SyntaxResult(bool Invalid = false) : Val(PtrTy()), Invalid(Invalid) {}
   SyntaxResult(PtrTy val) : Val(val), Invalid(false) {}
-  SyntaxResult(const InflightDiagnostic &) : Val(PtrTy()), Invalid(true) {}
+  SyntaxResult(const LiveDiagnostic &) : Val(PtrTy()), Invalid(true) {}
 
   // These two overloads prevent void* -> bool conversions.
   SyntaxResult(const void *) = delete;
@@ -80,7 +80,7 @@ public:
     assert((PtrWithInvalid & 0x01) == 0 && "Badly aligned pointer");
   }
 
-  SyntaxResult(const InflightDiagnostic &) : PtrWithInvalid(0x01) {}
+  SyntaxResult(const LiveDiagnostic &) : PtrWithInvalid(0x01) {}
 
   // These two overloads prevent void* -> bool conversions.
   SyntaxResult(const void *) = delete;
@@ -163,9 +163,9 @@ inline ExprResult ExprError() { return ExprResult(true); }
 inline StmtResult StmtError() { return StmtResult(true); }
 // inline TypeResult TypeError() { return TypeResult(true); }
 
-inline DeclResult DeclError(const InflightDiagnostic &) { return DeclError(); }
-inline ExprResult ExprError(const InflightDiagnostic &) { return ExprError(); }
-inline StmtResult StmtError(const InflightDiagnostic &) { return StmtError(); }
+inline DeclResult DeclError(const LiveDiagnostic &) { return DeclError(); }
+inline ExprResult ExprError(const LiveDiagnostic &) { return ExprError(); }
+inline StmtResult StmtError(const LiveDiagnostic &) { return StmtError(); }
 
 inline DeclResult DeclEmpty() { return DeclResult(false); }
 inline ExprResult ExprEmpty() { return ExprResult(false); }

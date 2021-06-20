@@ -29,7 +29,9 @@ Parser::~Parser() {}
 
 void Parser::Prime() { assert(true && "TODO"); }
 
-bool Parser::Error() { return syntax.GetTreeContext().GetContext().Error(); }
+bool Parser::HasError() {
+  return syntax.GetTreeContext().GetContext().HasError();
+}
 
 void Parser::EnterScope(unsigned scopeFlags) {}
 void Parser::ExitScope() {}

@@ -43,11 +43,11 @@ public:
 };
 int System::Parse(Compiler &compiler, CompilableItem &compilable, bool check) {
 
-  while (!compiler.Error()) {
+  while (!compiler.HasError()) {
     stone::ParseSourceModuleFile(compilable.GetSourceModuleFile(),
                                  compiler.GetSyntax(),
                                  compiler.GetPipelineEngine());
-    if (compiler.Error())
+    if (compiler.HasError())
       return ret::err;
   }
   return ret::ok;
@@ -74,7 +74,7 @@ int System::EmitIR(Compiler &compiler, CompilableItem &compilable) {
       stone::GenIR(compiler.GetMainModule(), compiler,
                    compiler.compilerOpts.genOpts, compilable.GetOutputFile());
 
-  if (compiler.Error())
+  if (compiler.HasError())
     return ret::err;
 
   compiler.GetCompilerContext().SetLLVMModule(llvmModule);

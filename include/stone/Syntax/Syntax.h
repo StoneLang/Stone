@@ -8,7 +8,7 @@
 #include "stone/Syntax/Type.h"
 
 namespace stone {
-class InflightDiagnostic;
+class LiveDiagnostic;
 
 namespace syn {
 class Decl;
@@ -31,19 +31,25 @@ public:
   Syntax() = delete;
 
 public:
+  class FunDeclFactory;
+  FunDeclFactory &GetFunDeclFactory();
+
+public:
   Syntax(TreeContext &tc);
   ~Syntax();
   TreeContext &GetTreeContext() { return tc; }
 
 public:
-  SyntaxResult<Decl *> CreateFunDecl();
+  SyntaxResult<Decl *> CreateFunDecl(SrcLoc funLoc, const DeclName &name,
+                                     SrcLoc nameLoc);
+
   SyntaxResult<Decl *> CreateStructDecl();
 
 public:
   SyntaxResult<Stmt *> CreateIfStmt();
 
 public:
-  bool Error() { return tc.GetContext().Error(); }
+  bool HasError() { return tc.GetContext().HasError(); }
   Context &GetContext() { return tc.GetContext(); }
 };
 } // namespace syn

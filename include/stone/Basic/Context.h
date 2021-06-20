@@ -44,7 +44,7 @@ public:
 
   std::string GetTarget() { return targetTriple; }
 
-  bool Error() { return de.HasError(); }
+  bool HasError() { return de.HasError(); }
 };
 
 } // namespace stone

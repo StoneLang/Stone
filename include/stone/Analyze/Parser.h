@@ -150,8 +150,12 @@ public:
   syn::DeclGroupPtrTy ParseDecl(ParsingDeclSpecifier *pds);
   syn::DeclGroupPtrTy ParseDeclImpl(ParsingDeclSpecifier &pds, AccessLevel al);
 
-  DeclResult ParseSpaceDecl();
   DeclResult ParseFunDecl(ParsingDeclSpecifier &pds, AccessLevel al);
+  // First, call ParseFunDecl -- this is your fun prototype
+  // Then you call the following:
+  // void ParseFunDeclDefinition();
+
+  DeclResult ParseSpaceDecl();
   ///
 public:
   /// Stmt
@@ -170,7 +174,7 @@ public:
 
   void EatToken() {}
 
-  bool Error();
+  bool HasError();
 
   SrcLoc EatBracket() { return SrcLoc(); }
   SrcLoc EatBrace() { return SrcLoc(); }
