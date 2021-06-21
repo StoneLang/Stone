@@ -1,5 +1,8 @@
 
-space Stone.Semantics {
+use stone.basic; 
+
+space stone.semantics {
+
 	public fun Check(ref SourceModuleFile sf) -> bool {
 		return true;
 	}

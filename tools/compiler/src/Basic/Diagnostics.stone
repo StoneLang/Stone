@@ -1,5 +1,5 @@
 
-space Stone.Basic {
+space stone.basic {
 	public struct DiagnosticEngine {
 	}
 }

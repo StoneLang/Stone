@@ -1,6 +1,6 @@
 
 
-space Stone.Time {
+space std.time {
 
 	public enum Weekday : u8  (
 		Sunday = 1, 

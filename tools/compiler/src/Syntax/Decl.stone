@@ -22,13 +22,14 @@ space Stone.Syntax {
 	public fun ValueDecl::GetDecl() -> Decl* {
 		return decl;
 	}
-	init public fun ValueDecl::Init(Decl* decl) {
+	init fun ValueDecl::Init(Decl* decl) {
 		self.decl = decl; 
 	}
 	public struct FunDecl {
 		ValueDecl* vd = null; 
 	}
-	init public fun FunDecl::Init(Location funLoc) {
+
+	init fun FunDecl::Init(Location funLoc) {
 		vd = new ValueDecl();
 	}
 	defer fun FunDecl::Defer() {

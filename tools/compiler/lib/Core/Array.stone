@@ -1,6 +1,6 @@
 
 
-space Stone.Collections {
+space std.collections {
 	public struct Array {
 	}
 }

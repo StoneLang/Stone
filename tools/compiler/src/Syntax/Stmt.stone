@@ -1,5 +1,10 @@
 
-space Stone.Syntax{
+space Stone.Syntax {
+
+	public enum StmtType {
+		IfStmt,
+		WhileStmt
+	}
 	public struct Stmt : Node {
 	}	
 	public Stmt::GetNodeType() -> NodeType {

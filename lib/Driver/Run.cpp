@@ -8,9 +8,10 @@
 #include "stone/Basic/Defer.h"
 #include "stone/Basic/LLVM.h"
 #include "stone/Basic/Ret.h"
-#include "stone/Driver/Compilation.h"
 #include "stone/Driver/Driver.h"
 #include "stone/Session/ExecutablePath.h"
+
+
 #include "llvm/ADT/SmallString.h"
 #include "llvm/ADT/SmallVector.h"
 #include "llvm/ADT/Triple.h"
@@ -24,7 +25,6 @@
 #include "llvm/Support/Regex.h"
 #include "llvm/Support/Signals.h"
 #include "llvm/Support/StringSaver.h"
-#include "llvm/Support/TargetSelect.h"
 
 using namespace stone;
 using namespace stone::driver;
@@ -74,7 +74,7 @@ int stone::Run(llvm::ArrayRef<const char *> args, const char *arg0,
 
   driver.Init();
   if (driver.Build(args)) {
-    if (driver.GetDiagEngine().HasError()) {
+    if (driver.HasError()) {
       return ret::err;
     }
     driver.Run();

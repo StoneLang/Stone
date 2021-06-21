@@ -1,0 +1,9 @@
+
+
+
+test fun DeclTest() {
+
+	auto funDecl = new FunDecl(); 
+
+	free funDecl; 
+}

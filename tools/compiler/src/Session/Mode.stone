@@ -1,5 +1,5 @@
 
-space Stone.Session {
+space stone.session {
 	public enum ModeType {
 		None,
 		Parse,

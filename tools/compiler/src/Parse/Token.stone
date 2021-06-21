@@ -1,0 +1,12 @@
+
+space Stone.Parse {
+	
+	public enum TokenType {
+	}
+
+	public struct Token {
+	}
+
+	init fun Token::Init() {
+	}
+}

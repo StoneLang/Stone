@@ -1,0 +1,4 @@
+
+stone -emit-module Session.stone -> Session.stonemodule 
+
+stone -use-module Session.stonemodule -emit-module Compiler.stone -> Compiler.stonemodule 

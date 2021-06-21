@@ -1,8 +1,8 @@
 
-space Stone.Session {
+space stone.session {
 	public struct SessionOptions {
 	}
-	
+
 	public struct SessionProfile {
 		// private by default 
 		SessionOptions* options = null;

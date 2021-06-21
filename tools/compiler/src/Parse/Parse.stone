@@ -1,5 +1,3 @@
-use Stone.Syntax; 
-
 space Stone.Syntax {
 	public fun Parse(ref SourceFileModule sf) -> bool {
 		return true; 
