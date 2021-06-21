@@ -1,6 +1,6 @@
 
 
-space Stone {
+space stone {
 	public fun Compile(string[] args) -> bool {
 		return true; 
 	}

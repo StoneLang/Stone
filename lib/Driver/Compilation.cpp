@@ -1,9 +1,8 @@
 #include "stone/Driver/Compilation.h"
-
-#include "stone/Basic/Color.h"
 #include "stone/Basic/Ret.h"
 #include "stone/Driver/Driver.h"
 #include "stone/Driver/ToolChain.h"
+
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/STLExtras.h"
 #include "llvm/ADT/SmallSet.h"

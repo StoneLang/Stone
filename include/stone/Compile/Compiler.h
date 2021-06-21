@@ -97,6 +97,8 @@ public:
 
   Syntax &GetSyntax() { return *syntax.get(); }
 
+  Basic &GetBasic() { GetSyntax().GetTreeContext().GetBasic(); }
+
   /// Retrieve the main module containing the files being compiled.
   syn::Module *GetMainModule() const;
   /// Replace the current main module with a new one. This is used for top-level

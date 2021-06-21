@@ -185,6 +185,8 @@ public:
   SrcLoc EatBrace() { return SrcLoc(); }
   SrcLoc EatParen() { return SrcLoc(); }
 
+  Basic &GetBasic();
+
 public:
   /// EnterScope - start a new scope.
   void EnterScope(unsigned scopeFlags);

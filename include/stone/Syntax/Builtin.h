@@ -16,7 +16,7 @@ struct Profile {
 } // namespace builtin
 
 class Builtin final {
-
+public:
   Builtin(const Builtin &) = delete;
   void operator=(const Builtin &) = delete;
 

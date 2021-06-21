@@ -20,8 +20,8 @@ Parser::Parser(SourceModuleFile &sf, Syntax &syntax, std::unique_ptr<Lexer> lx,
                ParserPipeline *pipeline)
     : sf(sf), syntax(syntax), lexer(lx.release()), pipeline(pipeline) {
 
-  stats.reset(new ParserStats(*this, syntax.GetTreeContext().GetBasic()));
-  syntax.GetTreeContext().GetBasic().GetStatEngine().Register(stats.get());
+  stats.reset(new ParserStats(*this, GetBasic()));
+  GetBasic().GetStatEngine().Register(stats.get());
 
   Prime();
 }
@@ -29,9 +29,8 @@ Parser::~Parser() {}
 
 void Parser::Prime() { assert(true && "TODO"); }
 
-bool Parser::HasError() {
-  return syntax.GetTreeContext().GetBasic().HasError();
-}
+bool Parser::HasError() { return GetBasic().HasError(); }
+Basic &Parser::GetBasic() { return syntax.GetTreeContext().GetBasic(); }
 
 void Parser::EnterScope(unsigned scopeFlags) {}
 void Parser::ExitScope() {}

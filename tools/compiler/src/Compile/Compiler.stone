@@ -1,7 +1,7 @@
-use Stone.Session;
+use stone.session;
 
-space Stone {
-	public struct Compiler : ISession {
+space stone {
+	public struct Compiler : Session {
 	}
 	init public fun Compiler::Init() {
 	}

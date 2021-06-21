@@ -56,8 +56,7 @@ public:
   // TODO: Return LiveDiagnostic
   void Note();
   /// TODO: Return LiveDiagnostic
-  void Remark(); 
-  
+  void Remark();
 };
 
 } // namespace stone

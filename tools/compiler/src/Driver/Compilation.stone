@@ -1,11 +1,10 @@
 
 
-space Stone.Driver {
+space stone.driver {
 
 	public struct Compilaiton  {	
 		private Driver* driver = null; 
 	}
-
 	// Compilation is public so Init is public by default?
 	init fun Compilation::Init(Driver* driver) {
 		self.driver = driver; 
