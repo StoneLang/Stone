@@ -215,12 +215,12 @@ void DriverImpl::ComputeCompileType(const Driver &driver,
                                     const DerivedArgList &args,
                                     const Files &inputs) {}
 
-DriverStats::DriverStats(const Driver &driver, Context &ctx)
-    : Stats("driver statistics:", ctx), driver(driver) {}
+DriverStats::DriverStats(const Driver &driver, Basic &basic)
+    : Stats("driver statistics:", basic), driver(driver) {}
 
 void DriverStats::Print() {
   if (driver.driverOpts.printStats) {
-    GetContext().Out() << GetName() << '\n';
+    GetBasic().Out() << GetName() << '\n';
     return;
   }
 }

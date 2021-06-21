@@ -28,8 +28,8 @@ class ParserStats final : public Stats {
   Parser &parser;
 
 public:
-  ParserStats(Parser &parser, Context &ctx)
-      : Stats("parser statistics:", ctx), parser(parser) {}
+  ParserStats(Parser &parser, Basic &basic)
+      : Stats("parser statistics:", basic), parser(parser) {}
   void Print() override;
 };
 

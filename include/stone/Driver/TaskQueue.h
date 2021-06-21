@@ -5,7 +5,7 @@
 #include <memory>
 #include <queue>
 
-#include "stone/Basic/Context.h"
+#include "stone/Basic/Basic.h"
 #include "stone/Basic/LLVM.h"
 #include "stone/Basic/Stats.h"
 #include "llvm/ADT/ArrayRef.h"
@@ -20,8 +20,8 @@ class TaskQueueStats final : public Stats {
   const TaskQueue &queue;
 
 public:
-  TaskQueueStats(const TaskQueue &queue, Context &ctx)
-      : Stats("task-queue statistics:", ctx), queue(queue) {}
+  TaskQueueStats(const TaskQueue &queue, Basic &basic)
+      : Stats("task-queue statistics:", basic), queue(queue) {}
   void Print() override;
 };
 
@@ -32,7 +32,7 @@ class TaskQueue {
   friend TaskQueueStats;
   std::unique_ptr<TaskQueueStats> stats;
   TaskQueueType queueType;
-  Context &ctx;
+  Basic &basic;
 
   /// Tasks which have not begun execution.
   // std::queue<std::unique_ptr<Task>> queue;
@@ -40,7 +40,7 @@ class TaskQueue {
   // unsigned parallelTaskCount;
 
 public:
-  TaskQueue(TaskQueueType queueType, Context &ctx);
+  TaskQueue(TaskQueueType queueType, Basic &basic);
 
 public:
   TaskQueueType GetType() { return queueType; }
@@ -49,12 +49,12 @@ public:
 
 class UnixTaskQueue : public TaskQueue {
 public:
-  UnixTaskQueue(Context &ctx) : TaskQueue(TaskQueueType::Unix, ctx) {}
+  UnixTaskQueue(Basic &basic) : TaskQueue(TaskQueueType::Unix, basic) {}
 };
 
 class WinTaskQueue : public TaskQueue {
 public:
-  WinTaskQueue(Context &ctx) : TaskQueue(TaskQueueType::Win, ctx) {}
+  WinTaskQueue(Basic &basic) : TaskQueue(TaskQueueType::Win, basic) {}
 };
 
 } // namespace driver

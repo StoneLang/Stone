@@ -1,6 +1,6 @@
 #include "stone/Analyze/Parser.h"
 #include "stone/Analyze/CheckerPipeline.h"
-#include "stone/Basic/Context.h"
+#include "stone/Basic/Basic.h"
 #include "stone/Basic/Ret.h"
 #include "stone/Basic/SrcLoc.h"
 #include "stone/Basic/SrcMgr.h"
@@ -14,14 +14,14 @@ Parser::Parser(SourceModuleFile &sf, Syntax &syntax, ParserPipeline *pipeline)
     : Parser(sf, syntax,
              std::unique_ptr<Lexer>(
                  new Lexer(sf.GetSrcID(), syntax.GetTreeContext().GetSrcMgr(),
-                           syntax.GetTreeContext().GetContext()))) {}
+                           syntax.GetTreeContext().GetBasic()))) {}
 
 Parser::Parser(SourceModuleFile &sf, Syntax &syntax, std::unique_ptr<Lexer> lx,
                ParserPipeline *pipeline)
     : sf(sf), syntax(syntax), lexer(lx.release()), pipeline(pipeline) {
 
-  stats.reset(new ParserStats(*this, syntax.GetTreeContext().GetContext()));
-  syntax.GetTreeContext().GetContext().GetStatEngine().Register(stats.get());
+  stats.reset(new ParserStats(*this, syntax.GetTreeContext().GetBasic()));
+  syntax.GetTreeContext().GetBasic().GetStatEngine().Register(stats.get());
 
   Prime();
 }
@@ -30,7 +30,7 @@ Parser::~Parser() {}
 void Parser::Prime() { assert(true && "TODO"); }
 
 bool Parser::HasError() {
-  return syntax.GetTreeContext().GetContext().HasError();
+  return syntax.GetTreeContext().GetBasic().HasError();
 }
 
 void Parser::EnterScope(unsigned scopeFlags) {}

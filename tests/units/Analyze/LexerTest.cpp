@@ -29,7 +29,7 @@ protected:
     auto mainSrcID = sm.CreateSrcID(std::move(memBuffer));
 
     sm.SetMainSrcID(mainSrcID);
-    auto lexer = llvm::make_unique<Lexer>(mainSrcID, sm, ctx);
+    auto lexer = llvm::make_unique<Lexer>(mainSrcID, sm, basic);
     return lexer;
   }
   std::vector<syn::Token> Lex(llvm::StringRef srcBuffer) {

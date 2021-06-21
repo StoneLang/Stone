@@ -387,8 +387,8 @@ class IdentifierTableStats final : public Stats {
   const IdentifierTable &table;
 
 public:
-  IdentifierTableStats(const IdentifierTable &table, Context &ctx)
-      : Stats("identifier table stats:", ctx), table(table) {}
+  IdentifierTableStats(const IdentifierTable &table, Basic &basic)
+      : Stats("identifier table stats:", basic), table(table) {}
   void Print() override;
 };
 

@@ -351,12 +351,12 @@ static bool IsIdentifier(const signed char ch) {
   }
 }
 
-Lexer::Lexer(const SrcID srcID, SrcMgr &sm, Context &ctx,
+Lexer::Lexer(const SrcID srcID, SrcMgr &sm, Basic &basic,
              LexerPipeline *pipeline)
-    : srcID(srcID), sm(sm), ctx(ctx), pipeline(pipeline) {
+    : srcID(srcID), sm(sm), basic(basic), pipeline(pipeline) {
 
-  stats.reset(new LexerStats(*this, ctx));
-  ctx.GetStatEngine().Register(stats.get());
+  stats.reset(new LexerStats(*this, basic));
+  basic.GetStatEngine().Register(stats.get());
 
   bool invalid = false;
   auto memBuffer = sm.getBuffer(srcID, SrcLoc(), &invalid /*true means error*/);
@@ -407,7 +407,7 @@ void Lexer::Init(unsigned startOffset, unsigned endOffset) {
          "The token should be at the beginning of the line, "
          "or we should be Lexing from the middle of the buffer");
 
-  // TODO: ctx.GetDiagEngine().AddDiagnostics(diagnostics.reset(new
+  // TODO: basic.GetDiagEngine().AddDiagnostics(diagnostics.reset(new
   // LexerDiagnostics()));
 }
 void Lexer::Lex(Token &result) {

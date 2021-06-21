@@ -2,7 +2,7 @@
 
 using namespace stone;
 
-Stats::Stats(const char *name, Context &ctx) : name(name), ctx(ctx) {
+Stats::Stats(const char *name, Basic &basic) : name(name), basic(basic) {
   timer.reset(new llvm::Timer(name, name));
 }
 

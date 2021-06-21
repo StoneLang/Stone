@@ -28,7 +28,7 @@
 #include "llvm/Support/Timer.h"
 #include "llvm/Support/VirtualFileSystem.h"
 
-#include "stone/Basic/Context.h"
+#include "stone/Basic/Basic.h"
 #include "stone/Basic/File.h"
 #include "stone/Basic/FileMgr.h"
 #include "stone/Basic/List.h"
@@ -56,7 +56,7 @@ namespace stone {
 
 enum class SessionType { Compiler, Driver };
 
-class Session : public Context {
+class Session : public Basic {
   /// The mode id for this session
   SessionOptions &sessionOpts;
   llvm::IntrusiveRefCntPtr<llvm::vfs::FileSystem> vfs;

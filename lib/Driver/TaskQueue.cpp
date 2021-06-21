@@ -3,10 +3,10 @@
 using namespace stone;
 using namespace stone::driver;
 
-TaskQueue::TaskQueue(TaskQueueType queueType, Context &ctx)
-    : queueType(queueType), ctx(ctx) {
-  stats.reset(new TaskQueueStats(*this, ctx));
-  ctx.GetStatEngine().Register(stats.get());
+TaskQueue::TaskQueue(TaskQueueType queueType, Basic &basic)
+    : queueType(queueType), basic(basic) {
+  stats.reset(new TaskQueueStats(*this, basic));
+  basic.GetStatEngine().Register(stats.get());
 }
 
 void TaskQueueStats::Print() {}

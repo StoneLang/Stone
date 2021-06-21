@@ -3,7 +3,7 @@
 
 #include "stone/Analyze/Token.h"
 #include "stone/Analyze/Trivia.h"
-#include "stone/Basic/Context.h"
+#include "stone/Basic/Basic.h"
 #include "stone/Basic/DiagnosticEngine.h"
 #include "stone/Basic/SrcLoc.h"
 
@@ -33,8 +33,8 @@ class LexerStats final : public Stats {
   const Lexer &lexer;
 
 public:
-  LexerStats(const Lexer &lexer, Context &ctx)
-      : Stats("lexer statistics:", ctx), lexer(lexer) {}
+  LexerStats(const Lexer &lexer, Basic &basic)
+      : Stats("lexer statistics:", basic), lexer(lexer) {}
   void Print() override;
 };
 
@@ -43,7 +43,7 @@ class Lexer final {
   const SrcID srcID;
   SrcMgr &sm;
 
-  const Context &ctx;
+  const Basic &basic;
   std::unique_ptr<LexerStats> stats;
 
   /// Pointer to the first character of the buffer, even in a lexer that
@@ -94,7 +94,7 @@ private:
   void operator=(const Lexer &) = delete;
 
 public:
-  Lexer(const SrcID srcID, SrcMgr &sm, Context &ctx,
+  Lexer(const SrcID srcID, SrcMgr &sm, Basic &basic,
         LexerPipeline *pipeline = nullptr);
   void Init(unsigned startOffset, unsigned endOffset);
 

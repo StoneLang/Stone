@@ -102,7 +102,7 @@ class DriverStats final : public Stats {
   const Driver &driver;
 
 public:
-  DriverStats(const Driver &driver, Context &ctx);
+  DriverStats(const Driver &driver, Basic &basic);
   void Print() override;
 };
 

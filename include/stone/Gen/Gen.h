@@ -29,14 +29,15 @@ class GenModuleProfile;
 } // namespace gen
 
 std::unique_ptr<llvm::TargetMachine>
-CreateTargetMachine(const gen::CodeGenOptions &genOpts, syn::TreeContext &ctx);
+CreateTargetMachine(const gen::CodeGenOptions &genOpts,
+                    syn::TreeContext &basic);
 
 // TODO: remove GenModuleProfile
-llvm::Module *GenIR(syn::Module *langMod, const Context &ctx,
+llvm::Module *GenIR(syn::Module *langMod, const Basic &basic,
                     const gen::CodeGenOptions &genOpts,
                     const OutputFile *output);
 
 bool GenObject(llvm::Module *llvmMod, const gen::CodeGenOptions &genOpts,
-               syn::TreeContext &ctx, const OutputFile *output);
+               syn::TreeContext &basic, const OutputFile *output);
 } // namespace stone
 #endif

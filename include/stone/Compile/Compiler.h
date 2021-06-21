@@ -23,8 +23,8 @@ class CompilerStats final : public Stats {
   Compiler &compiler;
 
 public:
-  CompilerStats(Compiler &compiler, Context &ctx)
-      : Stats("compiler statistics:", ctx), compiler(compiler) {}
+  CompilerStats(Compiler &compiler, Basic &basic)
+      : Stats("compiler statistics:", basic), compiler(compiler) {}
   void Print() override;
 };
 

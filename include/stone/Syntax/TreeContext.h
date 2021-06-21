@@ -32,7 +32,7 @@
 #include "llvm/Support/Casting.h"
 #include "llvm/Support/Compiler.h"
 
-#include "stone/Basic/Context.h"
+#include "stone/Basic/Basic.h"
 #include "stone/Basic/LangOptions.h"
 #include "stone/Basic/SrcMgr.h"
 #include "stone/Basic/Stats.h"
@@ -64,8 +64,8 @@ class TreeContextStats final : public Stats {
   const TreeContext &tc;
 
 public:
-  TreeContextStats(const TreeContext &tc, Context &ctx)
-      : Stats("tree-context stats:", ctx), tc(tc) {}
+  TreeContextStats(const TreeContext &tc, Basic &basic)
+      : Stats("tree-context stats:", basic), tc(tc) {}
   void Print() override;
 };
 class TreeContext final {
@@ -78,7 +78,7 @@ class TreeContext final {
 
   /// The language options used to create the AST associated with
   ///  this TreeContext object.
-  Context &ctx;
+  Basic &basic;
 
   /// The search path options
   const SearchPathOptions &searchPathOpts;
@@ -103,7 +103,7 @@ class TreeContext final {
   // Identifier stdlibModuleName;
 
 public:
-  TreeContext(Context &ctx, const SearchPathOptions &spOpts, SrcMgr &sm);
+  TreeContext(Basic &basic, const SearchPathOptions &spOpts, SrcMgr &sm);
   ~TreeContext();
 
   TreeContext(const TreeContext &) = delete;
@@ -115,8 +115,8 @@ public:
   ///
   Builtin &GetBuiltin() const;
 
-  Context &GetContext() { return ctx; }
-  const Context &GetContext() const { return ctx; }
+  Basic &GetBasic() { return basic; }
+  const Basic &GetBasic() const { return basic; }
   ///
   LangABI *GetLangABI() const;
   //

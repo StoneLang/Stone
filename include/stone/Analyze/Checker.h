@@ -1,7 +1,7 @@
 #ifndef STONE_ANALYZE_CHECKER_H
 #define STONE_ANALYZE_CHECKER_H
 
-#include "stone/Basic/Context.h"
+#include "stone/Basic/Basic.h"
 #include "stone/Basic/Stats.h"
 #include "stone/Syntax/Module.h"
 #include "stone/Syntax/TreeContext.h"
@@ -24,8 +24,8 @@ class CheckerStats final : public Stats {
   const Checker &checker;
 
 public:
-  CheckerStats(const Checker &checker, Context &ctx)
-      : Stats("checker statistics:", ctx), checker(checker) {}
+  CheckerStats(const Checker &checker, Basic &basic)
+      : Stats("checker statistics:", basic), checker(checker) {}
   void Print() override;
 };
 

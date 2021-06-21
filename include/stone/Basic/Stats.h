@@ -11,14 +11,14 @@
 #include <iostream>
 
 namespace stone {
-class Context;
+class Basic;
 class StatsPrinter {};
 class StatsListener {};
 
 class Stats {
   bool enabled = false;
   ConstList<Stats> deps;
-  Context &ctx;
+  Basic &basic;
 
 protected:
   const char *name = nullptr;
@@ -27,7 +27,7 @@ public:
   std::unique_ptr<llvm::Timer> timer;
 
 public:
-  Stats(const char *name, Context &ctx);
+  Stats(const char *name, Basic &basic);
   virtual ~Stats() {}
 
 public:
@@ -39,7 +39,7 @@ public:
 
   llvm::Timer &GetTimer() { return *timer.get(); }
 
-  Context &GetContext() { return ctx; }
+  Basic &GetBasic() { return basic; }
 
 public:
   virtual void Print() = 0;

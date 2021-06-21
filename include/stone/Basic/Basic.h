@@ -10,7 +10,9 @@
 
 namespace stone {
 
-class Context {
+class Basic {
+  class LiveDiagnostic;
+
 protected:
   LangOptions langOpts;
   DiagnosticOptions diagOpts;
@@ -19,12 +21,12 @@ protected:
   ColorOutputStream cos;
   FileMgr fm;
   FileSystemOptions fsOpts;
-
   /// Default target triple.
   std::string targetTriple;
 
 public:
-  Context();
+  Basic();
+  ~Basic();
 
 public:
   ColorOutputStream &Out() { return cos; }
@@ -46,8 +48,11 @@ public:
 
   bool HasError() { return de.HasError(); }
 
+  /// TODO: Return LiveDiagnostic
   void Error();
+  // TODO: Return LiveDiagnostic
   void Warn();
+  // TODO: Return LiveDiagnostic
   void Note();
 };
 

@@ -38,8 +38,8 @@ class DeclStats final : public Stats {
   const Decl &declaration;
 
 public:
-  DeclStats(const Decl &declaration, Context &ctx)
-      : Stats("ast-declaration stats:", ctx), declaration(declaration) {}
+  DeclStats(const Decl &declaration, Basic &basic)
+      : Stats("ast-declaration stats:", basic), declaration(declaration) {}
   void Print() override;
 };
 

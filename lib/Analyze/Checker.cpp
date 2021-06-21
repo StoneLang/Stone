@@ -10,8 +10,8 @@ using namespace stone::syn;
 Checker::Checker(SourceModuleFile &sf, Syntax &syntax,
                  CheckerPipeline *pipeline)
     : sf(sf), syntax(syntax), pipeline(pipeline) {
-  stats.reset(new CheckerStats(*this, syntax.GetTreeContext().GetContext()));
-  syntax.GetTreeContext().GetContext().GetStatEngine().Register(stats.get());
+  stats.reset(new CheckerStats(*this, syntax.GetTreeContext().GetBasic()));
+  syntax.GetTreeContext().GetBasic().GetStatEngine().Register(stats.get());
 }
 // Decl
 void Checker::CheckDecl() {}

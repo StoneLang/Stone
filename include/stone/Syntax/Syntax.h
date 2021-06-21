@@ -49,8 +49,8 @@ public:
   SyntaxResult<Stmt *> CreateIfStmt();
 
 public:
-  bool HasError() { return tc.GetContext().HasError(); }
-  Context &GetContext() { return tc.GetContext(); }
+  bool HasError() { return tc.GetBasic().HasError(); }
+  Basic &GetBasic() { return tc.GetBasic(); }
 };
 } // namespace syn
 } // namespace stone

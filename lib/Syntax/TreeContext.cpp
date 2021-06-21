@@ -14,12 +14,12 @@
 using namespace stone;
 using namespace stone::syn;
 
-TreeContext::TreeContext(Context &ctx, const SearchPathOptions &spOpts,
+TreeContext::TreeContext(Basic &basic, const SearchPathOptions &spOpts,
                          SrcMgr &sm)
-    : ctx(ctx), searchPathOpts(spOpts), sm(sm),
-      identifiers(ctx.GetLangOptions()) {
-  stats.reset(new TreeContextStats(*this, ctx));
-  ctx.GetStatEngine().Register(stats.get());
+    : basic(basic), searchPathOpts(spOpts), sm(sm),
+      identifiers(basic.GetLangOptions()) {
+  stats.reset(new TreeContextStats(*this, basic));
+  basic.GetStatEngine().Register(stats.get());
 
   builtin.Init(*this);
 }

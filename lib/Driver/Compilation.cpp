@@ -74,7 +74,7 @@ void Compilation::ExecuteJobs(
 void CompilationStats::Print() {
   if (compilation.GetDriver().GetDriverOptions().printStats) {
 
-    GetContext().Out() << GetName() << '\n';
+    GetBasic().Out() << GetName() << '\n';
     return;
   }
 }

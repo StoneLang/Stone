@@ -7,10 +7,10 @@ set( LLVM_LINK_COMPONENTS
 	Core
   )
 set(stone_basic_sources
+	Basic.cpp
 	BumpTable.cpp
 	Char.cpp
 	Clock.cpp
-	Context.cpp
 	DarwinDirWatcher.cpp
 	DiagIDList.cpp
 	DiagnosticEngine.cpp
