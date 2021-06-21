@@ -9,5 +9,7 @@ Basic::Basic()
 Basic::~Basic() {}
 
 void Basic::Error() {}
+
 void Basic::Warn() {}
+
 void Basic::Note() {}
