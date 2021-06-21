@@ -1,7 +1,7 @@
 #include "stone/Analyze/Parser.h"
 #include "stone/Analyze/ParserRAII.h"
 #include "stone/Basic/Ret.h"
-#include "stone/Syntax/SyntaxResult.h"
+#include "stone/Syntax/Syntax.h"
 
 using namespace stone;
 using namespace stone::syn;
@@ -53,11 +53,17 @@ syn::DeclGroupPtrTy Parser::ParseDeclImpl(ParsingDeclSpecifier &pds,
   return nullptr;
 }
 
+// void Parser::ParseFunctionPrototype() {
+
+// }
+
 SyntaxResult<Decl *> Parser::ParseFunDecl(ParsingDeclSpecifier &pds,
                                           AccessLevel al) {
 
   assert(tok.GetType() == tk::Type::kw_fun &&
          "Attempting to parse a 'fun' decl with incorrect token.");
+
+  // ParseFunctionPrototype();
 
   return DeclEmpty();
 }

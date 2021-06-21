@@ -7,6 +7,7 @@
 #include "stone/Basic/FileSystemOptions.h"
 #include "stone/Basic/LangOptions.h"
 #include "stone/Basic/Stats.h"
+
 namespace stone {
 
 class Context {
@@ -41,10 +42,13 @@ public:
   const DiagnosticOptions &GetDiagOptions() const { return diagOpts; }
 
   FileMgr &GetFileMgr() { return fm; }
-
   std::string GetTarget() { return targetTriple; }
 
   bool HasError() { return de.HasError(); }
+
+  void Error();
+  void Warn();
+  void Note();
 };
 
 } // namespace stone

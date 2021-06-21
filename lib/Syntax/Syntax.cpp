@@ -7,13 +7,13 @@ Syntax::Syntax(TreeContext &tc) : tc(tc) {}
 
 Syntax::~Syntax() {}
 
-class Syntax::FunDeclFactory {
+class Syntax::FunDeclFactory final {
 public:
   FunDeclFactory();
   ~FunDeclFactory();
 
 public:
-  FunDecl *Create();
+  FunDecl *Make();
 };
 
-FunDecl *Syntax::FunDeclFactory::Create() { return nullptr; }
+FunDecl *Syntax::FunDeclFactory::Make() { return nullptr; }

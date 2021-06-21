@@ -151,6 +151,11 @@ public:
   syn::DeclGroupPtrTy ParseDeclImpl(ParsingDeclSpecifier &pds, AccessLevel al);
 
   DeclResult ParseFunDecl(ParsingDeclSpecifier &pds, AccessLevel al);
+
+private:
+  void ParseFunctionPrototype();
+
+public:
   // First, call ParseFunDecl -- this is your fun prototype
   // Then you call the following:
   // void ParseFunDeclDefinition();
