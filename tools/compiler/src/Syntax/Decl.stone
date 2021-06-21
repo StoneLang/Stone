@@ -1,0 +1,42 @@
+
+use System.Source; 
+
+space Stone.Syntax {
+
+	public struct Decl : Node {
+	}	
+	public Decl::GetNodeType() -> NodeType {
+		return NodeType.Stmt; 
+	}
+	public struct ValueDecl {
+		Decl* decl = null;
+	}
+	init fun ValueDecl::Init() {
+		decl = new Decl();
+	}
+	defer fun ValueDecl::Defer(){
+		if(decl){
+			free decl; 
+		}
+	}
+	public fun ValueDecl::GetDecl() -> Decl* {
+		return decl;
+	}
+	init public fun ValueDecl::Init(Decl* decl) {
+		self.decl = decl; 
+	}
+	public struct FunDecl {
+		ValueDecl* vd = null; 
+	}
+	init public fun FunDecl::Init(Location funLoc) {
+		vd = new ValueDecl();
+	}
+	defer fun FunDecl::Defer() {
+		if(vd){
+			free vd; 
+		}
+	}
+	public fun FunDecl::GetValueDecl() -> ValueDecl* {
+		return vd; 
+	}
+}

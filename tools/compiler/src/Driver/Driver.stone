@@ -1,5 +1,12 @@
-	
+use Stone.Session; 
 
-public struct Driver {
+space Stone.Driver {
+
+	public struct Driver : Session {
+	}
+	init fun Driver::Init() {
+	}
+	defer fun Driver::Defer() {
+	}
 }
 	

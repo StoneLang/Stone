@@ -48,12 +48,16 @@ public:
 
   bool HasError() { return de.HasError(); }
 
+  void Panic();
   /// TODO: Return LiveDiagnostic
   void Error();
   // TODO: Return LiveDiagnostic
   void Warn();
   // TODO: Return LiveDiagnostic
   void Note();
+  /// TODO: Return LiveDiagnostic
+  void Remark(); 
+  
 };
 
 } // namespace stone

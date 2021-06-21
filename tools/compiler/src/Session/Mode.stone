@@ -1,11 +1,13 @@
 
-public enum ModeType {
-	None,
-	Parse,
-	Check
-}
-public struct Mode {
-	public ModeType modeType = ModeType.None; 
+space Stone.Session {
+	public enum ModeType {
+		None,
+		Parse,
+		Check
+	}
+	public struct Mode {
+		public ModeType modeType = ModeType.None; 
+	}
 }
 
 

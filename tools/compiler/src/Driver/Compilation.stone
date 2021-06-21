@@ -1,16 +1,16 @@
 
 
-space Stone {
+space Stone.Driver {
 
-	public interface ICompilation {
-	}
-	public struct Compilaiton : ICompilation {	
+	public struct Compilaiton  {	
+		private Driver* driver = null; 
 	}
 
-	init public fun Compilation::Init() {
+	// Compilation is public so Init is public by default?
+	init fun Compilation::Init(Driver* driver) {
+		self.driver = driver; 
 	}
-	defer public fun Compilation::Defer() {
-
+	defer fun Compilation::Defer() {
 	}
 }
 

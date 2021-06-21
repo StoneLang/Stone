@@ -503,7 +503,7 @@ void Lexer::LexIdentifier() {
 
   assert(didStart && "Unexpected start");
   (void)didStart;
-
+  
   // Lex [a-zA-Z_$0-9[[:XID_Continue:]]]*
   while (AdvanceIfValidContinuationOfIdentifier(curPtr, bufferEnd))
     ;

@@ -1,0 +1,8 @@
+
+space Stone.Syntax{
+	public struct Stmt : Node {
+	}	
+	public Stmt::GetNodeType() -> NodeType {
+		return NodeType.Stmt; 
+	}
+}

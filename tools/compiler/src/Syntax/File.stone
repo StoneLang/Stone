@@ -1,7 +1,6 @@
-space Stone.Syntax.File; 
+space Stone.Syntax {
 
-import Stone.Syntax.Tree; 
-
-public struct File {
-	public Decl[] decls; 
+	public struct File {
+		public Decl[] decls; 
+	}
 }

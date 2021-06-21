@@ -1,12 +1,14 @@
 
-public struct SessionOptions {
-}
-public struct SessionProfile {
-	// Private by default 
-	SessionOptions* options = null;
-}
-
-public fun SessionProfile::GetOptions() -> SessionOptions* {
-	return options; 
+space Stone.Session {
+	public struct SessionOptions {
+	}
+	
+	public struct SessionProfile {
+		// private by default 
+		SessionOptions* options = null;
+	}
+	public fun SessionProfile::GetOptions() -> SessionOptions* {
+		return options; 
+	}
 }
 

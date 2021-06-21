@@ -8,8 +8,16 @@ Basic::Basic()
 
 Basic::~Basic() {}
 
+
+
+void Basic::Panic() {
+}
 void Basic::Error() {}
 
 void Basic::Warn() {}
 
 void Basic::Note() {}
+
+void Basic::Remark() {
+
+}

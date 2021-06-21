@@ -1,5 +1,5 @@
 
-space Stone.Console {
+space Stone.Format {
 	public fun Print(string[] args) -> void {
 	}
 }

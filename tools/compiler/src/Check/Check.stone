@@ -1,6 +1,7 @@
 
-
-public fun Check() -> bool {
-	return true;
+space Stone.Semantics {
+	public fun Check(ref SourceModuleFile sf) -> bool {
+		return true;
+	}
 }
 

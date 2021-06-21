@@ -1,6 +1,7 @@
+use Stone.Syntax; 
 
-
-
-public fun Parse() -> bool {
-	return true; 
+space Stone.Syntax {
+	public fun Parse(ref SourceFileModule sf) -> bool {
+		return true; 
+	}
 }
