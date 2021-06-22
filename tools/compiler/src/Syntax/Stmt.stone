@@ -2,12 +2,19 @@
 space Stone.Syntax {
 
 	public enum StmtType {
-		IfStmt,
-		WhileStmt
+		If,
+		While,
+		For,
 	}
-	public struct Stmt : Node {
-	}	
-	public Stmt::GetNodeType() -> NodeType {
+	public struct Stmt : Node<Stmt> {
+	}
+	Stmt::Init() {
+	}
+	Stmt::~Init() {
+
+	}
+
+	public Stmt::GetType() -> NodeType {
 		return NodeType.Stmt; 
 	}
 }

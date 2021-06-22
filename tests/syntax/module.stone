@@ -1,11 +1,5 @@
-module Stone.Physics; 
 
 
-space Stone.Physics.Mechanics {
-	public fun Fire(const Projectile* projectile = null) -> bool {
-		return true; 
-	}
-}
 
 space Stone.Physics.Quantum {
 
@@ -19,10 +13,10 @@ space Stone.Physics.Quantum {
 	struct Proton : Particle {
 		ParticleProfile* profile = null;
 	}
-	init fun Proton::Init(const ParticleProfile* profile) {
+	Proton::Init(const ParticleProfile* profile) {
 		self.profile = profile; 
 	}
-	defer fun Proton::Defer() {
+	Proton::~Init() {
 		free profile;
 	}
 	public fun Proton::GetProfile() -> ParticleProfile* {
@@ -41,7 +35,7 @@ space Stone.Physics.Quantum {
 // You may want to consider:
 
 // Physics.stone
-module System.Physics;
+use System.Physics;
 
 public fun Fire(Particle* particle) -> bool {
 
@@ -62,21 +56,4 @@ fun Main() -> int {
 
 	return 0; 
 }
-
-
-// Update
-
-// File Math.stone
-
-
-space Stone.Math {
-	
-	public fun Cos() -> {
-	}
-	public fun Sine() -> {
-	}
-}
-
-/// Creates Stone.Math.stonemodule  
-use Stone.Math;  
 

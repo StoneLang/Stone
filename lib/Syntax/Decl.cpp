@@ -133,10 +133,14 @@ static bool IsNamed(const NamingDecl *namingDecl, const char (&str)[Len]) {
   return identifier && identifier->isStr(str);
 }
 
-bool FunDecl::IsMain() const { return false; }
-SyntaxResult<Decl *> Syntax::CreateFunDecl(SrcLoc funLoc, const DeclName &name,
-                                           SrcLoc nameLoc) {
+SyntaxResult<Decl *> FunDeclFactory::Make(DeclContext *dc, SrcLoc funLoc,
+                                          const DeclName &dn, SrcLoc dnLoc,
+                                          StorageType st) {
+  assert(dc);
   return DeclEmpty();
 }
 
-SyntaxResult<Decl *> Syntax::CreateStructDecl() { return DeclEmpty(); }
+SyntaxResult<Decl *> StructDeclFactory::Make(DeclContext *dc) {
+  assert(dc);
+  return DeclEmpty();
+}

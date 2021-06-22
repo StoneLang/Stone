@@ -1,15 +1,14 @@
 
 
-space stone.driver {
+space Stone.Compilation {
 
 	public struct Compilaiton  {	
-		private Driver* driver = null; 
+		private ref Driver driver = null; 
 	}
-	// Compilation is public so Init is public by default?
-	init fun Compilation::Init(Driver* driver) {
-		self.driver = driver; 
+	Compilation::Init(ref Driver driver) {
+		this.driver = driver; 
 	}
-	defer fun Compilation::Defer() {
+	Compilation::~Init() {
 	}
 }
 

@@ -70,9 +70,6 @@ protected:
   unsigned missingArgIndex;
   unsigned missingArgCount;
 
-  /// The name of the module which we are building.
-  std::string moduleName;
-
   /// The original (untranslated) input argument list.
   std::unique_ptr<llvm::opt::InputArgList> originalArgs;
 
@@ -138,7 +135,7 @@ public:
   llvm::opt::DerivedArgList &GetTranslatedArgs() {
     return *translatedArgs.get();
   }
-  std::string GetModuleName() { return moduleName; }
+  llvm::StringRef GetModuleName() { return sessionOpts.moduleName; }
 
   file::Files &GetInputFiles() { return sessionOpts.GetInputFiles(); }
 

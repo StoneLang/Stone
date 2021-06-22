@@ -1,0 +1,13 @@
+
+public struct Device {
+	private string name; 
+}
+Device::Init(string name) {
+	this.name = name; 
+}
+Device::~Init() {
+
+}
+
+
+

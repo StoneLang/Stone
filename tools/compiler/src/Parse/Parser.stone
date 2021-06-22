@@ -1,0 +1,19 @@
+use Stone.Basic; 
+
+
+space Stone.Analysis {
+	
+	public struct Parser {
+		private Lexer* lexer = null;
+		private ref Syntax syntax = null;
+	}
+	Parser::Init(ref Syntax syntax) {
+		this.syntax = syntax; 
+		this.lexer = new Lexer();
+	}
+	Parser::~Init() {
+		if(lexer){
+			free lexer;
+		}
+	}
+}

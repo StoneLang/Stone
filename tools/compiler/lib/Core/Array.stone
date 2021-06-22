@@ -1,6 +1,6 @@
 
 
-space std.collections {
+space STD.Collections {
 	public struct Array {
 	}
 }

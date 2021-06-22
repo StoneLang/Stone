@@ -37,6 +37,7 @@ void Module::AddFile(ModuleFile &file) {
   files.push_back(&file);
   // ClearLookupCache();
 }
+
 syn::Module *syn::Module::Create(Identifier &name, TreeContext &tc) {
   return new (tc) syn::Module(name, tc);
 }

@@ -63,15 +63,18 @@
 #include "llvm/Transforms/Utils/NameAnonGlobals.h"
 #include "llvm/Transforms/Utils/SymbolRewriter.h"
 // TODO: #include "llvm/Transforms/Utils/UniqueInternalLinkageNames.h"
-#include <memory>
 
 #include "stone/Basic/Ret.h"
 #include "stone/Gen/CodeGenOptions.h"
 #include "stone/Gen/CodeGenerator.h"
 #include "stone/Gen/Gen.h"
-#include "stone/Public.h"
 #include "stone/Syntax/Module.h"
 #include "stone/Syntax/TreeContext.h"
+
+
+#include <memory>
+
+
 
 using namespace stone;
 using namespace stone::gen;

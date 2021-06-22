@@ -3,9 +3,9 @@
 #include "stone/Analyze/Parser.h"
 #include "stone/Analyze/ParserPipeline.h"
 #include "stone/Basic/Ret.h"
-#include "stone/Public.h"
 #include "stone/Syntax/Module.h"
 #include "stone/Syntax/Syntax.h"
+
 using namespace stone::syn;
 
 void stone::ParseSourceModuleFile(SourceModuleFile &sf, Syntax &syntax,

@@ -4,7 +4,9 @@ public struct S0 {
 }
 fun Main() -> int {
 
-safe S0* s0 = new S0(); 
+	safe S0* s0 = new S0(); 
+	// Or
+	S0 s1; 
 
 }
 	

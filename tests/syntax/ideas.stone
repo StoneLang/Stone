@@ -5,29 +5,47 @@ module Ideas;
 
 space Ideas {
 
-interface CI {
+interface I0 {
 	fun Print() -> void; 
 }
-class C0 :  CI {
+struct S0 :  I0 {
 	const Options* options = null; 
 	public i32 counter = 0; 
 	public System* system = null;  
 }
 
-init public fun C0::Init(Options* options, Context* context) {
+init fun C0::Init(Options* options, Context* context) {
 
 	this.options = options;
 	this.context = context; 
 	this.system = new System(); 
 }
-end public fun C0::End(){ 
+defer fun C0::Defer(){ 
 	free system;
 	free options; 
 }
 
+//OR
+public struct S0 :  I0 { 
+	private Options* options = null;
+	private System* system = null; 
+
+	Init(Options* options) {
+		this.options = options; 
+		system = new System(); 
+	}
+	~Init() {
+		if(system)
+			free system; 
+	}
+}
+
+init fun C0::Init(Options* options, Context* context) {
+
+
 
 // Leaning this way
-init public fun C0::Init(const Options* options, Context* context) {
+init fun C0::Init(const Options* options, Context* context) {
 	me.options = options;
 	me.context = context; 
 	me.system = new System(); 
@@ -45,25 +63,23 @@ defer public fun C0::Defer() {
 module Physics;
 
 space Physics.QM {
-	interface Accelerator<T> {
-			Fire(const T* particle != null) -> bool;
-	}
+	any<T> interface Accelerator {
+			Fire(const Particle* p) -> bool;
 
+	}
 	struct LinearAccelerator : Accelerator<LinearAccelerator> {
 		public string name = "some name";  
 	}
-
 	init fun LinearAccelerator::Init() {
 	}
-	end fun LinearAccelerator::End() {
+	defer fun LinearAccelerator::Defer() {
 
 	}
-
 	struct Particle {
 		public bool fired = false; 
 	}
 
-	fun LinearAcellerator::Fire(const Particle* particle) -> bool {
+	fun LinearAcellerator::Fire(const Particle* p) -> bool {
 		particle.fired = true; 
 		return true; 
 	}
@@ -105,17 +121,6 @@ space Physics {
 		return true; 
 	}
 
-	//OR 
-	public interface Particle {
-	}
-
-	public struct Electron : Particle {
-	 
-	}
-
-	any(P) interface Accelerator {
-		fun Fire(const P* particle) -> bool;
-	}
 
 	public any(P) struct LinearAccelerator : any(P) Accelerator {
 		public string name = "some name";  
@@ -154,6 +159,5 @@ fun Main() -> int {
 
 	free p; 
 }
-
 
 

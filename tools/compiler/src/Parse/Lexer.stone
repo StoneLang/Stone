@@ -1,0 +1,13 @@
+
+space Stone.Analysis {
+	
+	public struct Lexer {
+		
+	}
+
+	Lexer::Init() {
+	}
+	Lexer::~Init() {
+
+	}
+}

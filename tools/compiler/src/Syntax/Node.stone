@@ -1,12 +1,12 @@
 
 
-space Stone.Syntax{
+space Stone.Syntax {
 	public enum NodeType {
 		Decl, 
 		Stmt, 
 		Expr 
 	}
-	public interface Node {
-		fun GetNodeType() -> NodeType; 
+	public any<T> interface Node {
+		fun GetType() -> NodeType; 
 	}	
 }

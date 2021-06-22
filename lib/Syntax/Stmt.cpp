@@ -4,4 +4,4 @@
 using namespace stone;
 using namespace stone::syn;
 
-SyntaxResult<Stmt *> Syntax::CreateIfStmt() { return StmtEmpty(); }
+// SyntaxResult<Stmt *> Syntax::CreateIfStmt() { return StmtEmpty(); }

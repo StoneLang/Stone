@@ -49,8 +49,8 @@ public:
 
   /// The default mode
   ModeType modeKind = ModeType::None;
-  /// The name of the module
-  llvm::StringRef moduleName;
+  /// The name of the module - you will get this from parsing
+  llvm::StringRef moduleName = "TODO";
 
   /// The file input type
   file::Type inputType = file::Type::None;

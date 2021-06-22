@@ -1,9 +1,7 @@
 
 
-
-test fun DeclTest() {
+test public fun DeclTest() {
 
 	auto funDecl = new FunDecl(); 
-
 	free funDecl; 
 }

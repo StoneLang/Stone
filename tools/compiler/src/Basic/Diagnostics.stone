@@ -1,5 +1,17 @@
 
-space stone.basic {
+space Stone.Diagnostics {
+
 	public struct DiagnosticEngine {
+		private ref DiagnostiOptions diagOpts;
+	}
+
+	DiagnosticEngine::Init(ref DiagnosticOptions diagOpts){
+			this.diagOpts = diagOpts; 
+			liveDiagnostic = new LiveDiagnostic(); 
+	}
+	DiagnosticEngine::~Init() {
+	}
+
+	public fun DiagnosticEngine::Diagnose() -> void {
 	}
 }

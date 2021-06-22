@@ -1,17 +1,30 @@
-use stone.session;
+use Stone.Session;
+use Stone.Syntax;
+use Stone.Basic; 
 
-space stone {
+space Stone.Frontend {
+
 	public struct Compiler : Session {
+		///
+		private Basic* basic = null;
+		///
+		private CompilerOptions* compilerOpts = null; 
+		///
+		private Module* mainModule = null;	 
 	}
-	init public fun Compiler::Init() {
+	
+	Compiler::Init(Basic* basic) {
+			this.basic = basic; 
+			this.compilerOpts = new CompilerOptions(); 
+			this.mainModule = new Module(); 
 	}
-	defer public fun Compiler::Defer() {
-	}
-	public fun Compiler::Build() -> bool {
-		return true; 
-	}
+	Compiler::~Init() {
 
-	public fun Compiler::GetProfile() -> SessionProfile* {
-		return null; 
+		if(mainModule) { 
+			free mainModule;
+		}
+	}
+	public fun Compiler::Run() -> void {
+
 	}
 }

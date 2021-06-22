@@ -1,7 +1,7 @@
 
-use stone.basic; 
+use Stone.Diagnostics; 
 
-space stone.semantics {
+space Stone.Semantics {
 	public fun Check(ref SourceModuleFile sf) -> bool {
 		return true;
 	}

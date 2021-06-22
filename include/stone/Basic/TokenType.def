@@ -108,7 +108,7 @@ LITERAL(imaginary_literal)
 // STATUS FLAGS : TOKON, TOKOFF, TOKRSV
 // Keywords that start decls.
 DECL_KEYWORD(auto, TOKON)
-DECL_KEYWORD(class, TOKON)
+DECL_KEYWORD(class, TOKON) //TODO: remove 
 DECL_KEYWORD(ref, TOKON)
 DECL_KEYWORD(interface, TOKON)
 DECL_KEYWORD(enum, TOKON)
@@ -167,7 +167,7 @@ EXPR_KEYWORD(as, TOKON)
 EXPR_KEYWORD(false, TOKON)
 EXPR_KEYWORD(is, TOKON)
 EXPR_KEYWORD(null, TOKON)
-EXPR_KEYWORD(me, TOKON)
+EXPR_KEYWORD(this, TOKON)
 EXPR_KEYWORD(true, TOKON)
 
 // Pattern keywords.

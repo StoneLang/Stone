@@ -6,6 +6,7 @@
 #include "stone/Syntax/Identifier.h"
 #include "stone/Syntax/Scope.h"
 #include "stone/Syntax/TreeContext.h"
+
 #include "llvm/ADT/SmallVector.h"
 
 namespace stone {
@@ -50,12 +51,11 @@ enum class ExprValueType {
 };
 
 /// Storage classes.
+/// These are legal on both functions and variables
 enum class StorageType {
-  // These are legal on both functions and variables.
   None,
   Extern,
   Static,
-  PrivateExtern,
   // These are only legal on variables.
   Auto,
   Register

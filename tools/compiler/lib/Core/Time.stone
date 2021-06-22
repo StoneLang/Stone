@@ -1,6 +1,6 @@
 
 
-space std.time {
+space STD.Time {
 
 	public enum Weekday : u8  (
 		Sunday = 1, 

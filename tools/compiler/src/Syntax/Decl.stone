@@ -1,20 +1,24 @@
 
-use System.Source; 
+use Stone.Source; 
 
 space Stone.Syntax {
 
-	public struct Decl : Node {
+	public struct Decl : Node<Decl> {
+		DeclType declType = DeclType.None; 
 	}	
-	public Decl::GetNodeType() -> NodeType {
-		return NodeType.Stmt; 
+	Decl::Init() {
 	}
+
+	Decl::~Init() {
+	}
+
 	public struct ValueDecl {
-		Decl* decl = null;
+		private Decl* decl = null;
 	}
-	init fun ValueDecl::Init() {
-		decl = new Decl();
+	ValueDecl::Init() {
+		this.decl = new Decl();
 	}
-	defer fun ValueDecl::Defer(){
+	ValueDecl::~Init() {
 		if(decl){
 			free decl; 
 		}
@@ -22,18 +26,16 @@ space Stone.Syntax {
 	public fun ValueDecl::GetDecl() -> Decl* {
 		return decl;
 	}
-	init fun ValueDecl::Init(Decl* decl) {
-		self.decl = decl; 
-	}
+
 	public struct FunDecl {
-		ValueDecl* vd = null; 
+		private ValueDecl* vd = null; 
 	}
 
-	init fun FunDecl::Init(Location funLoc) {
+	FunDecl::Init(Loc funLoc) {
 		vd = new ValueDecl();
 	}
-	defer fun FunDecl::Defer() {
-		if(vd){
+	FunDecl::~Init() {
+		if (vd){
 			free vd; 
 		}
 	}
@@ -41,3 +43,7 @@ space Stone.Syntax {
 		return vd; 
 	}
 }
+
+
+
+

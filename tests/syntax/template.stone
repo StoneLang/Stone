@@ -1,63 +1,24 @@
-space System.Collection;
-
-public any(T) interface Queue {
-	fun Add(T* t) -> void; 
-	fun Pop() -> T*; 
-}
-
-/// Consider using a struct 
-any(T) struct PriorityQueue : any(T) Queue {
-}
-
-fun PriorityQueue::Push(T* t) -> void {
-}
-fun PriorityQueue::Pop() -> T* {
-}
-
-space System.Physics;
-
-use System.Collection; 
-
-struct Particle {
-}
-fun Main() -> u8 {
-	real(int) 
-		Queue* q0 = new PriorityQueue();
-	q0.Push(23);
-
-	Particle* p = new Particle();
-	real(string) 
-		Queue* q1 = new PriorityQueue(); 
-	q1.Push(p);
-
-	//real(int, string) 
-	//	DenseMap* map = new DenseMap(); 
 
 
-	free {
-		q0;
-		q1;
-		p;
+
+space Syntax.Template {
+
+	public any<T> interface Queue {
+		fun Add(const T* t) -> void;
+		fun Pop() -> *T; 
+	}
+	public any<T> struct PriorityQueue : Queue<T> {
+		T[] entries; 
+	}
+
+	PriorityQueue::Init() {
+	}
+	PriorityQueue::~Init() {
+	}
+
+	public fun PriorityQueue::Add(const T* t) {
+	}
+	public fun PriorityQueue::Pop() -> T* {
 	}
 }
-
-fun Max<int>(T* first, T* second) -> T {
-	if(first > second) {
-		return first; 
-	}
-	return second;
-}
-auto max = real(int) Max(23, 25);
-
-
-fun Test() -> void {
-	
-	math.Min<int>(24, 25);
-
-} 
-
-
-
-
-
 

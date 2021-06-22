@@ -29,11 +29,11 @@ namespace stone {
 class SrcMgr;
 
 namespace syn {
-class TreeContext;
 class Decl;
 class Expr;
 class StringLiteral;
 class VarDecl;
+class TreeContext;
 
 class Stmt : public syn::Node {
 public:
@@ -57,10 +57,11 @@ class DeclStmt : public Stmt {
   SrcLoc startLoc, endLoc;
 };
 
-/// CompoundStmt - This represents a group of statements like { stmt stmt }.
-class CompoundStmt final : public Stmt,
-                           private llvm::TrailingObjects<CompoundStmt, Stmt *> {
-};
+/// This is equivalent to the CompoundStmt (c/c++) that
+/// represents a group of statements like { stmt stmt }.
+class BraceStmt final : public Stmt,
+                        private llvm::TrailingObjects<BraceStmt, Stmt *> {};
+
 class MatchCase : public Stmt {
 protected:
   /// The location of the ":".
@@ -94,6 +95,11 @@ class IfStmt final : public Stmt,
   friend TrailingObjects;
 };
 
+
+class NullStmt final : public Stmt,
+                       private llvm::TrailingObjects<NullStmt, Stmt *, SrcLoc> {
+  friend TrailingObjects;
+};
 } // namespace syn
 } // namespace stone
 #endif

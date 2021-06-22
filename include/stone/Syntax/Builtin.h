@@ -13,6 +13,7 @@ struct Profile {
   const char *attributes;
   const char *features;
 };
+
 } // namespace builtin
 
 class Builtin final {

@@ -2,7 +2,6 @@
 #include "stone/Analyze/Checker.h"
 #include "stone/Analyze/CheckerPipeline.h"
 #include "stone/Basic/Ret.h"
-#include "stone/Public.h"
 #include "stone/Syntax/Syntax.h"
 
 using namespace stone::syn;

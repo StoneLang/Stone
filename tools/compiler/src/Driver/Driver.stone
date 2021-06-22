@@ -1,12 +1,17 @@
 use Stone.Session; 
 
-space Stone.Driver {
+space Stone.Compilation {
 
 	public struct Driver : Session {
+
 	}
-	init fun Driver::Init() {
+
+	Driver::Init() {
+	
 	}
-	defer fun Driver::Defer() {
+
+	Driver::~Init() {
+
 	}
 }
 	

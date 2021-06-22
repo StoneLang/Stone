@@ -1,7 +1,10 @@
 
 
-space stone {
-	public fun Compile(string[] args) -> bool {
+
+space Stone.Frontend {
+	public fun Compile(string[] args, PipelineEngine* pe = null) -> bool {
+
+
 		return true; 
 	}
 }

@@ -1,5 +1,5 @@
-#ifndef STONE_BASIC_CONTEXT_H
-#define STONE_BASIC_CONTEXT_H
+#ifndef STONE_BASIC_BASIC_H
+#define STONE_BASIC_BASIC_H
 
 #include "stone/Basic/DiagnosticEngine.h"
 #include "stone/Basic/DiagnosticOptions.h"

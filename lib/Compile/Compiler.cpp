@@ -25,13 +25,12 @@ void Compiler::ComputeMode(const llvm::opt::DerivedArgList &args) {
 }
 
 syn::Module *Compiler::GetMainModule() const {
-  assert(mainModule && "Null Main Module.");
 
-  // Setup the main module
-  if (!mainModule) {
-    Identifier &moduleName = tc->GetIdentifier(GetModuleName());
-    mainModule = syn::Module::CreateMainModule(moduleName, *tc);
+  if (mainModule) {
+    return mainModule;
   }
+  Identifier &moduleName = tc->GetIdentifier(GetModuleName());
+  mainModule = syn::Module::CreateMainModule(moduleName, *tc);
   return mainModule;
 }
 

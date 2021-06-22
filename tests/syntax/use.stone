@@ -1,17 +1,8 @@
-module Stone.Syntax 
-
-use System.Physics;
 
 
-fun Main() -> i32 {
+use Syntax.Physics;
 
-	auto projectile = new Projectile();
-	auto particle = new Particle();
 
-	Mechanics.Fire(projectile); 
-	Quantum.Fire(projectile);
-
-	free projectile;
-	free particle; 
+fun Main() -> i32 {	
 }
 

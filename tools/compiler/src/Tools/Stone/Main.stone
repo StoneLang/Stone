@@ -1,6 +1,10 @@
 
-use System.IO; 
-use Stone.Format; 
+use STD.IO; 
+use STD.Format; 
+
+use Stone.Frontend; 
+use Stone.Compilation; 
+
 
 fun Main(string[] args) -> i32  {
 

@@ -1,31 +1,7 @@
-module Stone.Syntax 
 
-public class C0 {	
-	string name = "test"; 
-	public int data = 100; 
-}
 
-fun C0::DoSometing() -> void {
+public class C0 {	 
 
-}
-C0::this() { 
-}
-C0::defer() { 
-	
 }
 
 
-any<T:ISpeak> struct Hello {
-}
-
-public fun Hello::DoWork() -> bool {
-	
-}
-any<T> public fun DoWork(T* t) -> bool {
-}
-
-fun Main() -> int {
-	
-	Hello<int>* hello = new Hello<int>(); 
-
-}

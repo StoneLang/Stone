@@ -1,5 +1,5 @@
 
-space stone.session {
+space Stone.Session {
 	public enum ModeType {
 		None,
 		Parse,
@@ -7,6 +7,18 @@ space stone.session {
 	}
 	public struct Mode {
 		public ModeType modeType = ModeType.None; 
+	}
+
+	Mode::Init() {
+	}
+	Mode::~Init(){
+	}
+
+
+	public fun Mode::IsCompilable() -> bool {
+		
+		match(modeType){
+		}
 	}
 }
 

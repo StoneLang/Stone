@@ -2,12 +2,13 @@
 
 struct S0 {	
 }
-init fun S0::Init() {
-}
-defer fun S0::Defer() {
 
+
+S0::Init() {
 }
-fun S0::Do() -> void {
+
+S0::~Init() {
+
 }
 
 

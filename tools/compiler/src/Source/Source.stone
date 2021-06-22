@@ -1,7 +1,8 @@
+
 space Stone.Source {
 	
-	public struct File {
+	public struct SrcFile {
 	}
-	public struct Location {
+	public struct SrcLoc {
 	}
 }

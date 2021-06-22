@@ -1,16 +1,7 @@
-module Stone.Syntax; 
 
 
 public interface I0 {
-	fun Do(int* data) -> void; 
 }
 
-
-public struct C0 : I0  {
-}
-
-public fun C0::Do(int* data) -> void {
-
-}
 
 

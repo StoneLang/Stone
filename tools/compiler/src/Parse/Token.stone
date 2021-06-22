@@ -1,12 +1,14 @@
 
-space Stone.Parse {
+space Stone.Analysis {
 	
 	public enum TokenType {
 	}
 
 	public struct Token {
+		public TokenType tokenType = TokenType.None; 
+
 	}
 
-	init fun Token::Init() {
+	Token::Init() {
 	}
 }
