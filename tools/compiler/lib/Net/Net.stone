@@ -1,0 +1,8 @@
+use STD.IO; 
+use STD.Time; 
+
+
+space STD.Net {
+	public fun Dial() -> Connection* {
+	}
+}

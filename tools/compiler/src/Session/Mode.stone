@@ -6,18 +6,16 @@ space Stone.Session {
 		Check
 	}
 	public struct Mode {
-		public ModeType modeType = ModeType.None; 
+		public ModeType modeType = ModeType.None;
 	}
 
-	Mode::Init() {
-	}
-	Mode::~Init(){
-	}
-
-
-	public fun Mode::IsCompilable() -> bool {
-		
+	public fun Mode::IsCompilable() -> bool {	
 		match(modeType){
+			case Parse:
+			case Check:
+				return true; 
+			default:
+				return false; 
 		}
 	}
 }

@@ -1,0 +1,21 @@
+use STD.IO; 
+use STD.Time; 
+
+
+space STD.Net.Sockets {
+	
+	public struct TcpClient {
+
+		public TcpClient(){
+		}
+		public ~TcpClient(){
+		}
+	}
+
+	public fun TcpClient::Dial() -> void  {
+	}
+	public fun TcpClient::Close() -> void {
+
+	}
+
+}

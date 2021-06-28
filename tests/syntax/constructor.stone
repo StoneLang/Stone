@@ -1,13 +1,20 @@
 
-public struct Device {
-	private string name; 
+
+public struct Spin {
 }
-Device::Init(string name) {
-	this.name = name; 
+public struct Proton {
+	private Spin* spin = null;
 }
-Device::~Init() {
+
+public Proton::this(Spin* spin){
+		this.spin = spin;
+}
+public Proton::~this(){
 
 }
+
+
+
 
 
 

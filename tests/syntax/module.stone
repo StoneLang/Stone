@@ -1,6 +1,4 @@
 
-
-
 space Stone.Physics.Quantum {
 
 	struct ParticleProfile {
@@ -12,13 +10,15 @@ space Stone.Physics.Quantum {
 	}	
 	struct Proton : Particle {
 		ParticleProfile* profile = null;
+
+		public Proton(const ParticleProfile* profile) {
+			this.profile = profile; 
+		}
+		public ~Proton() {
+			free profile;
+		}
 	}
-	Proton::Init(const ParticleProfile* profile) {
-		self.profile = profile; 
-	}
-	Proton::~Init() {
-		free profile;
-	}
+
 	public fun Proton::GetProfile() -> ParticleProfile* {
 		return profile;  
 	}

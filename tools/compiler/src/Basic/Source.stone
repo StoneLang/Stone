@@ -5,4 +5,7 @@ space Stone.Source {
 	}
 	public struct SrcLoc {
 	}
+
+	public struct SrcMgr {
+	}
 }

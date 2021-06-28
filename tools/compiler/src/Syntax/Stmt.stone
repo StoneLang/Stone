@@ -6,15 +6,16 @@ space Stone.Syntax {
 		While,
 		For,
 	}
-	public struct Stmt : Node<Stmt> {
-	}
-	Stmt::Init() {
-	}
-	Stmt::~Init() {
-
+	public struct Stmt : Node<Stmt> {	
 	}
 
-	public Stmt::GetType() -> NodeType {
+	public Stmt::this() {
+	}
+	public Stmt::~this() {
+	}
+
+
+	public fun Stmt::GetType() -> NodeType {
 		return NodeType.Stmt; 
 	}
 }

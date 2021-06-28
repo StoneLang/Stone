@@ -1,12 +1,16 @@
 space Stone.Syntax {
 
 	public struct Syntax {
-		private ref TreeContext tc; 
+		private ref TreeContext tc;
 	}
 
-	Syntax::Init(ref TreeContext tc) {
-		this.tc = tc; 
+	public Syntax::this(ref TreeContext tc) {
+			this.tc = tc; 
 	}
-	Syntax::~Init() {
+	public Syntax::~this() {
+	}
+	
+	public fun Syntax::GetTreeContext() -> ref TreeContext {
+		return this.tc; 
 	}
 }

@@ -1,5 +1,16 @@
 
-public interface Session {
-	fun Run() -> bool;
-	fun GetProfile() -> SessionProfile*; 
+space Stone.Session {
+
+	public struct SessionOptions {
+	}
+	public struct SessionProfile { 
+		private ref SessionOptions options;
+	}
+	public fun SessionProfile::GetOptions() -> ref SessionOptions {
+		return options; 
+	}
+	public interface Session {
+		fun Run() -> bool;
+		fun GetProfile() -> SessionProfile*; 
+	}
 }

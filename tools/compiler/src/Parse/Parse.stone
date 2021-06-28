@@ -1,5 +1,7 @@
 space Stone.Analysis {
 	public fun Parse(ref SourceFileModule sf) -> bool {
+
+		Parser parser{sf}; 
 		return true; 
 	}
 }

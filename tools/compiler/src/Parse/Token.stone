@@ -5,10 +5,9 @@ space Stone.Analysis {
 	}
 
 	public struct Token {
-		public TokenType tokenType = TokenType.None; 
-
+		private TokenType tokenType = TokenType.None; 
 	}
-
-	Token::Init() {
+	public fun Token::GetType() -> TokenType {
+		return tokenType;
 	}
 }

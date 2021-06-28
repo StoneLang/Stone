@@ -1,0 +1,6 @@
+use STD.Time; 
+
+space STD.OS {
+	public struct Directory {
+	}
+}

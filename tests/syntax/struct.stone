@@ -1,15 +1,6 @@
 
 
-struct S0 {	
+struct S0 {
 }
-
-
-S0::Init() {
-}
-
-S0::~Init() {
-
-}
-
 
 

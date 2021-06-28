@@ -1,0 +1,16 @@
+
+use Stone.Diagnostics; 
+
+space Stone.Semantics {
+
+	public struct Checker {
+		ref SourceFileModule sf;
+	}
+
+	public Checker::this(ref SourceFileModule sf) {
+			this.sf = sf; 
+	}
+	public Checker::~this() {
+	}
+}
+

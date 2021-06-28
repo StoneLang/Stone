@@ -10,21 +10,24 @@ space Stone.Frontend {
 		///
 		private CompilerOptions* compilerOpts = null; 
 		///
-		private Module* mainModule = null;	 
+		private Module* mainModule = null;
+
 	}
-	
-	Compiler::Init(Basic* basic) {
+
+	public Compiler::this(Basic* basic) {
 			this.basic = basic; 
 			this.compilerOpts = new CompilerOptions(); 
 			this.mainModule = new Module(); 
 	}
-	Compiler::~Init() {
-
-		if(mainModule) { 
-			free mainModule;
-		}
+	public Compiler::~this() {
+			if(mainModule) { 
+				free mainModule;
+			}
 	}
 	public fun Compiler::Run() -> void {
+	}
 
+	public fun Compiler::GetBasic() -> Basic* {
+		return basic; 
 	}
 }

@@ -5,18 +5,18 @@ space Syntax.Template {
 
 	public any<T> interface Queue {
 		fun Add(const T* t) -> void;
-		fun Pop() -> *T; 
+		fun Pop() -> *T;
 	}
+
 	public any<T> struct PriorityQueue : Queue<T> {
 		T[] entries; 
 	}
-
-	PriorityQueue::Init() {
+	public PriorityQueue::this() {
 	}
-	PriorityQueue::~Init() {
+	public PriorityQueue::~this() {
 	}
 
-	public fun PriorityQueue::Add(const T* t) {
+	public fun PriorityQueue::Add(const T* t) -> void {
 	}
 	public fun PriorityQueue::Pop() -> T* {
 	}

@@ -3,15 +3,11 @@ use Stone.Session;
 space Stone.Compilation {
 
 	public struct Driver : Session {
-
+	}
+	public Driver::this() {
+	}
+	public Driver::~this(){
 	}
 
-	Driver::Init() {
-	
-	}
-
-	Driver::~Init() {
-
-	}
 }
 	

@@ -1,0 +1,27 @@
+space STD.IO {
+
+
+	public interface Stream {
+	}
+
+	public struct InputStream : Stream {
+		
+	}
+
+	public InputStream::this() {
+	}
+	
+	public InputStream::~this() {
+	}
+
+	public struct OutputStream : Stream {
+
+	}
+
+	public OutputStream::this() {
+	}
+	
+	public OutputStream::~this() {
+	}
+
+}

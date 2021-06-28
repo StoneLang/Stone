@@ -3,12 +3,16 @@
 space Stone.Compilation {
 
 	public struct Compilaiton  {	
-		private ref Driver driver = null; 
+		private ref Driver driver = null;	
 	}
-	Compilation::Init(ref Driver driver) {
-		this.driver = driver; 
+	public Compilation::this(ref Driver driver) {
+			this.driver = driver; 
 	}
-	Compilation::~Init() {
+	public Compilation::~this() {
 	}
+	public fun Compilation::GetDriver() -> ref Driver {
+		return driver; 
+	}
+
 }
 

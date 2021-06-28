@@ -4,7 +4,8 @@
 space Stone.Frontend {
 	public fun Compile(string[] args, PipelineEngine* pe = null) -> bool {
 
-
+		//Compiler compiler{args};
+		//compiler.Run(); 
 		return true; 
 	}
 }

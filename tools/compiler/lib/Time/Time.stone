@@ -1,5 +1,4 @@
 
-
 space STD.Time {
 
 	public enum Weekday : u8  (
@@ -34,20 +33,13 @@ space STD.Time {
 		Hours,
 		Days
 	}
-	public struct Time { 
+	public struct Time {
+
+		public Time() {
+		}
+		public ~Time(){
+		}
 	}
 	public struct Duration {
 	}
-	init public fun Time::Init() {
-	}
-	public fun Time::Start() -> void {
-
-	}
-	public fun Time::Stop() -> void {
-
-	}
-	public fun Time::GetSeconds() -> i32 {
-		return 0;
-	}
-
 }

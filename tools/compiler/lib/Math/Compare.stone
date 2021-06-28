@@ -1,0 +1,18 @@
+
+space STD.Math {
+
+	public any<T> fun Min(T first, T second) -> T {
+		if(first < second) {
+			return first; 
+		}
+		return second; 
+	}
+
+	public any<T> fun Max(T first, T second) -> T {
+		if(first < second) {
+			return second; 
+		}
+		return first; 
+	}
+
+}

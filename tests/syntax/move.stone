@@ -1,0 +1,13 @@
+
+
+
+public struct S0 {
+
+}
+
+fun Main() -> int {
+	// This will auto free 
+	own S0* s0 = new S0(); 
+
+}
+	

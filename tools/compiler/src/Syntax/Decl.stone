@@ -4,21 +4,26 @@ use Stone.Source;
 space Stone.Syntax {
 
 	public struct Decl : Node<Decl> {
-		DeclType declType = DeclType.None; 
-	}	
-	Decl::Init() {
+		private DeclType declType = DeclType.None;
 	}
-
-	Decl::~Init() {
+	public Decl::Decl() {
+	}
+	public Decl::~Decl() {
+	}
+	public fun Decl::GetType() -> DeclType {
+		return declType;
 	}
 
 	public struct ValueDecl {
 		private Decl* decl = null;
+		private DeclName name;
+		private Loc nameLoc;
+
 	}
-	ValueDecl::Init() {
-		this.decl = new Decl();
+	public ValueDecl::this(DeclName name, Loc nameLoc) {
+			this.decl = new Decl();
 	}
-	ValueDecl::~Init() {
+	public ValueDecl::~this() {
 		if(decl){
 			free decl; 
 		}
@@ -29,21 +34,20 @@ space Stone.Syntax {
 
 	public struct FunDecl {
 		private ValueDecl* vd = null; 
+		private Loc funLoc; 
 	}
-
-	FunDecl::Init(Loc funLoc) {
-		vd = new ValueDecl();
-	}
-	FunDecl::~Init() {
+	public FunDecl::this(Loc funLoc, DeclName name, Loc nameLoc) {
+			this.funLoc = funLoc; 
+			this.name = name; 
+			this.nameLoc = nameLoc; 
+			this.vd = new ValueDecl(name, nameLoc);
+		}
+	public FunDecl::~this() {
 		if (vd){
-			free vd; 
+			free vd;
 		}
 	}
 	public fun FunDecl::GetValueDecl() -> ValueDecl* {
 		return vd; 
 	}
 }
-
-
-
-

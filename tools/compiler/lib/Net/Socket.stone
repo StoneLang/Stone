@@ -1,0 +1,13 @@
+use STD.IO; 
+use STD.Time; 
+
+
+space STD.Net.Sockets {
+
+	public struct Socket {	
+	}
+
+	public struct NetStream : Stream {
+	}
+
+}

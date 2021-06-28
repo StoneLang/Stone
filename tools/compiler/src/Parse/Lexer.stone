@@ -2,12 +2,9 @@
 space Stone.Analysis {
 	
 	public struct Lexer {
-		
 	}
-
-	Lexer::Init() {
+	public Lexer::this() {
 	}
-	Lexer::~Init() {
-
+	public Lexer::~this() {
 	}
 }
