@@ -1,6 +1,8 @@
 #ifndef STONE_COMPILE_COMPILERINTERNAL_H
 #define STONE_COMPILE_COMPILERINTERNAL_H
 
+#include "stone/Basic/File.h"
+
 #include <memory>
 
 namespace stone {

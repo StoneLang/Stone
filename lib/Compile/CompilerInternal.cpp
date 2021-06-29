@@ -1,4 +1,3 @@
-#include "stone/Compile/CompilerInternal.h"
 #include "stone/Analyze/Check.h"
 #include "stone/Analyze/Parse.h"
 #include "stone/Basic/Defer.h"
@@ -7,6 +6,7 @@
 #include "stone/Compile/CompilableItem.h"
 #include "stone/Compile/Compile.h"
 #include "stone/Compile/Compiler.h"
+#include "stone/Compile/CompilerInternal.h"
 #include "stone/Gen/Gen.h"
 #include "stone/Syntax/Module.h"
 
