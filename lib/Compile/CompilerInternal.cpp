@@ -1,3 +1,4 @@
+#include "stone/Compile/CompilerInternal.h"
 #include "stone/Analyze/Check.h"
 #include "stone/Analyze/Parse.h"
 #include "stone/Basic/Defer.h"
@@ -11,53 +12,30 @@
 
 using namespace stone;
 
-class CompilerInternal final {
-  SafeList<CompilableItem> compilableItems;
-
-public:
-  static int ResolveImports(Compiler &compiler);
-  static int ExecuteCompilable(Compiler &compiler, CompilableItem &compilable);
-
-  static std::unique_ptr<CompilableItem> BuildCompilable(Compiler &compiler,
-                                                         file::File &input);
-  static syn::SourceModuleFile *
-  BuildSourceModuleFileForMainModule(Compiler &compiler,
-                                     CompilableItem &compilable);
-
-public:
-  static int Parse(Compiler &compiler, CompilableItem &compilable);
-  static int Parse(Compiler &compiler, CompilableItem &compilable, bool check);
-  static int Check(Compiler &compiler, CompilableItem &compilable);
-  static int EmitIR(Compiler &compiler, CompilableItem &compilable);
-  static int EmitObject(Compiler &compiler, CompilableItem &compilable);
-  static int EmitAssembly(Compiler &compiler, CompilableItem &compilable);
-  static int EmitLibrary(Compiler &compiler, CompilableItem &compilable);
-  static int EmitModuleOnly(Compiler &compiler, CompilableItem &compilable);
-  static int EmitBitCode(Compiler &compiler, CompilableItem &compilable);
-};
-int CompilerInternal::Parse(Compiler &compiler, CompilableItem &compilable,
-                            bool check) {
+int internal::Parse(Compiler &compiler, CompilableItem &compilable,
+                    bool check) {
 
   while (!compiler.HasError()) {
     stone::ParseSourceModuleFile(compilable.GetSourceModuleFile(),
                                  compiler.GetSyntax(),
                                  compiler.GetPipelineEngine());
-    if (compiler.HasError())
+    if (compiler.HasError()){
       return ret::err;
+    }
   }
   return ret::ok;
 }
-int CompilerInternal::Parse(Compiler &compiler, CompilableItem &compilable) {
-  return CompilerInternal::Parse(compiler, compilable, false);
+int internal::Parse(Compiler &compiler, CompilableItem &compilable) {
+  return internal::Parse(compiler, compilable, false);
 }
-int CompilerInternal::Check(Compiler &compiler, CompilableItem &compilable) {
-  return CompilerInternal::Parse(compiler, compilable, true);
+int internal::Check(Compiler &compiler, CompilableItem &compilable) {
+  return internal::Parse(compiler, compilable, true);
 }
 
-int CompilerInternal::EmitIR(Compiler &compiler, CompilableItem &compilable) {
+int internal::EmitIR(Compiler &compiler, CompilableItem &compilable) {
 
   /// Should be in EmitIR Scope
-  if (!CompilerInternal::Parse(compiler, compilable, true)) {
+  if (!internal::Parse(compiler, compilable, true)) {
     return ret::err;
   }
   /// Should be in Parse scope
@@ -75,17 +53,18 @@ int CompilerInternal::EmitIR(Compiler &compiler, CompilableItem &compilable) {
   compiler.GetCompilerContext().SetLLVMModule(llvmModule);
   return ret::ok;
 }
-int CompilerInternal::EmitObject(Compiler &compiler,
-                                 CompilableItem &compilable) {
+int internal::EmitObject(Compiler &compiler, CompilableItem &compilable) {
 
   if (!compiler.GetMode().CanOutput()) {
     return ret::err;
   }
+  compilable.CreateOutputFile(); 
+  
   if (!compilable.GetOutputFile()) {
     return ret::err;
   }
   /// Should be in EmitIR Scope
-  if (!CompilerInternal::EmitIR(compiler, compilable)) {
+  if (!internal::EmitIR(compiler, compilable)) {
     return ret::err;
   }
 
@@ -98,25 +77,21 @@ int CompilerInternal::EmitObject(Compiler &compiler,
 
   return ret::ok;
 }
-int CompilerInternal::EmitAssembly(Compiler &compiler,
-                                   CompilableItem &compilable) {
+int internal::EmitAssembly(Compiler &compiler, CompilableItem &compilable) {
   return ret::ok;
 }
-int CompilerInternal::EmitLibrary(Compiler &compiler,
-                                  CompilableItem &compilable) {
+int internal::EmitLibrary(Compiler &compiler, CompilableItem &compilable) {
   return ret::ok;
 }
-int CompilerInternal::EmitModuleOnly(Compiler &compiler,
-                                     CompilableItem &compilable) {
+int internal::EmitModuleOnly(Compiler &compiler, CompilableItem &compilable) {
   return ret::ok;
 }
-int CompilerInternal::EmitBitCode(Compiler &compiler,
-                                  CompilableItem &compilable) {
+int internal::EmitBitCode(Compiler &compiler, CompilableItem &compilable) {
   return ret::ok;
 }
 
-std::unique_ptr<CompilableItem>
-CompilerInternal::BuildCompilable(Compiler &compiler, file::File &input) {
+std::unique_ptr<CompilableItem> internal::BuildCompilable(Compiler &compiler,
+                                                          file::File &input) {
 
   auto fileBuffer = compiler.GetFileMgr().getBufferForFile(input.GetName());
   if (!fileBuffer) {
@@ -127,7 +102,7 @@ CompilerInternal::BuildCompilable(Compiler &compiler, file::File &input) {
 
   // Use the srcID to create the SourceModuleFile
   SourceModuleFile *sf = nullptr;
-  // CompilerInternal::BuildSourceModuleFileForMainModule(compiler,
+  // internal::BuildSourceModuleFileForMainModule(compiler,
   // compilable);
   assert(sf && "Could not create SourceModuleFile");
 
@@ -140,16 +115,16 @@ CompilerInternal::BuildCompilable(Compiler &compiler, file::File &input) {
   }
   return compilable;
 }
-int CompilerInternal::ExecuteCompilable(Compiler &compiler,
-                                        CompilableItem &compilable) {
+int internal::ExecuteCompilable(Compiler &compiler,
+                                CompilableItem &compilable) {
 
   switch (compiler.GetMode().GetType()) {
   case ModeType::Parse:
-    return CompilerInternal::Parse(compiler, compilable);
+    return internal::Parse(compiler, compilable);
   case ModeType::Check:
-    return CompilerInternal::Check(compiler, compilable);
+    return internal::Check(compiler, compilable);
   default:
-    return CompilerInternal::EmitObject(compiler, compilable);
+    return internal::EmitObject(compiler, compilable);
   }
 }
 int Compiler::Compile(Compiler &compiler) {
@@ -160,9 +135,9 @@ int Compiler::Compile(Compiler &compiler) {
     return ret::err;
   }
   for (auto &input : compiler.GetInputFiles()) {
-    auto compilable = CompilerInternal::BuildCompilable(compiler, input);
+    auto compilable = internal::BuildCompilable(compiler, input);
     if (compilable) {
-      if (!CompilerInternal::ExecuteCompilable(compiler, *compilable.get())) {
+      if (!internal::ExecuteCompilable(compiler, *compilable.get())) {
         break;
       }
     }

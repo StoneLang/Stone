@@ -8,7 +8,11 @@ using namespace stone::syn;
 
 bool Parser::IsTopDecl(const Token &tok) {
   switch (tok.GetType()) {
+  case tk::Type::kw_module:
+  case tk::Type::kw_interface:
   case tk::Type::kw_fun:
+  case tk::Type::kw_struct:
+  case tk::Type::kw_space:
     return true;
   default:
     return false;
@@ -28,10 +32,11 @@ bool Parser::ParseTopDecl(syn::DeclGroupPtrTy &result, bool isFirstDecl) {
 
 syn::DeclGroupPtrTy Parser::ParseDecl(ParsingDeclSpecifier *pds) {
 
-  PairDelimiterBalancer pairBalancer(*this);
+  PairDelimiterBalancer pairDelimiterBalancer(*this);
   // if (pds) {
-  //   return ParseDeclImpl(*pds);
+  //   return ParseDecl(*pds);
   // }
+
   // ParsingDeclSpecifier localDS(*this);
   // return ParseDeclImpl(localDS);
 
