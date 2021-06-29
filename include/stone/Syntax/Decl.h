@@ -336,9 +336,7 @@ public:
 //   bool IsInstance() const { return !IsStatic(); }
 // };
 
-class NominalTypeDecl
-    : public TypeDecl,
-      public DeclContext {
+class NominalTypeDecl : public TypeDecl, public DeclContext {
 
 public:
 };

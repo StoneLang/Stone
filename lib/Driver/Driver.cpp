@@ -12,7 +12,7 @@ using namespace stone::file;
 using namespace stone::driver;
 using namespace llvm::opt;
 
-class DriverImpl final {
+class DriverInternal final {
 public:
   static bool DoesInputExist(Driver &driver, const DerivedArgList &args,
                              llvm::StringRef input);
@@ -72,8 +72,8 @@ public:
 
 /// Check that the file referenced by \p Input exists. If it doesn't,
 /// issue a diagnostic and return false.
-bool DriverImpl::DoesInputExist(Driver &driver, const DerivedArgList &args,
-                                llvm::StringRef input) {
+bool DriverInternal::DoesInputExist(Driver &driver, const DerivedArgList &args,
+                                    llvm::StringRef input) {
   if (!driver.GetCheckInputFilesExist()) {
     return true;
   }
@@ -89,7 +89,7 @@ bool DriverImpl::DoesInputExist(Driver &driver, const DerivedArgList &args,
                << '\n';
   return false;
 }
-void DriverImpl::BuildCompileJobs(Driver &driver) {
+void DriverInternal::BuildCompileJobs(Driver &driver) {
   if (!driver.GetMode().IsCompilable()) {
     return;
   }
@@ -116,7 +116,7 @@ void DriverImpl::BuildCompileJobs(Driver &driver) {
   }
 }
 
-void DriverImpl::BuildLinkJob(Driver &driver) {
+void DriverInternal::BuildLinkJob(Driver &driver) {
   if (driver.GetMode().IsCompileOnly()) {
     return;
   }
@@ -176,11 +176,11 @@ linkJob->AddDep(job);
   }
 }
 
-void DriverImpl::BuildAssembleJob(Driver &driver) {}
+void DriverInternal::BuildAssembleJob(Driver &driver) {}
 
-void DriverImpl::BuildBackendJob(Driver &driver) {}
+void DriverInternal::BuildBackendJob(Driver &driver) {}
 
-void DriverImpl::BuildJobsForMultipleCompileType(Driver &driver) {
+void DriverInternal::BuildJobsForMultipleCompileType(Driver &driver) {
   if (driver.GetMode().IsCompileOnly()) {
     BuildCompileJobs(driver);
     return;
@@ -190,7 +190,7 @@ void DriverImpl::BuildJobsForMultipleCompileType(Driver &driver) {
     return;
   }
 }
-void DriverImpl::BuildJobsForSingleCompileType(Driver &driver) {
+void DriverInternal::BuildJobsForSingleCompileType(Driver &driver) {
   /*
     auto job =
         driver.GetCompilation().CreateJob<CompileJob>(driver.GetCompilation());
@@ -211,9 +211,9 @@ void DriverImpl::BuildJobsForSingleCompileType(Driver &driver) {
   // job->BuildCmdOutput();
 }
 
-void DriverImpl::ComputeCompileType(const Driver &driver,
-                                    const DerivedArgList &args,
-                                    const Files &inputs) {}
+void DriverInternal::ComputeCompileType(const Driver &driver,
+                                        const DerivedArgList &args,
+                                        const Files &inputs) {}
 
 DriverStats::DriverStats(const Driver &driver, Basic &basic)
     : Stats("driver statistics:", basic), driver(driver) {}
@@ -235,7 +235,8 @@ Driver::Driver(llvm::StringRef stoneExecutable, std::string driverName)
   GetStatEngine().Register(stats.get());
 }
 
-std::unique_ptr<driver::TaskQueue> DriverImpl::BuildTaskQueue(Driver &driver) {
+std::unique_ptr<driver::TaskQueue>
+DriverInternal::BuildTaskQueue(Driver &driver) {
   // TODO:
   return llvm::make_unique<driver::UnixTaskQueue>(driver);
 }
@@ -425,7 +426,7 @@ void Driver::ComputeMode(const llvm::opt::DerivedArgList &args) {
 
 void Driver::PrintJobs() {
   for (auto &job : GetCompilation().GetJobs()) {
-    DriverImpl::PrintJob(job, *this);
+    DriverInternal::PrintJob(job, *this);
   }
 }
 
@@ -442,13 +443,13 @@ void Driver::PrintHelp(bool showHidden) {
                                  /*ShowAllAliases*/ false);
 }
 
-void DriverImpl::PrintJob(const Job &job, Driver &driver) {
+void DriverInternal::PrintJob(const Job &job, Driver &driver) {
   auto cos = driver.Out();
   cos.UseGreen();
 
   if (job.GetDeps().size() > 0) {
     for (const auto &j : job.GetDeps()) {
-      DriverImpl::PrintJob(j, driver);
+      DriverInternal::PrintJob(j, driver);
     }
   }
 
@@ -484,7 +485,7 @@ int Driver::Run() {
     // PrintHelp();
   }
   // auto compilationResult =
-  //	GetCompilation().Run(DriverImpl::BuildTaskQueue(*this));
+  //	GetCompilation().Run(DriverInternal::BuildTaskQueue(*this));
 
   if (HasError())
     return ret::err;

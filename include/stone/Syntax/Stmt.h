@@ -95,7 +95,6 @@ class IfStmt final : public Stmt,
   friend TrailingObjects;
 };
 
-
 class NullStmt final : public Stmt,
                        private llvm::TrailingObjects<NullStmt, Stmt *, SrcLoc> {
   friend TrailingObjects;

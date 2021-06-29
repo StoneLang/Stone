@@ -71,10 +71,7 @@
 #include "stone/Syntax/Module.h"
 #include "stone/Syntax/TreeContext.h"
 
-
 #include <memory>
-
-
 
 using namespace stone;
 using namespace stone::gen;

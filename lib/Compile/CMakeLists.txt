@@ -12,10 +12,10 @@ set(stone_compile_sources
 	CompilableItem.cpp
 	Compile.cpp
 	Compiler.cpp
+	CompilerInternal.cpp
 	Optimize.cpp
 	Serialize.cpp
-	System.cpp
-
+	
 	LINK_LIBS
 	StoneAnalyze
 	StoneGen
