@@ -3,6 +3,7 @@
 
 #include "stone/Syntax/Expr.h"
 #include "stone/Syntax/Ownership.h"
+#include "stone/Syntax/Specifier.h"
 #include "stone/Syntax/SyntaxResult.h"
 #include "stone/Syntax/TreeContext.h"
 #include "stone/Syntax/Type.h"
