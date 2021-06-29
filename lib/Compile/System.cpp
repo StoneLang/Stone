@@ -1,3 +1,5 @@
+
+#include "stone/Compile/System.h"
 #include "stone/Analyze/Check.h"
 #include "stone/Analyze/Parse.h"
 #include "stone/Basic/Defer.h"
@@ -6,36 +8,40 @@
 #include "stone/Compile/CompilableItem.h"
 #include "stone/Compile/Compile.h"
 #include "stone/Compile/Compiler.h"
-#include "stone/Compile/CompilerInternal.h"
 #include "stone/Gen/Gen.h"
 #include "stone/Syntax/Module.h"
 
 using namespace stone;
 
-int internal::Parse(Compiler &compiler, CompilableItem &compilable,
-                    bool check) {
+static syn::SourceModuleFile *
+BuildSourceModuleFileForMainModule(Compiler &compiler,
+                                   CompilableItem &compilable) {
+
+  return nullptr;
+}
+int System::Parse(CompilableItem &compilable, bool check) {
 
   while (!compiler.HasError()) {
     stone::ParseSourceModuleFile(compilable.GetSourceModuleFile(),
                                  compiler.GetSyntax(),
                                  compiler.GetPipelineEngine());
-    if (compiler.HasError()){
+    if (compiler.HasError()) {
       return ret::err;
     }
   }
   return ret::ok;
 }
-int internal::Parse(Compiler &compiler, CompilableItem &compilable) {
-  return internal::Parse(compiler, compilable, false);
+int System::Parse(CompilableItem &compilable) {
+  return Parse(compilable, false);
 }
-int internal::Check(Compiler &compiler, CompilableItem &compilable) {
-  return internal::Parse(compiler, compilable, true);
+int System::Check(CompilableItem &compilable) {
+  return Parse(compilable, true);
 }
 
-int internal::EmitIR(Compiler &compiler, CompilableItem &compilable) {
+int System::EmitIR(CompilableItem &compilable) {
 
   /// Should be in EmitIR Scope
-  if (!internal::Parse(compiler, compilable, true)) {
+  if (!Parse(compilable, true)) {
     return ret::err;
   }
   /// Should be in Parse scope
@@ -53,18 +59,18 @@ int internal::EmitIR(Compiler &compiler, CompilableItem &compilable) {
   compiler.GetCompilerContext().SetLLVMModule(llvmModule);
   return ret::ok;
 }
-int internal::EmitObject(Compiler &compiler, CompilableItem &compilable) {
+int System::EmitObject(CompilableItem &compilable) {
 
   if (!compiler.GetMode().CanOutput()) {
     return ret::err;
   }
-  compilable.CreateOutputFile(); 
-  
+  compilable.CreateOutputFile();
+
   if (!compilable.GetOutputFile()) {
     return ret::err;
   }
   /// Should be in EmitIR Scope
-  if (!internal::EmitIR(compiler, compilable)) {
+  if (!EmitIR(compilable)) {
     return ret::err;
   }
 
@@ -77,21 +83,12 @@ int internal::EmitObject(Compiler &compiler, CompilableItem &compilable) {
 
   return ret::ok;
 }
-int internal::EmitAssembly(Compiler &compiler, CompilableItem &compilable) {
-  return ret::ok;
-}
-int internal::EmitLibrary(Compiler &compiler, CompilableItem &compilable) {
-  return ret::ok;
-}
-int internal::EmitModuleOnly(Compiler &compiler, CompilableItem &compilable) {
-  return ret::ok;
-}
-int internal::EmitBitCode(Compiler &compiler, CompilableItem &compilable) {
-  return ret::ok;
-}
+int System::EmitAssembly(CompilableItem &compilable) { return ret::ok; }
+int System::EmitLibrary(CompilableItem &compilable) { return ret::ok; }
+int System::EmitModuleOnly(CompilableItem &compilable) { return ret::ok; }
+int System::EmitBitCode(CompilableItem &compilable) { return ret::ok; }
 
-std::unique_ptr<CompilableItem> internal::BuildCompilable(Compiler &compiler,
-                                                          file::File &input) {
+std::unique_ptr<CompilableItem> System::BuildCompilable(file::File &input) {
 
   auto fileBuffer = compiler.GetFileMgr().getBufferForFile(input.GetName());
   if (!fileBuffer) {
@@ -102,7 +99,7 @@ std::unique_ptr<CompilableItem> internal::BuildCompilable(Compiler &compiler,
 
   // Use the srcID to create the SourceModuleFile
   SourceModuleFile *sf = nullptr;
-  // internal::BuildSourceModuleFileForMainModule(compiler,
+  // sys::BuildSourceModuleFileForMainModule(compiler,
   // compilable);
   assert(sf && "Could not create SourceModuleFile");
 
@@ -115,16 +112,15 @@ std::unique_ptr<CompilableItem> internal::BuildCompilable(Compiler &compiler,
   }
   return compilable;
 }
-int internal::ExecuteCompilable(Compiler &compiler,
-                                CompilableItem &compilable) {
+int System::ExecuteCompilable(CompilableItem &compilable) {
 
   switch (compiler.GetMode().GetType()) {
   case ModeType::Parse:
-    return internal::Parse(compiler, compilable);
+    return Parse(compilable);
   case ModeType::Check:
-    return internal::Check(compiler, compilable);
+    return Check(compilable);
   default:
-    return internal::EmitObject(compiler, compilable);
+    return EmitObject(compilable);
   }
 }
 int Compiler::Compile(Compiler &compiler) {
@@ -134,10 +130,12 @@ int Compiler::Compile(Compiler &compiler) {
     printf("No input files.\n"); // TODO: Use Diagnostics
     return ret::err;
   }
+  System system(compiler);
+
   for (auto &input : compiler.GetInputFiles()) {
-    auto compilable = internal::BuildCompilable(compiler, input);
+    auto compilable = system.BuildCompilable(input);
     if (compilable) {
-      if (!internal::ExecuteCompilable(compiler, *compilable.get())) {
+      if (!system.ExecuteCompilable(*compilable.get())) {
         break;
       }
     }
