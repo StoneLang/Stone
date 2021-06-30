@@ -8,15 +8,18 @@ space Physics.QM {
 		fun Fire(const Particle* p) -> bool;
 	}
 	public struct LinearAccelerator : Accelerator<LinearAccelerator> {
+		private Detector* detector = null; 
 	}
 	public LinearAccelerator::LinearAccelerator() {
-
+		detector = new Detector();
 	}
 	public LinearAccelerator::~LinearAccelerator() {
-
+		if(detector) {
+			free detector;
+		}
 	}	
 	public fun LinearAcellerator::Fire(const Particle* p) -> bool {
-		particle.fired = true; 
+		p.fired = true; 
 		return true; 
 	}
 

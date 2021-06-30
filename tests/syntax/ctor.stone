@@ -1,0 +1,20 @@
+
+
+public struct Spin {
+}
+public struct Proton {
+	private Spin* spin = null;
+}
+
+public Proton::Proton(Spin* spin){
+		this.spin = spin;
+}
+public Proton::~Proton(){
+
+}
+
+
+
+
+
+

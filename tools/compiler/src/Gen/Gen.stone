@@ -3,7 +3,8 @@ use Stone.Syntax;
 
 space Stone {
 
-	public fun Gen() -> void {
+	public fun Gen() -> int  {
+		return 0; 
 	}
 
 }

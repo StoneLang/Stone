@@ -1,0 +1,8 @@
+space Stone {
+
+	public fun Run(string[] args) -> int {
+
+		return 0;
+	}
+
+}

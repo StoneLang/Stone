@@ -1,12 +1,7 @@
 
-use STD.IO; 
 use STD.Format; 
 
-use Stone.Frontend; 
-use Stone.Compilation; 
-
-
-fun Main(string[] args) -> i32  {
+fun Main(string[] args) -> int {
 
  	if (args.Size() == 0){
    		return -1; 

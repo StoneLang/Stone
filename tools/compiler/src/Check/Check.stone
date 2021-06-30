@@ -2,8 +2,8 @@
 use Stone.Diagnostics; 
 
 space Stone.Semantics {
-	public fun Check(ref SourceModuleFile sf) -> bool {
-		return true;
+	public fun Check(ref SourceModuleFile sf) -> int {
+		return 0;
 	}
 }
 
