@@ -21,7 +21,7 @@ private:
     case ModeType::EmitIR:
     case ModeType::EmitBC:
     case ModeType::EmitObject:
-    case ModeType::EmitModuleOnly:
+    case ModeType::EmitModule:
     case ModeType::EmitLibrary:
     case ModeType::EmitAssembly:
       return true;
@@ -40,7 +40,7 @@ public:
     case ModeType::EmitBC:
     case ModeType::EmitObject:
     case ModeType::EmitAssembly:
-    case ModeType::EmitModuleOnly:
+    case ModeType::EmitModule:
     case ModeType::EmitLibrary:
     case ModeType::EmitExecutable:
       return true;
@@ -80,7 +80,7 @@ public:
     case ModeType::EmitBC:
     case ModeType::EmitObject:
     case ModeType::EmitAssembly:
-    case ModeType::EmitModuleOnly:
+    case ModeType::EmitModule:
     case ModeType::EmitLibrary:
     case ModeType::EmitExecutable:
       return true;

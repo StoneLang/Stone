@@ -89,7 +89,7 @@ static int EmitObject(CompilableItem &compilable) {
 }
 static int EmitAssembly(CompilableItem &compilable) { return ret::ok; }
 static int EmitLibrary(CompilableItem &compilable) { return ret::ok; }
-static int EmitModuleOnly(CompilableItem &compilable) { return ret::ok; }
+static int EmitModule(CompilableItem &compilable) { return ret::ok; }
 static int EmitBitCode(CompilableItem &compilable) { return ret::ok; }
 
 static int ExecuteCompilable(CompilableItem &compilable) {
@@ -98,6 +98,8 @@ static int ExecuteCompilable(CompilableItem &compilable) {
     return Parse(compilable);
   case ModeType::Check:
     return Check(compilable);
+  case ModeType::EmitModule:
+    return EmitModule(compilable);
   default:
     return EmitObject(compilable);
   }

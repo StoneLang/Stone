@@ -102,6 +102,9 @@ void Session::ComputeMode(const llvm::opt::DerivedArgList &args) {
     case opts::EmitLibrary:
       mode.SetType(ModeType::EmitLibrary);
       break;
+    case opts::EmitModule:
+      mode.SetType(ModeType::EmitModule);
+      break;
     default:
       /// This is left blank because we want the derived class to specify its
       /// own default mode

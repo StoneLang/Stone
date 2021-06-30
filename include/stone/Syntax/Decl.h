@@ -307,6 +307,8 @@ public:
                const DeclName &dn, SrcLoc dnLoc, StorageType st);
 
 public:
+  /// BraceStmt
+  Stmt *GetBody();
 };
 
 class FunDecl : public FunctionDecl {
@@ -318,23 +320,19 @@ public:
 
 public:
   bool IsMain() const;
-
-public:
-  /// BraceStmt
-  Stmt *GetBody();
 };
 
-// Methods are associated with an object
-// class MethodDecl final : public FunDecl {
-// public:
-//   MethodDecl(TreeContext &tc, DeclContext *dc, SrcLoc funLoc,
-//                 const DeclName &dn, SrcLoc dnLoc, StorageType st)
-//       : MethodDecl(Decl::Type::Fun, tc, dc, dn, dnLoc, st) {}
+// Methods are associated with an object. Ex: fun Particle::Fire() -> bool ...
+class MethodDecl final : public FunctionDecl {
+public:
+  MethodDecl(TreeContext &tc, DeclContext *dc, SrcLoc funLoc,
+             const DeclName &dn, SrcLoc dnLoc, StorageType st)
+      : FunctionDecl(Decl::Type::Fun, tc, dc, dn, dnLoc, st) {}
 
-// public:
-//   bool IsStatic() const;
-//   bool IsInstance() const { return !IsStatic(); }
-// };
+public:
+  bool IsStatic() const;
+  bool IsInstance() const { return !IsStatic(); }
+};
 
 class NominalTypeDecl : public TypeDecl, public DeclContext {
 

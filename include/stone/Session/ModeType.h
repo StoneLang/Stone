@@ -11,7 +11,7 @@ enum class ModeType {
   EmitBC,
   EmitObject,
   EmitLibrary,
-  EmitModuleOnly,
+  EmitModule,
   EmitAssembly,
   EmitExecutable,
   Link

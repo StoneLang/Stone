@@ -140,7 +140,7 @@ int Driver::BuildJobs() {
   case ModeType::EmitLibrary:
   case ModeType::EmitObject:
   case ModeType::EmitAssembly:
-  case ModeType::EmitModuleOnly:
+  case ModeType::EmitModule:
   case ModeType::EmitIR:
   case ModeType::EmitBC:
   case ModeType::Parse:

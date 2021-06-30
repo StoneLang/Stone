@@ -50,9 +50,13 @@ def EmitObject : Flag<["-"], "emit-object">,
 HelpText<"Emit object file(s) (-C)">, ModeOpt,
 Flags<[CompilerOption]>;
 
+def EmitModule : Flag<["-"], "emit-module">,
+HelpText<"Emit module file(s)">, ModeOpt,
+Flags<[CompilerOption]>;
+
 
 def EmitExecutable : Flag<["-"], "emit-executable">,
-HelpText<"Emit object file(s) (-C)">, ModeOpt,
+HelpText<"Emit object file(s)">, ModeOpt,
 Flags<[DriverOption]>;
 
 
