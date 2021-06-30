@@ -109,15 +109,16 @@ static std::unique_ptr<CompilableItem> BuildCompilable(Compiler &compiler,
 
   auto fileBuffer = compiler.GetFileMgr().getBufferForFile(input.GetName());
   if (!fileBuffer) {
-    // TODO: compiler.Diagnose();
+    compiler.GetBasic().Error();
     return nullptr;
   }
+
   auto srcID = compiler.GetSrcMgr().CreateSrcID(std::move(*fileBuffer));
 
   // Use the srcID to create the SourceModuleFile
-  SourceModuleFile *sf = nullptr;
-  // sys::BuildSourceModuleFileForMainModule(compiler,
-  // compilable);
+  SourceModuleFile *sf =
+      nullptr; //= BuildSourceModuleFileForMainModule(compiler,compilable);
+
   assert(sf && "Could not create SourceModuleFile");
 
   std::unique_ptr<CompilableItem> compilable(
@@ -134,6 +135,7 @@ int Compiler::Run(Compiler &compiler) {
 
   assert(compiler.GetMode().IsCompilable() && "Invalid compile mode.");
   if (compiler.GetInputFiles().empty()) {
+    compiler.GetBasic().Error();
     printf("No input files.\n"); // TODO: Use Diagnostics
     return ret::err;
   }

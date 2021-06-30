@@ -3,9 +3,8 @@
 
 namespace stone {
 namespace syn {
-class Node {
-public:
-};
+
+class Node {};
 
 } // namespace syn
 } // namespace stone

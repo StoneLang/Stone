@@ -12,6 +12,8 @@
 namespace stone {
 namespace syn {
 
+class Module;
+class Decl;
 class NominalTypeDecl;
 class DeclContext;
 class FunctionDecl;
@@ -164,9 +166,22 @@ class FunctionDeclBits final {
 enum { NumFunctionDeclBits = 27 };
 
 class ModuleDeclBits final {
-  /// The TagKind enum.
+  friend class Module;
+
+  /// If the module is compiled as static library.
+  uint64_t IsStaticLibrary : 1;
+
+  /// Whether the module is a system module.
+  uint64_t IsSystemModule : 1;
+
+  /// Whether the module was imported from Clang (or, someday, maybe another
+  /// language).
+  uint64_t IsNonLangModule : 1;
+
+  /// Whether this module is the main module.
   uint64_t IsMainModule : 1;
 };
+enum { NumModuleBits = 5 };
 
 } // namespace syn
 } // namespace stone

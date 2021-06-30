@@ -3,6 +3,13 @@
 
 namespace stone {
 namespace syn {
+
+class Walker;
+
+class Walkable {
+public:
+  virtual bool Walk(Walker &waker) = 0;
+};
 class Walker {
 public:
 };

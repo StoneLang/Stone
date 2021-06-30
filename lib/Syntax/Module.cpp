@@ -38,14 +38,7 @@ void Module::AddFile(ModuleFile &file) {
   // ClearLookupCache();
 }
 
-syn::Module *syn::Module::Create(Identifier &name, TreeContext &tc) {
-  return new (tc) syn::Module(name, tc);
-}
-syn::Module *syn::Module::CreateMainModule(Identifier &name, TreeContext &tc) {
-  auto *mod = syn::Module::Create(name, tc);
-  // TODO: mod->Bits.ModuleDecl.IsMainModule = true;
-  return mod;
-}
+bool Module::Walk(Walker &waker) {}
 
 SourceModuleFile::SourceModuleFile(SourceModuleFile::Kind kind, Module &owner,
                                    const SrcID srcID, bool isPrimary)

@@ -7,6 +7,8 @@ Syntax::Syntax(TreeContext &tc) : tc(tc) {}
 
 Syntax::~Syntax() {}
 
+DeclFactory::~DeclFactory() {}
+
 FunDeclFactory::~FunDeclFactory() {}
 
 // Going this route for the time being
@@ -27,3 +29,11 @@ StructDeclFactory &Syntax::GetStructDeclFactory() {
   structDeclFactory = llvm::make_unique<StructDeclFactory>(*this);
   return *structDeclFactory.get();
 }
+ModuleDeclFactory &Syntax::GetModuleDeclFactory() {
+  if (moduleDeclFactory) {
+    return *moduleDeclFactory.get();
+  }
+  moduleDeclFactory = llvm::make_unique<ModuleDeclFactory>(*this);
+  return *moduleDeclFactory.get();
+}
+ModuleDeclFactory::~ModuleDeclFactory() {}

@@ -3,6 +3,13 @@
 
 namespace stone {
 namespace syn {
+class Visitor;
+
+class Visitable {
+public:
+  virtual void Visit(Visitor &visitor) = 0;
+};
+
 class Visitor {
 public:
 };

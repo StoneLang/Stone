@@ -7,6 +7,7 @@
 #include "stone/Syntax/Identifier.h"
 #include "stone/Syntax/Scope.h"
 #include "stone/Syntax/TreeContext.h"
+#include "stone/Syntax/Walker.h"
 #include "llvm/ADT/SmallVector.h"
 
 namespace stone {
@@ -83,7 +84,7 @@ class BuiltinModuleFile final : public ModuleFile {
 public:
 };
 
-class Module final : public DeclContext, public TypeDecl {
+class Module final : public DeclContext, public TypeDecl, Walkable {
 
 public:
   Module(Identifier &name, TreeContext &tc);
@@ -107,8 +108,25 @@ public:
   ModuleFile &GetMainFile(ModuleFile::Kind kind) const;
 
 public:
-  static syn::Module *Create(Identifier &name, TreeContext &tc);
-  static syn::Module *CreateMainModule(Identifier &name, TreeContext &tc);
+  /// \returns true if this module is the "stone" standard library module.
+  bool IsSTD() const;
+
+  /// \returns true if this module is the "builtin" module.
+  bool IsBuiltin() const;
+
+  bool Walk(Walker &waker) override;
+
+private:
+  // Make placement new and vanilla new/delete illegal for Modules.
+  void *operator new(size_t bytes) throw() = delete;
+  void operator delete(void *data) throw() = delete;
+  void *operator new(size_t bytes, void *mem) throw() = delete;
+
+public:
+  // Only allow allocation of Modules using the allocator in ASTContext
+  // or by doing a placement new.
+  void *operator new(size_t bytes, const TreeContext &tc,
+                     unsigned alignment = alignof(Module));
 };
 
 static inline unsigned AlignOfModuleFile() { return alignof(ModuleFile &); }

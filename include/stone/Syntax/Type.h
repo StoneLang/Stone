@@ -1,5 +1,6 @@
-#ifndef STONE_SYNTAX_TYPES_H
-#define STONE_SYNTAX_TYPES_H
+#ifndef STONE_SYNTAX_TYPE_H
+#define STONE_SYNTAX_TYPE_H
+
 #include <string>
 
 namespace stone {
@@ -15,7 +16,11 @@ class TypeLoc {};
 
 class Type {};
 
-class QualType {};
+class QualType {
+
+public:
+  QualType() = default;
+};
 
 } // namespace syn
 } // namespace stone

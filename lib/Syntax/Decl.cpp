@@ -58,10 +58,10 @@ void *Decl::Make(AllocatorTy &allocatorTy, size_t baseSize, bool extraSace) {
 }
 
 // Only allow allocation of Modules using the allocator in ASTContext.
-// void *syn::Module::operator new(std::size_t bytes, const TreeContext &tc,
-//                               unsigned alignment) {
-// return tc.Allocate(bytes, alignment);
-//}
+void *syn::Module::operator new(std::size_t bytes, const TreeContext &tc,
+                                unsigned alignment) {
+  return tc.Allocate(bytes, alignment);
+}
 
 /*
 void *Decl::operator new(std::size_t size, const TreeContext &tc,
@@ -133,14 +133,24 @@ static bool IsNamed(const NamingDecl *namingDecl, const char (&str)[Len]) {
   return identifier && identifier->isStr(str);
 }
 
-SyntaxResult<Decl *> FunDeclFactory::Make(DeclContext *dc, SrcLoc funLoc,
-                                          const DeclName &dn, SrcLoc dnLoc,
-                                          StorageType st) {
+SyntaxResult<FunDecl *> FunDeclFactory::Make(DeclContext *dc, SrcLoc funLoc,
+                                             const DeclName &dn, SrcLoc dnLoc,
+                                             StorageType st) {
   assert(dc);
-  return DeclEmpty();
+  return SyntaxResult<FunDecl *>();
 }
 
-SyntaxResult<Decl *> StructDeclFactory::Make(DeclContext *dc) {
+SyntaxResult<StructDecl *> StructDeclFactory::Make(DeclContext *dc) {
   assert(dc);
-  return DeclEmpty();
+  return SyntaxResult<StructDecl *>();
+}
+
+SyntaxResult<Module *>
+ModuleDeclFactory::Make(DeclContext *dc, Identifier &name, bool isMainModule) {
+  assert(dc);
+
+  // TODO: moduleDeclBits.isMainModule = isMainModule ? true : false;
+
+  return SyntaxResult<Module *>(new (syntax.GetTreeContext())
+                                    syn::Module(name, syntax.GetTreeContext()));
 }

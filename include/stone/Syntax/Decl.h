@@ -27,6 +27,7 @@
 #include "stone/Syntax/Identifier.h"
 #include "stone/Syntax/Node.h"
 #include "stone/Syntax/Specifier.h"
+#include "stone/Syntax/Type.h"
 
 namespace stone {
 namespace syn {
@@ -193,6 +194,7 @@ protected:
     // LinkageSpecDeclBitfields LinkageSpecDeclBits;
     // BlockDeclBitfields BlockDeclBits;
 
+    ModuleDeclBits moduleDeclBits;
     static_assert(sizeof(DeclContextBits) <= 8,
                   "DeclContextBitfields is larger than 8 bytes!");
 
@@ -323,7 +325,7 @@ public:
 };
 
 // Methods are associated with an object. Ex: fun Particle::Fire() -> bool ...
-class MethodDecl final : public FunctionDecl {
+class MethodDecl : public FunctionDecl {
 public:
   MethodDecl(TreeContext &tc, DeclContext *dc, SrcLoc funLoc,
              const DeclName &dn, SrcLoc dnLoc, StorageType st)
@@ -353,11 +355,11 @@ class ConstructorInitializer final {
 public:
 };
 
-class ConstructorDecl : public FunctionDecl {
+class ConstructorDecl : public MethodDecl {
 public:
 };
 
-class DestructorDecl : public FunctionDecl {
+class DestructorDecl : public MethodDecl {
 public:
 };
 

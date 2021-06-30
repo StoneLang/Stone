@@ -30,7 +30,9 @@ syn::Module *Compiler::GetMainModule() const {
     return mainModule;
   }
   Identifier &moduleName = tc->GetIdentifier(GetModuleName());
-  mainModule = syn::Module::CreateMainModule(moduleName, *tc);
+  mainModule =
+      syntax->GetModuleDeclFactory().Make(nullptr, moduleName, true).get();
+
   return mainModule;
 }
 
