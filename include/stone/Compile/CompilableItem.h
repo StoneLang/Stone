@@ -59,6 +59,7 @@ public:
 
   void SetOutputFile(OutputFile *o) { output = o; }
   OutputFile *GetOutputFile() const { return output; }
+  Compiler &GetCompiler() { return compiler; }
 
   bool CanOutput();
   void CreateOutputFile();
