@@ -1,10 +1,7 @@
 " Vim syntax file
-" Language:     Rust
-" Maintainer:   Patrick Walton <pcwalton@mozilla.com>
-" Maintainer:   Ben Blum <bblum@cs.cmu.edu>
-" Maintainer:   Chris Morgan <me@chrismorgan.info>
-" Last Change:  Feb 24, 2016
-" For bugs, patches and license go to https://github.com/stone-lang/stone.vim
+" Language:     Stone
+" Maintainer:   
+" For bugs, patches and license go to https://github.com/stonelang/stone/stone.vim
 
 if version < 600
 	syntax clear
