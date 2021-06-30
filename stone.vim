@@ -147,7 +147,7 @@ syn region    stoneAttribute   start="#!\?\[" end="\]" contains=stoneString,ston
 syn region    stoneDerive      start="derive(" end=")" contained contains=stoneDeriveInterface
 " This list comes from src/libsyntax/ext/deriving/mod.rs
 " Some are deprecated (Encodable, Decodable) or to be removed after a new snapshot (Show).
-syn keyword   stoneDeriveInterface contained Clone Hash RustcEncodable RustcDecodable Encodable Decodable PartialEq Eq PartialOrd Ord Rand Show Debug Default FromPrimitive Send Sync Copy
+syn keyword   stoneDeriveInterface contained Clone Hash  Encodable DecodableDebug Default Send Sync Copy
 
 " Number literals
 syn match     stoneDecNumber   display "\<[0-9][0-9_]*\%([iu]\%(size\|8\|16\|32\|64\|128\)\)\="
