@@ -1,3 +1,4 @@
+
 #include "stone/Compile/Compile.h"
 #include "stone/Basic/Defer.h"
 #include "stone/Basic/Ret.h"
@@ -127,7 +128,7 @@ static std::unique_ptr<CompilableItem> BuildCompilable(Compiler &compiler,
   return compilable;
 }
 
-int Compiler::Compile(Compiler &compiler) {
+int Compiler::Run(Compiler &compiler) {
 
   assert(compiler.GetMode().IsCompilable() && "Invalid compile mode.");
   if (compiler.GetInputFiles().empty()) {

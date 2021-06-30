@@ -43,7 +43,7 @@ class Compiler final : public Session {
   ConstList<CompilableFile> inputs;
 
 private:
-  static int Compile(Compiler &compiler);
+  static int Run(Compiler &compiler);
   /*
           /// Identifies the set of input buffers in the SrcMgr that are
     /// considered main source files.

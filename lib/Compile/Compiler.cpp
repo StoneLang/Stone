@@ -85,7 +85,7 @@ int Compiler::Run() {
   } else if (compilerOpts.printVersion) {
     PrintVersion();
   } else {
-    return Compiler::Compile(*this);
+    return Compiler::Run(*this);
   }
   return ret::ok;
 }
