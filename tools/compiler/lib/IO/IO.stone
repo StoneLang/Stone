@@ -8,20 +8,20 @@ space STD.IO {
 		
 	}
 
-	public InputStream::this() {
+	public InputStream::InputStream() {
 	}
 	
-	public InputStream::~this() {
+	public InputStream::~InputStream() {
 	}
 
 	public struct OutputStream : Stream {
 
 	}
 
-	public OutputStream::this() {
+	public OutputStream::OutputStream() {
 	}
 	
-	public OutputStream::~this() {
+	public OutputStream::~OutputStream() {
 	}
 
 }

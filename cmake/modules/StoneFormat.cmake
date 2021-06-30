@@ -17,7 +17,7 @@ set(stone_lib_files
 	${STONE_SOURCE_DIR}/lib/Syntax/*.cpp	
 )
 set(stone_tools_files
-	${STONE_SOURCE_DIR}/tools/stone/*.cpp
+	${STONE_SOURCE_DIR}/tools/stone/*.cpp 
 	${STONE_SOURCE_DIR}/tools/try/*.cpp
 )
 find_program(CLANG_FORMAT clang-format)

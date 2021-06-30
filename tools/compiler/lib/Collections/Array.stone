@@ -1,7 +1,8 @@
 
 space STD.Collections {
+
 	public struct Array {
 	}
-	public Array::this() {
+	public Array::Array() {
 	}
 }

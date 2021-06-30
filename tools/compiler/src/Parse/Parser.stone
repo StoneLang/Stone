@@ -8,15 +8,27 @@ space Stone.Analysis {
 		private ref Syntax syntax = null;
 
 	}
-	public Parser::this(ref Syntax syntax) {
+	public Parser::Parser(ref Syntax syntax) {
 			this.syntax = syntax; 
 			this.lexer = new Lexer();
 	}
-	public Parser::~this() {
+	public Parser::~Parser() {
 		if(lexer){
 			free lexer;
 		}
 	}
+	public fun Parser::ParseTopDecl() -> SyntaxResult<Decl*>  {
 
+	}
+	public fun Parser::ParseDecl() -> SyntaxResult<Decl*> {
+
+	}
+	public fun Parser::ParseFunDecl() -> SyntaxResult<Decl*> {
+
+	}
+	
+	public fun Parser::ParseStmt() -> SyntaxResult<Stmt*> {
+
+	}
 }
 

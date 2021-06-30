@@ -5,10 +5,10 @@ space Stone.Compilation {
 	public struct Compilaiton  {	
 		private ref Driver driver = null;	
 	}
-	public Compilation::this(ref Driver driver) {
+	public Compilation::Compilaiton(ref Driver driver) {
 			this.driver = driver; 
 	}
-	public Compilation::~this() {
+	public Compilation::~Compilaiton() {
 	}
 	public fun Compilation::GetDriver() -> ref Driver {
 		return driver; 

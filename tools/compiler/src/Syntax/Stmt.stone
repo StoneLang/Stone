@@ -9,9 +9,9 @@ space Stone.Syntax {
 	public struct Stmt : Node<Stmt> {	
 	}
 
-	public Stmt::this() {
+	public Stmt::Stmt() {
 	}
-	public Stmt::~this() {
+	public Stmt::~Stmt() {
 	}
 
 

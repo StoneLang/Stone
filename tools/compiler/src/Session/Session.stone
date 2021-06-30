@@ -3,14 +3,22 @@ space Stone.Session {
 
 	public struct SessionOptions {
 	}
-	public struct SessionProfile { 
+	public struct SessionInstance { 
 		private ref SessionOptions options;
 	}
-	public fun SessionProfile::GetOptions() -> ref SessionOptions {
+	public SessionInstance::SessionInstance() {
+	}
+	public SessionInstance::~SessionInstance() {
+	}
+	public fun SessionInstance::ComputeMode() {
+
+	}
+	public fun SessionInstance::GetOptions() -> ref SessionOptions {
 		return options; 
 	}
+
 	public interface Session {
 		fun Run() -> bool;
-		fun GetProfile() -> SessionProfile*; 
+		fun GetInstance() -> SessionInstance*; 
 	}
 }

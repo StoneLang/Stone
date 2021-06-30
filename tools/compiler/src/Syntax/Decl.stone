@@ -20,10 +20,10 @@ space Stone.Syntax {
 		private Loc nameLoc;
 
 	}
-	public ValueDecl::this(DeclName name, Loc nameLoc) {
+	public ValueDecl::ValueDecl(DeclName name, Loc nameLoc) {
 			this.decl = new Decl();
 	}
-	public ValueDecl::~this() {
+	public ValueDecl::~ValueDecl() {
 		if(decl){
 			free decl; 
 		}
@@ -36,13 +36,13 @@ space Stone.Syntax {
 		private ValueDecl* vd = null; 
 		private Loc funLoc; 
 	}
-	public FunDecl::this(Loc funLoc, DeclName name, Loc nameLoc) {
+	public FunDecl::FunDecl(Loc funLoc, DeclName name, Loc nameLoc) {
 			this.funLoc = funLoc; 
 			this.name = name; 
 			this.nameLoc = nameLoc; 
 			this.vd = new ValueDecl(name, nameLoc);
 		}
-	public FunDecl::~this() {
+	public FunDecl::~FunDecl() {
 		if (vd){
 			free vd;
 		}

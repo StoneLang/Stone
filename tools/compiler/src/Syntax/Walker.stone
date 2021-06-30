@@ -1,0 +1,8 @@
+space Stone.Syntax {
+
+	public struct Walker {
+	}
+	public Walker::Walker() {
+	}
+}
+

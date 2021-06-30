@@ -3,8 +3,10 @@ space Stone.Analysis {
 	
 	public struct Lexer {
 	}
-	public Lexer::this() {
+	public Lexer::Lexer() {
 	}
-	public Lexer::~this() {
+	public Lexer::~Lexer() {
+	}
+	public fun Lexer::Lex(ref Token token) -> void {
 	}
 }

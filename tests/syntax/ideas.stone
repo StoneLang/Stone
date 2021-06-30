@@ -1,90 +1,26 @@
-use System; 
-use Math; 
-
-module Ideas; 
-
-space Ideas {
-
-interface I0 {
-	fun Print() -> void; 
-}
-struct S0 :  I0 {
-	const Options* options = null; 
-	public i32 counter = 0; 
-	public System* system = null;  
-}
-
-init fun C0::Init(Options* options, Context* context) {
-
-	this.options = options;
-	this.context = context; 
-	this.system = new System(); 
-}
-defer fun C0::Defer(){ 
-	free system;
-	free options; 
-}
-
-//OR
-public struct S0 :  I0 { 
-	private Options* options = null;
-	private System* system = null; 
-
-	Init(Options* options) {
-		this.options = options; 
-		system = new System(); 
-	}
-	~Init() {
-		if(system)
-			free system; 
-	}
-}
-
-init fun C0::Init(Options* options, Context* context) {
-
-
-
-// Leaning this way
-init fun C0::Init(const Options* options, Context* context) {
-	me.options = options;
-	me.context = context; 
-	me.system = new System(); 
-}
-[test]
-defer public fun C0::Defer() { 
-	free {
-		system;
-		options;
-	}
-}
-
-
-
-module Physics;
 
 space Physics.QM {
-	any<T> interface Accelerator {
-			Fire(const Particle* p) -> bool;
 
-	}
-	struct LinearAccelerator : Accelerator<LinearAccelerator> {
-		public string name = "some name";  
-	}
-	init fun LinearAccelerator::Init() {
-	}
-	defer fun LinearAccelerator::Defer() {
-
-	}
-	struct Particle {
+	public struct Particle {
 		public bool fired = false; 
 	}
+	public any<T> interface Accelerator {
+		fun Fire(const Particle* p) -> bool;
+	}
+	public struct LinearAccelerator : Accelerator<LinearAccelerator> {
+	}
+	public LinearAccelerator::LinearAccelerator() {
 
-	fun LinearAcellerator::Fire(const Particle* p) -> bool {
+	}
+	public LinearAccelerator::~LinearAccelerator() {
+
+	}	
+	public fun LinearAcellerator::Fire(const Particle* p) -> bool {
 		particle.fired = true; 
 		return true; 
 	}
 
-	fun Main() -> void {
+	fun Main() -> i32 {
 
 		auto p = new Particle();
 		auto a = new LinearAcceleartor(); 
@@ -92,72 +28,7 @@ space Physics.QM {
 
 		free p; 
 		free a;
-
 	}
-}
-
-
-// Or
-
-
-space Physics {
-
-	public interface Particle {
-	}
-	public struct Electron : Particle {
-	}
-
-	any(A) interface Accelerator {
-			any(P:Particle) fun Fire(const P* particle) -> bool;
-	}
-	public struct LinearAccelerator : real(LinearAccelerator) Accelerator {
-		public string name = "some name";  
-	}
-	init public fun LinearAccelerator::Init() {
-	}
-	defer public fun LinearAccelerator::Defer() {
-	}
-	public fun LinearAccelerator::Fire(const P* particle) -> bool {
-		return true; 
-	}
-
-
-	public any(P) struct LinearAccelerator : any(P) Accelerator {
-		public string name = "some name";  
-	}
-
-	init private fun LinearAccelerator::Int(int i) {
-
-	}
-	init public fun LinearAccelerator::Init() {
-		Init(10); 
-	}
-
-	end public fun LinearAccelerator::End() {
-	}
-
-	public fun LinearAccelerator::Fire(const P* particle) -> bool {
-		return true; 
-	}
-	
-	real(Electron) 
-		auto a = new LinearAccelerator();
-  auto e = new Electron();
-	
-  a.Fire(electron);
-}
-
-public fun Pass(real(int) Queue q, Queuei<int> q2, ) -> {
-
-}
-
-fun Main() -> int {
-	real(LinearAccelerator) 
-		Accelerator* a = new LinearAccelerator();
-	Particle* p = new Electron();
-	a.Fire(p); 
-
-	free p; 
 }
 
 

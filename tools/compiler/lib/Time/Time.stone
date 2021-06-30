@@ -34,12 +34,8 @@ space STD.Time {
 		Days
 	}
 	public struct Time {
-
-		public Time() {
-		}
-		public ~Time(){
-		}
 	}
 	public struct Duration {
+
 	}
 }

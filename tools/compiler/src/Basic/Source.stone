@@ -1,11 +1,10 @@
 
 space Stone.Source {
-	
-	public struct SrcFile {
-	}
-	public struct SrcLoc {
-	}
 
-	public struct SrcMgr {
-	}
+	public struct SrcFile {
+  } 
+	public struct SrcLoc {
+  }
+  public struct SrcMgr {
+  }
 }

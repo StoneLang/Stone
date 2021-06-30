@@ -1,11 +1,31 @@
 
 
 
-space Stone.Frontend {
-	public fun Compile(string[] args, PipelineEngine* pe = null) -> bool {
+space Stone {
 
-		//Compiler compiler{args};
-		//compiler.Run(); 
+	fun Parse() -> bool {
+		return Parse(false); 
+	}
+	fun Parse(bool check) -> bool {
+	}
+	fun Check() -> bool {
+		Parse(true);
+	}
+	fun EmitObject() -> bool {
+
+	}
+	fun Compile(ref Compiler compiler) -> bool {
+
+	}
+	public fun Compile(string[] args, PipelineEngine* pe = null) -> bool {
+		Compiler compiler{args};
+		compiler.Build();
+
+		if(compiler.HasError()) {
+			return false; 
+		}
+
+		Compile(compiler);
 		return true; 
 	}
 }

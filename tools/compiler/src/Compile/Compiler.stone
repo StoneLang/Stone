@@ -14,12 +14,12 @@ space Stone.Frontend {
 
 	}
 
-	public Compiler::this(Basic* basic) {
+	public Compiler::Compiler(Basic* basic) {
 			this.basic = basic; 
 			this.compilerOpts = new CompilerOptions(); 
 			this.mainModule = new Module(); 
 	}
-	public Compiler::~this() {
+	public Compiler::~Compiler() {
 			if(mainModule) { 
 				free mainModule;
 			}

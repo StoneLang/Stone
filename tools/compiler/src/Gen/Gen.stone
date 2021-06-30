@@ -1,0 +1,9 @@
+
+use Stone.Syntax; 
+
+space Stone {
+
+	public fun Gen() -> void {
+	}
+
+}

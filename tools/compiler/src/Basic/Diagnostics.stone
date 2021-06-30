@@ -1,28 +1,21 @@
 
 space Stone.Diagnostics {
 
-
 	public struct LiveDiagnostic {
-	}
-	
-	public struct DiagnosticEngine {
+  }
+  public struct DiagnosticEngine {
 		private ref DiagnostiOptions diagOpts;
-		private LiveDiagnostic* liveDiagnostic; 
-
-	}
-	public DiagnosticEngine::this(ref DiagnosticOptions diagOpts){
-				this.diagOpts = diagOpts; 
-				this.liveDiagnostic = new LiveDiagnostic();
-	}
-	public DiagnosticEngine()::~this() {
-			if(liveDiagnostic){
-				free liveDiagnostic; 
-			}
-		}
-
-	public fun DiagnosticEngine::Diagnose() -> void {
-	}
-	public fun DiagnosticEngine::GetDiagOpts() -> ref DiagnostiOptions {
-		return diagOpts;
-	}
+		private LiveDiagnostic *liveDiagnostic;
+  }
+  public DiagnosticEngine::DiagnosticEngine(ref DiagnosticOptions diagOpts) {
+    this.diagOpts = diagOpts;
+    this.liveDiagnostic = new LiveDiagnostic();
+  }
+	public DiagnosticEngine()::~DiagnosticEngine() {
+    if (liveDiagnostic) {
+      free liveDiagnostic;
+    }
+  }
+	public fun DiagnosticEngine::Diagnose()-> void {}
+	public fun DiagnosticEngine::GetDiagOpts()-> ref DiagnostiOptions { return diagOpts; }
 }

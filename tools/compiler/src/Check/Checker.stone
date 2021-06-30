@@ -7,10 +7,10 @@ space Stone.Semantics {
 		ref SourceFileModule sf;
 	}
 
-	public Checker::this(ref SourceFileModule sf) {
+	public Checker::Checker(ref SourceFileModule sf) {
 			this.sf = sf; 
 	}
-	public Checker::~this() {
+	public Checker::~Checker() {
 	}
 }
 

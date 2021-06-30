@@ -6,10 +6,10 @@ public struct Proton {
 	private Spin* spin = null;
 }
 
-public Proton::this(Spin* spin){
+public Proton::Proton(Spin* spin){
 		this.spin = spin;
 }
-public Proton::~this(){
+public Proton::~Proton(){
 
 }
 

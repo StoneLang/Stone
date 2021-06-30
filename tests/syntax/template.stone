@@ -1,6 +1,4 @@
 
-
-
 space Syntax.Template {
 
 	public any<T> interface Queue {
@@ -9,11 +7,11 @@ space Syntax.Template {
 	}
 
 	public any<T> struct PriorityQueue : Queue<T> {
-		T[] entries; 
+		private T[] entries; 
 	}
-	public PriorityQueue::this() {
+	public PriorityQueue::PriorityQueue() {
 	}
-	public PriorityQueue::~this() {
+	public PriorityQueue::~PriorityQueue() {
 	}
 
 	public fun PriorityQueue::Add(const T* t) -> void {

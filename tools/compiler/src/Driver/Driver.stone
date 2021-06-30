@@ -4,9 +4,9 @@ space Stone.Compilation {
 
 	public struct Driver : Session {
 	}
-	public Driver::this() {
+	public Driver::Driver() {
 	}
-	public Driver::~this(){
+	public Driver::~Driver(){
 	}
 
 }
