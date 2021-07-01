@@ -2,6 +2,6 @@
 
 fun F0() -> void {
 
-	if(true) {
+	if true {
 	}
 }

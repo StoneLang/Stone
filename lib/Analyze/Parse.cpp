@@ -14,18 +14,21 @@ void stone::ParseSourceModuleFile(SourceModuleFile &sf, Syntax &syntax,
   ParserPipeline *pp = nullptr;
   LexerPipeline *lp = nullptr;
 
+  Parser parser(sf, syntax);
+
   if (pe) {
     if (pe->Get(PipelineType::Parse)) {
       pp = static_cast<ParserPipeline *>(pe->Get(PipelineType::Parse));
+      if (pp) {
+        parser.SetPipeline(pp);
+      }
     }
     if (pe->Get(PipelineType::Lex)) {
       lp = static_cast<LexerPipeline *>(pe->Get(PipelineType::Lex));
+      if (lp) {
+        parser.GetLexer().SetPipeline(lp);
+      }
     }
-  }
-  // TODO: Since we have the sf, we do not need to pass SrcID
-  Parser parser(sf, syntax, pp);
-  if (lp) {
-    parser.GetLexer().SetPipeline(lp);
   }
 
   syn::DeclGroupPtrTy topDecl;

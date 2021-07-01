@@ -141,6 +141,8 @@ public:
   Lexer &GetLexer() { return *lexer.get(); }
   const Token &GetCurTok() const { return tok; }
 
+  void SetPipeline(ParserPipeline *p) { pipeline = p; }
+
   // Checker& GetChecker() { return checker; }
 
 public:

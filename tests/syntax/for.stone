@@ -4,4 +4,5 @@ fun F0() -> void {
 	for {
 		break; // Break out of the forever loop.
 	}
+
 }

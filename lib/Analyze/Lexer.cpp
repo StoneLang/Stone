@@ -527,6 +527,8 @@ void Lexer::LexChar() {}
 
 void Lexer::LexNumber() {}
 
+void Lexer::LexHexNumber() {}
+
 void Lexer::LexStrLiteral() {}
 
 void Lexer::Diagnose() {}

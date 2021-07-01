@@ -1,14 +1,22 @@
 
-
-
 public fun F0() -> void {
 
 	i32 i = 1; 
-	match(i) {
+	match i {
 		case 1:
 		// this will automatically break out; 
 		case 2 | 3 :	
 		default: 
+	}
+
+	match i {
+		case 1:
+			next;
+		case 2;
+			next; 
+		default:
+			// You are here. 
+
 	}
 }
 

@@ -2,8 +2,18 @@
 public struct S0 {
 }
 
+fun F0(own S0* s) -> void {
+	
+	S0 s0(move s); 
+
+}
 fun Main() -> int {
 	// This will auto free 
-	own S0* s0 = new S0(); 
+	own S0* s0 = new S0();
+
+	own S0* s1 = new S0(); 
+
+	F0(move s1);
+
 }
 	
