@@ -148,7 +148,7 @@ public:
   bool ParseTopDecl(DeclGroupPtrTy &result, bool isFirstDecl = false);
 
   syn::DeclGroupPtrTy ParseDecl(ParsingDeclSpecifier *pds);
-  syn::DeclGroupPtrTy ParseDeclImpl(ParsingDeclSpecifier &pds, AccessLevel al);
+  syn::DeclGroupPtrTy ParseDecl(ParsingDeclSpecifier &pds, AccessLevel al);
 
   DeclResult ParseFunDecl(ParsingDeclSpecifier &pds, AccessLevel al);
 

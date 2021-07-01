@@ -16,11 +16,12 @@
 using namespace stone;
 
 struct LangImplementation final {
+  Compiler &compiler;
   SafeList<CompilableItem> compilables;
 
 public:
-  LangImplementation();
-  ~LangImplementation();
+  LangImplementation(Compiler &compiler) : compiler(compiler) {}
+  ~LangImplementation() {}
 
 public:
   int ExecuteCompilable(CompilableItem &compilable);
@@ -28,8 +29,11 @@ public:
   void AddCompilable(std::unique_ptr<CompilableItem> compilable) {
     compilables.Add(std::move(compilable));
   }
+
   syn::SourceModuleFile *
-  BuildSourceModuleFileForMainModule(CompilableItem &compilable);
+  BuildSourceModuleFileForMainModule(SourceModuleFile::Kind kind,
+                                     syn::Module &owner, SrcID srcID,
+                                     bool isPrimary);
 
   std::unique_ptr<CompilableItem> BuildCompilable(Compiler &compiler,
                                                   file::File &input);
@@ -45,14 +49,6 @@ public:
   int EmitModule(CompilableItem &compilable);
   int EmitBitCode(CompilableItem &compilable);
 };
-
-LangImplementation::LangImplementation() {}
-LangImplementation::~LangImplementation() {}
-
-syn::SourceModuleFile *LangImplementation::BuildSourceModuleFileForMainModule(
-    CompilableItem &compilable) {
-  return nullptr;
-}
 
 int LangImplementation::Parse(CompilableItem &compilable, bool check) {
 
@@ -146,6 +142,16 @@ int LangImplementation::ExecuteCompilable(CompilableItem &compilable) {
     return EmitObject(compilable);
   }
 }
+syn::SourceModuleFile *LangImplementation::BuildSourceModuleFileForMainModule(
+    SourceModuleFile::Kind kind, syn::Module &owner, SrcID srcID,
+    bool isPrimary) {
+
+  auto *sourceModuleFile = new (compiler.GetTreeContext())
+      SourceModuleFile(kind, owner, srcID, isPrimary);
+
+  return sourceModuleFile;
+}
+
 std::unique_ptr<CompilableItem>
 LangImplementation::BuildCompilable(Compiler &compiler, file::File &input) {
 
@@ -156,10 +162,8 @@ LangImplementation::BuildCompilable(Compiler &compiler, file::File &input) {
   }
 
   auto srcID = compiler.GetSrcMgr().CreateSrcID(std::move(*fileBuffer));
-
-  // Use the srcID to create the SourceModuleFile
-  SourceModuleFile *sf =
-      nullptr; //= BuildSourceModuleFileForMainModule(compiler,compilable);
+  auto sf = BuildSourceModuleFileForMainModule(
+      SourceModuleFile::Kind::Library, *compiler.GetMainModule(), srcID, false);
 
   assert(sf && "Could not create SourceModuleFile");
 
@@ -181,7 +185,7 @@ int Compiler::Run(Compiler &compiler) {
     printf("No input files.\n"); // TODO: Use Diagnostics
     return ret::err;
   }
-  LangImplementation implemenation;
+  LangImplementation implemenation(compiler);
   for (auto &input : compiler.GetInputFiles()) {
     auto compilable = implemenation.BuildCompilable(compiler, input);
     if (compilable) {

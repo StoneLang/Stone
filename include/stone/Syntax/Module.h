@@ -51,10 +51,10 @@ private:
   const SrcID srcID;
 
 public:
-  enum class Kind { Library };
+  enum class Kind { None, Library };
 
 public:
-  SourceModuleFile::Kind kind;
+  SourceModuleFile::Kind kind = Kind::None;
 
   // TODO: You may want const list
   UnsafeList<Decl> decls;

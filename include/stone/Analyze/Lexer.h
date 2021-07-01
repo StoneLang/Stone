@@ -101,11 +101,14 @@ public:
 public:
   void SetPipeline(LexerPipeline *p) { pipeline = p; }
 
+  bool ShouldKeepComments() const;
+
 private:
   void Lex();
   void LexTrivia(Trivia trivia, bool isTrailing);
   void LexIdentifier();
   void LexNumber();
+  void LexHexNumber();
   void LexStrLiteral();
   void LexChar();
 

@@ -147,7 +147,7 @@ SyntaxResult<StructDecl *> StructDeclFactory::Make(DeclContext *dc) {
 
 SyntaxResult<Module *>
 ModuleDeclFactory::Make(DeclContext *dc, Identifier &name, bool isMainModule) {
-  assert(dc);
+  assert(dc && "Null DeclContext");
 
   // TODO: moduleDeclBits.isMainModule = isMainModule ? true : false;
 

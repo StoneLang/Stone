@@ -13,6 +13,7 @@ bool Parser::IsTopDecl(const Token &tok) {
   case tk::Type::kw_fun:
   case tk::Type::kw_struct:
   case tk::Type::kw_space:
+  case tk::Type::kw_const:
     return true;
   default:
     return false;
@@ -38,12 +39,12 @@ syn::DeclGroupPtrTy Parser::ParseDecl(ParsingDeclSpecifier *pds) {
   // }
 
   // ParsingDeclSpecifier localDS(*this);
-  // return ParseDeclImpl(localDS);
+  // return ParseDecl(localDS);
 
   return nullptr;
 }
-syn::DeclGroupPtrTy Parser::ParseDeclImpl(ParsingDeclSpecifier &pds,
-                                          AccessLevel al) {
+syn::DeclGroupPtrTy Parser::ParseDecl(ParsingDeclSpecifier &pds,
+                                      AccessLevel al) {
 
   // Decl *singleDecl = nullptr;
   // // SyntaxResult<Decl *> singleDecl;
