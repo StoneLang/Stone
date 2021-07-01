@@ -49,14 +49,18 @@ public:
   bool HasError() { return de.HasError(); }
 
   void Panic();
-  /// TODO: Return LiveDiagnostic
-  void Error();
-  // TODO: Return LiveDiagnostic
-  void Warn();
-  // TODO: Return LiveDiagnostic
-  void Note();
-  /// TODO: Return LiveDiagnostic
-  void Remark();
+
+  void Error(unsigned diagID);
+  void Error(SrcLoc loc, unsigned diagID);
+
+  void Warn(unsigned diagID);
+  void Warn(SrcLoc loc, unsigned diagID);
+
+  void Note(unsigned diagID);
+  void Note(SrcLoc loc, unsigned diagID);
+
+  void Remark(unsigned diagID);
+  void Remark(SrcLoc loc, unsigned diagID);
 };
 
 } // namespace stone

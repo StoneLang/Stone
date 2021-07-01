@@ -138,7 +138,7 @@ Compiler::CreateOutputFile(llvm::StringRef OutputPath, bool Binary,
       UseTemporary, CreateMissingDirectories, &OutputPathName, &TempPathName);
 
   if (!OS) {
-    Error(/*diag::err_fe_unable_to_open_output*/);
+    Error(0);
     // getDiagnostics().Report(diag::err_fe_unable_to_open_output) << OutputPath
     //                                                            <<
     //                                                            EC.message();

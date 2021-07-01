@@ -151,7 +151,7 @@ LangImplementation::BuildCompilable(Compiler &compiler, file::File &input) {
 
   auto fileBuffer = compiler.GetFileMgr().getBufferForFile(input.GetName());
   if (!fileBuffer) {
-    compiler.GetBasic().Error();
+    compiler.Error(0);
     return nullptr;
   }
 
@@ -177,7 +177,7 @@ int Compiler::Run(Compiler &compiler) {
 
   assert(compiler.GetMode().IsCompilable() && "Invalid compile mode.");
   if (compiler.GetInputFiles().empty()) {
-    compiler.GetBasic().Error();
+    compiler.Error(0);
     printf("No input files.\n"); // TODO: Use Diagnostics
     return ret::err;
   }

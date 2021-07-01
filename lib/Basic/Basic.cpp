@@ -9,10 +9,15 @@ Basic::Basic()
 Basic::~Basic() {}
 
 void Basic::Panic() {}
-void Basic::Error() {}
 
-void Basic::Warn() {}
+void Basic::Error(unsigned diagID) { Error(SrcLoc(), diagID); }
+void Basic::Error(SrcLoc loc, unsigned diagID) {}
 
-void Basic::Note() {}
+void Basic::Warn(unsigned diagID) { Warn(SrcLoc(), diagID); }
+void Basic::Warn(SrcLoc loc, unsigned diagID) {}
 
-void Basic::Remark() {}
+void Basic::Note(unsigned diagID) { Note(SrcLoc(), diagID); }
+void Basic::Note(SrcLoc loc, unsigned diagID) {}
+
+void Basic::Remark(unsigned diagID) { Remark(SrcLoc(), diagID); }
+void Basic::Remark(SrcLoc loc, unsigned diagID) {}
