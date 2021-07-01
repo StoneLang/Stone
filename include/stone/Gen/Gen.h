@@ -39,5 +39,14 @@ llvm::Module *GenIR(syn::Module *langMod, const Basic &basic,
 
 bool GenObject(llvm::Module *llvmMod, const gen::CodeGenOptions &genOpts,
                syn::TreeContext &basic, const OutputFile *output);
+
+void GenModule();
+
+void GenAssembly();
+
+void GenBitCode();
+
+void GenLibrary();
+
 } // namespace stone
 #endif

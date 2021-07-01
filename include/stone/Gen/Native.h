@@ -5,6 +5,8 @@ namespace stone {
 namespace gen {
 class Native final {
 public:
+  Native();
+  ~Native();
 };
 } // namespace gen
 } // namespace stone

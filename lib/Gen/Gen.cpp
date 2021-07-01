@@ -1,3 +1,11 @@
+#include "stone/Gen/Gen.h"
+#include "stone/Basic/Ret.h"
+#include "stone/Gen/CodeGenOptions.h"
+#include "stone/Gen/CodeGenerator.h"
+#include "stone/Gen/Native.h"
+#include "stone/Syntax/Module.h"
+#include "stone/Syntax/TreeContext.h"
+
 #include "llvm/ADT/SmallSet.h"
 #include "llvm/ADT/StringExtras.h"
 #include "llvm/ADT/StringSwitch.h"
@@ -64,13 +72,6 @@
 #include "llvm/Transforms/Utils/SymbolRewriter.h"
 // TODO: #include "llvm/Transforms/Utils/UniqueInternalLinkageNames.h"
 
-#include "stone/Basic/Ret.h"
-#include "stone/Gen/CodeGenOptions.h"
-#include "stone/Gen/CodeGenerator.h"
-#include "stone/Gen/Gen.h"
-#include "stone/Syntax/Module.h"
-#include "stone/Syntax/TreeContext.h"
-
 #include <memory>
 
 using namespace stone;
@@ -94,5 +95,15 @@ bool stone::GenObject(llvm::Module *llvmMod, const gen::CodeGenOptions &genOpts,
 
   assert(llvmMod && "Null LLVM Module");
 
+  Native native; 
+
   return true;
 }
+
+void stone::GenModule() {}
+
+void stone::GenAssembly() {}
+
+void stone::GenBitCode() {}
+
+void stone::GenLibrary() {}
