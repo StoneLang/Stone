@@ -35,6 +35,8 @@ public:
                                      syn::Module &owner, SrcID srcID,
                                      bool isPrimary);
 
+  // TODO: May consider building all compilables first
+  void BuildCompilables();
   std::unique_ptr<CompilableItem> BuildCompilable(Compiler &compiler,
                                                   file::File &input);
 
@@ -52,13 +54,12 @@ public:
 
 int LangImplementation::Parse(CompilableItem &compilable, bool check) {
 
-  while (!compilable.GetCompiler().HasError()) {
-    stone::ParseSourceModuleFile(compilable.GetSourceModuleFile(),
-                                 compilable.GetCompiler().GetSyntax(),
-                                 compilable.GetCompiler().GetPipelineEngine());
-    if (compilable.GetCompiler().HasError()) {
-      return ret::err;
-    }
+  stone::ParseSourceModuleFile(compilable.GetSourceModuleFile(),
+                               compilable.GetCompiler().GetSyntax(),
+                               compilable.GetCompiler().GetPipelineEngine());
+
+  if (compilable.GetCompiler().HasError()) {
+    return ret::err;
   }
   return ret::ok;
 }

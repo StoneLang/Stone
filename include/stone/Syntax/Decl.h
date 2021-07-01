@@ -195,6 +195,7 @@ protected:
     // BlockDeclBitfields BlockDeclBits;
 
     ModuleDeclBits moduleDeclBits;
+
     static_assert(sizeof(DeclContextBits) <= 8,
                   "DeclContextBitfields is larger than 8 bytes!");
 
@@ -207,6 +208,10 @@ protected:
     //              "RecordDeclBitfields is larger than 8 bytes!");
     static_assert(sizeof(FunctionDeclBits) <= 8,
                   "FunctionDeclBitfields is larger than 8 bytes!");
+
+    static_assert(sizeof(ModuleDeclBits) <= 8,
+                  "ModuleDeclBitfields is larger than 8 bytes!");
+
     // static_assert(sizeof(ConstructorDeclBits) <= 8,
     //              "ConstructorDeclBitfields is larger than 8 bytes!");
     // static_assert(sizeof(LinkageSpecDeclBits) <= 8,
