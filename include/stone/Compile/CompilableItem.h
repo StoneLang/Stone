@@ -39,6 +39,10 @@ class CompilableItem final {
   OutputFile *output = nullptr;
 
 public:
+  // TODO: May use CompilingScope insteat
+  struct Stage {};
+
+public:
   CompilableItem(const CompilableItem &) = delete;
   CompilableItem(CompilableItem &&) = delete;
   CompilableItem &operator=(const CompilableItem &) = delete;

@@ -2,6 +2,7 @@
 #define STONE_COMPILE_COMPILER_H
 
 #include "stone/Compile/CompilableFile.h"
+#include "stone/Compile/CompilableItem.h"
 #include "stone/Compile/CompilerAlloc.h"
 #include "stone/Compile/CompilerContext.h"
 #include "stone/Compile/CompilerOptions.h"
@@ -10,6 +11,24 @@
 #include "stone/Syntax/SearchPathOptions.h"
 #include "stone/Syntax/Syntax.h"
 #include "stone/Syntax/TreeContext.h"
+
+#include "llvm/ADT/ArrayRef.h"
+#include "llvm/ADT/DenseMap.h"
+#include "llvm/ADT/IntrusiveRefCntPtr.h"
+#include "llvm/ADT/StringRef.h"
+#include "llvm/Support/BuryPointer.h"
+
+#include <cassert>
+#include <list>
+#include <memory>
+#include <string>
+#include <utility>
+
+namespace llvm {
+class raw_fd_ostream;
+class Timer;
+class TimerGroup;
+} // namespace llvm
 
 using namespace stone::syn;
 
@@ -41,6 +60,17 @@ class Compiler final : public Session {
   std::unique_ptr<CompilerStats> stats;
 
   ConstList<CompilableFile> inputs;
+
+  // TODO: Make unsafe and use Compiler to create them
+  SafeList<CompilableItem> compilables;
+
+  /// If the output doesn't support seeking (terminal, pipe). we switch
+  /// the stream to a buffer_ostream. These are the buffer and the original
+  /// stream.
+  std::unique_ptr<llvm::raw_fd_ostream> nonSeekStream;
+
+  /// Force an output buffer.
+  std::unique_ptr<llvm::raw_pwrite_stream> outputStream;
 
 private:
   static int Run(Compiler &compiler);
@@ -118,6 +148,20 @@ public:
   PipelineEngine *GetPipelineEngine() { return pe; }
 
   ConstList<CompilableFile> &GetCompilableFiles() { return inputs; }
+
+  std::unique_ptr<raw_pwrite_stream>
+  CreateOutputFile(llvm::StringRef outFile, bool isBinary,
+                   bool removeFileOnSignal, StringRef inFile,
+                   llvm::StringRef extension, bool useTemporary,
+                   bool createMissingDirectories);
+
+  // TODO: Move to File::CreateOutputFile()
+  std::unique_ptr<llvm::raw_pwrite_stream>
+  CreateOutputFile(llvm::StringRef outFile, std::error_code &error,
+                   bool isBinary, bool removeFileOnSignal,
+                   llvm::StringRef inFile, StringRef extension,
+                   bool useTemporary, bool CreateMissingDirectories,
+                   std::string *resultPathName, std::string *tempPathName);
 
 protected:
   void ComputeMode(const llvm::opt::DerivedArgList &args) override;

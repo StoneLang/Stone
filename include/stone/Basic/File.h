@@ -72,6 +72,14 @@ public:
 };
 /// Type used for a list of input arguments.
 using Files = llvm::SmallVector<file::File, 16>;
+
+std::unique_ptr<llvm::raw_pwrite_stream>
+CreateOutputFile(llvm::StringRef outFile, std::error_code &error, bool isBinary,
+                 bool removeFileOnSignal, llvm::StringRef inFile,
+                 llvm::StringRef extension, bool useTemporary,
+                 bool createMissingDirectories, std::string *resultPathName,
+                 std::string *tempPathName);
+
 } // namespace file
 
 } // namespace stone

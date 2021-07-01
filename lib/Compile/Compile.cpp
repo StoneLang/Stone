@@ -1,4 +1,3 @@
-
 #include "stone/Compile/Compile.h"
 #include "stone/Basic/Defer.h"
 #include "stone/Basic/Ret.h"
@@ -16,13 +15,46 @@
 
 using namespace stone;
 
-static syn::SourceModuleFile *
-BuildSourceModuleFileForMainModule(Compiler &compiler,
-                                   CompilableItem &compilable) {
+struct LangImplementation final {
+  SafeList<CompilableItem> compilables;
 
+public:
+  LangImplementation();
+  ~LangImplementation();
+
+public:
+  int ExecuteCompilable(CompilableItem &compilable);
+
+  void AddCompilable(std::unique_ptr<CompilableItem> compilable) {
+    compilables.Add(std::move(compilable));
+  }
+  syn::SourceModuleFile *
+  BuildSourceModuleFileForMainModule(CompilableItem &compilable);
+
+  std::unique_ptr<CompilableItem> BuildCompilable(Compiler &compiler,
+                                                  file::File &input);
+
+public:
+  int Parse(CompilableItem &compilable, bool check);
+  int Parse(CompilableItem &compilable);
+  int Check(CompilableItem &compilable);
+  int EmitIR(CompilableItem &compilable);
+  int EmitObject(CompilableItem &compilable);
+  int EmitAssembly(CompilableItem &compilable);
+  int EmitLibrary(CompilableItem &compilable);
+  int EmitModule(CompilableItem &compilable);
+  int EmitBitCode(CompilableItem &compilable);
+};
+
+LangImplementation::LangImplementation() {}
+LangImplementation::~LangImplementation() {}
+
+syn::SourceModuleFile *LangImplementation::BuildSourceModuleFileForMainModule(
+    CompilableItem &compilable) {
   return nullptr;
 }
-static int Parse(CompilableItem &compilable, bool check) {
+
+int LangImplementation::Parse(CompilableItem &compilable, bool check) {
 
   while (!compilable.GetCompiler().HasError()) {
     stone::ParseSourceModuleFile(compilable.GetSourceModuleFile(),
@@ -34,15 +66,17 @@ static int Parse(CompilableItem &compilable, bool check) {
   }
   return ret::ok;
 }
-static int Parse(CompilableItem &compilable) {
+int LangImplementation::Parse(CompilableItem &compilable) {
   return Parse(compilable, false);
 }
-static int Check(CompilableItem &compilable) { return Parse(compilable, true); }
+int LangImplementation::Check(CompilableItem &compilable) {
+  return Parse(compilable, true);
+}
 
-static int EmitIR(CompilableItem &compilable) {
+int LangImplementation::EmitIR(CompilableItem &compilable) {
 
   /// Should be in EmitIR Scope
-  if (!Parse(compilable, true)) {
+  if (!Check(compilable)) {
     return ret::err;
   }
   /// Should be in Parse scope
@@ -62,7 +96,7 @@ static int EmitIR(CompilableItem &compilable) {
   return ret::ok;
 }
 
-static int EmitObject(CompilableItem &compilable) {
+int LangImplementation::EmitObject(CompilableItem &compilable) {
 
   if (!compilable.GetCompiler().GetMode().CanOutput()) {
     return ret::err;
@@ -87,12 +121,20 @@ static int EmitObject(CompilableItem &compilable) {
 
   return ret::ok;
 }
-static int EmitAssembly(CompilableItem &compilable) { return ret::ok; }
-static int EmitLibrary(CompilableItem &compilable) { return ret::ok; }
-static int EmitModule(CompilableItem &compilable) { return ret::ok; }
-static int EmitBitCode(CompilableItem &compilable) { return ret::ok; }
+int LangImplementation::EmitAssembly(CompilableItem &compilable) {
+  return ret::ok;
+}
+int LangImplementation::EmitLibrary(CompilableItem &compilable) {
+  return ret::ok;
+}
+int LangImplementation::EmitModule(CompilableItem &compilable) {
+  return ret::ok;
+}
+int LangImplementation::EmitBitCode(CompilableItem &compilable) {
+  return ret::ok;
+}
 
-static int ExecuteCompilable(CompilableItem &compilable) {
+int LangImplementation::ExecuteCompilable(CompilableItem &compilable) {
   switch (compilable.GetCompiler().GetMode().GetType()) {
   case ModeType::Parse:
     return Parse(compilable);
@@ -104,8 +146,8 @@ static int ExecuteCompilable(CompilableItem &compilable) {
     return EmitObject(compilable);
   }
 }
-static std::unique_ptr<CompilableItem> BuildCompilable(Compiler &compiler,
-                                                       file::File &input) {
+std::unique_ptr<CompilableItem>
+LangImplementation::BuildCompilable(Compiler &compiler, file::File &input) {
 
   auto fileBuffer = compiler.GetFileMgr().getBufferForFile(input.GetName());
   if (!fileBuffer) {
@@ -139,12 +181,14 @@ int Compiler::Run(Compiler &compiler) {
     printf("No input files.\n"); // TODO: Use Diagnostics
     return ret::err;
   }
+  LangImplementation implemenation;
   for (auto &input : compiler.GetInputFiles()) {
-    auto compilable = BuildCompilable(compiler, input);
+    auto compilable = implemenation.BuildCompilable(compiler, input);
     if (compilable) {
-      if (!ExecuteCompilable(*compilable.get())) {
+      if (!implemenation.ExecuteCompilable(*compilable.get())) {
         break;
       }
+      implemenation.AddCompilable(std::move(compilable));
     }
   }
   return ret::ok;
