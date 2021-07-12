@@ -252,23 +252,25 @@ protected:
                                                   bool fieldsAlreadyLoaded);
 
 public:
-  DeclContext(DeclContext::Type dcTy, Decl::Type dTy, DeclContext *parent);
+  DeclContext(DeclContext::Type dcTy, Decl::Type dTy,
+              DeclContext *parent = nullptr);
 
 public:
   Decl::Type GetDeclType() { return dTy; }
   DeclContext::Type GetDeclContextType() { return dcTy; }
   DeclContext *GetParent() { return parent; }
 
-  // TODO: improvement here
-  // const Decl *GetAsDecl() const {
-  //   // TODO: Ok for now -- cleanup.
-  //   switch (dcTy) {
-  //   case DeclContext::Type::Decl:
-  //     return static_cast<Decl *>(this);
-  //   default:
-  //     return nullptr;
-  //   }
-  // }
+  Decl *GetAsDecl() {
+    switch (dcTy) {
+    case DeclContext::Type::Decl:
+      return reinterpret_cast<Decl *>(this + 1); // TODO: UB
+    default:
+      return nullptr;
+    }
+  }
+  const Decl *GetAsDecl() const {
+    return const_cast<DeclContext *>(this)->GetAsDecl();
+  }
 };
 
 class NamingDecl : public Decl {

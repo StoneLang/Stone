@@ -8,7 +8,6 @@ class Linkage {
 public:
 };
 
-
 } // namespace syn
 
 } // namespace stone

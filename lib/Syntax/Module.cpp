@@ -21,12 +21,11 @@ void *ModuleFile::operator new(size_t bytes, TreeContext &tc,
 }
 
 ModuleFile::ModuleFile(ModuleFile::Kind kind, Module &owner)
-      : DeclContext(DeclContext::Type::File, Decl::Type::None, &owner),
-        kind(kind) {}
-
+    : DeclContext(DeclContext::Type::File, Decl::Type::None, &owner),
+      kind(kind) {}
 
 Module::Module(Identifier &name, TreeContext &tc)
-    : DeclContext(DeclContext::Type::Decl, Decl::Type::Module, nullptr),
+    : DeclContext(DeclContext::Type::Decl, Decl::Type::Module),
       TypeDecl(Decl::Type::Module, nullptr /*TODO: pass DeclContext*/, SrcLoc(),
                &name) {}
 
@@ -45,8 +44,9 @@ void Module::AddFile(ModuleFile &file) {
 
 bool Module::Walk(Walker &waker) {}
 
-SourceModuleFile::SourceModuleFile(SourceModuleFile::Kind kind, syn::Module &owner,
-                                   const SrcID srcID, bool isPrimary)
+SourceModuleFile::SourceModuleFile(SourceModuleFile::Kind kind,
+                                   syn::Module &owner, const SrcID srcID,
+                                   bool isPrimary)
     : ModuleFile(ModuleFile::Kind::Source, owner), kind(kind), srcID(srcID),
       isPrimary(isPrimary) {}
 
