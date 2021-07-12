@@ -68,8 +68,7 @@ public:
   ~ModuleDeclFactory();
 
 public:
-  SyntaxResult<Module *> Make(DeclContext *dc, Identifier &name,
-                              bool isMainModule);
+  SyntaxResult<Module *> Make(Identifier &name, bool isMainModule);
 };
 
 class Syntax final {

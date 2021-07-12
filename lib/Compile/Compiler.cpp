@@ -49,9 +49,7 @@ syn::Module *Compiler::GetMainModule() const {
   }
   Identifier &moduleName = tc->GetIdentifier(GetModuleName());
   mainModule = syntax->GetModuleDeclFactory()
-                   .Make(/*TODO*/ nullptr, moduleName, true)
-                   .get();
-
+                   .Make(moduleName, true).get();
   return mainModule;
 }
 

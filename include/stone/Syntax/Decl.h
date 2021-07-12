@@ -67,26 +67,6 @@ private:
   SrcLoc loc;
   DeclContext *dc;
 
-protected:
-  // TODO: This is how clang does it - swift
-
-  /// Allocate memory for a deserialized declaration.
-  ///
-  /// This routine must be used to allocate memory for any declaration that is
-  /// deserialized from a module file.
-  ///
-  /// \param size The size of the allocated object.
-  /// \param astCtx The context in which we will allocate memory.
-  /// \param declID The global ID of the deserialized declaration.
-  /// \param extra The amount of extra space to allocate after the object.
-  // void *operator new(std::size_t size, const TreeContext &tc, unsigned
-  // declID,
-  //                   std::size_t extra = 0);
-
-  /// Allocate memory for a non-deserialized declaration.
-  // void *operator new(std::size_t size, const TreeContext &astCtx,
-  //                  DeclContext *parentDeclContext, std::size_t extra = 0);
-
 public:
   // Make vanilla new/delete illegal for Decls.
   void *operator new(size_t bytes) = delete;
@@ -96,6 +76,10 @@ public:
   // or by doing a placement new.
   void *operator new(size_t bytes, const TreeContext &tc,
                      unsigned alignment = alignof(Decl));
+
+  // TODO: UB
+  void *operator new(std::size_t size, const TreeContext &ctx,
+                     DeclContext *parent, std::size_t extra = 0);
 
 public:
   Decl() = delete;
