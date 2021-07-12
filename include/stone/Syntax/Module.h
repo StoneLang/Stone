@@ -13,10 +13,10 @@
 namespace stone {
 namespace syn {
 
-static inline unsigned AlignOfModuleFile();
 class Module;
+static inline unsigned AlignOfModuleFile();
 
-class ModuleFile {
+class ModuleFile : public DeclContext {
 public:
   enum class Kind { Source, Builtin };
 
@@ -24,7 +24,7 @@ private:
   ModuleFile::Kind kind;
 
 public:
-  ModuleFile(ModuleFile::Kind kind, Module &owner) : kind(kind) {}
+  ModuleFile(ModuleFile::Kind kind, Module &owner);
 
 public:
   ModuleFile::Kind GetKind() const { return kind; }
@@ -84,7 +84,7 @@ class BuiltinModuleFile final : public ModuleFile {
 public:
 };
 
-class Module final : public DeclContext, public TypeDecl, Walkable {
+class Module final : public DeclContext, public TypeDecl, public Walkable {
 
 public:
   Module(Identifier &name, TreeContext &tc);

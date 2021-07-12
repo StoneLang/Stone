@@ -18,7 +18,8 @@ Parser::Parser(SourceModuleFile &sf, Syntax &syntax, ParserPipeline *pipeline)
 
 Parser::Parser(SourceModuleFile &sf, Syntax &syntax, std::unique_ptr<Lexer> lx,
                ParserPipeline *pipeline)
-    : sf(sf), syntax(syntax), lexer(lx.release()), pipeline(pipeline) {
+    : sf(sf), syntax(syntax), lexer(lx.release()), curDC(&sf),
+      pipeline(pipeline) {
 
   stats.reset(new ParserStats(*this, GetBasic()));
   GetBasic().GetStatEngine().Register(stats.get());

@@ -4,7 +4,9 @@
 namespace stone {
 namespace syn {
 
-class Node {};
+class Node {
+public:
+};
 
 } // namespace syn
 } // namespace stone

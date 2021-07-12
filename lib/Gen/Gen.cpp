@@ -95,7 +95,7 @@ bool stone::GenObject(llvm::Module *llvmMod, const gen::CodeGenOptions &genOpts,
 
   assert(llvmMod && "Null LLVM Module");
 
-  Native native; 
+  Native native;
 
   return true;
 }

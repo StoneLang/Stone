@@ -1,0 +1,10 @@
+
+
+public struct S0 {
+}
+public static fun S0::F0() -> void {
+
+}
+fun Main() -> int {
+	S0.F0(); 
+}

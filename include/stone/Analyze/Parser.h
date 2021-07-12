@@ -69,6 +69,8 @@ class Parser final {
   /// We may consider performing type-checking during parsing
   // std::unique_ptr<Checker> checker;
 
+  DeclContext *curDC;
+
 private:
   // Identifiers
 
@@ -144,6 +146,8 @@ public:
   void SetPipeline(ParserPipeline *p) { pipeline = p; }
 
   // Checker& GetChecker() { return checker; }
+
+  DeclContext *GetCurDeclContext() { return curDC; }
 
 public:
   bool IsTopDecl(const Token &tok);

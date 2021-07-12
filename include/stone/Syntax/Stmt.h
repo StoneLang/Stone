@@ -30,9 +30,11 @@ class SrcMgr;
 
 namespace syn {
 class Decl;
+class FunDecl;
+class VarDecl;
 class Expr;
 class StringLiteral;
-class VarDecl;
+
 class TreeContext;
 
 class Stmt : public syn::Node {
@@ -99,6 +101,20 @@ class NullStmt final : public Stmt,
                        private llvm::TrailingObjects<NullStmt, Stmt *, SrcLoc> {
   friend TrailingObjects;
 };
+
+class DeferStmt : public Stmt {
+  ///
+  SrcLoc deferLoc;
+  /// This is the bound temp function.
+  FunDecl *tempDecl;
+
+  /// This is the invocation of the closure, which is to be emitted on any error
+  /// paths.
+  Expr *callExpr;
+
+public:
+};
+
 } // namespace syn
 } // namespace stone
 #endif

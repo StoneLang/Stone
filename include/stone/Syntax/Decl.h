@@ -1,13 +1,15 @@
 #ifndef STONE_SYNTAX_DECL_H
 #define STONE_SYNTAX_DECL_H
 
-#include <algorithm>
-#include <cassert>
-#include <cstddef>
-#include <iterator>
-#include <string>
-#include <type_traits>
-#include <utility>
+#include "stone/Basic/AddressSpace.h"
+#include "stone/Basic/LLVM.h"
+#include "stone/Basic/SrcLoc.h"
+#include "stone/Syntax/DeclContext.h"
+#include "stone/Syntax/DeclName.h"
+#include "stone/Syntax/Identifier.h"
+#include "stone/Syntax/Node.h"
+#include "stone/Syntax/Specifier.h"
+#include "stone/Syntax/Type.h"
 
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/PointerIntPair.h"
@@ -19,24 +21,24 @@
 #include "llvm/Support/PrettyStackTrace.h"
 #include "llvm/Support/VersionTuple.h"
 
-#include "stone/Basic/AddressSpace.h"
-#include "stone/Basic/LLVM.h"
-#include "stone/Basic/SrcLoc.h"
-#include "stone/Syntax/DeclBits.h"
-#include "stone/Syntax/DeclName.h"
-#include "stone/Syntax/Identifier.h"
-#include "stone/Syntax/Node.h"
-#include "stone/Syntax/Specifier.h"
-#include "stone/Syntax/Type.h"
+#include <algorithm>
+#include <cassert>
+#include <cstddef>
+#include <iterator>
+#include <string>
+#include <type_traits>
+#include <utility>
 
 namespace stone {
 namespace syn {
 
 class Decl;
 class Stmt;
+class Module;
 class BraceStmt;
 class DeclContext;
 class TreeContext;
+class DeclFactory;
 
 class DeclStats final : public Stats {
   const Decl &declaration;
@@ -50,6 +52,7 @@ public:
 class alignas(8) Decl : public syn::Node {
 public:
   enum Type {
+    None,
 #define DECL(Id, Parent) Id,
 #define LAST_DECL(Id) LastDecl = Id,
 #define DECL_RANGE(Id, FirstId, LastId)                                        \
@@ -59,6 +62,7 @@ public:
 
 private:
   friend DeclStats;
+
   Decl::Type ty;
   SrcLoc loc;
   DeclContext *dc;
@@ -171,9 +175,19 @@ public:
 };
 
 class DeclContext {
+
 public:
-  // TODO: Think about
-  // enum class Type : unsigned { Module };
+  enum class Type : unsigned {
+    Decl,
+    Expr,
+    File,
+  };
+
+private:
+  Decl::Type dTy;
+  DeclContext::Type dcTy;
+
+  DeclContext *parent;
 
 protected:
   /// This anonymous union stores the bits belonging to DeclContext and classes
@@ -238,7 +252,23 @@ protected:
                                                   bool fieldsAlreadyLoaded);
 
 public:
-  DeclContext(Decl::Type ty, DeclContext *parent = nullptr);
+  DeclContext(DeclContext::Type dcTy, Decl::Type dTy, DeclContext *parent);
+
+public:
+  Decl::Type GetDeclType() { return dTy; }
+  DeclContext::Type GetDeclContextType() { return dcTy; }
+  DeclContext *GetParent() { return parent; }
+
+  // TODO: improvement here
+  // const Decl *GetAsDecl() const {
+  //   // TODO: Ok for now -- cleanup.
+  //   switch (dcTy) {
+  //   case DeclContext::Type::Decl:
+  //     return static_cast<Decl *>(this);
+  //   default:
+  //     return nullptr;
+  //   }
+  // }
 };
 
 class NamingDecl : public Decl {
@@ -318,6 +348,7 @@ public:
   Stmt *GetBody();
 };
 
+/// Standalone function: fun F0() -> void {}
 class FunDecl : public FunctionDecl {
 
 public:
@@ -327,9 +358,15 @@ public:
 
 public:
   bool IsMain() const;
+
+  /// True if the function is a defer body.
+  bool IsDeferBody() const;
+
+  // SrcLoc GetStaticLoc() const { return staticLoc; }
+  // SrcLoc GetFunLoc() const { return funcLoc; }
 };
 
-// Methods are associated with an object. Ex: fun Particle::Fire() -> bool ...
+// Member functions: fun Particle::Fire() -> bool ...
 class MethodDecl : public FunctionDecl {
 public:
   MethodDecl(TreeContext &tc, DeclContext *dc, SrcLoc funLoc,

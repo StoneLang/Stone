@@ -56,7 +56,7 @@ class NewExpr final : public Expr,
   friend TrailingObjects;
 };
 
-class MeExpr : public Expr {
+class ThisExpr : public Expr {
 public:
 };
 

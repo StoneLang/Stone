@@ -78,6 +78,8 @@ class TemplateParameterList {
 public:
 };
 
+class TemplateContext {};
+
 class TemplateDecl : public NamingDecl {
 public:
 };
