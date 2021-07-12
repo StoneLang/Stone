@@ -97,8 +97,6 @@ public:
 
   ~Parser();
 
-  void Prime();
-
 public:
   class ParsingScope final {
     Parser *self;
@@ -161,6 +159,12 @@ public:
 private:
   void ParseFunctionPrototype();
 
+private:
+  void Lex(Token &result) { lexer->Lex(result); }
+  void Lex(Token &result, Trivia &leading, Trivia &trailing) {
+    lexer->Lex(result, leading, trailing);
+  }
+
 public:
   // First, call ParseFunDecl -- this is your fun prototype
   // Then you call the following:
@@ -187,9 +191,18 @@ public:
 
   bool HasError();
 
-  SrcLoc EatBracket() { return SrcLoc(); }
-  SrcLoc EatBrace() { return SrcLoc(); }
-  SrcLoc EatParen() { return SrcLoc(); }
+  SrcLoc ConsumeBracket() { return SrcLoc(); }
+  SrcLoc ConsumeBrace() { return SrcLoc(); }
+  SrcLoc ConsumeParen() { return SrcLoc(); }
+
+  /// Consume the token and update OnToken from CompilerPipeline
+  SrcLoc ConsumeTok(bool onTok = true);
+
+  SrcLoc ConsumeTk(tk::Type ty) {
+    assert(tok.Is(ty) && "Consuming wrong token type");
+    return ConsumeTok(false);
+  }
+  // SrcLoc EatIdentifier(Identifier *Result = nullptr);
 
   Basic &GetBasic();
 

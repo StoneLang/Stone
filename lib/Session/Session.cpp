@@ -78,8 +78,10 @@ void Session::ComputeMode(const llvm::opt::DerivedArgList &args) {
   assert(mode.GetType() == ModeType::None && "mode id already computed");
   const llvm::opt::Arg *const modeArg = args.getLastArg(opts::ModeGroup);
 
-  // TODO: may have to claim
-  if (modeArg) {
+  if (!modeArg) {
+    mode.SetType(GetDefaultModeType());
+  } else {
+    // TODO: may have to claim
     switch (modeArg->getOption().getID()) {
     case opts::Parse:
       mode.SetType(ModeType::Parse);
@@ -106,19 +108,14 @@ void Session::ComputeMode(const llvm::opt::DerivedArgList &args) {
       mode.SetType(ModeType::EmitModule);
       break;
     default:
-      /// This is left blank because we want the derived class to specify its
-      /// own default mode
+      Error(0); // TODO: No mode entered
       break;
     }
-  }
-  if (mode.GetType() == ModeType::None) {
-    mode.SetType(GetDefaultModeType());
-  }
-  if (mode.IsValid()) {
-    mode.SetName(modeArg->getOption().getName());
+    if (mode.IsValid()) {
+      mode.SetName(modeArg->getOption().getName());
+    }
   }
 }
-
 void Session::Purge() {}
 
 void Session::Finish() {

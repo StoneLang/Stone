@@ -26,9 +26,9 @@ protected:
   std::unique_ptr<Lexer> CreateLexer(llvm::StringRef srcBuffer) {
 
     auto memBuffer = llvm::MemoryBuffer::getMemBuffer(srcBuffer);
-    auto mainSrcID = sm.CreateSrcID(std::move(memBuffer));
+    auto srcID = sm.CreateSrcID(std::move(memBuffer));
 
-    sm.SetMainSrcID(mainSrcID);
+    sm.SetMainSrcID(srcID);
     auto lexer = llvm::make_unique<Lexer>(mainSrcID, sm, basic);
     return lexer;
   }

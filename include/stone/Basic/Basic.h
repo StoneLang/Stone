@@ -50,7 +50,7 @@ public:
 
   void Panic();
 
-  void Error(unsigned diagID);
+  /* TODO: LiveDiagnostic*/ void Error(unsigned diagID);
   void Error(SrcLoc loc, unsigned diagID);
 
   void Warn(unsigned diagID);

@@ -163,6 +163,8 @@ LangImplementation::BuildCompilable(Compiler &compiler, file::File &input) {
   }
 
   auto srcID = compiler.GetSrcMgr().CreateSrcID(std::move(*fileBuffer));
+  compiler.GetSrcMgr().SetMainSrcID(srcID);
+
   auto sf = BuildSourceModuleFileForMainModule(
       SourceModuleFile::Kind::Library, *compiler.GetMainModule(), srcID, false);
 

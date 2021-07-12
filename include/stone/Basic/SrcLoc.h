@@ -69,7 +69,6 @@ private:
 /// It is important that this type remains small. It is currently 32 bits wide.
 class SrcLoc {
   friend class SrcMgr;
-
   unsigned ID = 0;
 
   enum : unsigned { MacroIDBit = 1U << 31 };
@@ -107,11 +106,11 @@ private:
 public:
   /// Return a source location with the specified offset from this
   /// SrcLoc.
-  SrcLoc getLocWithOffset(int Offset) const {
-    assert(((getOffset() + Offset) & MacroIDBit) == 0 && "offset overflow");
-    SrcLoc L;
-    L.ID = ID + Offset;
-    return L;
+  SrcLoc getLocWithOffset(int offset) const {
+    assert(((getOffset() + offset) & MacroIDBit) == 0 && "offset overflow");
+    SrcLoc sl;
+    sl.ID = ID + offset;
+    return sl;
   }
 
   /// When a SrcLoc itself cannot be used, this returns
@@ -125,10 +124,10 @@ public:
   /// a real SrcLoc.
   ///
   /// \see getRawEncoding.
-  static SrcLoc getFromRawEncoding(unsigned Encoding) {
-    SrcLoc X;
-    X.ID = Encoding;
-    return X;
+  static SrcLoc getFromRawEncoding(unsigned encoding) {
+    SrcLoc sl;
+    sl.ID = encoding;
+    return sl;
   }
 
   /// When a SrcLoc itself cannot be used, this returns
@@ -144,8 +143,8 @@ public:
 
   /// Turn a pointer encoding of a SrcLoc object back
   /// into a real SrcLoc.
-  static SrcLoc getFromPtrEncoding(const void *Encoding) {
-    return getFromRawEncoding((unsigned)(uintptr_t)Encoding);
+  static SrcLoc getFromPtrEncoding(const void *encoding) {
+    return getFromRawEncoding((unsigned)(uintptr_t)encoding);
   }
 
   static bool isPairOfFileLocations(SrcLoc Start, SrcLoc End) {

@@ -2,7 +2,9 @@
 #define STONE_ANALYZE_TOKEN_H
 
 #include "stone/Basic/LLVM.h"
+#include "stone/Basic/SrcLoc.h"
 #include "stone/Basic/TokenType.h"
+
 #include "llvm/ADT/StringRef.h"
 
 namespace stone {
@@ -161,31 +163,29 @@ public:
 
   bool HasComment() const { return commentLength != 0; }
 
+  /// GetLoc - Return a source location identifier for the specified
+  /// offset in the current file.
+  SrcLoc GetLoc() const { return SrcLoc::getFromPtrEncoding(text.begin()); }
+
+  // CharSrcRange GetRange() const {
+  //       return CharSourceRange(GetLoc(), GetLength());
+  //   }
+
   /*
-    /// GetLoc - Return a source location identifier for the specified
-    /// offset in the current file.
-    SourceLoc GetLoc() const {
-      return SourceLoc(llvm::SMLoc::getFromPointer(text.begin()));
-    }
-
-
-    CharSourceRange GetRange() const {
-      return CharSourceRange(GetLoc(), GetLength());
-    }
-    CharSourceRange GetCommentRange() const {
-      if (CommentLength == 0)
-        return
-    CharSourceRange(SourceLoc(llvm::SMLoc::getFromPointer(text.begin())), 0);
-      auto TrimedComment = trimComment();
-      return CharSourceRange(
-        SourceLoc(llvm::SMLoc::getFromPointer(TrimedComment.begin())),
-        TrimedComment.size());
-    }
-    SourceLoc GetCommentStart() const {
-      if (CommentLength == 0) return SourceLoc();
-      return SourceLoc(llvm::SMLoc::getFromPointer(trimComment().begin()));
-    }
-  */
+  CharSourceRange GetCommentRange() const {
+    if (CommentLength == 0)
+      return
+  CharSourceRange(SourceLoc(llvm::SMLoc::getFromPointer(text.begin())), 0);
+    auto TrimedComment = trimComment();
+    return CharSourceRange(
+      SourceLoc(llvm::SMLoc::getFromPointer(TrimedComment.begin())),
+      TrimedComment.size());
+  }
+  SourceLoc GetCommentStart() const {
+    if (CommentLength == 0) return SourceLoc();
+    return SourceLoc(llvm::SMLoc::getFromPointer(trimComment().begin()));
+  }
+*/
 
   StringRef GetRawText() const { return text; }
 

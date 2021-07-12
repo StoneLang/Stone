@@ -23,17 +23,21 @@ Parser::Parser(SourceModuleFile &sf, Syntax &syntax, std::unique_ptr<Lexer> lx,
 
   stats.reset(new ParserStats(*this, GetBasic()));
   GetBasic().GetStatEngine().Register(stats.get());
-
-  Prime();
 }
 Parser::~Parser() {}
-
-void Parser::Prime() { assert(true && "TODO"); }
 
 bool Parser::HasError() { return GetBasic().HasError(); }
 Basic &Parser::GetBasic() { return syntax.GetTreeContext().GetBasic(); }
 
 void Parser::EnterScope(unsigned scopeFlags) {}
 void Parser::ExitScope() {}
+
+SrcLoc Parser::ConsumeTok(bool onTok) {
+  SrcLoc loc = tok.GetLoc();
+  assert(tok.IsNot(tk::Type::eof) && "Lexing past eof!");
+  Lex(tok, leadingTrivia, trailingTrivia);
+  prevTokLoc = loc;
+  return loc;
+}
 
 void ParserStats::Print() {}

@@ -26,7 +26,7 @@ bool Parser::IsTopDecl(const Token &tok) {
 // This call parses one at a time and adds it to the SourceModuleFile
 bool Parser::ParseTopDecl(syn::DeclGroupPtrTy &result, bool isFirstDecl) {
 
-  assert(IsTopDecl(tok) && "Invalid top-level declaration.");
+  ConsumeTok();
 
   return false;
 }
