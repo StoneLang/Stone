@@ -7,7 +7,21 @@
 
 namespace stone {
 namespace syn {
-enum class TriviaKind { GarbageText };
+
+enum class TriviaKind {
+  BlockComment,
+  CarriageReturn,
+  CarriageReturnLineFeed,
+  DocBlockComment,
+  DocLineComment,
+  Formfeed,
+  GarbageText,
+  LineComment,
+  Newline,
+  Space,
+  Tab,
+  VerticalTab
+};
 
 class TriviaPiece final {
   TriviaKind kind;

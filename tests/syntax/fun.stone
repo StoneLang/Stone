@@ -1,6 +1,6 @@
 
 
-public fun F0() -> void {
+fun F0() -> void {
 	
 }
 

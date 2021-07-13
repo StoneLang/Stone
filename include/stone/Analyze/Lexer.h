@@ -85,6 +85,16 @@ class Lexer final {
 
   LexerPipeline *pipeline = nullptr;
 
+private:
+  enum class NullCharType {
+    /// String buffer terminator.
+    BufferEnd,
+    /// Embedded nul character.
+    Embedded,
+    /// Code completion marker.
+    CodeCompletion
+  };
+
 public:
   // Making this public for now
   TriviaRetentionMode triviaRetention;
@@ -101,11 +111,12 @@ public:
 public:
   void SetPipeline(LexerPipeline *p) { pipeline = p; }
 
-  bool ShouldKeepComments() const;
+  // TODO:
+  bool ShouldKeepComments() const { return false; }
 
 private:
   void Lex();
-  void LexTrivia(Trivia trivia, bool isTrailing);
+  void LexTrivia(Trivia trivia, bool isForTrailingTrivia);
   void LexIdentifier();
   void LexNumber();
   void LexHexNumber();
@@ -113,9 +124,12 @@ private:
   void LexChar();
 
   void Diagnose();
-  void CreateToken(tk::Type kind, const char *tokenStart);
+  void CreateToken(tk::Type ty, const char *tokenStart);
 
   tk::Type GetKindOfIdentifier(StringRef tokStr);
+
+  void GoBack() { --curPtr; }
+  void GoForward() { ++curPtr; }
 
 public:
   void Lex(Token &result);
@@ -123,6 +137,11 @@ public:
   Token &Peek() { return nextToken; }
 
   SrcID GetSrcID() { return srcID; }
+
+  /// Returns it should be tokenize.
+  bool LexAlien(bool emitDiagnosticsIfToken);
+
+  NullCharType GetNullCharType(const char *data) const;
 };
 } // namespace syn
 } // namespace stone
