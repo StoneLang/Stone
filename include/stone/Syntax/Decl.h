@@ -148,14 +148,15 @@ protected:
 
 public:
   template <typename DeclTy, typename AllocatorTy>
-  static void *Make(AllocatorTy &allocatorTy, size_t baseSize) {
-    return Make(allocatorTy, baseSize, false);
+  static void *Allocate(AllocatorTy &allocatorTy, size_t baseSize) {
+    return Allocate(allocatorTy, baseSize, false);
   }
 
   /// \param extraSpace The amount of extra space to allocate after the object
   /// -- generally for clang nodes.
   template <typename DeclTy, typename AllocatorTy>
-  static void *Make(AllocatorTy &allocatorTy, size_t baseSize, bool extraSpace);
+  static void *Allocate(AllocatorTy &allocatorTy, size_t baseSize,
+                        bool extraSpace);
 };
 
 class DeclContext {
@@ -283,6 +284,11 @@ public:
     // TODO: assert(name.IsIdentifier() && "Name is not a simple identifier");
     return GetIdentifier() ? GetIdentifier()->GetName() : "";
   }
+
+public:
+  void SetDeclName(DeclName name) { this->name = name; }
+  // DeclName loc
+  void SetLoc(SrcLoc loc) {}
 };
 
 class TypeDecl : public NamingDecl {
@@ -332,11 +338,16 @@ public:
 public:
   /// BraceStmt
   Stmt *GetBody();
+
+  //void SetBody(Stmt body) {}
+
+public:
 };
 
 /// Standalone function: fun F0() -> void {}
 class FunDecl : public FunctionDecl {
 
+  // TODO: You should aonly pass TreeContext and DeclContext
 public:
   FunDecl(TreeContext &tc, DeclContext *dc, SrcLoc funLoc, const DeclName &dn,
           SrcLoc dnLoc, StorageType st)
@@ -347,6 +358,8 @@ public:
 
   /// True if the function is a defer body.
   bool IsDeferBody() const;
+
+  void SetFunLoc(SrcLoc loc) {}
 
   // SrcLoc GetStaticLoc() const { return staticLoc; }
   // SrcLoc GetFunLoc() const { return funcLoc; }

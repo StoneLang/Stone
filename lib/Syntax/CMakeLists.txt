@@ -16,6 +16,7 @@ set(stone_syn_sources
 	Stmt.cpp
 	Scope.cpp
 	Syntax.cpp
+	SyntaxBuilder.cpp
 	Template.cpp
 	TreeContext.cpp
 	Type.cpp

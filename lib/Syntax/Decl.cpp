@@ -42,7 +42,8 @@ void *syn::Decl::operator new(std::size_t bytes, const TreeContext &tc,
 }
 
 template <typename DeclTy, typename AllocatorTy>
-void *Decl::Make(AllocatorTy &allocatorTy, size_t baseSize, bool extraSace) {
+void *Decl::Allocate(AllocatorTy &allocatorTy, size_t baseSize,
+                     bool extraSace) {
 
   static_assert(alignof(DeclTy) >= sizeof(void *),
                 "A pointer must fit in the alignment of the DeclTy!");
@@ -144,6 +145,13 @@ SyntaxResult<StructDecl *> StructDeclFactory::Make(DeclContext *dc) {
 SyntaxResult<Module *> ModuleDeclFactory::Make(Identifier &name,
                                                bool isMainModule) {
 
+  // size_t size =
+  //    sizeof(FunDecl); //+ (HasImplicitThisDecl ? sizeof(ParamDecl *) : 0);
+
+  // void *moduleDeclPtr = Decl::Allocate<Module>(syntax.GetTreeContext(),
+  // size);
+
+  // auto funDecl = ::new (FunDeclPtr) FunDecl(name, parent, nameLoc);
   // moduleDeclBits.isMainModule = isMainModule ? true : false;
 
   return SyntaxResult<Module *>(new (syntax.GetTreeContext())

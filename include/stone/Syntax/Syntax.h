@@ -47,9 +47,11 @@ public:
   ~FunDeclFactory();
 
 public:
-  SyntaxResult<FunDecl *> Make(DeclContext *dc, SrcLoc funLoc,
-                               const DeclName &dn, SrcLoc dnLoc,
-                               StorageType st);
+  SyntaxResult<FunDecl *> Make(DeclContext *dc, SrcLoc funLoc, const DeclName &dn, SrcLoc dnLoc,
+             StorageType st);
+
+
+  
 };
 class StructDeclFactory final : public DeclFactory {
 public:

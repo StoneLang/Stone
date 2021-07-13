@@ -1,4 +1,11 @@
 
+#ifndef STONE_ANALYZE_ANGLEBRACKETBALANCER_H
+#define STONE_ANALYZE_ANGLEBRACKETBALANCER_H
+
+#include "llvm/ADT/ArrayRef.h"
+
+namespace stone {
+namespace syn {
 
 struct AngleBracketBalancer final {
   /// Flags used to rank candidate template names when there is more than one
@@ -19,16 +26,16 @@ struct AngleBracketBalancer final {
 
   struct AngleBracketLoc {
     Expr *TemplateName;
-    SourceLocation LessLoc;
+    SrcLoc lessLoc;
     AngleBracketBalancer::Priority Priority;
     unsigned short parenCount, bracketCount, braceCount;
 
-    bool isActive(Parser &p) const {
+    bool IsActive(Parser &p) const {
       return p.ParenCount == ParenCount && p.BracketCount == BracketCount &&
              p.BraceCount == BraceCount;
     }
 
-    bool isActiveOrNested(Parser &P) const {
+    bool IsActiveOrNested(Parser &P) const {
       return isActive(P) || P.ParenCount > ParenCount ||
              P.BracketCount > BracketCount || P.BraceCount > BraceCount;
     }
@@ -41,7 +48,7 @@ struct AngleBracketBalancer final {
   /// expression, for example in 'foo < bar < baz', 'bar' is the current
   /// candidate. No attempt is made to track that 'foo' is also a candidate
   /// for the case where we see a second suspicious '>' token.
-  void add(Parser &P, Expr *TemplateName, SourceLocation LessLoc,
+  void Add(Parser &p, Expr *templateName, SourceLocation lessLoc,
            Priority Prio) {
     if (!angleBracketLocs.empty() && angleBracketLocs.back().isActive(P)) {
       if (angleBracketLocs.back().Priority <= Prio) {
@@ -72,3 +79,6 @@ struct AngleBracketBalancer final {
     return nullptr;
   }
 };
+
+} // namespace syn
+} // namespace stone
