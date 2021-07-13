@@ -259,6 +259,9 @@ static bool IsWhiteSpace(const signed char ch) {
 }
 static bool IsOperator(const signed char ch) {
   switch (ch) {
+  case '%':
+  case '!':
+  case '?':
   case '=':
   case '-':
   case '+':
@@ -352,9 +355,19 @@ static bool IsIdentifier(const signed char ch) {
 }
 
 static bool IsValidTokStart(const signed char ch) {
+
+  if (IsIdentifier(ch)) {
+    return true;
+  }
+  if (IsNumber(ch)) {
+    return true;
+  }
+  if (IsOperator(ch)) {
+    return true;
+  }
   switch (ch) {
-  // case (char)-1:
-  // case (char)-2:
+  case (char)-1:
+  case (char)-2:
   case '{':
   case '[':
   case '(':
@@ -365,86 +378,9 @@ static bool IsValidTokStart(const signed char ch) {
   case ';':
   case ':':
   case '\\':
-  case '0':
-  case '1':
-  case '2':
-  case '3':
-  case '4':
-  case '5':
-  case '6':
-  case '7':
-  case '8':
-  case '9':
   case '"':
   case '\'':
   case '`':
-  // Start of identifiers.
-  case 'A':
-  case 'B':
-  case 'C':
-  case 'D':
-  case 'E':
-  case 'F':
-  case 'G':
-  case 'H':
-  case 'I':
-  case 'J':
-  case 'K':
-  case 'L':
-  case 'M':
-  case 'N':
-  case 'O':
-  case 'P':
-  case 'Q':
-  case 'R':
-  case 'S':
-  case 'T':
-  case 'U':
-  case 'V':
-  case 'W':
-  case 'X':
-  case 'Y':
-  case 'Z':
-  case 'a':
-  case 'b':
-  case 'c':
-  case 'd':
-  case 'e':
-  case 'f':
-  case 'g':
-  case 'h':
-  case 'i':
-  case 'j':
-  case 'k':
-  case 'l':
-  case 'm':
-  case 'n':
-  case 'o':
-  case 'p':
-  case 'q':
-  case 'r':
-  case 's':
-  case 't':
-  case 'u':
-  case 'v':
-  case 'w':
-  case 'x':
-  case 'y':
-  case 'z':
-  case '_':
-  // Start of operators.
-  case '%':
-  case '!':
-  case '?':
-  case '=':
-  case '-':
-  case '+':
-  case '*':
-  case '&':
-  case '|':
-  case '^':
-  case '~':
-  case '.':
     return true;
   default:
     return false;
@@ -709,120 +645,29 @@ void Lexer::LexTrivia(Trivia trivia, bool isForTrailingTrivia) {
         break;
       }
       break;
+
+    case '<':
+    case '>':
+      // TODO:
+      // if (LexConflictMarker(/*eatNewline=*/false)) {
+      //   // Conflict marker.
+      //   size_t length = curPtr - triviaStart;
+      //   trivia.push_back(TriviaKind::GarbageText, length);
+      // }
+      break;
     default:
       if (IsValidTokStart(ch)) {
         GoBack();
         return;
       }
+      // TODO:
+      // LexUnknown(/*emitDiagnosticsIfToken=*/false);
+      //   if (shouldTokenize) {
+      //     curPtr = tmpPtr;
+      //     return;
+      // }
     }
   }
-
-  // StartOver:
-  //   const char *triviaStart = curPtr;
-  //   auto ch = (signed char)*curPtr++;
-  //   switch (ch) {
-  //   case '\n':
-  //     if (isForTrailingTrivia)
-  //       break;
-  //     nextToken.SetAtStartOfLine(true);
-  //     trivia.AppendOrSquash(TriviaKind::Newline, 1);
-  //     goto StartOver;
-  //   case '\r':
-  //     if (isForTrailingTrivia)
-  //       break;
-  //     nextToken.SetAtStartOfLine(true);
-  //     if (curPtr[0] == '\n') {
-  //       trivia.AppendOrSquash(TriviaKind::CarriageReturnLineFeed, 2);
-  //       ++curPtr;
-  //     } else {
-  //       trivia.AppendOrSquash(TriviaKind::CarriageReturn, 1);
-  //     }
-  //     goto StartOver;
-  //   case ' ':
-  //     trivia.AppendOrSquash(TriviaKind::Space, 1);
-  //     goto StartOver;
-  //   case '\t':
-  //     trivia.AppendOrSquash(TriviaKind::Tab, 1);
-  //     goto StartOver;
-  //   case '\v':
-  //     trivia.AppendOrSquash(TriviaKind::VerticalTab, 1);
-  //     goto StartOver;
-  //   case '\f':
-  //     trivia.AppendOrSquash(TriviaKind::Formfeed, 1);
-  //     goto StartOver;
-  //   // case '/':
-  //   //   if (IsForTrailingTrivia || isKeepingComments()) {
-  //   //     // Don't lex comments as trailing trivias (for now).
-  //   //     // Don't try to lex comments here if we are lexing comments as
-  //   Tokens.
-  //   //     break;
-  //   //   } else if (*curPtr == '/') {
-  //   //     // '// ...' comment.
-  //   //     bool isDocComment = curPtr[1] == '/';
-  //   //     skipSlashSlashComment(/*EatNewline=*/false);
-  //   //     size_t Length = curPtr - TriviaStart;
-  //   //     Pieces.push_back(isDocComment ? TriviaKind::DocLineComment
-  //   //                                   : TriviaKind::LineComment,
-  //   Length);
-  //   //     goto StartOver;
-  //   //   } else if (*curPtr == '*') {
-  //   //     // '/* ... */' comment.
-  //   //     bool isDocComment = curPtr[1] == '*';
-  //   //     skipSlashStarComment();
-  //   //     size_t Length = curPtr - TriviaStart;
-  //   //     Pieces.push_back(isDocComment ? TriviaKind::DocBlockComment
-  //   //                                   : TriviaKind::BlockComment,
-  //   Length);
-  //   //     goto StartOver;
-  //   //   }
-  //   //   break;
-  //   // case '#':
-  //   //   if (TriviaStart == ContentStart && *curPtr == '!') {
-  //   //     // Hashbang '#!/path/to/swift'.
-  //   //     --curPtr;
-  //   //     if (!IsHashbangAllowed)
-  //   //       diagnose(TriviaStart, diag::lex_hashbang_not_allowed);
-  //   //     skipHashbang(/*EatNewline=*/false);
-  //   //     size_t Length = curPtr - TriviaStart;
-  //   //     Pieces.push_back(TriviaKind::GarbageText, Length);
-  //   //     goto StartOver;
-  //   //   }
-  //   //   break;
-  //   // case '<':
-  //   // case '>':
-  //   //   if (tryLexConflictMarker(/*EatNewline=*/false)) {
-  //   //     // Conflict marker.
-  //   //     size_t Length = curPtr - TriviaStart;
-  //   //     Pieces.push_back(TriviaKind::GarbageText, Length);
-  //   //     goto StartOver;
-  //   //   }
-  //   //   break;
-
-  //   default:
-  //     if(IsValidTokStart(ch)) {
-  //       break;
-  //     }
-  //     // const char *tmpPtr = curPtr - 1;
-  //     // if (advanceIfValidStartOfIdentifier(Tmp, BufferEnd)) {
-  //     //   break;
-  //     // }
-  //     // if (advanceIfValidStartOfOperator(Tmp, BufferEnd)) {
-  //     //   break;
-  //     // }
-
-  //     // bool ShouldTokenize =
-  //     lexUnknown(/*EmitDiagnosticsIfToken=*/false);
-  //     // if (ShouldTokenize) {
-  //     //   curPtr = tmpPtr;
-  //     //   return;
-  //     // }
-
-  //     // size_t Length = curPtr - TriviaStart;
-  //     // Pieces.push_back(TriviaKind::GarbageText, Length);
-  //     goto StartOver;
-  //   }
-
-  // Reset the curPtr back to the char we read.
 }
 
 void Lexer::LexChar() {}

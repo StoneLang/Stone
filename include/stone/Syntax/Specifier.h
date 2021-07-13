@@ -15,19 +15,20 @@ enum class BuiltinType {
   None,
   Auto,
   Bool,
-  F32,
-  F64,
+  Float32,
+  Float64,
   Interface,
-  I8,
-  I16,
-  I32,
   Struct,
-  U8,
-  U16,
-  U32,
+  Int8,
+  Int16,
+  Int32,
+  Uint8,
+  Uint16,
+  Uint32,
 };
 
 enum class AccessLevel {
+  None,
   Internal,
   Public,
   Private,
@@ -58,6 +59,28 @@ enum class StorageType {
   // These are only legal on variables.
   Auto,
   Register
+};
+
+/// The storage duration for an object (per C++ [basic.stc]).
+enum class StorageDuration {
+  FullExpression, ///< Full-expression storage duration (for temporaries).
+  Automatic,      ///< Automatic storage duration (most local variables).
+  Thread,         ///< Thread storage duration.
+  Static,         ///< Static storage duration.
+  Dynamic         ///< Dynamic storage duration.
+};
+
+/// Describes the nullability of a particular type.
+enum class NullabilityType : uint8_t {
+  /// Values of this type can never be null.
+  NonNull = 0,
+  /// Values of this type can be null.
+  Nullable,
+  /// Whether values of this type can be null is (explicitly)
+  /// unspecified. This captures a (fairly rare) case where we
+  /// can't conclude anything about the nullability of the type even
+  /// though it has been considered.
+  Unspecified
 };
 
 } // namespace syn

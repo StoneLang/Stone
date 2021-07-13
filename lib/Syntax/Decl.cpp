@@ -131,7 +131,7 @@ static bool IsNamed(const NamingDecl *namingDecl, const char (&str)[Len]) {
 
 SyntaxResult<FunDecl *> FunDeclFactory::Make(DeclContext *dc, SrcLoc funLoc,
                                              const DeclName &dn, SrcLoc dnLoc,
-                                             StorageType st) {
+                                             StorageType storageType) {
   assert(dc);
   return SyntaxResult<FunDecl *>();
 }
