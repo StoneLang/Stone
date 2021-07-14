@@ -147,16 +147,6 @@ protected:
   Decl(Decl::Type ty, DeclContext *dc, SrcLoc loc) : ty(ty), dc(dc), loc(loc) {}
 
 public:
-  template <typename DeclTy, typename AllocatorTy>
-  static void *Allocate(AllocatorTy &allocatorTy, size_t baseSize) {
-    return Allocate(allocatorTy, baseSize, false);
-  }
-
-  /// \param extraSpace The amount of extra space to allocate after the object
-  /// -- generally for clang nodes.
-  template <typename DeclTy, typename AllocatorTy>
-  static void *Allocate(AllocatorTy &allocatorTy, size_t baseSize,
-                        bool extraSpace);
 };
 
 class DeclContext {

@@ -4,7 +4,6 @@
 #include "stone/Syntax/Expr.h"
 #include "stone/Syntax/Ownership.h"
 #include "stone/Syntax/Specifier.h"
-#include "stone/Syntax/SyntaxBuilder.h"
 #include "stone/Syntax/SyntaxResult.h"
 #include "stone/Syntax/TreeContext.h"
 #include "stone/Syntax/Type.h"
@@ -54,6 +53,13 @@ public:
 public:
   bool HasError() { return tc.GetBasic().HasError(); }
   Basic &GetBasic() { return tc.GetBasic(); }
+
+public:
+  /// \param extraSpace The amount of extra space to allocate after the object
+  /// -- generally for clang nodes.
+  template <typename DeclTy, typename AllocatorTy>
+  static void *AllocateDeclMem(AllocatorTy &allocatorTy, size_t baseSize,
+                               bool extraSpace = false);
 };
 
 } // namespace syn

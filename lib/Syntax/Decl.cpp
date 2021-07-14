@@ -1,15 +1,7 @@
 #include "stone/Syntax/Decl.h"
-#include "stone/Syntax/Syntax.h"
 
 //#include "stone/Syntax/DeclContextInternals.h"
 // TODO: #include "stone/Syntax/Friend.h"
-
-#include <algorithm>
-#include <cassert>
-#include <cstddef>
-#include <string>
-#include <tuple>
-#include <utility>
 
 #include "stone/Basic/LLVM.h"
 #include "stone/Basic/LangOptions.h"
@@ -20,6 +12,7 @@
 #include "stone/Syntax/Stmt.h"
 #include "stone/Syntax/Template.h" //DeclTemplate
 #include "stone/Syntax/Type.h"
+
 #include "llvm/ADT/ArrayRef.h"
 #include "llvm/ADT/PointerIntPair.h"
 #include "llvm/ADT/SmallVector.h"
@@ -30,6 +23,13 @@
 #include "llvm/Support/VersionTuple.h"
 #include "llvm/Support/raw_ostream.h"
 
+#include <algorithm>
+#include <cassert>
+#include <cstddef>
+#include <string>
+#include <tuple>
+#include <utility>
+
 using namespace stone;
 using namespace stone::syn;
 
@@ -39,23 +39,6 @@ void DeclStats::Print() {}
 void *syn::Decl::operator new(std::size_t bytes, const TreeContext &tc,
                               unsigned alignment) {
   return tc.Allocate(bytes, alignment);
-}
-
-template <typename DeclTy, typename AllocatorTy>
-void *Decl::Allocate(AllocatorTy &allocatorTy, size_t baseSize,
-                     bool extraSace) {
-
-  static_assert(alignof(DeclTy) >= sizeof(void *),
-                "A pointer must fit in the alignment of the DeclTy!");
-
-  size_t size = baseSize;
-  if (extraSace) {
-    size += alignof(DeclTy);
-  }
-  void *mem = allocatorTy.Allocate(size, alignof(DeclTy));
-  if (extraSace)
-    mem = reinterpret_cast<char *>(mem) + alignof(DeclTy);
-  return mem;
 }
 
 // Only allow allocation of Modules using the allocator in ASTContext.
