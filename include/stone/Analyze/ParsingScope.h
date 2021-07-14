@@ -7,6 +7,7 @@ namespace stone {
 namespace syn {
 
 class ParsingScope final {};
+
 } // namespace syn
 } // namespace stone
 #endif

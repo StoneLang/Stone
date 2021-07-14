@@ -138,18 +138,23 @@ public:
 public:
   bool IsTopDeclStart(const Token &tok);
   bool ParseTopDecl(DeclGroupPtrTy &result, bool isFirstDecl = false);
-
   syn::DeclGroupPtrTy ParseDecl(ParsingDeclSpecifier *pds = nullptr);
 
   syn::DeclGroupPtrTy ParseDecl(ParsingDeclSpecifier &pds,
                                 AccessLevel al = AccessLevel::None);
 
+public:
+  // Function
   SyntaxResult<Decl *> ParseFunDecl(ParsingDeclSpecifier &pds,
                                     AccessLevel accessLevel);
 
-private:
-  void ParseFunctionPrototype();
+public:
+  // Struct
+  SyntaxResult<Decl *> ParseStructDecl(ParsingDeclSpecifier &pds);
 
+public:
+  // Template
+  // SyntaxResult<TemplateDecl *> ParseTemplateDecl(ParsingDeclSpecifier &pds);
 private:
   void Init();
   void Lex(Token &result) { lexer->Lex(result); }
@@ -255,42 +260,14 @@ public:
   }
 
   SrcLoc ConsumeTokIf();
-
   /// Consume the token and update OnToken from CompilerPipeline
   SrcLoc ConsumeTok(bool onTok = true);
-
   SrcLoc ConsumeTok(tk::Type ty) {
     assert(tok.Is(ty) && "Consuming wrong token type");
     return ConsumeTok(false);
   }
-  // SrcLoc EatIdentifier(Identifier *Result = nullptr);
-
-  SrcLoc ConsumeAnyTok(bool consumeCodeCompletionTok = false) {
-
-    if (IsParenTok()) {
-      return ConsumeParen();
-    }
-
-    if (IsBracketTok()) {
-      return ConsumeBracket();
-    }
-
-    if (IsBraceTok()) {
-      return ConsumeBrace();
-    }
-
-    // if (IsTokenStringLiteral())
-    //  return ConsumeStringTok();
-
-    // if (tok.Is(tk::Type::code_completion))
-    //  return ConsumeCodeCompletionTok ? ConsumeCodeCompletionToken()
-    //                                 : handleUnexpectedCodeCompletionToken();
-
-    // if (Tok.isAnnotation())
-    //  return ConsumeAnnotationToken();
-
-    return ConsumeTok();
-  }
+  SrcLoc ConsumeAnyTok(bool consumeCodeCompletionTok = false);
+  SrcLoc ConsumeIdentifier(Identifier *result = nullptr);
   Basic &GetBasic();
 
 public:

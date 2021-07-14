@@ -62,7 +62,10 @@ class DeclStmt : public Stmt {
 /// This is equivalent to the CompoundStmt (c/c++) that
 /// represents a group of statements like { stmt stmt }.
 class BlockStmt final : public Stmt,
-                        private llvm::TrailingObjects<BlockStmt, Stmt *> {};
+                        private llvm::TrailingObjects<BlockStmt, Stmt *> {
+
+public:
+};
 
 class MatchCase : public Stmt {
 protected:
@@ -95,11 +98,15 @@ class LabelStmt : public ValueStmt {
 class IfStmt final : public Stmt,
                      private llvm::TrailingObjects<IfStmt, Stmt *, SrcLoc> {
   friend TrailingObjects;
+
+public:
 };
 
 class NullStmt final : public Stmt,
                        private llvm::TrailingObjects<NullStmt, Stmt *, SrcLoc> {
   friend TrailingObjects;
+
+public:
 };
 
 class DeferStmt : public Stmt {

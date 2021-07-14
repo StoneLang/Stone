@@ -10,6 +10,7 @@ bool Parser::IsTopDeclStart(const Token &tok) {
   switch (tok.GetType()) {
   case tk::Type::kw_interface:
   case tk::Type::kw_fun:
+  case tk::Type::kw_any:
   case tk::Type::kw_struct:
   case tk::Type::kw_space:
   case tk::Type::kw_const:
@@ -76,7 +77,12 @@ syn::DeclGroupPtrTy Parser::ParseDecl(ParsingDeclSpecifier &pds,
 
   SyntaxResult<Decl *> syntaxResult;
 
+  // TODO: ParseTemplateDecl first before you move
+
   switch (tok.GetType()) {
+  case tk::Type::kw_any:
+    // ParseTemplateDecl();
+    break;
   case tk::Type::kw_fun:
     syntaxResult = ParseFunDecl(pds, accessLevel);
     break;
@@ -86,8 +92,9 @@ syn::DeclGroupPtrTy Parser::ParseDecl(ParsingDeclSpecifier &pds,
   // return CreateDeclGroup(singleDecl);
   return nullptr;
 }
-// void Parser::ParseFunctionPrototype() {
-// }
+
+static void ParseFunctionPrototype(FunDecl *funDecl) {}
+static void ParseFunctionBody(FunDecl *funDecl) {}
 
 SyntaxResult<Decl *> Parser::ParseFunDecl(ParsingDeclSpecifier &pds,
                                           AccessLevel accessLevel) {
@@ -97,10 +104,12 @@ SyntaxResult<Decl *> Parser::ParseFunDecl(ParsingDeclSpecifier &pds,
 
   ConsumeTok();
 
-  // FunDeclFactory factory = syntax.GetFunDeclFactory();
-  // ParseFunctionPrototype();
+  auto funDecl = syntax.CreateFunDecl();
+  // funDecl->SetAccessLevel(accessLevel);
+  // funDecl->SetTemplate...
 
-  FunDecl *funDecl = nullptr;
+  ParseFunctionPrototype(funDecl);
+  ParseFunctionBody(funDecl);
 
   return funDecl;
 }

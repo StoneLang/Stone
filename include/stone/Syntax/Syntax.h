@@ -4,9 +4,11 @@
 #include "stone/Syntax/Expr.h"
 #include "stone/Syntax/Ownership.h"
 #include "stone/Syntax/Specifier.h"
+#include "stone/Syntax/SyntaxBuilder.h"
 #include "stone/Syntax/SyntaxResult.h"
 #include "stone/Syntax/TreeContext.h"
 #include "stone/Syntax/Type.h"
+
 namespace stone {
 class LiveDiagnostic;
 
@@ -47,11 +49,9 @@ public:
   ~FunDeclFactory();
 
 public:
-  SyntaxResult<FunDecl *> Make(DeclContext *dc, SrcLoc funLoc, const DeclName &dn, SrcLoc dnLoc,
-             StorageType st);
-
-
-  
+  SyntaxResult<FunDecl *> Make(DeclContext *dc, SrcLoc funLoc,
+                               const DeclName &dn, SrcLoc dnLoc,
+                               StorageType st);
 };
 class StructDeclFactory final : public DeclFactory {
 public:
@@ -75,6 +75,9 @@ public:
 
 class Syntax final {
   TreeContext &tc;
+  FunDeclSyntaxBuilder funBuilder;
+  StructDeclSyntaxBuilder structBuilder;
+
   std::unique_ptr<FunDeclFactory> funDeclFactory;
   std::unique_ptr<StructDeclFactory> structDeclFactory;
   std::unique_ptr<ModuleDeclFactory> moduleDeclFactory;
@@ -95,6 +98,24 @@ public:
   FunDeclFactory &GetFunDeclFactory();
   StructDeclFactory &GetStructDeclFactory();
   ModuleDeclFactory &GetModuleDeclFactory();
+
+public:
+  FunDeclSyntaxBuilder &GetFunDeclSyntaxBuilder() { return funBuilder; }
+  StructDeclSyntaxBuilder &GetStructDeclSyntaxBuilder() {
+    return structBuilder;
+  }
+
+public:
+  static void MakeIdentifier();
+
+public:
+  Module *CreateModuleDecl(Identifier &name, bool isMainModule);
+
+public:
+  FunDecl *CreateFunDecl();
+
+public:
+  StructDecl *CreateStructDecl();
 
 public:
   bool HasError() { return tc.GetBasic().HasError(); }

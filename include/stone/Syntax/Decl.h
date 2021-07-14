@@ -339,7 +339,7 @@ public:
   /// BraceStmt
   Stmt *GetBody();
 
-  //void SetBody(Stmt body) {}
+  // void SetBody(Stmt body) {}
 
 public:
 };

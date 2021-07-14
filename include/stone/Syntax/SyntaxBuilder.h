@@ -11,20 +11,38 @@ class Stmt;
 class IfStmt;
 class MatchStmt;
 class Expr;
-class BraceStmt; 
+class BraceStmt;
+class Syntax;
 
 class SyntaxBuilder {
-public:
-};
+  Syntax &syntax;
 
+public:
+  SyntaxBuilder(Syntax &syntax) : syntax(syntax) {}
+
+public:
+  Syntax &GetSyntax() { return syntax; }
+};
 class BlockStmtSyntaxBuilder : public SyntaxBuilder {
+
+public:
+  BlockStmtSyntaxBuilder(Syntax &syntax);
+
 public:
   void WithLeftBrace();
   void WithRightBrace();
 };
-class FunDeclSyntaxBuilder : public BlockStmtSyntaxBuilder {
-  //FunDecl *funDecl;
 
+class DeclSyntaxBuilder : public SyntaxBuilder {
+public:
+  DeclSyntaxBuilder(Syntax &syntax);
+
+public:
+  void WithIdentifier();
+};
+class FunDeclSyntaxBuilder final : public DeclSyntaxBuilder,
+                                   public BlockStmtSyntaxBuilder {
+  // FunDecl *funDecl;
 public:
   FunDeclSyntaxBuilder(const FunDeclSyntaxBuilder &) = delete;
   FunDeclSyntaxBuilder(FunDeclSyntaxBuilder &&) = delete;
@@ -32,6 +50,11 @@ public:
   FunDeclSyntaxBuilder &operator=(FunDeclSyntaxBuilder &&) = delete;
 
 public:
+  FunDeclSyntaxBuilder(Syntax &syntax);
+  FunDecl *Build();
+
+public:
+  void WithTemplate();
   void WithFunKeyword();
   void WithParams();
   void WithReturnType();
@@ -40,14 +63,25 @@ public:
   // void WithAccessLevel(AccessLevel level);
 };
 
-class StructDeclSyntaxBuilder : public BlockStmtSyntaxBuilder {
+class StructDeclSyntaxBuilder final : public DeclSyntaxBuilder,
+                                      public BlockStmtSyntaxBuilder {
+public:
+  StructDeclSyntaxBuilder(const StructDeclSyntaxBuilder &) = delete;
+  StructDeclSyntaxBuilder(StructDeclSyntaxBuilder &&) = delete;
+  StructDeclSyntaxBuilder &operator=(const StructDeclSyntaxBuilder &) = delete;
+  StructDeclSyntaxBuilder &operator=(StructDeclSyntaxBuilder &&) = delete;
+
+public:
+  StructDeclSyntaxBuilder(Syntax &syntax);
+  StructDecl *Build();
+
 public:
   void WithStructKeyword();
 };
 
-class ModuleDeclSyntaxBuilder final : public SyntaxBuilder {
-public:
-};
+// class ModuleDeclSyntaxBuilder final : public SyntaxBuilder {
+// public:
+// };
 
 } // namespace syn
 } // namespace stone

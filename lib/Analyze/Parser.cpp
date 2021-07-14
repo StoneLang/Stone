@@ -74,4 +74,27 @@ bool Parser::SkipTo(llvm::ArrayRef<tk::Type> toks, SkipToFlags flags) {
   }
 }
 
+SrcLoc Parser::ConsumeAnyTok(bool consumeCodeCompletionTok) {
+  if (IsParenTok()) {
+    return ConsumeParen();
+  }
+  if (IsBracketTok()) {
+    return ConsumeBracket();
+  }
+  if (IsBraceTok()) {
+    return ConsumeBrace();
+  }
+  // if (IsTokenStringLiteral())
+  //  return ConsumeStringTok();
+
+  // if (tok.Is(tk::Type::code_completion))
+  //  return ConsumeCodeCompletionTok ? ConsumeCodeCompletionToken()
+  //                                 : handleUnexpectedCodeCompletionToken();
+
+  // if (Tok.isAnnotation())
+  //  return ConsumeAnnotationToken();
+
+  return ConsumeTok();
+}
+
 void ParserStats::Print() {}

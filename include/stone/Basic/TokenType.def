@@ -108,6 +108,7 @@ LITERAL(imaginary_literal)
 // STATUS FLAGS : TOKON, TOKOFF, TOKRSV
 // Keywords that start decls.
 DECL_KEYWORD(auto, TOKON)
+DECL_KEYWORD(any, TOKON)
 DECL_KEYWORD(class, TOKRSV) 
 DECL_KEYWORD(ref, TOKON)
 DECL_KEYWORD(interface, TOKON)

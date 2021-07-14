@@ -42,7 +42,7 @@ public:
 
     /// This is a scope that corresponds to the
     /// parameters within a function prototype.
-    FunPrototype = 0x100,
+    FunctionPrototype = 0x100,
 
     /// This is a scope that corresponds to the parameters within
     /// a function prototype for a function declaration (as opposed to any

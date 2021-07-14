@@ -1,15 +1,16 @@
 #ifndef STONE_SYNTAX_TREECONTEXT_H
 #define STONE_SYNTAX_TREECONTEXT_H
 
-#include <cassert>
-#include <cstddef>
-#include <cstdint>
-#include <iterator>
-#include <memory>
-#include <string>
-#include <type_traits>
-#include <utility>
-#include <vector>
+#include "stone/Basic/Basic.h"
+#include "stone/Basic/LangOptions.h"
+#include "stone/Basic/SrcMgr.h"
+#include "stone/Basic/Stats.h"
+#include "stone/Syntax/Builtin.h"
+#include "stone/Syntax/Identifier.h"
+#include "stone/Syntax/LangABI.h"
+#include "stone/Syntax/SearchPathOptions.h"
+#include "stone/Syntax/TreeContextAlloc.h"
+#include "stone/Syntax/Type.h"
 
 #include "llvm/ADT/APSInt.h"
 #include "llvm/ADT/ArrayRef.h"
@@ -32,16 +33,15 @@
 #include "llvm/Support/Casting.h"
 #include "llvm/Support/Compiler.h"
 
-#include "stone/Basic/Basic.h"
-#include "stone/Basic/LangOptions.h"
-#include "stone/Basic/SrcMgr.h"
-#include "stone/Basic/Stats.h"
-#include "stone/Syntax/Builtin.h"
-#include "stone/Syntax/Identifier.h"
-#include "stone/Syntax/LangABI.h"
-#include "stone/Syntax/SearchPathOptions.h"
-#include "stone/Syntax/TreeContextAlloc.h"
-#include "stone/Syntax/Type.h"
+#include <cassert>
+#include <cstddef>
+#include <cstdint>
+#include <iterator>
+#include <memory>
+#include <string>
+#include <type_traits>
+#include <utility>
+#include <vector>
 
 namespace stone {
 namespace syn {

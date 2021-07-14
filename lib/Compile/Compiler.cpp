@@ -48,7 +48,7 @@ syn::Module *Compiler::GetMainModule() const {
     return mainModule;
   }
   Identifier &moduleName = tc->GetIdentifier(GetModuleName());
-  mainModule = syntax->GetModuleDeclFactory().Make(moduleName, true).get();
+  mainModule = syntax->CreateModuleDecl(moduleName, true);
   return mainModule;
 }
 
