@@ -331,6 +331,9 @@ public:
 // This is really your function prototye
 class FunctionDecl : public DeclaratorDecl,
                      public DeclContext /*, syn::Redeclarable<FunctionDecl> */ {
+
+  AccessLevel accessLevel;
+
 public:
   FunctionDecl(Decl::Type ty, TreeContext &tc, DeclContext *dc,
                const DeclName &dn, SrcLoc dnLoc, StorageType st);
@@ -338,8 +341,12 @@ public:
 public:
   /// BraceStmt
   Stmt *GetBody();
-
   // void SetBody(Stmt body) {}
+
+  void SetAccessLevel(AccessLevel accessLevel) {
+    this->accessLevel = accessLevel;
+  }
+  AccessLevel GetAccessLevel() { return accessLevel; }
 
 public:
 };

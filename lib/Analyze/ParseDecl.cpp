@@ -93,8 +93,19 @@ syn::DeclGroupPtrTy Parser::ParseDecl(ParsingDeclSpecifier &pds,
   return nullptr;
 }
 
-static void ParseFunctionPrototype(FunDecl *funDecl) {}
-static void ParseFunctionBody(FunDecl *funDecl) {}
+static void ParseFunctionPrototype(FunDecl *funDecl) {
+
+  assert(funDecl && "Null FunDecl");
+
+  // Get Identifier
+  // funDecl->SetIdentifier();
+
+  // ConsumeTok();
+}
+static void ParseFunctionBody(FunDecl *funDecl) {
+
+  // assert(tok.Is(tk::Type::l_brace) && "Require left brace.");
+}
 
 SyntaxResult<Decl *> Parser::ParseFunDecl(ParsingDeclSpecifier &pds,
                                           AccessLevel accessLevel) {
@@ -105,7 +116,7 @@ SyntaxResult<Decl *> Parser::ParseFunDecl(ParsingDeclSpecifier &pds,
   ConsumeTok();
 
   auto funDecl = syntax.CreateFunDecl();
-  // funDecl->SetAccessLevel(accessLevel);
+  funDecl->SetAccessLevel(accessLevel);
   // funDecl->SetTemplate...
 
   ParseFunctionPrototype(funDecl);

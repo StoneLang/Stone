@@ -4,40 +4,14 @@
 using namespace stone;
 using namespace stone::syn;
 
-Syntax::Syntax(TreeContext &tc)
-    : tc(tc), funBuilder(*this), structBuilder(*this) {}
-
+Syntax::Syntax(TreeContext &tc) : tc(tc) {}
 Syntax::~Syntax() {}
 
-DeclFactory::~DeclFactory() {}
-FunDeclFactory::~FunDeclFactory() {}
-
-// Going this route for the time being
-FunDeclFactory &Syntax::GetFunDeclFactory() {
-  if (funDeclFactory) {
-    return *funDeclFactory.get();
-  }
-  funDeclFactory = llvm::make_unique<FunDeclFactory>(*this);
-  return *funDeclFactory.get();
+template <std::size_t Len>
+static bool IsNamed(const NamingDecl *namingDecl, const char (&str)[Len]) {
+  Identifier *identifier = namingDecl->GetIdentifier();
+  return identifier && identifier->isStr(str);
 }
-
-StructDeclFactory::~StructDeclFactory() {}
-
-StructDeclFactory &Syntax::GetStructDeclFactory() {
-  if (structDeclFactory) {
-    return *structDeclFactory.get();
-  }
-  structDeclFactory = llvm::make_unique<StructDeclFactory>(*this);
-  return *structDeclFactory.get();
-}
-ModuleDeclFactory &Syntax::GetModuleDeclFactory() {
-  if (moduleDeclFactory) {
-    return *moduleDeclFactory.get();
-  }
-  moduleDeclFactory = llvm::make_unique<ModuleDeclFactory>(*this);
-  return *moduleDeclFactory.get();
-}
-ModuleDeclFactory::~ModuleDeclFactory() {}
 
 Module *Syntax::CreateModuleDecl(Identifier &name, bool isMainModule) {
   auto moduleDecl = new (GetTreeContext()) syn::Module(name, GetTreeContext());

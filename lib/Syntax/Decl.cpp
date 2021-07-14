@@ -123,37 +123,3 @@ void *Decl::operator new(std::size_t size, const TreeContext &tc,
 //
 //
 //
-
-template <std::size_t Len>
-static bool IsNamed(const NamingDecl *namingDecl, const char (&str)[Len]) {
-  Identifier *identifier = namingDecl->GetIdentifier();
-  return identifier && identifier->isStr(str);
-}
-
-SyntaxResult<FunDecl *> FunDeclFactory::Make(DeclContext *dc, SrcLoc funLoc,
-                                             const DeclName &dn, SrcLoc dnLoc,
-                                             StorageType storageType) {
-  assert(dc);
-  return SyntaxResult<FunDecl *>();
-}
-
-SyntaxResult<StructDecl *> StructDeclFactory::Make(DeclContext *dc) {
-  assert(dc);
-  return SyntaxResult<StructDecl *>();
-}
-
-SyntaxResult<Module *> ModuleDeclFactory::Make(Identifier &name,
-                                               bool isMainModule) {
-
-  // size_t size =
-  //    sizeof(FunDecl); //+ (HasImplicitThisDecl ? sizeof(ParamDecl *) : 0);
-
-  // void *moduleDeclPtr = Decl::Allocate<Module>(syntax.GetTreeContext(),
-  // size);
-
-  // auto funDecl = ::new (FunDeclPtr) FunDecl(name, parent, nameLoc);
-  // moduleDeclBits.isMainModule = isMainModule ? true : false;
-
-  return SyntaxResult<Module *>(new (syntax.GetTreeContext())
-                                    syn::Module(name, syntax.GetTreeContext()));
-}
