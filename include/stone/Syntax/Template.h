@@ -80,7 +80,7 @@ public:
 
 class TemplateContext {};
 
-class TemplateDecl : public NamingDecl {
+class TemplateDecl : public NamedDecl {
 public:
 };
 } // namespace syn

@@ -248,14 +248,14 @@ public:
   }
 };
 
-class NamingDecl : public Decl {
+class NamedDecl : public Decl {
   /// The name of this declaration, which is typically a normal
   /// identifier but may also be a special ty of name (C++
   /// constructor, etc.)
   DeclName name;
 
 protected:
-  NamingDecl(Decl::Type ty, DeclContext *dc, SrcLoc loc, DeclName name)
+  NamedDecl(Decl::Type ty, DeclContext *dc, SrcLoc loc, DeclName name)
       : Decl(ty, dc, loc), name(name) {}
 
 public:
@@ -281,7 +281,7 @@ public:
   void SetLoc(SrcLoc loc) {}
 };
 
-class TypeDecl : public NamingDecl {
+class TypeDecl : public NamedDecl {
 
   friend class TreeContext;
   /// This indicates the Type object that represents
@@ -296,22 +296,22 @@ class TypeDecl : public NamingDecl {
 protected:
   TypeDecl(Decl::Type ty, DeclContext *dc, SrcLoc loc, Identifier *name,
            SrcLoc startLocation = SrcLoc())
-      : NamingDecl(ty, dc, loc, name), startLoc(startLocation) {}
+      : NamedDecl(ty, dc, loc, name), startLoc(startLocation) {}
 };
 
-// TODO: May use this instead of using NamingDecl
-class ValueDecl : public NamingDecl {
+// TODO: May use this instead of using NamedDecl
+class ValueDecl : public NamedDecl {
 public:
 };
 
-class LabelDecl : public NamingDecl {
+class LabelDecl : public NamedDecl {
 public:
 };
 
-class SpaceDecl : public NamingDecl {
+class SpaceDecl : public NamedDecl {
 public:
   SpaceDecl(DeclContext *dc, SrcLoc loc, DeclName name)
-      : NamingDecl(Decl::Type::Space, dc, loc, name) {}
+      : NamedDecl(Decl::Type::Space, dc, loc, name) {}
 };
 
 class DeclaratorDecl : public ValueDecl {

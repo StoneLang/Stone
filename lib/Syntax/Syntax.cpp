@@ -8,8 +8,8 @@ Syntax::Syntax(TreeContext &tc) : tc(tc) {}
 Syntax::~Syntax() {}
 
 template <std::size_t Len>
-static bool IsNamed(const NamingDecl *namingDecl, const char (&str)[Len]) {
-  Identifier *identifier = namingDecl->GetIdentifier();
+static bool IsNamed(const NamedDecl *namedDecl, const char (&str)[Len]) {
+  Identifier *identifier = namedDecl->GetIdentifier();
   return identifier && identifier->isStr(str);
 }
 
@@ -32,6 +32,7 @@ void *Syntax::AllocateDeclMem(AllocatorTy &allocatorTy, size_t baseSize,
 
 Module *Syntax::CreateModuleDecl(Identifier &name, bool isMainModule) {
 
+  //TODO: 
   void *moduleDeclPtr = Syntax::AllocateDeclMem<Module>(GetTreeContext(), sizeof(Module));
 
   auto moduleDecl = new (GetTreeContext()) syn::Module(name, GetTreeContext());
